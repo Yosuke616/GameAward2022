@@ -34,7 +34,6 @@ public class PathGennerator : MonoBehaviour
 
 		mainCamera = Camera.main;
 		objPoint = (GameObject)Resources.Load("Objects/Point");     // ResourcesƒtƒHƒ‹ƒ_‚©‚ç“Ç‚İ‚İ
-		Debug.Assert(objPoint != null);
 		ObjectNum = 1;
 		ClickNum = -1;
 	}

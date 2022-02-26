@@ -30,7 +30,7 @@ public class Scenetransition : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.F3))
         {
-            SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene("PlayerMove");
         }
         if (Input.GetKey(KeyCode.F4))
         {

@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PeparCutTest.unity
     guid: 3ea5475d4fae1304b92170a4b046424a
+  - enabled: 1
+    path: Assets/Scenes/PlayerMove.unity
+    guid: 71b67469c1969ab4798af8fbe1c4e964
   m_configObjects: {}

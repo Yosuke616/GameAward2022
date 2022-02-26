@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Scenes/PeparCutTest.unity
+- path: Assets/Scenes/Sample/SampleScene.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

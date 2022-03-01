@@ -30,7 +30,7 @@ public class Scenetransition : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.F3))
         {
-            SceneManager.LoadScene("PlayerMove");
+            SceneManager.LoadScene("TurnPaper");
         }
         if (Input.GetKey(KeyCode.F4))
         {

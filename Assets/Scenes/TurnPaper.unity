@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028401, g: 0.22571425, b: 0.30692324, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -253,6 +253,7 @@ GameObject:
   - component: {fileID: 1188283714}
   - component: {fileID: 1188283713}
   - component: {fileID: 1188283717}
+  - component: {fileID: 1188283718}
   m_Layer: 0
   m_Name: Paper1Page
   m_TagString: Untagged
@@ -349,6 +350,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ad513a0f8129d348998e49076440a9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1188283718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1188283712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3a5020d8d015494e984dc7cff9d2e0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  g_szObjName: 
 --- !u!1 &1259590097
 GameObject:
   m_ObjectHideFlags: 0
@@ -361,6 +375,7 @@ GameObject:
   - component: {fileID: 1259590100}
   - component: {fileID: 1259590099}
   - component: {fileID: 1259590098}
+  - component: {fileID: 1259590102}
   m_Layer: 0
   m_Name: Paper3Page
   m_TagString: Untagged
@@ -445,6 +460,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &1259590102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259590097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3a5020d8d015494e984dc7cff9d2e0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  g_szObjName: 
 --- !u!1 &1282724761
 GameObject:
   m_ObjectHideFlags: 0
@@ -457,6 +485,7 @@ GameObject:
   - component: {fileID: 1282724764}
   - component: {fileID: 1282724763}
   - component: {fileID: 1282724762}
+  - component: {fileID: 1282724766}
   m_Layer: 0
   m_Name: Paper2Page
   m_TagString: Untagged
@@ -541,6 +570,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &1282724766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282724761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3a5020d8d015494e984dc7cff9d2e0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  g_szObjName: 
 --- !u!1 &1841477529
 GameObject:
   m_ObjectHideFlags: 0
@@ -627,10 +669,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1841477529}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalRotation: {x: 0, y: 0.9063079, z: -0.42261827, w: 0}
+  m_LocalPosition: {x: 17.1, y: 25.7, z: 167.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 50, y: 180, z: 0}

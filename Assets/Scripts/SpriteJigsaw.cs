@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace SpriteJigsaw
 {
@@ -22,7 +23,8 @@ namespace SpriteJigsaw
 		{
 			Debug.Log($"Cut {this.name}...");
 			Debug.Assert(cuttingPathPositions != null);
-			Debug.Assert(this.shapeCollider != null);
+			//Debug.Assert(this.shapeCollider != null);
+			Assert.IsNotNull(this.shapeCollider , "shapeColliderがNULLです");
 
 			// 始点・終点の点検
 			var cuttingPathSigns = GetPathCornerSigns(cuttingPathPositions, this.shapeCollider);
@@ -36,6 +38,7 @@ namespace SpriteJigsaw
 				Debug.LogError("Last point is inside collider!");
 				return null;
 			}
+			Debug.Log("始点・終点の点検完了");
 
 			// 自己交差の点検
 			var cuttingPathCornerCount = cuttingPathPositions.Count;
@@ -46,16 +49,19 @@ namespace SpriteJigsaw
 				Debug.LogError("Path has self intersections!");
 				return null;
 			}
+			Debug.Log("自己交差の点検完了");
 
 			// 切断パスをローカル空間に移す
 			var worldToLocal = this.transform.worldToLocalMatrix;
 			var cuttingPathLocalPositions = cuttingPathPositions.Select(p => (Vector2)worldToLocal.MultiplyPoint3x4(p)).ToList();
+			Debug.Log("切断パスをローカル空間に移行");
 
 			// 切断後のアウトラインを求める
 			var cutOutlines = CreateCutOutlines(
 				this.shapeOutlinePathPositions,
 				cuttingPathLocalPositions,
 				cuttingPathSigns);
+			Debug.Log("切断後のアウトラインを計算");
 
 			// 新しいオブジェクトを作り...
 			var result = cutOutlines.Select(
@@ -97,9 +103,11 @@ namespace SpriteJigsaw
 					newObject.shapeOutlinePathPositions = loopArray;
 					return newObject;
 				}).ToList();
+			Debug.Log("新しいオブジェクトを生成");
 
 			// 自分自身は破壊する
 			Destroy(this.gameObject);
+			Debug.Log("自分自身を破壊");
 			return result;
 		}
 
@@ -110,6 +118,7 @@ namespace SpriteJigsaw
 			IList<bool> cuttingPathSigns)
 		{
 			// アウトラインパス、切断パスをともにVertexチェーンに変換する
+			Assert.IsNotNull(shapeOutlinePathPositions, "shapeOutlinePathPositionsがNULLです");
 			var shapeOutlineFirstVertex = CreateVerticesFromPath(shapeOutlinePathPositions, true);
 			var cuttingPathFirstVertex = CreateVerticesFromPath(cuttingPathLocalPositions, false, cuttingPathSigns);
 
@@ -272,6 +281,41 @@ namespace SpriteJigsaw
 
 		private void Start()
 		{
+			// 当たり判定を画像サイズへ調整
+			Vector2[] collider2d = new Vector2[4];
+			Vector2 rectTransform = gameObject.GetComponent<RectTransform>().sizeDelta;
+			for (int i = 0; i < 4; i++)
+			{
+				switch(i)
+				{
+					case 0:
+						collider2d[i].x = -rectTransform.x / 2;
+						collider2d[i].y = rectTransform.y / 2;
+						break;
+					case 1:
+						collider2d[i].x = rectTransform.x / 2;
+						collider2d[i].y = rectTransform.y / 2;
+						break;
+					case 2:
+						collider2d[i].x = rectTransform.x / 2;
+						collider2d[i].y = -rectTransform.y / 2;
+						break;
+					case 3:
+						collider2d[i].x = -rectTransform.x / 2;
+						collider2d[i].y = -rectTransform.y / 2;
+						break;
+				}
+			}
+			gameObject.GetComponent<PolygonCollider2D>().SetPath(0, collider2d);
+
+			//GameObject PaperObject = Instantiate(LoadObject, this.transform.position, Quaternion.identity);
+			GameObject PaperObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+			PaperObject.transform.position = this.transform.position;
+			PaperObject.transform.position += new Vector3(0, 0, 0.01f);
+			PaperObject.name = "Paper";
+			//PaperObject.transform.localScale = this.transform.transform.localScale / 100;
+			PaperObject.transform.localScale = new Vector3(rectTransform.x / 100, rectTransform.y / 100, 0.01f);
+
 			if (this.shapeMesh != null)
 			{
 				return;
@@ -309,12 +353,13 @@ namespace SpriteJigsaw
 			meshRenderer.SetPropertyBlock(materialProperties);
 
 			// メッシュの外周を求め、その形のPolygonCollider2Dを付ける
-			this.shapeCollider = this.gameObject.AddComponent<PolygonCollider2D>();
+			this.shapeCollider = this.gameObject.GetComponent<PolygonCollider2D>();
 			var meshOutlines = GetOutlines(this.shapeMesh);
 			//Debug.Assert(meshOutlines.Length == 1);
 			var meshOutline = meshOutlines[0];
 			var meshVertices = this.shapeMesh.vertices;
 			this.shapeOutlinePathPositions = meshOutline.Select(i => (Vector2)meshVertices[i]).ToArray();
+			Assert.IsNotNull(shapeOutlinePathPositions, "shapeOutlinePathPositionsがNULLです");
 			this.shapeCollider.points = this.shapeOutlinePathPositions;
 
 			// 必要に応じてRigidbody2Dも付ける
@@ -339,6 +384,8 @@ namespace SpriteJigsaw
 			IList<bool> signs = null)
 		{
 			Debug.Assert(sortedPathPositions != null);
+			Assert.IsNotNull(sortedPathPositions, "sortedPathPositionsがNULLです");
+			Debug.Log($"{sortedPathPositions.First()}");
 			var firstV = new Vertex(sortedPathPositions.First());
 			var vertexList = new List<Vertex>();
 			var v = firstV;

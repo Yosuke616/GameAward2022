@@ -12,14 +12,14 @@ public class PathGennerator : MonoBehaviour
 	private GameObject objPoint;
 	private int ObjectNum;
 	private int ClickNum;
-	private Vector3 vPos;
-	private Vector3 vOldPos;
+	private Vector3 vMousePos;
+	private Vector3 vOldMousePos;
 
 	// SerializeFieldAttribute ... UnityEditer側で値の変更を可能にする
 	// TooltipAttribute ... UnityEditer側でマウスオーバーした際の説明文
-	[SerializeField] float PointSize = 0.05f;
-	[SerializeField] float LineWidth = 0.05f;
-	[SerializeField, Tooltip("ポイント同士の最小距離(float)")] float Distance = 10.0f;
+	[SerializeField] float PointSize = 1.0f;
+	[SerializeField] float LineWidth = 1.0f;
+	[SerializeField, Tooltip("ポイント同士の最小距離(float)")] float Distance = 1.0f;
 
 	void Start()
 	{
@@ -51,59 +51,66 @@ public class PathGennerator : MonoBehaviour
 
 		if (Input.GetMouseButton(0))
 		{
-			// マウス座標を代入、Z値固定
-			vPos = Input.mousePosition;
-			vPos.z = 10.0f;
+			// マウス座標を代入、Z座標の値を追加（
+			vMousePos = Input.mousePosition;
+			vMousePos.z = 10.0f;
 
 			// 間隔が一定値以上ならば生成処理
-			if (Vector3.Distance(vPos, vOldPos) >= Distance)
+			if (Vector3.Distance(vMousePos, vOldMousePos) >= Distance)
 			{
-				GameObject cloneObject = Instantiate(objPoint, vPos, Quaternion.identity);          // 座標を元にオブジェクトを生成
-				cloneObject.transform.parent = this.transform;                                      // このスクリプトが適用されているオブジェクトの子になる
-				cloneObject.name = "Point(" + ClickNum + " ," + (ObjectNum - 1) + ")";                    // オブジェクト名を変更
-				cloneObject.AddComponent<Image>();                                                  // Imageコンポーネントを追加
-				cloneObject.transform.localScale = new Vector3(PointSize, PointSize, PointSize);    // スケールを変更
+				vOldMousePos = vMousePos;
 
-				// マウススクリーン座標をワールド座標に直す
-				vPos = mainCamera.ScreenToWorldPoint(vPos);
-				//// さらにローカル座標に直す。
-				//vPos = transform.InverseTransformPoint(vPos);
+				// マウススクリーン座標をワールド座標に直す（Z座標がないとおかしくなるので注意）
+				vMousePos = mainCamera.ScreenToWorldPoint(vMousePos);
+				//さらにローカル座標に直す。
+				//vMousePos = transform.InverseTransformPoint(vMousePos);
 
-				//--- 頂点数を追加
-				ObjectNum++;
-				this.line.positionCount = ObjectNum;
-
-				// 最初の頂点の処理
-				if (ObjectNum == 2)
+				// point生成処理
 				{
-					this.line.SetPosition(0, vPos);
-					this.line.SetPosition(ObjectNum - 1, vPos);
-				}
-				else
-				{
-					//this.line.SetPosition(ObjectNum - 1, cloneObject.transform.position);				// ワールド座標位置に生成
-					this.line.SetPosition(ObjectNum - 1, vPos);                                         // スクリーン座標位置に生成
+					GameObject cloneObject = Instantiate(objPoint, vMousePos, Quaternion.identity);		// 座標を元にオブジェクトを生成
+					cloneObject.transform.parent = this.transform;										// このスクリプトが適用されているオブジェクトの子になる
+					cloneObject.name = "Point(" + ClickNum + " ," + (ObjectNum - 1) + ")";				// オブジェクト名を変更
+					cloneObject.AddComponent<Image>();													// Imageコンポーネントを追加
+					cloneObject.transform.localScale = new Vector3(PointSize, PointSize, PointSize);	// スケールを変更
 				}
 
-				vOldPos = cloneObject.transform.position;
+				// line追加処理
+				{
+					//--- 頂点数を追加
+					ObjectNum++;
+					this.line.positionCount = ObjectNum;
+
+					// 最初の頂点の処理
+					if (ObjectNum == 2)
+					{
+						this.line.SetPosition(0, vMousePos);
+						this.line.SetPosition(ObjectNum - 1, vMousePos);
+					}
+					else
+					{
+						//this.line.SetPosition(ObjectNum - 1, cloneObject.transform.position);               // ワールド座標位置に生成
+						this.line.SetPosition(ObjectNum - 1, vMousePos);                                         // スクリーン座標位置に生成
+					}
+				}
 			}
+
 		}
 
+		//---確定処理
 		if (Input.GetKeyDown(KeyCode.Return))
 		{
-			//---確定処理
 			IList<Vector2> posList = new List<Vector2>();
 			Vector3[] pos = new Vector3[line.positionCount];
 			line.GetPositions(pos);
 
-			for (int i = line.positionCount - 1; i >= 0; i--)
-			{
-				Debug.Log("pos[" + i + "](" + pos[i].x + ", " + pos[i].y + ", " + pos[i].z);
-				//Debug.Log("pos[" + i + "](" + pos);
-			}
 			for (int j = line.positionCount - 1; j >= 0; j--)
 			{
+				Debug.Log($"pos[{j}]({pos[j].x}, {pos[j].y}, {pos[j].z})");		// {}で変数を記述可能
 				posList.Add(new Vector2(pos[j].x, pos[j].y));
+			}
+			for (int k = line.positionCount - 1; k >= 0; k--)
+			{
+				Debug.Log($"List[{k}]({posList[k].x}, {posList[k].y})");
 			}
 
 			var cutObject = GameObject.Find("Image").GetComponent<SpriteJigsaw.SpriteJigsaw>();
@@ -118,7 +125,7 @@ public class PathGennerator : MonoBehaviour
 			this.line.positionCount = 0;
 			ObjectNum = 1;
 			ClickNum = -1;
-			vOldPos = new Vector3(0.0f, 0.0f, 0.0f);
+			vOldMousePos = new Vector3(0.0f, 0.0f, 0.0f);
 
 		}
 	}

@@ -76,8 +76,30 @@ public class TurnPaperScript : MonoBehaviour
             }
 
         } else if (Input.GetKeyDown(KeyCode.DownArrow)) {
+            //最後尾のリストの要素をポインタ的に当てはめる
+            SaveObject = PageList[m_nPageNum - 1];
+            //最後尾のリストのやつを削除する
+            PageList.RemoveAt(m_nPageNum -1);
+
+            //リストの先頭に追加する
+            PageList.Insert(0, SaveObject);
+            
+            //場所を変える
+            SaveObject.transform.position = new Vector3(15.0f, 0.0f, 100.0f);
 
 
+            //オブジェクトの場所を保存する為の変数
+            Vector3 pos;
+
+            //ページ全体を後ろに下げる
+            for (int i = m_nPageNum-1; i > 0;i--) {
+                //変数にそれぞれの座標を代入する
+                pos = PageList[i].transform.position;
+                //少しずらす
+                pos.z -= 1.0f;
+                //ずらした結果を代入する
+                PageList[i].transform.position = pos;
+            }
         }
 
         //スペースボタンを押すと一番手前が消える

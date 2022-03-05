@@ -9,13 +9,17 @@ using UnityEngine;
 public class GenerateObjectFromPaper : MonoBehaviour
 {
 	private Camera mainCamera;
+	private List<GameObject> ChildPaper;
 	private List<GameObject> ChildObject;
+	private bool Active;
 
 	void Start()
 	{
-		mainCamera = Camera.main;
-		ChildObject = new List<GameObject>();
 		Debug.Log($"<ChildObject>");
+
+		mainCamera = Camera.main;
+		ChildPaper = new List<GameObject>();
+		ChildObject = new List<GameObject>();
 
 		// 子オブジェクトを取得
 		foreach (Transform cTransform in this.gameObject.transform)
@@ -23,7 +27,7 @@ public class GenerateObjectFromPaper : MonoBehaviour
 			// シーン上に存在するオブジェクトならば処理.
 			// if (obj.activeInHierarchy)
 			// {
-			ChildObject.Add(cTransform.gameObject);
+			ChildPaper.Add(cTransform.gameObject);
 			// }
 		}
 		//for (int i = 0; i < ChildObject.Count; i++)
@@ -31,9 +35,9 @@ public class GenerateObjectFromPaper : MonoBehaviour
 		//	Debug.Log($"List[{i}]:{ChildObject[i].name}");
 		//}
 
-		foreach (GameObject PaperObject in ChildObject)
+		foreach (GameObject PaperObject in ChildPaper)
 		{
-			GameObject BookObject;
+			GameObject BookObject = new GameObject();
 
 			bool isPrefab = false;
 			PrimitiveType primitiveType = (PrimitiveType)(-1);
@@ -45,15 +49,8 @@ public class GenerateObjectFromPaper : MonoBehaviour
 			// 縦横
 			Vector2 SizeDelta = PaperObject.GetComponent<RectTransform>().sizeDelta;
 			Vector3 scl = new Vector3(SizeDelta.x, SizeDelta.y, 0.0f);
-			Vector3 sclx = Vector3.zero;
-			Vector3 scly = Vector3.zero;
-			sclx.x = SizeDelta.x;
-			scly.y = SizeDelta.y;
-			Debug.Log($"x({sclx.x},{sclx.y},{sclx.z}),y({scly.x},{scly.y},{scly.z})");
-			sclx = this.transform.TransformPoint(sclx);
-			scly = this.transform.TransformPoint(scly);
-			Debug.Log($"x({sclx.x},{sclx.y},{sclx.z}),y({scly.x},{scly.y},{scly.z})");
-			scl = new Vector3(sclx.x, scly.y, 0.0f);
+			scl = this.transform.TransformPoint(scl);
+			scl = new Vector3(scl.x, scl.y - 1, scl.x);  // yの値を-1する（意味不明）
 
 			switch (PaperObject.tag)
 			{
@@ -64,7 +61,7 @@ public class GenerateObjectFromPaper : MonoBehaviour
 					break;
 				case "Ground":
 					isPrefab = false;
-					primitiveType = PrimitiveType.Plane;
+					primitiveType = PrimitiveType.Cube;
 					//pos.y += rect.sizeDelta.y / 2;
 					rot = Quaternion.identity;
 					break;
@@ -89,17 +86,32 @@ public class GenerateObjectFromPaper : MonoBehaviour
 				BookObject.transform.rotation = rot;
 				BookObject.transform.localScale = scl;
 			}
+
 			BookObject.name = PaperObject.name;
 			BookObject.tag = PaperObject.tag;
-			//PaperObject.transform.localScale = this.transform.transform.localScale / 100;
-			//BookObject.transform.localScale = new Vector3(this.GetComponent<RectTransform>().localScale.x / 100, this.GetComponent<RectTransform>().localScale.y / 100, 0.01f);
 			BookObject.transform.parent = GameObject.Find("in the Book Object").transform;
+
+			ChildObject.Add(BookObject);
+			BookObject.SetActive(false);
 		}
+
+		Active = false;
 	}
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+	void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Q))
+		{
+			Debug.Log($"ChangeActive:{Active}→{!Active}");
+			Active = !Active;
+			foreach (GameObject PaperObject in ChildPaper)
+			{
+				PaperObject.SetActive(!Active);
+			}
+			foreach (GameObject Object in ChildObject)
+			{
+				Object.SetActive(Active);
+			}
+		}
+	}
 }

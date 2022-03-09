@@ -878,7 +878,7 @@ GameObject:
   - component: {fileID: 1643006035}
   m_Layer: 5
   m_Name: Paper Object
-  m_TagString: Untagged
+  m_TagString: PaperObjectParent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -916,6 +916,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4acbb3570587f249b9edabbb8b4dcb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  zScale: 100
 --- !u!1 &1805935237
 GameObject:
   m_ObjectHideFlags: 0
@@ -1044,7 +1045,7 @@ GameObject:
   - component: {fileID: 2064101160}
   m_Layer: 5
   m_Name: in the Book Object
-  m_TagString: Untagged
+  m_TagString: BookObjectParent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

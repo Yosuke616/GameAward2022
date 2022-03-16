@@ -13,15 +13,7 @@ public class Pause : MonoBehaviour
     // ポーズ画面の最初の選択されているボタン
     public Button FirstSelectButton;
 
-    // リトライするシーン
-    public SceneObject RetryScene;
-
-    // タイトルに行くシーン
-    public SceneObject TitleScene;
-
-    public 
-
-    void Start()
+    public void Start()
     {
         // 最初の選択
         FirstSelectButton.Select();
@@ -30,29 +22,14 @@ public class Pause : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // キーボードの p かコントローラーのStartで入力
-        if (Input.GetKeyDown("p") || Input.GetKeyDown("joystick button 7"))
-        {
-            //　ポーズUIのアクティブ、非アクティブを切り替え
-            PauseUI.SetActive(!PauseUI.activeSelf);
 
-            //　ポーズUIが表示されてる時は停止
-            if (PauseUI.activeSelf)
-            {
-                Time.timeScale = 0f;
-            }
-            else
-            {
-                Time.timeScale = 1f;
-            }
-        }
     }
 
     // リトライ
     public void OnRetry()
     {
         // 同一シーンを読込
-        SceneManager.LoadScene(RetryScene);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         Time.timeScale = 1f;
     }
 
@@ -60,7 +37,7 @@ public class Pause : MonoBehaviour
     public void OnTitle()
     {
         // 同一シーンを読込
-        SceneManager.LoadScene(TitleScene);
+        SceneManager.LoadScene("Title");
         Time.timeScale = 1f;
     }
 

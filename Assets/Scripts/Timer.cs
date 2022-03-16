@@ -16,7 +16,7 @@ public class Timer : MonoBehaviour
     void Start()
     {
         minute = 0;
-        seconds = 0f;
+        seconds = 0;
         oldSeconds = 0f;
         timerText = GetComponentInChildren<Text>();
     }

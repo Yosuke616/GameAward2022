@@ -4,7 +4,7 @@
  2022/3/02 相羽星那・・・左右の自動移、下矢印で止まる
 
 
- プレイヤーの操作と地面の設定 
+ プレイヤーの操作と地面の設定
  */
 
 using System.Collections;
@@ -20,7 +20,7 @@ public class PlayerMove : MonoBehaviour
 
     //キャラクターの操作状況の管理
     [SerializeField] public bool onGround = true;
-    [SerializeField] public bool inJumping = false;
+    //[SerializeField] public bool inJumping = false;
 
     //rigidbodyオブジェクト格納用変数
     //Rigidbody rb;
@@ -43,7 +43,7 @@ public class PlayerMove : MonoBehaviour
     private Rigidbody rb;
 
     public EMoveCharacter eCharaMove;
-    private bool isjump;
+	public bool isjump;
 
     void Start()
     {
@@ -56,25 +56,26 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetAxis("Vertical") > 0 && !isjump)
-        {
-            rb.velocity = Vector3.up * jump;
-            isjump = true;
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") < 0)
-        {
-            eCharaMove = EMoveCharacter.RIGHT_MOVE;
-            //transform.position += transform.right * speed * Time.deltaTime;
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") > 0)
-        {
-            eCharaMove = EMoveCharacter.LEFT_MOVE;
-            //transform.position -= transform.right * speed * Time.deltaTime;
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical") < 0)
-        {
-            eCharaMove = EMoveCharacter.STOP_MOVE;
-        }
+		if ((Input.GetKeyDown(KeyCode.Space) || Input.GetAxis("Vertical") > 0) && !isjump && onGround)
+		{
+			rb.velocity = Vector3.up * jump;
+			isjump = true;
+			onGround = false;
+		}
+		else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") < 0)
+		{
+			eCharaMove = EMoveCharacter.RIGHT_MOVE;
+			//transform.position += transform.right * speed * Time.deltaTime;
+		}
+		else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") > 0)
+		{
+			eCharaMove = EMoveCharacter.LEFT_MOVE;
+			//transform.position -= transform.right * speed * Time.deltaTime;
+		}
+		else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical") < 0)
+		{
+			eCharaMove = EMoveCharacter.STOP_MOVE;
+		}
 
         switch (eCharaMove)
         {
@@ -122,8 +123,9 @@ public class PlayerMove : MonoBehaviour
     {
         if (col.gameObject.tag == "Ground")
         {
+			Debug.Log($"CollisionEnter : Ground");
             onGround = true;
-            inJumping = false;
+			isjump = false;
         }
     }
 }

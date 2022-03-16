@@ -283,9 +283,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3a5020d8d015494e984dc7cff9d2e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TurnSpeed: 3
   g_Page: {fileID: 8448790993581900689, guid: 323d3feaf8bcf554bb570d12336ec72f, type: 3}
   PageList: []
+  m_nPageMax: 100
   ColorSet:
   - {fileID: 2100000, guid: 55c58074d69766d4fa5da0af9c990145, type: 2}
 --- !u!1 &1841477529

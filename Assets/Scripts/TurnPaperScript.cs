@@ -2,11 +2,16 @@
  2022/3/1 志水陽祐 
  紙をめくるためのスクリプト
  動的配列でページ番号を制御するようにする
- 2022/3/5
+ 2022/3/5 志水陽祐
  色の変更だがマテリアルを事前に用意したやり方じゃなければ出来ない
  いずれテクスチャをランダムに設定できるようにしたい
- 2022/3/6
+ 2022/3/6 志水陽祐
  ボタンで並び替えをしたい
+ 2022/3/8 志水陽祐
+ 並び替えができるようになった
+ 2022/3/16 志水陽祐
+ 一番手前に来ているものに当たり判定を付ける
+ やりたいこと・・・複数のオブジェクトを配列に入れてそれをリストに入れて動じにめくれるようにする
  */
 
 using System.Collections;
@@ -15,8 +20,6 @@ using UnityEngine;
 
 public class TurnPaperScript : MonoBehaviour
 {
-    //ページの移動するスピード
-    [SerializeField] private float TurnSpeed = 3.0f;
 
     //オブジェクトの名前を取得する為のモノ
     public GameObject g_Page;
@@ -25,7 +28,7 @@ public class TurnPaperScript : MonoBehaviour
     public List<GameObject> PageList = new List<GameObject>();
 
     //ページ数を決めるための変数(オブジェクトの数)
-    private int m_nPageMax = 100;
+    [SerializeField] private int m_nPageMax = 100;
 
     //リストの最初か最後を保存するための変数
     private GameObject SaveObject;
@@ -39,29 +42,37 @@ public class TurnPaperScript : MonoBehaviour
    // Start is called before the first frame update
    void Start()
     {
-
-        for (int i = 0;i < m_nPageMax; i++) {
-
+        for (int i = 0; i < m_nPageMax; i++)
+        {
             //スクリプトでオブジェクトを追加する
-            GameObject Page = GameObject.Instantiate(g_Page) as GameObject;   //生成
-            Page.transform.position = new Vector3(15.0f,0.0f,100.0f - i);       //座標
-            Page.transform.localScale = new Vector3(100.0f,0.5f,100.0f);        //大きさ
+            GameObject Page = GameObject.Instantiate(g_Page) as GameObject;     //生成
+            Page.transform.position = new Vector3(15.0f, 0.0f, 100.0f - i);       //座標
+            Page.transform.localScale = new Vector3(100.0f, 0.5f, 100.0f);        //大きさ
             Page.transform.rotation = Quaternion.Euler(90, 0, 0);               //回転
-
+            
             //名前の設定
             string szName = i.ToString();
             Page.name = szName;
 
-            //リストに追加する
-            PageList.Add(Page);
+
 
             //一番最初に追加したものには色を付けて分かりやすくする
-            if (i == 0) {
+            if (i == 0)
+            {
                 //色の設定
                 Page.GetComponent<MeshRenderer>().material = ColorSet[0];
+
                 //一番最初のページの番号を保存しておく
                 m_nPageNum = 0;
             }
+            else {
+                //当たり判定を一番手前以外消し去る
+                var Coll = Page.GetComponent<BoxCollider>();
+                Coll.enabled = false;
+            }
+
+            //リストに追加する
+            PageList.Add(Page);
         }
 
         //リストに追加された物を表示
@@ -77,6 +88,10 @@ public class TurnPaperScript : MonoBehaviour
 
         //ページの切り替え
         if (Input.GetKeyDown(KeyCode.UpArrow)) {
+            //当たり判定を削除する
+            var Coll = PageList[0].GetComponent<BoxCollider>();
+            Coll.enabled = false;
+
             //ポインタ的な使い方(リストの先頭のオブジェクトを回避させる)
             SaveObject = PageList[0];
             //先頭のリストを削除する
@@ -109,7 +124,15 @@ public class TurnPaperScript : MonoBehaviour
                 m_nPageNum = (m_nPageMax-1);
             }
 
+            //一番手前のページに当たり判定をオンにする
+            Coll = PageList[0].GetComponent<BoxCollider>();
+            Coll.enabled = true;
+
         } else if (Input.GetKeyDown(KeyCode.DownArrow)) {
+            //先頭の当たり判定を消す
+            var Coll = PageList[0].GetComponent<BoxCollider>();
+            Coll.enabled = false;
+
             //最後尾のリストの要素をポインタ的に当てはめる
             SaveObject = PageList[m_nPageMax - 1];
             //最後尾のリストのやつを削除する
@@ -141,6 +164,10 @@ public class TurnPaperScript : MonoBehaviour
             if (m_nPageNum > (m_nPageMax-1)) {
                 m_nPageNum = 0;
             }
+
+            //先頭の当たり判定をオンにする
+            Coll = PageList[0].GetComponent<BoxCollider>();
+            Coll.enabled = true;
         }
 
         //エンターを押したら並び順が元通りに戻る
@@ -222,5 +249,18 @@ public class TurnPaperScript : MonoBehaviour
             //デバック用赤ページと数字の場所があっているか
             Debug.Log(m_nPageNum);
         }
+
+        //5枚目より後ろはアクティブをオフにする
+        //つまり見えなくする
+        for (int i = 0;i < m_nPageMax ;i++) {
+            if (i > 4)
+            {
+                PageList[i].SetActive(false);
+            }
+            else {
+                PageList[i].SetActive(true);
+            }
+        }
     }
+    
 }

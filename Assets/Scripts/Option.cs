@@ -1,20 +1,16 @@
-/*
-作成日：2022/3/16 Shimizu Shogo
-内容  ：BGM再生用(テスト)
-*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class PlayBGM : MonoBehaviour
+public class Option : MonoBehaviour
 {
-    [SerializeField]
-    public string name_BGM;
+    public Slider FirstSelectSlider;
 
     // Start is called before the first frame update
     void Start()
     {
-        SoundManager.Instance.PlayBgmByName(name_BGM);
+        FirstSelectSlider.Select();
     }
 
     // Update is called once per frame

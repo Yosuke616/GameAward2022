@@ -1,6 +1,9 @@
 /*
 作成日：2022/3/16 Shimizu Shogo
 内容  ：サウンドの管理クラス
+参考サイト：https://unity.moon-bear.com/unitychan-coin/sound-manager/
+使い方：サウンドを再生したい場所に
+　　　　SoundManager.Instance.PlayBgmByName("サウンドの名前")を設定する。
 */
 using System.Collections.Generic;
 using UnityEngine;

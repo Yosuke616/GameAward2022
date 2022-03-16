@@ -19,9 +19,12 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
     [SerializeField]
     private Slider _progressbar;
 
+    // フェードのスピード
     private readonly float FADESPEED = 1.0f;
 
+    // 遷移したいシーンの名前
     private string _nextScreenName;
+    // フェードフラグ
     private bool _isFadeIn, _isFadeOut, _useFadeIn, _useFadeOut;
 
     // 非同期操作で使用する

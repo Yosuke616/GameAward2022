@@ -1,0 +1,7 @@
+using System;
+[Serializable]
+public class SaveData
+{
+    // ÉZÅ[ÉuÇµÇΩÇ¢Ç‡ÇÃ
+    public string testString;
+}

@@ -49,6 +49,8 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
         _useFadeIn = true;
 
         _backGround.gameObject.SetActive(true);
+
+        SoundManager.Instance.StopBgm();
         
         // フェードアウトの開始
         _isFadeOut = true;

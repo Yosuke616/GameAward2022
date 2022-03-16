@@ -1,3 +1,7 @@
+/*
+作成日：2022/3/14 Shimizu Shogo
+内容  ：シングルトンのテンプレート
+*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +9,6 @@ using UnityEngine;
 /// <summary>
 /// 可変クラス型のシングルトンクラス
 /// </summary>
-
 public class SingletonMonoBehaviour<T> : MonoBehaviour where T:MonoBehaviour
 {
     private static T _instance = null;

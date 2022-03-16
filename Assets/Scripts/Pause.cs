@@ -13,6 +13,14 @@ public class Pause : MonoBehaviour
     // ポーズ画面の最初の選択されているボタン
     public Button FirstSelectButton;
 
+    // リトライするシーン
+    public SceneObject RetryScene;
+
+    // タイトルに行くシーン
+    public SceneObject TitleScene;
+
+    public 
+
     void Start()
     {
         // 最初の選択
@@ -44,10 +52,17 @@ public class Pause : MonoBehaviour
     public void OnRetry()
     {
         // 同一シーンを読込
-        SceneManager.LoadScene("Pause");
+        SceneManager.LoadScene(RetryScene);
         Time.timeScale = 1f;
     }
 
+    // タイトルへ
+    public void OnTitle()
+    {
+        // 同一シーンを読込
+        SceneManager.LoadScene(TitleScene);
+        Time.timeScale = 1f;
+    }
 
     // 再開
     public void OnResume()

@@ -94,7 +94,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PauseUI: {fileID: 7798653126426691855}
-  FirstSelectButton: {fileID: 7798653126705503393}
+  Resume: {fileID: 7798653126705503393}
+  Retry: {fileID: 7798653127792266611}
+  Title: {fileID: 7798653127586843131}
+  Option: {fileID: 7798653126998906369}
 --- !u!1 &7798653126640289417
 GameObject:
   m_ObjectHideFlags: 0

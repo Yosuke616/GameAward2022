@@ -10,18 +10,58 @@ public class Pause : MonoBehaviour
     [SerializeField]
     private GameObject PauseUI;
 
-    // ポーズ画面の最初の選択されているボタン
-    public Button FirstSelectButton;
+    // ポーズ画面のボタン
+    public Button Resume;
+    public Button Retry;
+    public Button Title;
+    public Button Option;
+    private int MaxButton = 3;
+    private int SelectButton = 0;
+
+    private int Cnt = 0;
 
     public void Start()
     {
-        // 最初の選択
-        FirstSelectButton.Select();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetAxis("Vertical") > 0)
+        {
+            SelectButton--;
+            if (SelectButton < 0)
+            {
+                SelectButton = MaxButton;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical") < 0)
+        {
+            SelectButton++;
+            if (SelectButton > MaxButton)
+            {
+                SelectButton = 0;
+            }
+        }
+
+        switch(SelectButton)
+        {
+            case 0:
+                Resume.Select();
+                break;
+
+            case 1:
+                Retry.Select();
+                break;
+
+            case 2:
+                Title.Select();
+                break;
+
+            case 3:
+                Option.Select();
+                break;
+        }
 
     }
 

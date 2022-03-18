@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class PauseContorol : MonoBehaviour
 {
+    // ポーズパネル選択
     public GameObject PauseObj;
+
+    // ポーズパネル生成する場所
     public Transform parant;
 
     // Start is called before the first frame update
@@ -21,16 +24,16 @@ public class PauseContorol : MonoBehaviour
         {
             //　ポーズUIのアクティブ、非アクティブを切り替え
             PauseObj.SetActive(!PauseObj.activeSelf);
+        }
 
-            //　ポーズUIが表示されてる時は停止
-            if (PauseObj.activeSelf)
-            {
-                Time.timeScale = 0f;
-            }
-            else
-            {
-                Time.timeScale = 1f;
-            }
+        //　ポーズUIが表示されてる時は停止
+        if (PauseObj.activeSelf)
+        {
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            Time.timeScale = 1f;
         }
     }
 }

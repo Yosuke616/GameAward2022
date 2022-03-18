@@ -67,7 +67,7 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
             valueSpeed += FADESPEED * Time.deltaTime;
             _backGround.material.SetFloat("_Value", valueSpeed);
 
-            SoundManager.Instance.StopBgm();
+            //SoundManager.Instance.StopBgm();
 
             // ‰æ–Ê‚ªˆÃ‚­‚È‚Á‚½‚ç
             if (valueSpeed >= 1.0f)

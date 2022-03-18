@@ -27,20 +27,26 @@ public class Pause : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetAxis("Vertical") > 0)
+        Cnt--;
+        if (Cnt < 0)
         {
-            SelectButton--;
-            if (SelectButton < 0)
+            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetAxis("Vertical") > 0)
             {
-                SelectButton = MaxButton;
+                Cnt = 75;
+                SelectButton--;
+                if (SelectButton < 0)
+                {
+                    SelectButton = MaxButton;
+                }
             }
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical") < 0)
-        {
-            SelectButton++;
-            if (SelectButton > MaxButton)
+            if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical") < 0)
             {
-                SelectButton = 0;
+                Cnt = 75;
+                SelectButton++;
+                if (SelectButton > MaxButton)
+                {
+                    SelectButton = 0;
+                }
             }
         }
 

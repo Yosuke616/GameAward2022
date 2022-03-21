@@ -1,7 +1,9 @@
 /*
- 2022/2/28 志水陽祐
+ 2022/02/28 志水陽祐
 
- 2022/3/02 相羽星那・・・左右の自動移、下矢印で止まる
+ 2022/03/02 相羽星那	左右の自動移、下矢印で止まる
+
+ 2022/03/21 酒井諒太郎	カメラの角度に合わせてプレイヤーの方角を決定するよう変更
 
 
  プレイヤーの操作と地面の設定
@@ -11,21 +13,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
-
 public class PlayerMove : MonoBehaviour
 {
-    // Start is called before the first frame update
+	[SerializeField] public bool onGround;					// 陸上か空中か
+	[SerializeField] private Vector3 velocity;              // 移動方向
+	[SerializeField] private float moveSpeed = 0.01f;        // 移動速度
+	[SerializeField] private float applySpeed = 0.2f;       // 振り向きの適用速度
+	[SerializeField] private float jump = 5.0f;
+	//[SerializeField] private Camera refCamera;  // カメラの水平回転を参照する用
 
-    //キャラクターの操作状況の管理
-    [SerializeField] public bool onGround = true;
-    //[SerializeField] public bool inJumping = false;
+    private Rigidbody rb;
+	private Animation animation;
 
-    //rigidbodyオブジェクト格納用変数
-    //Rigidbody rb;
+    public EMoveCharacter eCharaMove;
+	public bool isjump;
 
-    public enum EMoveCharacter
+	Camera mainCamera;
+	public enum EMoveCharacter
     {
         STOP_MOVE = 0,
         RIGHT_MOVE,
@@ -35,27 +39,21 @@ public class PlayerMove : MonoBehaviour
         MAX_MOVE
     }
 
-
-    //速度
-    public float speed = 5.0f;
-    public float jump = 5.0f;
-
-    private Rigidbody rb;
-
-    public EMoveCharacter eCharaMove;
-	public bool isjump;
-
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+		onGround = true;
+		rb = GetComponent<Rigidbody>();
+		animation = GetComponent<Animation>();
         eCharaMove = EMoveCharacter.STOP_MOVE;
         isjump = false;
+		mainCamera = Camera.main;
         //rb.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
     // Update is called once per frame
     void Update()
     {
+		velocity = Vector3.zero;
 		if ((Input.GetKeyDown(KeyCode.Space) || Input.GetAxis("Vertical") > 0) && !isjump && onGround)
 		{
 			rb.velocity = Vector3.up * jump;
@@ -65,12 +63,10 @@ public class PlayerMove : MonoBehaviour
 		else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") < 0)
 		{
 			eCharaMove = EMoveCharacter.RIGHT_MOVE;
-			//transform.position += transform.right * speed * Time.deltaTime;
 		}
 		else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") > 0)
 		{
 			eCharaMove = EMoveCharacter.LEFT_MOVE;
-			//transform.position -= transform.right * speed * Time.deltaTime;
 		}
 		else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical") < 0)
 		{
@@ -79,47 +75,70 @@ public class PlayerMove : MonoBehaviour
 
         switch (eCharaMove)
         {
-            case EMoveCharacter.STOP_MOVE:
-                break;
             case EMoveCharacter.RIGHT_MOVE:
-                transform.position += transform.right * speed * Time.deltaTime;
+				animation.SetAnim("Walk");
+				velocity.x -= 1;
                 break;
             case EMoveCharacter.LEFT_MOVE:
-                transform.position -= transform.right * speed * Time.deltaTime;
-                break;
-
+				animation.SetAnim("Walk");
+				velocity.x += 1;
+				break;
+            case EMoveCharacter.STOP_MOVE:
+				animation.SetAnim("Stand-by");
+				velocity.x = 0;
+				break;
         }
 
-        //移動の実行
-        //if (!inJumping) {   //空中での移動を禁止
-        //transform.position += transform.forward * fv;
-        //}
+		// 速度ベクトルの長さを1秒でmoveSpeedだけ進むように調整します
+		velocity = velocity.normalized * moveSpeed * Time.deltaTime;
 
-        //スペースでジャンプする
-        //if (onGround)
-        //{
-        //    if (Input.GetKey(KeyCode.Space))
-        //    {
-        //        //ジャンプさせるために上方向の力を加える
-        //        rb.AddForce(transform.up * 8, ForceMode.Impulse);
+		// いずれかの方向に移動している場合
+		if (velocity.magnitude > 0)
+		{
+			// プレイヤーの回転(transform.rotation)の更新
+			// 無回転状態のプレイヤーのZ+方向(後頭部)を、
+			// カメラの水平回転(refCamera.hRotation)で回した移動の反対方向(-velocity)に回す回転に段々近づけます
+			transform.rotation = Quaternion.Slerp(transform.rotation,
+												  Quaternion.LookRotation(Quaternion.identity * velocity),
+												  applySpeed);
 
-        //        //ジャンプ中の地面の接触判定はfalseに変える
-        //        onGround = false;
-        //        inJumping = true;
+			// プレイヤーの位置(transform.position)の更新
+			// カメラの水平回転(refCamera.hRotation)で回した移動方向(velocity)を足し込みます
+			transform.position += Quaternion.identity * velocity;
+		}
 
-        //        //左右キー押しながらジャンプしたときは左右方向に力を加える
-        //        if (Input.GetKey(KeyCode.RightArrow)) {
-        //            rb.AddForce(transform.forward * 6.0f, ForceMode.Impulse);
-        //        } else if (Input.GetKey(KeyCode.LeftArrow)) {
-        //            rb.AddForce(transform.forward * -3.0f, ForceMode.Impulse);
-        //        }
+		//移動の実行
+		if (!isjump)
+		{   //空中での移動を禁止
+		}
 
-        //    }
-        //}
-    }
+		//スペースでジャンプする
+		if (onGround)
+		{
+			if (Input.GetKey(KeyCode.Space))
+			{
+				//ジャンプさせるために上方向の力を加える
+				rb.AddForce(transform.up * 8, ForceMode.Impulse);
 
-    //地面に接触したらonGroundをtrue、inJumpingをfalseにする
-    void OnCollisionEnter(Collision col)
+				//ジャンプ中の地面の接触判定はfalseに変える
+				onGround = false;
+				isjump = true;
+
+				//左右キー押しながらジャンプしたときは左右方向に力を加える
+				if (Input.GetKey(KeyCode.RightArrow))
+				{
+					rb.AddForce(transform.forward * 6.0f, ForceMode.Impulse);
+				}
+				else if (Input.GetKey(KeyCode.LeftArrow))
+				{
+					rb.AddForce(transform.forward * -3.0f, ForceMode.Impulse);
+				}
+			}
+		}
+	}
+
+	//地面に接触したらonGroundをtrue、inJumpingをfalseにする
+	void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.tag == "Ground")
         {

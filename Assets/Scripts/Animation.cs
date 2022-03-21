@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.Animations;
 
-public class TestAnimation : MonoBehaviour
+public class Animation : MonoBehaviour
 {
 	Animator anim;
 	AnimatorController controller;
@@ -48,5 +48,9 @@ public class TestAnimation : MonoBehaviour
 		//{
 		//	anim.CrossFade("Stand-by", 0);
 		//}
+	}
+	public void SetAnim(string name)
+	{
+		anim.CrossFade(name, 0);
 	}
 }

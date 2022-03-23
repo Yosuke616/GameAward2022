@@ -505,6 +505,8 @@ public class DivideTriangle : MonoBehaviour
                                 // 交点を保存しておく
                                 crossVertices.Add(cross2);
                                 crossVertexNumbers.Add(c2);
+
+                                Debug.Log(cross2);
                             }
 
                         }
@@ -555,6 +557,8 @@ public class DivideTriangle : MonoBehaviour
                                 // 交点を保存しておく
                                 crossVertices.Add(cross1);
                                 crossVertexNumbers.Add(c1);
+
+                                Debug.Log(cross1);
                             }
                         }
                     }
@@ -786,11 +790,19 @@ public class DivideTriangle : MonoBehaviour
         // 終点が外周の辺だった場合、オブジェクトを二つに分ける
         bCut = SetStartOrEndPoint(crossVertices, first);
 
+        // ここまで来て破る処理が行われていない場合、カットされた可能性がある
+        if(!bDivide)
+        {
+            //
+        }
+
         // カット
         if(bCut)
         {
             Cut(ref cuttingPath);
             bDivide = true;
+
+            MousePoints.Clear();
         }
 
         return bDivide;
@@ -906,19 +918,27 @@ public class DivideTriangle : MonoBehaviour
         GameObject obj = GetComponent<DrawMesh>().CreateMesh(objOutline1);
         // ---Components
         obj.AddComponent<DrawMesh>();
-        obj.AddComponent<MeshCollider>();
         obj.AddComponent<DivideTriangle>();
-        obj.AddComponent<OutLinePath>();
+        var collider1   = obj.AddComponent<MeshCollider>();
+        var outline1    = obj.AddComponent<OutLinePath>();
+        var meshFilter1 = obj.GetComponent<MeshFilter>();
         // ---Settings
-        // 法線情報を格納
-        obj.GetComponent<MeshFilter>().mesh.uv = uvs1.ToArray();
-        obj.GetComponent<MeshFilter>().mesh.normals = normals1.ToArray();
-        obj.GetComponent<MeshCollider>().sharedMesh = obj.GetComponent<MeshFilter>().mesh;
-        obj.GetComponent<OutLinePath>().UpdateOutLine(objOutline1);
+        // uv
+        meshFilter1.mesh.uv = uvs1.ToArray();
+        // 法線
+        meshFilter1.mesh.normals = normals1.ToArray();
+        // メッシュコライダーにメッシュをセット
+        collider1.sharedMesh = meshFilter1.mesh;
+        // アウトラインを格納
+        outline1.UpdateOutLine(objOutline1);
+        // タグ
         obj.tag = "paper";
+        // 現在のマテリアルを受け継ぐ
         obj.GetComponent<MeshRenderer>().materials = GetComponent<MeshRenderer>().materials;
         // レイヤー番号も引き継ぐ
         obj.GetComponent<DivideTriangle>().number = this.number;
+        // z座標を引き継ぐ
+        obj.transform.position += new Vector3(0, 0, transform.position.z);
         #endregion
 
         //===== ２つ目 =====
@@ -945,23 +965,26 @@ public class DivideTriangle : MonoBehaviour
         // ---Components
         obj2.AddComponent<DrawMesh>();
         obj2.AddComponent<DivideTriangle>();
-        var collider = obj2.AddComponent<MeshCollider>();
-        var outline = obj2.AddComponent<OutLinePath>();
-        var meshFilter = obj2.GetComponent<MeshFilter>();
+        var collider2 = obj2.AddComponent<MeshCollider>();
+        var outline2 = obj2.AddComponent<OutLinePath>();
+        var meshFilter2 = obj2.GetComponent<MeshFilter>();
         // ---Settings
         // uv
-        meshFilter.mesh.uv = uvs2.ToArray();
+        meshFilter2.mesh.uv = uvs2.ToArray();
         // 法線
-        meshFilter.mesh.normals = normals2.ToArray();
+        meshFilter2.mesh.normals = normals2.ToArray();
         // メッシュコライダーにメッシュをセット
-        collider.sharedMesh = meshFilter.mesh;
+        collider2.sharedMesh = meshFilter2.mesh;
         // アウトラインを格納
-        outline.UpdateOutLine(objOutline2);
+        outline2.UpdateOutLine(objOutline2);
+        // タグ
         obj2.tag = "paper";
         // 現在のマテリアルを受け継ぐ
         obj2.GetComponent<MeshRenderer>().materials = GetComponent<MeshRenderer>().materials;
         // レイヤー番号も引き継ぐ
         obj2.GetComponent<DivideTriangle>().number = this.number;
+        // z座標を引き継ぐ
+        obj2.transform.position += new Vector3(0, 0, transform.position.z);
         #endregion
 
         // 現在のオブジェクトを消す
@@ -969,7 +992,6 @@ public class DivideTriangle : MonoBehaviour
 
         // 切断パスをクリア
         CuttingPath.Clear();
-
 
 
         //--- 原点から中心へのベクトルで飛ばす
@@ -989,18 +1011,23 @@ public class DivideTriangle : MonoBehaviour
             // obj1の方が遠い位置にある
             var move = obj.AddComponent<PaperMove>();
             move.SetDirection(pos1 - Vector3.zero);
-            obj.tag = "Untagged";
+            obj.tag = "waste";
             Destroy(obj, 3.0f);
+
+            CollisionField.Instance.UpdateStage(checkCollisionPoints(obj, CollisionField.Instance.cellPoints()));
         }
         else
         {
             // obj2の方が遠い位置にある
             var move = obj2.AddComponent<PaperMove>();
             move.SetDirection(pos2 - Vector3.zero);
-            obj2.tag = "Untagged";
+            obj2.tag = "waste";
             Destroy(obj2, 3.0f);
+
+            
+            CollisionField.Instance.UpdateStage(checkCollisionPoints(obj2, CollisionField.Instance.cellPoints()));
         }
-        
+
     }
 
     // 交点のuv座標を計算する
@@ -1087,10 +1114,16 @@ public class DivideTriangle : MonoBehaviour
     // 戻り値 : 切断パスの終点が設定されたらtrue
     bool SetStartOrEndPoint(List<Vector3> crossVertices, bool first)
     {
+        // きるフラグ
         bool cut = false;
+        // 外周上の交点の数
         int findNum = 0;
+        // 始点、終点の頂点番号
         int nStart, nEnd;
+        // 始点、終点の座標
         Vector3 start, end;
+
+        // 初期化
         nStart = nEnd = -1;
         start = end = Vector3.zero;
 
@@ -1107,20 +1140,21 @@ public class DivideTriangle : MonoBehaviour
                 // 外周の頂点から交点への線分
                 Vector3 vec = crossVertices[j] - outlineVertices[i];
 
+
                 // 2つのベクトルの外積が0だったら、外周上の点である
-                if(Vector3.Cross(outlineEdge, vec).z == 0)
+                float judge = Vector3.Cross(outlineEdge, vec).sqrMagnitude;
+                Debug.LogWarning("  " + outlineEdge + "    " + vec + "    " + judge);
+                if (judge == 0)
                 {
                     findNum++;
-                    Debug.Log("見つかりました");
-
-                    
 
                     // 初回呼び出しの場合、その交点は切断パスの始点とみなす
                     if (first)
                     {
                         // 初回呼び出しで外周上の頂点が2つある場合、切断パスの終点も設定する
-                        if(findNum == 1)
+                        if (findNum == 1)
                         {
+                            Debug.Log("始点が見つかりました");
                             // 始点追加
                             cuttingPath.Insert(0, crossVertices[j]);
 
@@ -1129,25 +1163,28 @@ public class DivideTriangle : MonoBehaviour
                         }
                         else if(findNum == 2)
                         {
+                            Debug.Log("終点がが見つかりました");
+                            Debug.Log("１度で切りました");
+
                             // 終点追加
                             cuttingPath.Add(crossVertices[j]);
 
                             // アウトラインの番号を保存
                             nEnd = i + 2;
 
-                            Debug.LogWarning("１度で切りました");
                             cut = true;
                         }
                         else
                         {
-                            Debug.LogError("エラーです");
+                            Debug.LogError("3個目の外周上の点が見つかりました");
                         }
 
                         cuttingVertexNumbers.Add(0);
                     }
-                    // 初回呼び出しではない場合、その交点は切断パスの始点
+                    // 初回呼び出しではない場合、その交点は切断パスの終点
                     else
                     {
+                        Debug.Log("終点がが見つかりました");
                         // 終点追加
                         cuttingPath.Add(crossVertices[j]);
 
@@ -1189,4 +1226,60 @@ public class DivideTriangle : MonoBehaviour
         return number;
     }
 
+
+    // その座標群がメッシュ内に存在するか
+    // 存在する場合true、存在しない場合falseを
+    // その要素と同じList<bool>の型に入れていく
+    static List<bool> checkCollisionPoints(GameObject obj, List<Vector2> Pounts)
+    {
+        List<bool> result = new List<bool>();
+
+        var attachedMeshFilter = obj.GetComponent<MeshFilter>();
+        var attachedMesh = attachedMeshFilter.mesh;
+
+        // 三角形の頂点格納先
+        Vector3 p1, p2, p3;
+        // 内側にあるかどうか
+        bool bInside;
+        Vector3 p;
+
+        foreach (var point in Pounts)
+        {
+            bInside = false;
+
+            // z座標はメッシュに合わせる
+            p = new Vector3(point.x, point.y, attachedMesh.vertices[attachedMesh.triangles[0]].z);
+
+            for (int i = 0; i < attachedMesh.triangles.Length; i += 3)
+            {
+                //三角形の頂点を取得
+                p1 = attachedMesh.vertices[attachedMesh.triangles[i]];
+                p2 = attachedMesh.vertices[attachedMesh.triangles[i + 1]];
+                p3 = attachedMesh.vertices[attachedMesh.triangles[i + 2]];
+
+                //線上は内側とみなします。
+                Vector3 Area1 = p2 - p1; Vector3 AreaP1 = p - p1;
+                Vector3 Area2 = p3 - p2; Vector3 AreaP2 = p - p2;
+                Vector3 Area3 = p1 - p3; Vector3 AreaP3 = p - p3;
+                Vector3 cr1 = Vector3.Cross(Area1, AreaP1);
+                Vector3 cr2 = Vector3.Cross(Area2, AreaP2);
+                Vector3 cr3 = Vector3.Cross(Area3, AreaP3);
+                //内積で順方向か逆方向か調べる
+                float dot_12 = Vector3.Dot(cr1, cr2);
+                float dot_13 = Vector3.Dot(cr1, cr3);
+                if (dot_12 >= 0 && dot_13 >= 0)
+                {
+                    //***** 内側
+                    bInside = true;
+                    break;
+                }
+            }
+
+            // 一度でも内側判定があればtrueが入る
+            result.Add(bInside);
+        }
+        
+
+        return result;
+    }
 }

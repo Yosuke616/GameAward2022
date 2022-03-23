@@ -8,6 +8,9 @@ TagManager:
   - BookObjectParent
   - PaperObjectParent
   - GlidObject
+  - paper
+  - none
+  - waste
   layers:
   - Default
   - TransparentFX

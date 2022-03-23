@@ -7,6 +7,9 @@ public class CreateTriangle : MonoBehaviour
     public float z = 0.0f;
     public int number = 1;
 
+    static public float paperSizeX = 9.0f;
+    static public float paperSizeY = 5.0f;
+
     void Start()
     {
         CreateMesh();
@@ -20,10 +23,10 @@ public class CreateTriangle : MonoBehaviour
         var normals1 = new List<Vector3>();     // 新しく生成するオブジェクトの法線情報のリスト
 
         // 頂点座標
-        vertices1.Add(new Vector3(-9.0f, 5.0f, 0.0f));  // 左上
-        vertices1.Add(new Vector3(9.0f, 5.0f, 0.0f));   // 右上
-        vertices1.Add(new Vector3(9.0f, -5.0f, 0.0f));  // 右下
-        vertices1.Add(new Vector3(-9.0f, -5.0f, 0.0f)); // 左下
+        vertices1.Add(new Vector3(-paperSizeX,  paperSizeY, 0.0f));  // 左上
+        vertices1.Add(new Vector3( paperSizeX,  paperSizeY, 0.0f));   // 右上
+        vertices1.Add(new Vector3( paperSizeX, -paperSizeY, 0.0f));  // 右下
+        vertices1.Add(new Vector3(-paperSizeX, -paperSizeY, 0.0f)); // 左下
         // uv
         uvs1.Add(new Vector2(0, 1));
         uvs1.Add(new Vector2(1, 1));

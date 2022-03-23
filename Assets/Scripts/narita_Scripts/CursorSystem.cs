@@ -7,6 +7,8 @@ public class CursorSystem : MonoBehaviour
     [SerializeField]
     private List<Vector3> MousePoints;
 
+    public int cnt = 0;
+
     // スクリーン座標
     Vector3 screenPoint;
 
@@ -17,6 +19,19 @@ public class CursorSystem : MonoBehaviour
 
     void Update()
     {
+        // debug用
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            List<bool> a = new List<bool>();
+            for (int i = 0; i < 2000; i++)
+            {
+                a.Add(true);
+            }
+            CollisionField.Instance.UpdateStage(a);
+        }
+
+        if (Camera.main == null) { return; }
+
         // このオブジェクトのワールド座標をスクリーン座標に変換した値を代入
         this.screenPoint = Camera.main.WorldToScreenPoint(transform.position);
         // マウス座標のzの値を0にする
@@ -27,6 +42,8 @@ public class CursorSystem : MonoBehaviour
         // 座標保存
         if (Input.GetMouseButtonDown(0))
         {
+            cnt = 0;
+
             // 座標リストに追加
             MousePoints.Add(transform.position);
 
@@ -36,19 +53,16 @@ public class CursorSystem : MonoBehaviour
                 // 紙のリストを作る
                 List<GameObject> objects = new List<GameObject>();
                 objects.AddRange(GameObject.FindGameObjectsWithTag("paper"));
+
                 if (objects != null)
                 {
+                    // ソート
                     if(objects.Count >= 2)
                     {
                         objects.Sort((a, b) => a.GetComponent<DivideTriangle>().GetNumber() - b.GetComponent<DivideTriangle>().GetNumber());
                     }
 
-                    foreach(GameObject obj in objects)
-                    {
-                        Debug.Log("", obj);
-                    }
-
-                    // 一番手前の紙しか切りたくない
+                    
                     bool bDivide = false;
 
                     for (int i = 0; i < objects.Count; i++)
@@ -56,17 +70,15 @@ public class CursorSystem : MonoBehaviour
                         var divideTriangle = objects[i].GetComponent<DivideTriangle>();
                         if (divideTriangle)
                         {
+                            // 破る
                             bDivide = divideTriangle.Divide(ref MousePoints);
+                            cnt++;
 
-                            if (bDivide)
-                            {
-                                break;
-                            }
+                            // 一度破ったら、奥の紙は切らない
+                            if (bDivide) break;
                         }
                     }
                 }
-                // 頂点分割
-                
             }
         }
 
@@ -74,5 +86,6 @@ public class CursorSystem : MonoBehaviour
         {
             MousePoints.Clear();
         }
+
     }
 }

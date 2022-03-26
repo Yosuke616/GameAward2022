@@ -23,7 +23,7 @@ public class PlayerMove : MonoBehaviour
 	//[SerializeField] private Camera refCamera;  // ƒJƒƒ‰‚Ì…•½‰ñ“]‚ğQÆ‚·‚é—p
 
     private Rigidbody rb;
-	private Animation animation;
+	private ModelAnimation animation;
 
     public EMoveCharacter eCharaMove;
 	public bool isjump;
@@ -43,7 +43,7 @@ public class PlayerMove : MonoBehaviour
     {
 		onGround = true;
 		rb = GetComponent<Rigidbody>();
-		animation = GetComponent<Animation>();
+		animation = GetComponent<ModelAnimation>();
         eCharaMove = EMoveCharacter.STOP_MOVE;
         isjump = false;
 		mainCamera = Camera.main;

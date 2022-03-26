@@ -59,6 +59,7 @@ public class CursorSystem : MonoBehaviour
                     // ソート
                     if(objects.Count >= 2)
                     {
+                        // 紙の番号、昇順
                         objects.Sort((a, b) => a.GetComponent<DivideTriangle>().GetNumber() - b.GetComponent<DivideTriangle>().GetNumber());
                     }
 

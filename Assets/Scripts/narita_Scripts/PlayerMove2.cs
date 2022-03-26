@@ -1,19 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 // プレイヤーの移動クラス
 public class PlayerMove2 : MonoBehaviour
 {
     Rigidbody rb;
-    bool bGround;
+    //bool bGround;
     public float speed = 1.0f;
+
+    public Text tex;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
 
-        bGround = false;
+        //bGround = false;
     }
 
     // 更新
@@ -37,9 +40,21 @@ public class PlayerMove2 : MonoBehaviour
     // 衝突処理
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Ground")
+        //if (collision.gameObject.tag == "Ground")
+        //{
+        //    bGround = true;
+        //}
+        if (collision.gameObject.gameObject.tag == "goal")
         {
-            bGround = true;
+            tex.text = "ゴール！";
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.gameObject.tag == "goal")
+        {
+            tex.text = "ゴール！";
         }
     }
 

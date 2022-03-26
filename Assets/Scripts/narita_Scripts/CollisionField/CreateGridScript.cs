@@ -1,6 +1,6 @@
 /*
  2022/3/19 ShimizuYosuke 
- GlidStage似合ったものを移植させるやつ
+ GridStage似合ったものを移植させるやつ
 
  */
 
@@ -8,7 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CreateGlidScript : MonoBehaviour
+public class CreateGridScript : MonoBehaviour
 {
     //グリッド配置用の列挙隊宣言
     public enum e_Face
@@ -95,15 +95,6 @@ public class CreateGlidScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //グリッドのためのやつ
-        //関係値の更新を検出したらメッシュも更新
-        //if (gridSizeX != preGridSize || horizon != preSizeX || preColor != color || preFace != face || preBack != back)
-        //{
-        //    if (gridSizeX < 0) { gridSizeX = 0.000001f; }
-        //    if (horizon < 0) { horizon = 1; }
-        //    if (virtical < 0) { virtical = 1; }
-        //    ReGrid(mesh);
-        //}
     }
 
 

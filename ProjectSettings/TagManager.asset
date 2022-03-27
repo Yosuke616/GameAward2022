@@ -11,8 +11,6 @@ TagManager:
   - paper
   - none
   - waste
-  - OutSideHitBox
-  - Paper_OutSide_Cursor
   layers:
   - Default
   - TransparentFX

@@ -27,19 +27,14 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
 
     [SerializeField] private List<GameObject> storeObject = new List<GameObject>();
 
-    //bool hoge;
-
-
     void Start()
     {
-        //hoge = false;
-
         // グリッドの数、サイズを取得
-        gridSizeX = CreateGlidScript.gridSizeX;
-        gridSizeY = CreateGlidScript.gridSizeY;
-        gridNumX = CreateGlidScript.horizon;
-        gridNumY = CreateGlidScript.virtical;
-
+        gridSizeX = CreateGridScript.gridSizeX;
+        gridSizeY = CreateGridScript.gridSizeY;
+        gridNumX = CreateGridScript.horizon;
+        gridNumY = CreateGridScript.virtical;
+        Debug.Log(gridNumX * gridNumY);
         // あたり判定リストのサイズをマスの数と同じだけ増やす
         for (int i = 0; i < gridNumX * gridNumY; i++)
         {
@@ -50,13 +45,6 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
 
     private void Update()
     {
-        // フラグが経ってら確認する
-        //if(hoge)
-        //{
-        //    CheckCollisionFlags();
-        //
-        //    hoge = false;
-        //}
     }
 
     // StageGrid.csのステージ（紙）情報を追加
@@ -81,8 +69,6 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
         StartPoint.x = Cameraobj.transform.position.x - gridSizeX * gridNumX / 2.0f + 0.5f;
         StartPoint.y = Cameraobj.transform.position.y + gridSizeY * gridNumY / 2.0f - 0.5f;
 
-
-
         // マスごとにあたり判定を取る用のオブジェクトを生成
         for (int y = 0; y < gridNumY; y++)
         {
@@ -97,7 +83,7 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
 
                 //スクリプトでオブジェクトを追加する
                 GameObject mass = CreateCollisionObject(
-                    "Glid_No." + nNameCnt + ":" + x,    // 名前
+                    "Grid_No." + nNameCnt + ":" + x,    // 名前
                     new Vector3(
                         StartPoint.x + (gridSizeX * x), // 座標
                         StartPoint.y - (gridSizeY * y),
@@ -209,10 +195,10 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
     // 紙の切れ端とのあたり判定を取る用のオブジェクト生成
     public void CheckCollisionwasteOfPaper(Transform trans)
     {
-        float GridSizeX = CreateGlidScript.paperGridSizeX;
-        float GridSizeY = CreateGlidScript.paperGridSizeY;
-        int gridNumX = CreateGlidScript.horizon;
-        int gridNumY = CreateGlidScript.virtical;
+        float GridSizeX = CreateGridScript.paperGridSizeX;
+        float GridSizeY = CreateGridScript.paperGridSizeY;
+        int gridNumX = CreateGridScript.horizon;
+        int gridNumY = CreateGridScript.virtical;
         Material[] mats = new Material[1];
 
         //ｶﾒﾗをヒエラルキーから引っ張り出してくる
@@ -243,7 +229,7 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                     Cameraobj                          // 親オブジェクト
                     );
 
-                mass.transform.localScale = new Vector3(CreateGlidScript.paperGridSizeX, CreateGlidScript.paperGridSizeY, 1);
+                mass.transform.localScale = new Vector3(CreateGridScript.paperGridSizeX, CreateGridScript.paperGridSizeY, 1);
 
                 mass.GetComponent<BoxCollider>().isTrigger = true;
 
@@ -272,11 +258,11 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
         List<Vector2> vector2s = new List<Vector2>();
 
         // 紙のグリッドの大きさ
-        float GridSizeX = CreateGlidScript.paperGridSizeX;
-        float GridSizeY = CreateGlidScript.paperGridSizeY;
+        float GridSizeX = CreateGridScript.paperGridSizeX;
+        float GridSizeY = CreateGridScript.paperGridSizeY;
         // 縦と横の数
-        int gridNumX = CreateGlidScript.horizon;
-        int gridNumY = CreateGlidScript.virtical;
+        int gridNumX = CreateGridScript.horizon;
+        int gridNumY = CreateGridScript.virtical;
 
         //ｶﾒﾗをヒエラルキーから引っ張り出してくる
         GameObject Cameraobj = GameObject.Find("MainCamera");

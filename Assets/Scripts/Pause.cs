@@ -8,7 +8,11 @@ public class Pause : MonoBehaviour
 {
     // ポーズした時に表示するUI
     [SerializeField]
+    private GameObject PausePanel;
+    [SerializeField]
     private GameObject PauseUI;
+    [SerializeField]
+    private GameObject OptionUI;
 
     // ポーズ画面のボタン
     public Button Resume;
@@ -22,6 +26,7 @@ public class Pause : MonoBehaviour
 
     public void Start()
     {
+        OptionUI.SetActive(false);
     }
 
     // Update is called once per frame
@@ -68,7 +73,6 @@ public class Pause : MonoBehaviour
                 Option.Select();
                 break;
         }
-
     }
 
     // リトライ
@@ -91,7 +95,19 @@ public class Pause : MonoBehaviour
     public void OnResume()
     {
         //　ポーズUIのアクティブ、非アクティブを切り替え
-        PauseUI.SetActive(!PauseUI.activeSelf);
+        PausePanel.SetActive(false);
         Time.timeScale = 1f;
+    }
+
+    public void OnOption()
+    {
+        PauseUI.SetActive(false);
+        OptionUI.SetActive(true);
+    }
+
+    public void OffOption()
+    {
+        PauseUI.SetActive(true);
+        OptionUI.SetActive(false);
     }
 }

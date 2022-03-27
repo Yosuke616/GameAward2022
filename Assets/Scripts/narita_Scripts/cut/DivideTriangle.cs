@@ -1042,6 +1042,11 @@ public class DivideTriangle : MonoBehaviour
 
             // ステージの更新
             CollisionField.Instance.UpdateStage(checkCollisionPoints(obj, CollisionField.Instance.cellPoints()));
+
+            //obj2の方のアウトラインをセットする
+            GameObject cursor = GameObject.Find("cursor");
+            cursor.GetComponent<OutSide_Paper_Script_Second>().SetMoveLine(objOutline2,pos2);
+
         }
         else
         {
@@ -1069,6 +1074,10 @@ public class DivideTriangle : MonoBehaviour
 
             // ステージの更新
             CollisionField.Instance.UpdateStage(checkCollisionPoints(obj2, CollisionField.Instance.cellPoints()));
+
+            //obj1の方のアウトラインをセットする
+            GameObject cursor = GameObject.Find("cursor");
+            cursor.GetComponent<OutSide_Paper_Script_Second>().SetMoveLine(objOutline1,pos1);
         }
 
     }

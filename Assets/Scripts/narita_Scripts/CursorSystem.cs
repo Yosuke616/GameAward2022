@@ -9,6 +9,8 @@ public class CursorSystem : MonoBehaviour
 
     public int cnt = 0;
 
+    private bool bDivide;
+
     // スクリーン座標
     Vector3 screenPoint;
 
@@ -64,7 +66,7 @@ public class CursorSystem : MonoBehaviour
                     }
 
                     
-                    bool bDivide = false;
+                    bDivide = false;
 
                     for (int i = 0; i < objects.Count; i++)
                     {
@@ -88,5 +90,10 @@ public class CursorSystem : MonoBehaviour
             MousePoints.Clear();
         }
 
+    }
+
+    //切っているかどうかのフラグをゲットするための関数
+    public bool GetBreakFlg() {
+        return bDivide;
     }
 }

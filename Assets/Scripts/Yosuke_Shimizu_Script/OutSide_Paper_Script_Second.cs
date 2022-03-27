@@ -127,4 +127,13 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
         return Cross_Pos;
     }
 
+    //アウトラインのリストを更新する為の関数
+    public void SetMoveLine(List<Vector3> Line,Vector3 Center) {
+        //リストの更新をする
+        OutLinePaper = Line;
+
+        //中心座標を更新する
+        Paper_Center = Center;
+    }
+
 }

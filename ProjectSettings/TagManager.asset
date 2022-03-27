@@ -11,11 +11,6 @@ TagManager:
   - paper
   - none
   - waste
-<<<<<<< HEAD
-  - goal
-=======
-  - OutSideHitBox
->>>>>>> ac20288a16aef5184529666626b9d83f875d7577
   layers:
   - Default
   - TransparentFX

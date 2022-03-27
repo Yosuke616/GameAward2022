@@ -30,12 +30,17 @@ public class Fiary_Script : MonoBehaviour
     //最初の一回だけ読み込めるようにする(trueで読み込めなくする)
     private bool g_bFirst_Load;
 
-
     //親オブジェクトの情報を格納する変数
     GameObject ParentObj;
 
     //親の座標を格納する為の変数
     Vector3 PlayerPos;
+
+    //紙を破っているかどうかを確認するための変数
+    CursorSystem CS_Script;
+
+    //カーソルのシステムを得るための関数
+    GameObject Cursor_System;
 
     // Start is called before the first frame update
     void Start()
@@ -66,13 +71,20 @@ public class Fiary_Script : MonoBehaviour
             //カーソルの中のスクリプトをゲットする
             Paper_OutSide_Script = OutSide_Cursor.GetComponent<OutSide_Paper_Script_Second>();
 
+
+            //破っているかどうかのフラグが分かるようなカーソルを得る
+            Cursor_System = GameObject.Find("Cursor");
+
+            //スクリプトを得る
+            CS_Script = Cursor_System.GetComponent<CursorSystem>();
+
             //弐回目以降読み込まないようにする
             g_bFirst_Load = true;
         }
 
         //左マウスをクリックしているか(場合によって)
         //クリックしていた場合
-        if (Input.GetMouseButton(0))
+        if (CS_Script.GetBreakFlg())
         {
             g_FiaryMove = FIARY_MOVE.FIARY_BREAK_PAPER;   
         }

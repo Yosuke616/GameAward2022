@@ -1504,7 +1504,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: dfbf198c9220ebf438be11a7bf1b79e9, type: 2}
+  - {fileID: 2100000, guid: 065873a5c21266d4fa9f8b8568ede6bb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4626,7 +4626,6 @@ GameObject:
   - component: {fileID: 782182385}
   - component: {fileID: 782182384}
   - component: {fileID: 782182383}
-  - component: {fileID: 782182386}
   m_Layer: 0
   m_Name: CreatePaper2
   m_TagString: Untagged
@@ -4681,7 +4680,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d83f909e48a9d944f9d1539765ce2596, type: 2}
+  - {fileID: 2100000, guid: bfc8e1be0c8011845aa6a7f55966c489, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4711,18 +4710,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 782182381}
   m_Mesh: {fileID: 0}
---- !u!114 &782182386
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 782182381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b200c6e452541c7479a898d05a874070, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &789691236
 GameObject:
   m_ObjectHideFlags: 0
@@ -5292,7 +5279,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: aaf468515b266f94dbfad2dea3f2ccc8, type: 2}
+  - {fileID: 2100000, guid: 1be1c4cacff0d7b419180425cee6e1b6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

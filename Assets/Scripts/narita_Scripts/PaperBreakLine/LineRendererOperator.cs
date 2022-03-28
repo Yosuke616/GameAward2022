@@ -13,7 +13,7 @@ public class LineRendererOperator : MonoBehaviour
     [SerializeField] private int positionCount;
     [SerializeField] List<Vector3> breakline = new List<Vector3>();
     // カメラとの距離
-    //private float posZ;
+    private float posZ;
     // 設定したカメラの前に線を引いていく
     private Camera mainCamera;
 
@@ -28,7 +28,7 @@ public class LineRendererOperator : MonoBehaviour
         // メインカメラ
         mainCamera = Camera.main;
 
-        //posZ = 10.0f;
+        posZ = 10.0f;
     }
 
     // 更新

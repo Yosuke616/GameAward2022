@@ -7,17 +7,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 //[RequireComponent(typeof(CreateGridScript))]
 public class StageGrid : MonoBehaviour
 {
-
     //色配置するマテリアルの設定
     public Material[] ColorSet = new Material[2];
 
     // 全マスのあたり判定の種類
-    [SerializeField] private List<StageBlock>   collisionGrid = new List<StageBlock>();
-    //[SerializeField] private List<string>   collisionGrid = new List<string>();
+    [SerializeField] private List<string>   collisionGrid = new List<string>();
     // 全マスのオブジェクト
     [SerializeField] private List<GameObject> Grid = new List<GameObject>();
     // どのカメラの前にグリッドを表示させるか
@@ -95,9 +92,8 @@ public class StageGrid : MonoBehaviour
 
                 // オブジェクトリストに追加
                 Grid.Add(mass);
-
-                // 空のブロックを追加しておく
-                collisionGrid.Add(new StageBlock());
+                // タグを追加
+                collisionGrid.Add(mass.tag);
             }
         }
 
@@ -112,13 +108,8 @@ public class StageGrid : MonoBehaviour
         {
             if (Grid[i] == null) continue;
 
-
             // 衝突処理の種類をセットする
-            //collisionGrid[i] = Grid[i].tag;
-            collisionGrid[i].tag = Grid[i].tag;
-
-            // 回転角もセットする
-            collisionGrid[i].rotate = Grid[i].transform.localEulerAngles;
+            collisionGrid[i] = Grid[i].tag;
 
             Destroy(Grid[i]);
         }
@@ -184,7 +175,7 @@ public class StageGrid : MonoBehaviour
     }
 
     // getter
-    public List<StageBlock> GetStageInfo()
+    public List<string> GetStageInfo()
     {
         return collisionGrid;
     }

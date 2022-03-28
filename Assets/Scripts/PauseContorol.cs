@@ -13,7 +13,6 @@ public class PauseContorol : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // ƒvƒŒƒnƒu¶¬
         PauseObj = Instantiate(PauseObj, parant);
         PauseObj.SetActive(false);
     }

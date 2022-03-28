@@ -48,12 +48,8 @@ public class collsion_test : MonoBehaviour
 
         if (collider.gameObject.tag != "none")
         {
-            //Debug.Log(collider.gameObject.tag);
-
             // É^ÉOÇê›íË
             this.tag = collider.gameObject.tag;
-
-            transform.Rotate(collider.gameObject.transform.localEulerAngles);
         }
     }
 

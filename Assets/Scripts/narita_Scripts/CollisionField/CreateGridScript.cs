@@ -22,7 +22,7 @@ public class CreateGridScript : MonoBehaviour
     public bool paperGrid = false;
 
     // マスの数
-    static public int horizon = 72;
+    static public int horizon = 50;
     static public int virtical = 40;
     //グリッド1マスごとの大きさ
     static public float gridSizeX;

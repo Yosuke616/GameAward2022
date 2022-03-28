@@ -25,7 +25,7 @@ public class CursorSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.X))
         {
             List<bool> a = new List<bool>();
-            for (int i = 0; i < 2880; i++)
+            for (int i = 0; i < 2000; i++)
             {
                 a.Add(true);
             }

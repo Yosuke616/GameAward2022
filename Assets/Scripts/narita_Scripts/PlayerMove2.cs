@@ -33,14 +33,8 @@ public class PlayerMove2 : MonoBehaviour
             transform.position += transform.right * speed;
             //transform.Rotate(0, 0.3f, 0);
         }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            GetComponent<Rigidbody>().AddForce(new Vector3(0, 15.0f, 0), ForceMode.Impulse);
-            //transform.position += transform.right * speed;
-            //transform.Rotate(0, 0.3f, 0);
-        }
 
-
+       
     }
 
     // 衝突処理

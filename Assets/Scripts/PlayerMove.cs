@@ -5,13 +5,13 @@
 
  2022/03/21 酒井諒太郎	カメラの角度に合わせてプレイヤーの方角を決定するよう変更
 
+
  プレイヤーの操作と地面の設定
  */
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -20,10 +20,10 @@ public class PlayerMove : MonoBehaviour
 	[SerializeField] private float moveSpeed = 0.01f;        // 移動速度
 	[SerializeField] private float applySpeed = 0.2f;       // 振り向きの適用速度
 	[SerializeField] private float jump = 5.0f;
-	[SerializeField] private Camera refCamera;  // カメラの水平回転を参照する用
+	//[SerializeField] private Camera refCamera;  // カメラの水平回転を参照する用
 
     private Rigidbody rb;
-	//private ModelAnimation animation;
+	private ModelAnimation animation;
 
     public EMoveCharacter eCharaMove;
 	public bool isjump;
@@ -43,7 +43,7 @@ public class PlayerMove : MonoBehaviour
     {
 		onGround = true;
 		rb = GetComponent<Rigidbody>();
-		//animation = GetComponent<ModelAnimation>();
+		animation = GetComponent<ModelAnimation>();
         eCharaMove = EMoveCharacter.STOP_MOVE;
         isjump = false;
 		mainCamera = Camera.main;
@@ -53,11 +53,6 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if(Input.GetAxis("Vertical") > 0)
-        //{
-        //    Debug.LogWarning("");
-        //}
-
 		velocity = Vector3.zero;
 		if ((Input.GetKeyDown(KeyCode.Space) || Input.GetAxis("Vertical") > 0) && !isjump && onGround)
 		{
@@ -68,31 +63,28 @@ public class PlayerMove : MonoBehaviour
 		else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") < 0)
 		{
 			eCharaMove = EMoveCharacter.RIGHT_MOVE;
-            Debug.LogWarning("RIGHT_MOVE");
 		}
 		else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") > 0)
 		{
 			eCharaMove = EMoveCharacter.LEFT_MOVE;
-            Debug.LogWarning("LEFT_MOVE");
 		}
 		else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical") < 0)
 		{
 			eCharaMove = EMoveCharacter.STOP_MOVE;
-            Debug.LogWarning("STOP_MOVE");
-        }
+		}
 
         switch (eCharaMove)
         {
             case EMoveCharacter.RIGHT_MOVE:
-				//animation.SetAnim("Walk");
+				animation.SetAnim("Walk");
 				velocity.x -= 1;
                 break;
             case EMoveCharacter.LEFT_MOVE:
-				//animation.SetAnim("Walk");
+				animation.SetAnim("Walk");
 				velocity.x += 1;
 				break;
             case EMoveCharacter.STOP_MOVE:
-				//animation.SetAnim("Stand-by");
+				animation.SetAnim("Stand-by");
 				velocity.x = 0;
 				break;
         }
@@ -153,17 +145,6 @@ public class PlayerMove : MonoBehaviour
 			Debug.Log($"CollisionEnter : Ground");
             onGround = true;
 			isjump = false;
-            Destroy(gameObject, 0.2f);
         }
-        
-        //if (col.gameObject.tag == "Player")
-        //{
-            
-        //    if (Input.GetKey(KeyCode.F6))
-        //    {
-        //        SceneManager.LoadScene("Title");
-        //    }
-        //}
-    }  
+    }
 }
-

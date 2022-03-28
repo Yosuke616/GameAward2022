@@ -7,9 +7,8 @@ using UnityEngine.UI;               // UI用
 public class Pause : MonoBehaviour
 {
     // ポーズした時に表示するUI
-    public GameObject PauseUi;
-    public GameObject Pausepanel;
-    public GameObject Optionpanel;
+    [SerializeField]
+    private GameObject PauseUI;
 
     // ポーズ画面のボタン
     public Button Resume;
@@ -23,32 +22,25 @@ public class Pause : MonoBehaviour
 
     public void Start()
     {
-        Optionpanel.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        Cnt--;
-        if (Cnt < 0)
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetAxis("Vertical") > 0)
         {
-            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetAxis("Vertical") > 0)
+            SelectButton--;
+            if (SelectButton < 0)
             {
-                Cnt = 75;
-                SelectButton--;
-                if (SelectButton < 0)
-                {
-                    SelectButton = MaxButton;
-                }
+                SelectButton = MaxButton;
             }
-            if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical") < 0)
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical") < 0)
+        {
+            SelectButton++;
+            if (SelectButton > MaxButton)
             {
-                Cnt = 75;
-                SelectButton++;
-                if (SelectButton > MaxButton)
-                {
-                    SelectButton = 0;
-                }
+                SelectButton = 0;
             }
         }
 
@@ -70,6 +62,7 @@ public class Pause : MonoBehaviour
                 Option.Select();
                 break;
         }
+
     }
 
     // リトライ
@@ -92,19 +85,7 @@ public class Pause : MonoBehaviour
     public void OnResume()
     {
         //　ポーズUIのアクティブ、非アクティブを切り替え
-        PauseUi.SetActive(false);
+        PauseUI.SetActive(!PauseUI.activeSelf);
         Time.timeScale = 1f;
-    }
-
-    public void OnOption()
-    {
-        Pausepanel.SetActive(false);
-        Optionpanel.SetActive(true);
-    }
-
-    public void OffOption()
-    {
-        Pausepanel.SetActive(true);
-        Optionpanel.SetActive(false);
     }
 }

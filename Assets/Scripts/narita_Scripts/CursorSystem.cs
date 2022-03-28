@@ -9,6 +9,8 @@ public class CursorSystem : MonoBehaviour
 
     public int cnt = 0;
 
+    private bool bDivide;
+
     // スクリーン座標
     Vector3 screenPoint;
 
@@ -59,11 +61,12 @@ public class CursorSystem : MonoBehaviour
                     // ソート
                     if(objects.Count >= 2)
                     {
+                        // 紙の番号、昇順
                         objects.Sort((a, b) => a.GetComponent<DivideTriangle>().GetNumber() - b.GetComponent<DivideTriangle>().GetNumber());
                     }
 
                     
-                    bool bDivide = false;
+                    bDivide = false;
 
                     for (int i = 0; i < objects.Count; i++)
                     {
@@ -87,5 +90,10 @@ public class CursorSystem : MonoBehaviour
             MousePoints.Clear();
         }
 
+    }
+
+    //切っているかどうかのフラグをゲットするための関数
+    public bool GetBreakFlg() {
+        return bDivide;
     }
 }

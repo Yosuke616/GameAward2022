@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//[RequireComponent(typeof(CreateGlidScript))]
+//[RequireComponent(typeof(CreateGridScript))]
 public class StageGrid : MonoBehaviour
 {
     //色配置するマテリアルの設定
@@ -38,10 +38,10 @@ public class StageGrid : MonoBehaviour
     // 初期化
     void Start()
     {
-        GridSizeX = CreateGlidScript.gridSizeX;
-        GridSizeY = CreateGlidScript.gridSizeY;
-        gridNumX = CreateGlidScript.horizon;
-        gridNumY = CreateGlidScript.virtical;
+        GridSizeX = CreateGridScript.gridSizeX;
+        GridSizeY = CreateGridScript.gridSizeY;
+        gridNumX = CreateGridScript.horizon;
+        gridNumY = CreateGridScript.virtical;
 
         //ｶﾒﾗをヒエラルキーから引っ張り出してくる
         GameObject Cameraobj = GameObject.Find(cameraName);
@@ -65,7 +65,6 @@ public class StageGrid : MonoBehaviour
                 mass.transform.SetParent(Cameraobj.transform);
 
                 //---オブジェクトの設定
-
                 // 座標
                 mass.transform.position = new Vector3(
                     StartPoint.x + (GridSizeX * u),
@@ -73,7 +72,7 @@ public class StageGrid : MonoBehaviour
                     transform.position.z);
 
                 //名前の設定(最後のiは何行目にあるか)
-                mass.name = "Glid_No." + nNameCnt + ":" + i;
+                mass.name = "Grid_No." + nNameCnt + ":" + i;
 
                 //色の設定(初期値は赤)
                 mass.GetComponent<MeshRenderer>().material = ColorSet[1];

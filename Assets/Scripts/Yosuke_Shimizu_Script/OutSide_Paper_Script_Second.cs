@@ -71,6 +71,8 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
         //カーソルをセットした座標に移動させる
         this.transform.position = Cross_Pos;
 
+        //破っているときのカーソルの位置を変更させる
+
     }
 
     //線分と線分の計算をするための関数

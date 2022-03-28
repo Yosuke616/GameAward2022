@@ -710,6 +710,7 @@ GameObject:
   - component: {fileID: 7711711192540568750}
   - component: {fileID: 4287445318104489757}
   - component: {fileID: 5496318255566700767}
+  - component: {fileID: 8189865257993840198}
   m_Layer: 5
   m_Name: OptionPanel
   m_TagString: Untagged
@@ -783,6 +784,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8189865257993840198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2197908695601334047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca79a949b835b7a418044c8643d0556d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MasterSlider: {fileID: 4898139982858633747}
+  BGMSlider: {fileID: 1975590233459421706}
+  SESlider: {fileID: 6711878987467775641}
+  BackButton: {fileID: 5533158051227806420}
 --- !u!1 &2559632810256269303
 GameObject:
   m_ObjectHideFlags: 0
@@ -794,7 +811,6 @@ GameObject:
   - component: {fileID: 8828046678244289528}
   - component: {fileID: 4898139982858633747}
   - component: {fileID: 911138920382443714}
-  - component: {fileID: 4942861683524971993}
   m_Layer: 5
   m_Name: MasterVolume
   m_TagString: Untagged
@@ -900,19 +916,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   volumeType: 0
---- !u!114 &4942861683524971993
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2559632810256269303}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca79a949b835b7a418044c8643d0556d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FirstSelectSlider: {fileID: 4898139982858633747}
 --- !u!1 &2874504315344970584
 GameObject:
   m_ObjectHideFlags: 0
@@ -1885,9 +1888,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6445b73fa1b436499f57c067205ed81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PausePanel: {fileID: 7798653126426691855}
-  PauseUI: {fileID: 754158135200263216}
-  OptionUI: {fileID: 2197908695601334047}
+  PauseUi: {fileID: 7798653126426691855}
+  Pausepanel: {fileID: 754158135200263216}
+  Optionpanel: {fileID: 2197908695601334047}
   Resume: {fileID: 7798653126705503393}
   Retry: {fileID: 7798653127792266611}
   Title: {fileID: 7798653127586843131}

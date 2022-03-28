@@ -7,12 +7,9 @@ using UnityEngine.UI;               // UI用
 public class Pause : MonoBehaviour
 {
     // ポーズした時に表示するUI
-    [SerializeField]
-    private GameObject PausePanel;
-    [SerializeField]
-    private GameObject PauseUI;
-    [SerializeField]
-    private GameObject OptionUI;
+    public GameObject PauseUi;
+    public GameObject Pausepanel;
+    public GameObject Optionpanel;
 
     // ポーズ画面のボタン
     public Button Resume;
@@ -26,7 +23,7 @@ public class Pause : MonoBehaviour
 
     public void Start()
     {
-        OptionUI.SetActive(false);
+        Optionpanel.SetActive(false);
     }
 
     // Update is called once per frame
@@ -95,19 +92,19 @@ public class Pause : MonoBehaviour
     public void OnResume()
     {
         //　ポーズUIのアクティブ、非アクティブを切り替え
-        PausePanel.SetActive(false);
+        PauseUi.SetActive(false);
         Time.timeScale = 1f;
     }
 
     public void OnOption()
     {
-        PauseUI.SetActive(false);
-        OptionUI.SetActive(true);
+        Pausepanel.SetActive(false);
+        Optionpanel.SetActive(true);
     }
 
     public void OffOption()
     {
-        PauseUI.SetActive(true);
-        OptionUI.SetActive(false);
+        Pausepanel.SetActive(true);
+        Optionpanel.SetActive(false);
     }
 }

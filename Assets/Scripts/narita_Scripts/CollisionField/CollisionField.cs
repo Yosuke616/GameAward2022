@@ -2,14 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public class StageBlock
+{
+    public string tag = "none";
+    public Vector3 rotate = Vector3.zero;
+    public int type = 0;
+}
+
 public class CollisionField : SingletonMonoBehaviour<CollisionField>
 {
+    
+
+
 
     // 実際のあたり判定を行っているシーンのカメラ
     private string cameraName = "SubCamera0";
 
     // ステージ(紙)情報
-    [SerializeField] private List<string>[] StageInfo = new List<string>[3];
+    [SerializeField] private List<StageBlock>[] StageInfo = new List<StageBlock>[3];
     // メインカメラで見えている部分のあたり判定のリスト
     [SerializeField] private List<GameObject> CollisionGrid = new List<GameObject>();
     [SerializeField] private List<int> layerList = new List<int>();
@@ -43,12 +54,9 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
         }
     }
 
-    private void Update()
-    {
-    }
 
     // StageGrid.csのステージ（紙）情報を追加
-    public void AddStageInfo(int layer, List<string> stage)
+    public void AddStageInfo(int layer, List<StageBlock> stage)
     {
         StageInfo[layer] = stage;
     }
@@ -58,7 +66,7 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
     public void SetStage(int layer)
     {
         // 引数の番号のステージ(紙)情報
-        List<string> _stageGrid = StageInfo[layer];
+        List<StageBlock> _stageGrid = StageInfo[layer];
 
         //名前を変えるためにカウントを作る
         int nNameCnt = 0;
@@ -66,8 +74,8 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
         //ｶﾒﾗをヒエラルキーから引っ張り出してくる
         GameObject Cameraobj = GameObject.Find(cameraName);
         // 描画開始位置
-        StartPoint.x = Cameraobj.transform.position.x - gridSizeX * gridNumX / 2.0f + 0.5f;
-        StartPoint.y = Cameraobj.transform.position.y + gridSizeY * gridNumY / 2.0f - 0.5f;
+        StartPoint.x = Cameraobj.transform.position.x - gridSizeX * gridNumX / 2.0f + (gridSizeX * 0.5f);
+        StartPoint.y = Cameraobj.transform.position.y + gridSizeY * gridNumY / 2.0f - (gridSizeY * 0.5f);
 
         // マスごとにあたり判定を取る用のオブジェクトを生成
         for (int y = 0; y < gridNumY; y++)
@@ -75,7 +83,7 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
             for (int x = 0; x < gridNumX; x++, nNameCnt++)
             {
                 // タグが"none"だったらnullを入れておく
-                if (_stageGrid[(y * gridNumX) + x] == "none")
+                if (_stageGrid[(y * gridNumX) + x].tag == "none")
                 {
                     CollisionGrid[(y * gridNumX) + x] = null;
                     continue;
@@ -88,14 +96,22 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                         StartPoint.x + (gridSizeX * x), // 座標
                         StartPoint.y - (gridSizeY * y),
                         transform.position.z),
-                    _stageGrid[x + y],                  // タグ
+                    Vector3.zero,
+                    _stageGrid[(y * gridNumX) + x].tag, // タグ
                     Cameraobj                           // 親オブジェクト
-                    );         
+                    );
 
+                //float rate = Mathf. Mathf.Pow(gridSizeX, 2) + Mathf.Pow(gridSizeY, 2)
+                //mass.transform.localScale = new Vector3(gridSizeX*1.414f, gridSizeY * 1.414f, 1.0f);
+                mass.transform.localScale = new Vector3(gridSizeX, gridSizeY , 1.0f);
 
                 // あたり判定リストに登録
                 CollisionGrid[(y * gridNumX) + x] = mass;
+
+                Debug.Log(mass.name + "   " + mass.tag + "   " + _stageGrid[x + y].tag);
             }
+
+
         }
     }
 
@@ -103,7 +119,7 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
     // 破った後に合わせてあたり判定リストを更新する
     public void UpdateStage(List<bool> changes)
     {
-        if(CollisionGrid.Count != changes.Count) { Debug.LogWarning("サイズが違います"); return; }
+        if(CollisionGrid.Count != changes.Count) { Debug.LogWarning("サイズが違います" + "   CollisionGrid" + CollisionGrid.Count + "changes" + changes.Count); return; }
 
         //名前を変えるためにカウントを作る
         int objCount = 0;
@@ -129,12 +145,11 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                     // ある
                     if(CollisionGrid[objCount])
                     {
-                        if(StageInfo[layerList[objCount] + 1][objCount] != "none")
+                        if (StageInfo[layerList[objCount] + 1][objCount].tag != "none")
                         {
                             // 次もある
-
                             // タグの変更
-                            CollisionGrid[objCount].tag = StageInfo[layerList[objCount] + 1][objCount];
+                            CollisionGrid[objCount].tag = StageInfo[layerList[objCount] + 1][objCount].tag;
 
                             // 次のレイヤーに更新
                             layerList[objCount]++;
@@ -157,7 +172,7 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                     // ない
                     else
                     {
-                        if (StageInfo[layerList[objCount] + 1][objCount] != "none")
+                        if (StageInfo[layerList[objCount] + 1][objCount].tag != "none")
                         {
                             // 次はある
                             CollisionGrid[objCount] = CreateCollisionObject(
@@ -166,9 +181,14 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                                     StartPoint.x + (gridSizeX * x), // 座標
                                     StartPoint.y - (gridSizeY * y),
                                     transform.position.z),
-                                StageInfo[layerList[objCount] + 1][objCount],// タグ
-                                gameObject                           // 親オブジェクト
+                                StageInfo[layerList[objCount] + 1][objCount].rotate,
+                                StageInfo[layerList[objCount] + 1][objCount].tag,   // タグ
+                                gameObject                                          // 親オブジェクト
                                 );
+
+                            float rate = gridSizeX * Mathf.Tan(gridSizeY / gridSizeX);
+                            CollisionGrid[objCount].transform.localScale = new Vector3(gridSizeX, gridSizeY, 1);
+                            //CollisionGrid[objCount].transform.position += new Vector3(gridSizeX * 0.5f, gridSizeY * 0.5f, 0);
 
                             // 次のレイヤーに更新
                             layerList[objCount]++;
@@ -225,8 +245,9 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                         StartPoint.x + (GridSizeX * x), // 座標
                         StartPoint.y - (GridSizeY * y),
                         trans.position.z),
+                    Vector3.zero,
                     "none",                             // タグ
-                    Cameraobj                          // 親オブジェクト
+                    Cameraobj                           // 親オブジェクト
                     );
 
                 mass.transform.localScale = new Vector3(CreateGridScript.paperGridSizeX, CreateGridScript.paperGridSizeY, 1);
@@ -247,9 +268,6 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                 storeObject.Add(mass);
             }
         }
-
-
-        //hoge = true;
     }
 
 
@@ -317,7 +335,7 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
     }
 
 
-    private GameObject CreateCollisionObject(string name, Vector3 pos, string tag, GameObject parent)
+    private GameObject CreateCollisionObject(string name, Vector3 pos, Vector3 rot, string tag, GameObject parent)
     {
         //---生成
         GameObject mass = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -325,6 +343,8 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
         mass.transform.SetParent(parent.transform);
         //座標
         mass.transform.position = pos;
+        // 回転
+        mass.transform.Rotate(rot);
         //名前
         mass.name = name;
         //タグを付ける

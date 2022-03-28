@@ -14,7 +14,7 @@ Shader "MBL/NextPage"
 		_AlphaMask("AlphaMask", Range(0, 1)) = 0.1
 		
 		// †‚ğ‚ß‚­‚Á‚½‚è•Â‚¶‚½‚è‚·‚é(-1:‚ß‚­‚Á‚Ä‚¢‚é@1:Œ³‚É–ß‚é)
-		_Flip("Flip",Range(-1, 1)) = 0
+		_Flip("Flip",Range(-1, 1)) = 1
 	}
 		SubShader
 		{

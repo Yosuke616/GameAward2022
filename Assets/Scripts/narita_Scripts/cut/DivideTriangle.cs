@@ -1053,17 +1053,6 @@ public class DivideTriangle : MonoBehaviour
                         // obj1、obj2のどちらにも入っているのが確定したので
                         // 始点になるのか終点になるのか決める
 
-                        // 現在の辺はどこの辺？
-                        //breakPoints[index]
-                        //breakPoints[(index + 1) % breakPoints.Count]
-                        //このどちらかがobj1、obj2にあるので確認
-                        //int OutLineIndex = -1;
-                        //for (int vertexNum = 0; vertexNum < objOutline1.Count; vertexNum++)
-                        //{
-                        //    // アウトラインのインデックスを保存
-                        //    if (breakPoints[index].Equals(objOutline1[vertexNum])) OutLineIndex = vertexNum;
-                        //}
-
                         // 破れ１のインデックスを保存
                         int breakLineIndex1 = -1;
                         for (int a = 0; a < brokenPaperline1.Count; a++)
@@ -1177,7 +1166,7 @@ public class DivideTriangle : MonoBehaviour
             // obj1を飛ばして消す
             var move = obj1.AddComponent<PaperMove>();
             // 飛ばす方向
-            move.SetDirection(pos1 - Vector3.zero);
+            move.SetDirection(pos1 - pos2);
             // タグの変更（廃棄する紙）
             obj1.tag = "waste";
             // 数秒後にデリート
@@ -1186,16 +1175,37 @@ public class DivideTriangle : MonoBehaviour
             // ステージの更新
             CollisionField.Instance.UpdateStage(checkCollisionPoints(obj1, CollisionField.Instance.cellPoints()));
 
+
+            var alpha = obj1.AddComponent<Alpha>();
+            //var del = obj.AddComponent<DeleteAlpha>();
+            Material mat = (Material)Resources.Load("Effects/Alpha");
+            switch (number)
+            {
+                case 1:
+                    mat = (Material)Resources.Load("Effects/Alpha");
+                    break;
+                case 2:
+                    mat = (Material)Resources.Load("Effects/Alpha_002");
+                    break;
+                case 3:
+                    mat = (Material)Resources.Load("Effects/Alpha_003");
+                    break;
+                default: break;
+            }
+            obj1.GetComponent<Renderer>().material = mat;
+            //obj.GetComponent<Renderer>().material.SetFloat("_Value", 0.2f);
+            alpha.SetAlpha(number);
+
             //obj1の方のアウトラインをセットする
-            GameObject cursor = GameObject.Find("cursor");
-            cursor.GetComponent<OutSide_Paper_Script_Second>().SetMoveLine(objOutline2, pos2);
+            //GameObject cursor = GameObject.Find("cursor");
+            //cursor.GetComponent<OutSide_Paper_Script_Second>().SetMoveLine(objOutline2, pos2);
         }
         else
         {
             // obj2の方が遠い位置にある
             var move = obj2.AddComponent<PaperMove>();
             // 飛ばす方向
-            move.SetDirection(pos2 - Vector3.zero);
+            move.SetDirection(pos2 - pos1);
             // タグの変更（廃棄する紙）
             obj2.tag = "waste";
             // 数秒後にデリート
@@ -1204,9 +1214,29 @@ public class DivideTriangle : MonoBehaviour
             // ステージの更新
             CollisionField.Instance.UpdateStage(checkCollisionPoints(obj2, CollisionField.Instance.cellPoints()));
 
+            var alpha = obj2.AddComponent<Alpha>();
+            //var del = obj2.AddComponent<DeleteAlpha>();
+            Material mat = (Material)Resources.Load("Effects/Alpha");
+            switch (number)
+            {
+                case 1:
+                    mat = (Material)Resources.Load("Effects/Alpha");
+                    break;
+                case 2:
+                    mat = (Material)Resources.Load("Effects/Alpha_002");
+                    break;
+                case 3:
+                    mat = (Material)Resources.Load("Effects/Alpha_003");
+                    break;
+                default: break;
+            }
+            obj2.GetComponent<Renderer>().material = mat;
+            //obj2.GetComponent<Renderer>().material.SetFloat("_Value", 0.2f);
+            alpha.SetAlpha(number);
+
             //obj1の方のアウトラインをセットする
-            GameObject cursor = GameObject.Find("cursor");
-            cursor.GetComponent<OutSide_Paper_Script_Second>().SetMoveLine(objOutline1,pos1);
+            //GameObject cursor = GameObject.Find("cursor");
+            //cursor.GetComponent<OutSide_Paper_Script_Second>().SetMoveLine(objOutline1,pos1);
         }
 
     }
@@ -1383,7 +1413,7 @@ public class DivideTriangle : MonoBehaviour
                         }
                         else
                         {
-                            Debug.LogWarning("外分点なので飛ばして");
+                            Debug.LogWarning("外分点");
                             Debug.LogWarning(outlineEdge.magnitude);
                             Debug.LogWarning(vec.magnitude);
                         }
@@ -1480,7 +1510,6 @@ public class DivideTriangle : MonoBehaviour
                 var breakLine = transform.Find("breaking paper line");
                 if (breakLine != null)
                 {
-                    Debug.LogWarning("aa");
                     // 現在進行中の破れが存在するため、それを更新する
                     breakLine.gameObject.GetComponent<LineRendererOperator>().SetPoints(cuttingPath);
                 }

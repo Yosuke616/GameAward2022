@@ -11,6 +11,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -152,6 +153,17 @@ public class PlayerMove : MonoBehaviour
 			Debug.Log($"CollisionEnter : Ground");
             onGround = true;
 			isjump = false;
+            Destroy(gameObject, 0.2f);
         }
-    }
+        
+        //if (col.gameObject.tag == "Player")
+        //{
+            
+        //    if (Input.GetKey(KeyCode.F6))
+        //    {
+        //        SceneManager.LoadScene("Title");
+        //    }
+        //}
+    }  
 }
+

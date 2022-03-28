@@ -10,7 +10,7 @@ public class CreateTriangle : MonoBehaviour
     static public float paperSizeX = 9.0f;
     static public float paperSizeY = 5.0f;
 
-    void Start()
+    void Awake()
     {
         CreateMesh();
     }
@@ -46,7 +46,10 @@ public class CreateTriangle : MonoBehaviour
         triangles1.Add(3);
 
         //カット後のオブジェクト生成、いろいろといれる
-        GameObject obj = new GameObject("paper", typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider), typeof(DivideTriangle), typeof(OutLinePath), typeof(DrawMesh));
+        GameObject obj = new GameObject("paper",
+            typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider),
+            typeof(DivideTriangle), typeof(OutLinePath), typeof(DrawMesh),
+            typeof(Turn_Shader));
         var mesh = new Mesh();
         mesh.vertices = vertices1.ToArray();    // 頂点情報
         mesh.triangles = triangles1.ToArray();  // 頂点の数
@@ -61,55 +64,58 @@ public class CreateTriangle : MonoBehaviour
 
         obj.GetComponent<DivideTriangle>().SetNumber(number);
     }
-    void CreateMesh2()
-    {
-        var uvs1 = new List<Vector2>();         // 新しく生成するオブジェクトのUV座標のリスト
-        var vertices1 = new List<Vector3>();   // 新しく生成するオブジェクトの頂点のリスト
-        var triangles1 = new List<int>();       // 新しく生成するオブジェクトの頂点数のリスト
-        var normals1 = new List<Vector3>();     // 新しく生成するオブジェクトの法線情報のリスト
-
-        // 頂点座標
-        vertices1.Add(new Vector3(5.0f, -1.0f, 0.0f));
-        vertices1.Add(new Vector3(5.0f, -2.0f, 0.0f));
-        vertices1.Add(new Vector3(3.0f, -2.5f, 0.0f));
-        vertices1.Add(new Vector3(0.0f, -3.5f, 0.0f));
-        vertices1.Add(new Vector3(-5.0f,-2.0f, 0.0f));
-        vertices1.Add(new Vector3(-5.0f, 4.0f, 0.0f));
-        vertices1.Add(new Vector3(-4.0f, 5.0f, 0.0f));
-        // uv
-        uvs1.Add(new Vector2(0, 0));
-        uvs1.Add(new Vector2(0, 0));
-        uvs1.Add(new Vector2(0, 0));
-        uvs1.Add(new Vector2(0, 0));
-        uvs1.Add(new Vector2(0, 0));
-        uvs1.Add(new Vector2(0, 0));
-        uvs1.Add(new Vector2(0, 0));
-        // 法線
-        normals1.Add(new Vector3(0.0f, 0.0f, -1.0f));
-        normals1.Add(new Vector3(0.0f, 0.0f, -1.0f));
-        normals1.Add(new Vector3(0.0f, 0.0f, -1.0f));
-        normals1.Add(new Vector3(0.0f, 0.0f, -1.0f));
-        normals1.Add(new Vector3(0.0f, 0.0f, -1.0f));
-        normals1.Add(new Vector3(0.0f, 0.0f, -1.0f));
-        normals1.Add(new Vector3(0.0f, 0.0f, -1.0f));
-        // 頂点インデックス
-        for (int i = 0; i < vertices1.Count - 2; i++)
-        {
-            triangles1.Add(0);
-            triangles1.Add(i + 1);
-            triangles1.Add(i + 2);
-        }
-
-        //カット後のオブジェクト生成、いろいろといれる
-        GameObject obj = new GameObject("paper", typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider), typeof(DivideTriangle), typeof(OutLinePath));
-        var mesh = new Mesh();
-        mesh.vertices = vertices1.ToArray();    // 頂点情報
-        mesh.triangles = triangles1.ToArray();  // 頂点の数
-        mesh.uv = uvs1.ToArray();               // uv
-        mesh.normals = normals1.ToArray();      // 法線
-        obj.GetComponent<MeshFilter>().mesh = mesh;                                             // メッシュフィルターにメッシュをセット
-        obj.GetComponent<MeshCollider>().sharedMesh = mesh;                                     // メッシュコライダーにメッシュをセット                                                    //?
-        obj.GetComponent<OutLinePath>().SetOutLineVertecies();
-        obj.tag = "paper";
-    }
+    //void CreateMesh2()
+    //{
+    //    var uvs1 = new List<Vector2>();         // 新しく生成するオブジェクトのUV座標のリスト
+    //    var vertices1 = new List<Vector3>();   // 新しく生成するオブジェクトの頂点のリスト
+    //    var triangles1 = new List<int>();       // 新しく生成するオブジェクトの頂点数のリスト
+    //    var normals1 = new List<Vector3>();     // 新しく生成するオブジェクトの法線情報のリスト
+    //
+    //    // 頂点座標
+    //    vertices1.Add(new Vector3(5.0f, -1.0f, 0.0f));
+    //    vertices1.Add(new Vector3(5.0f, -2.0f, 0.0f));
+    //    vertices1.Add(new Vector3(3.0f, -2.5f, 0.0f));
+    //    vertices1.Add(new Vector3(0.0f, -3.5f, 0.0f));
+    //    vertices1.Add(new Vector3(-5.0f,-2.0f, 0.0f));
+    //    vertices1.Add(new Vector3(-5.0f, 4.0f, 0.0f));
+    //    vertices1.Add(new Vector3(-4.0f, 5.0f, 0.0f));
+    //    // uv
+    //    uvs1.Add(new Vector2(0, 0));
+    //    uvs1.Add(new Vector2(0, 0));
+    //    uvs1.Add(new Vector2(0, 0));
+    //    uvs1.Add(new Vector2(0, 0));
+    //    uvs1.Add(new Vector2(0, 0));
+    //    uvs1.Add(new Vector2(0, 0));
+    //    uvs1.Add(new Vector2(0, 0));
+    //    // 法線
+    //    normals1.Add(new Vector3(0.0f, 0.0f, -1.0f));
+    //    normals1.Add(new Vector3(0.0f, 0.0f, -1.0f));
+    //    normals1.Add(new Vector3(0.0f, 0.0f, -1.0f));
+    //    normals1.Add(new Vector3(0.0f, 0.0f, -1.0f));
+    //    normals1.Add(new Vector3(0.0f, 0.0f, -1.0f));
+    //    normals1.Add(new Vector3(0.0f, 0.0f, -1.0f));
+    //    normals1.Add(new Vector3(0.0f, 0.0f, -1.0f));
+    //    // 頂点インデックス
+    //    for (int i = 0; i < vertices1.Count - 2; i++)
+    //    {
+    //        triangles1.Add(0);
+    //        triangles1.Add(i + 1);
+    //        triangles1.Add(i + 2);
+    //    }
+    //
+    //    //カット後のオブジェクト生成、いろいろといれる
+    //    GameObject obj = new GameObject("paper", typeof(MeshFilter),
+    //        typeof(MeshRenderer), typeof(MeshCollider), typeof(DivideTriangle), typeof(OutLinePath),
+    //        typeof(Turn_Shader));
+    //    var mesh = new Mesh();
+    //    mesh.vertices = vertices1.ToArray();    // 頂点情報
+    //    mesh.triangles = triangles1.ToArray();  // 頂点の数
+    //    mesh.uv = uvs1.ToArray();               // uv
+    //    mesh.normals = normals1.ToArray();      // 法線
+    //    obj.GetComponent<MeshFilter>().mesh = mesh;                                             // メッシュフィルターにメッシュをセット
+    //    obj.GetComponent<MeshCollider>().sharedMesh = mesh;                                     // メッシュコライダーにメッシュをセット                                                    //?
+    //    obj.GetComponent<OutLinePath>().SetOutLineVertecies();
+    //    obj.tag = "paper";
+    //    obj.GetComponent<Turn_Shader>().SetPaperSta(0);
+    //}
 }

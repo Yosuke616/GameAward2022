@@ -952,6 +952,7 @@ public class DivideTriangle : MonoBehaviour
         var collider1   = obj1.AddComponent<MeshCollider>();
         var outline1    = obj1.AddComponent<OutLinePath>();
         var meshFilter1 = obj1.GetComponent<MeshFilter>();
+        var trun = obj1.AddComponent<Turn_Shader>();
         // ---Settings
         // uv
         meshFilter1.mesh.uv = uvs1.ToArray();
@@ -980,6 +981,7 @@ public class DivideTriangle : MonoBehaviour
         var collider2 = obj2.AddComponent<MeshCollider>();
         var outline2 = obj2.AddComponent<OutLinePath>();
         var meshFilter2 = obj2.GetComponent<MeshFilter>();
+        var trun2 = obj2.AddComponent<Turn_Shader>();
         // ---Settings
         // uv
         meshFilter2.mesh.uv = uvs2.ToArray();
@@ -1047,7 +1049,6 @@ public class DivideTriangle : MonoBehaviour
                     float judge = Vector3.Cross(breakEdge.normalized, vec.normalized).sqrMagnitude;
                     if (-0.001f < judge && judge < 0.0001f)
                     {
-                        Debug.LogWarning("やったよ");
 
                         // 切断パスの終点が紙の破れ線に入っていることが分かったので、
                         // obj1、obj2のどちらにも入っているのが確定したので
@@ -1103,6 +1104,7 @@ public class DivideTriangle : MonoBehaviour
                 {
                     var line1 = PaperBreakLineManager.Instance.CreateBreakLine(brokenPaperline1, obj1);
                     line1.name = "broken paper line";
+                    line1.GetComponent<LineRendererOperator>().hoge();
                     Debug.Log(line1.GetComponent<LineRendererOperator>().GetLines().Count);
                 }
                 // obj2に新しく生成
@@ -1110,6 +1112,7 @@ public class DivideTriangle : MonoBehaviour
                 {
                     var line2 = PaperBreakLineManager.Instance.CreateBreakLine(brokenPaperline2, obj2);
                     line2.name = "broken paper line";
+                    line2.GetComponent<LineRendererOperator>().hoge();
                     Debug.Log(line2.GetComponent<LineRendererOperator>().GetLines().Count);
                 }
             }
@@ -1131,13 +1134,17 @@ public class DivideTriangle : MonoBehaviour
             breakline1.GetComponent<LineRendererOperator>().SetPoints(newCuttingPath1);
             breakline2.GetComponent<LineRendererOperator>().SetPoints(newCuttingPath2);
 
+            // 名前変更
             breakline1.name = breakline2.name ="broken paper line";
             // オリジナルはobj1を親に
             breakline1.transform.SetParent(obj1.transform);
             // コピーはobj2を親に
             breakline2.transform.SetParent(obj2.transform);
 
-            // 名前変更
+            // マテリアルを変更する
+            breakline1.GetComponent<LineRendererOperator>().hoge();
+            breakline2.GetComponent<LineRendererOperator>().hoge();
+
         }
         #endregion
 
@@ -1238,6 +1245,9 @@ public class DivideTriangle : MonoBehaviour
             //GameObject cursor = GameObject.Find("cursor");
             //cursor.GetComponent<OutSide_Paper_Script_Second>().SetMoveLine(objOutline1,pos1);
         }
+
+        // 破れるSE
+        SoundManager.Instance.PlaySeByName("RipUpPaper07");
 
     }
 

@@ -6,11 +6,11 @@ using UnityEditor;
 public class Enemy : MonoBehaviour
 {
     int counter = 0;
-    float move = 0.004f;
+    public float move = 0.004f;
 
     private void Update()
     {
-        Vector3 p = new Vector3(0, 0, move);
+        Vector3 p = new Vector3(0, move, 0);
         transform.Translate(p);
         counter++;
 

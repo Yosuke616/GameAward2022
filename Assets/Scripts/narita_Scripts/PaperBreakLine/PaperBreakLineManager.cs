@@ -6,8 +6,6 @@ public class PaperBreakLineManager : SingletonMonoBehaviour<PaperBreakLineManage
 {
     public Material[] mats = new Material[1];
 
-    
-
     // 紙の破れを生成
     public GameObject CreateBreakLine(List<Vector3> cuttingPath, GameObject parent)
     {
@@ -18,13 +16,15 @@ public class PaperBreakLineManager : SingletonMonoBehaviour<PaperBreakLineManage
         var lineRendererOperater = obj.AddComponent<LineRendererOperator>();
         // 設定
         //lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer.textureMode = LineTextureMode.Tile;
         lineRenderer.useWorldSpace = false;
         // 座標
         lineRendererOperater.SetPoints(cuttingPath);
         // マテリアル
+        mats[0] = (Material)Resources.Load("Effects/DashLine");
         lineRenderer.materials = mats;
         lineRenderer.startWidth = 0.1f;
-        lineRenderer.endWidth = 0.2f;
+        lineRenderer.endWidth = 0.1f;
 
         // 親のオブジェクトを設定
         obj.transform.SetParent(parent.transform);

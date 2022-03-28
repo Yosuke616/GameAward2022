@@ -5,26 +5,29 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Sample/SampleScene.unity
     guid: d1c3109bdb54ad54c8a2b2838528e640
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/LoadingTest.unity
     guid: f1bc1607d83de654d93765a1aee2c0d8
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PeparCutTest.unity
     guid: 3ea5475d4fae1304b92170a4b046424a
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PlayerMove.unity
     guid: 71b67469c1969ab4798af8fbe1c4e964
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/TurnPaper.unity
     guid: 31f1dd1543a5920419cc6027288595e0
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Pause.unity
     guid: c7b8bda7dea3db84b847a6ddc93b7138
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Title.unity
     guid: 83a89218f3d317144828953b72099940
+  - enabled: 1
+    path: Assets/Scenes/test_Stage1.unity
+    guid: 80f4991feb82bab438eab01532f12185
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: fba200bbd05de7a48a53a3ca7e3a917b, type: 2}

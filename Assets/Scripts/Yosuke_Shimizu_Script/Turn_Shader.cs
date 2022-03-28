@@ -34,6 +34,7 @@ public class Turn_Shader : MonoBehaviour {
                 mat.SetFloat("_Flip",Flip_Num);
                 if (Flip_Num >= -1) {
                     Flip_Num -= 0.05f;
+                    Debug.LogWarning("");
                 }
                 break;
             case 2:         //Œ»‚ê‚é
@@ -50,5 +51,6 @@ public class Turn_Shader : MonoBehaviour {
     //ƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚Æ‚«‚É‚ß‚­‚ê‚é‚æ‚¤‚ÈŠÖ”‚ğì‚é(Setter)
     public void SetPaperSta(int Sta) {
         Mat_Sta = Sta;
+        mat = this.GetComponent<MeshRenderer>().material;
     }
 }

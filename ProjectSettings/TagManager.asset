@@ -11,6 +11,8 @@ TagManager:
   - paper
   - none
   - waste
+  - goal
+  - enemy
   layers:
   - Default
   - TransparentFX

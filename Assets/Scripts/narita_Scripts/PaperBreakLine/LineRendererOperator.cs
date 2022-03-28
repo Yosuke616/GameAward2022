@@ -98,4 +98,14 @@ public class LineRendererOperator : MonoBehaviour
     //
     //    //lineRenderer.GetPosition(0);
     //}
+
+
+    public void hoge()
+    {
+        
+        //Material[] mats[0] = 
+        lineRenderer.material = (Material)Resources.Load("Effects/PaperLine");
+        lineRenderer.startWidth = 1.0f;
+        lineRenderer.endWidth = 1.0f;
+    }
 }

@@ -11,12 +11,21 @@ public class CursorSystem : MonoBehaviour
 
     private bool bDivide;
 
+    int Select;
+
     // スクリーン座標
     Vector3 screenPoint;
+
+    [SerializeField] private List<GameObject> papers;
 
     void Start()
     {
         MousePoints = new List<Vector3>();
+
+        papers = new List<GameObject>();
+
+        Select = 0;
+        papers.AddRange(GameObject.FindGameObjectsWithTag("paper"));
     }
 
     void Update()
@@ -33,6 +42,30 @@ public class CursorSystem : MonoBehaviour
         }
 
         if (Camera.main == null) { return; }
+
+
+        if(Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            UpdatePage();
+            // めくる
+            var a = papers[Select]; if (!a) Debug.LogError("a");
+            var b = a.GetComponent<Turn_Shader>(); if(!b) Debug.LogError("b");
+            b.SetPaperSta(1);
+            Select++;
+            if (Select > 2) Select = 2;
+        }
+        else if(Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            UpdatePage();
+            // めくるのを戻す
+            var a = papers[Select]; if (!a) Debug.LogError("a");
+            var b = a.GetComponent<Turn_Shader>(); if (!b) Debug.LogError("b");
+            b.SetPaperSta(2);
+
+            Select--;
+            if (Select < 0) Select = 0;
+        }
+
 
         // このオブジェクトのワールド座標をスクリーン座標に変換した値を代入
         this.screenPoint = Camera.main.WorldToScreenPoint(transform.position);
@@ -52,25 +85,26 @@ public class CursorSystem : MonoBehaviour
 
             if (MousePoints.Count >= 2)
             {
+                papers.Clear();
                 // 紙のリストを作る
-                List<GameObject> objects = new List<GameObject>();
-                objects.AddRange(GameObject.FindGameObjectsWithTag("paper"));
+                //List<GameObject> objects = new List<GameObject>();
+                papers.AddRange(GameObject.FindGameObjectsWithTag("paper"));
 
-                if (objects != null)
+                if (papers != null)
                 {
                     // ソート
-                    if(objects.Count >= 2)
+                    if(papers.Count >= 2)
                     {
                         // 紙の番号、昇順
-                        objects.Sort((a, b) => a.GetComponent<DivideTriangle>().GetNumber() - b.GetComponent<DivideTriangle>().GetNumber());
+                        papers.Sort((a, b) => a.GetComponent<DivideTriangle>().GetNumber() - b.GetComponent<DivideTriangle>().GetNumber());
                     }
 
                     
                     bDivide = false;
 
-                    for (int i = 0; i < objects.Count; i++)
+                    for (int i = 0; i < papers.Count; i++)
                     {
-                        var divideTriangle = objects[i].GetComponent<DivideTriangle>();
+                        var divideTriangle = papers[i].GetComponent<DivideTriangle>();
                         if (divideTriangle)
                         {
                             // 破る
@@ -95,5 +129,16 @@ public class CursorSystem : MonoBehaviour
     //切っているかどうかのフラグをゲットするための関数
     public bool GetBreakFlg() {
         return bDivide;
+    }
+
+
+    private void UpdatePage()
+    {
+        papers.Clear();
+
+        papers.AddRange(GameObject.FindGameObjectsWithTag("paper"));
+
+        // 紙の番号、昇順
+        papers.Sort((a, b) => a.GetComponent<DivideTriangle>().GetNumber() - b.GetComponent<DivideTriangle>().GetNumber());
     }
 }

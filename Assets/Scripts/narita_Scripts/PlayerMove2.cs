@@ -54,6 +54,10 @@ public class PlayerMove2 : MonoBehaviour
         {
             tex.text = "ゴール！";
         }
+        else if(collision.gameObject.gameObject.tag == "enemy")
+        {
+            tex.text = "失敗！";
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -61,6 +65,10 @@ public class PlayerMove2 : MonoBehaviour
         if (other.gameObject.gameObject.tag == "goal")
         {
             tex.text = "ゴール！";
+        }
+        else if (other.gameObject.gameObject.tag == "enemy")
+        {
+            tex.text = "失敗！";
         }
     }
 

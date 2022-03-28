@@ -31,6 +31,13 @@ public class TurnPaper_Script_Alpha : MonoBehaviour
     //レイが引っかかったら反応するようにする
     RaycastHit Hit;
 
+    float i = 1;
+
+    private void Awake()
+    {
+        Application.targetFrameRate = 60;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -75,11 +82,17 @@ public class TurnPaper_Script_Alpha : MonoBehaviour
                         g_nFirstPage = 0;
                     }
 
+                    //紙にめくるためのコンポーネントを持たせる
+                    PageList[g_nCountPage].AddComponent<Turn_Shader>();
+
                     //カウントを増やしていく
                     g_nCountPage++;
                 }
               
             }
+
+            //ソートして並び変える
+            PageList.Sort((a, b) => a.GetComponent<DivideTriangle>().GetNumber() - b.GetComponent<DivideTriangle>().GetNumber());
 
             g_bFirst_Load = true;
         }
@@ -87,11 +100,22 @@ public class TurnPaper_Script_Alpha : MonoBehaviour
         //ページ切り替え関数呼び出し
         SlidPaper();
 
+        //Aボタン押したら数値を変える
+        if (Input.GetKeyDown(KeyCode.C)) {
+            PageList[0].GetComponent<Turn_Shader>().SetPaperSta(1);
+        }
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            PageList[0].GetComponent<Turn_Shader>().SetPaperSta(2);
+        }
     }
 
-    //ページ切り替え用の関数
 
+
+
+    //ページ切り替え用の関数
     private void SlidPaper() {
+
         if (Input.GetKeyDown(KeyCode.UpArrow)){
             //ポインタ的な使い方(リストの先頭のオブジェクトを回避させる)
             SaveObject = PageList[0];
@@ -99,7 +123,7 @@ public class TurnPaper_Script_Alpha : MonoBehaviour
             PageList.RemoveAt(0);
 
             //場所を変える
-            SaveObject.transform.position = new Vector3(0.0f, 0.0f,(0.05f * g_nCountPage));
+            SaveObject.transform.position = new Vector3(0.0f, 0.0f,(0.05f * (g_nCountPage)));
             //リストの最後尾に追加する
             PageList.Add(SaveObject);
 
@@ -112,20 +136,21 @@ public class TurnPaper_Script_Alpha : MonoBehaviour
                 //変数にそれぞれの座標を代入する
                 pos = PageList[i].transform.position;
                 //少しずらす
-                pos.z += 0.05f;
+                pos.z -= 0.05f;
                 //ずらした結果を代入する
                 PageList[i].transform.position = pos;
             }
 
             //ページの先頭が移動したのと同じだけ数値を変える
-            //上を押すと後ろに行き少しずつ前に戻っていくのでマイナスしていく(先頭のやつを一番後ろに送る)
-            g_nFirstPage--;
-            //0より小さくなったら最後尾に行くために数値を多きする
-            if (g_nFirstPage < 0)
+            //下を押すと前に行き少しずつ後ろに進んでいくのでプラスしていく（最後尾のやつを前に持ってくる）
+            g_nFirstPage++;
+            if (g_nFirstPage > (g_nCountPage - 1))
             {
-                //マイナス1するのは0から始めているため
-                g_nFirstPage = (g_nCountPage - 1);
+                g_nFirstPage = 0;
             }
+
+            //最後にシェーダーの情報を元に戻す
+            //SaveObject.GetComponent<Renderer>().material.SetFloat("_Flip", 1);
 
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow)) {
@@ -149,17 +174,88 @@ public class TurnPaper_Script_Alpha : MonoBehaviour
                 //変数にそれぞれの座標を代入する
                 pos = PageList[i].transform.position;
                 //少しずらす
-                pos.z -= 1.0f;
+                pos.z += 0.05f;
                 //ずらした結果を代入する
                 PageList[i].transform.position = pos;
             }
 
             //ページの先頭が移動したのと同じだけ数値を変える
-            //下を押すと前に行き少しずつ後ろに進んでいくのでプラスしていく（最後尾のやつを前に持ってくる）
-            g_nFirstPage++;
-            if (g_nFirstPage > (g_nCountPage - 1))
+            //上を押すと後ろに行き少しずつ前に戻っていくのでマイナスしていく(先頭のやつを一番後ろに送る)
+            g_nFirstPage--;
+            //0より小さくなったら最後尾に行くために数値を多きする
+            if (g_nFirstPage < 0)
             {
-                g_nFirstPage = 0;
+                //マイナス1するのは0から始めているため
+                g_nFirstPage = (g_nCountPage - 1);
+            }
+        }
+
+        //エンターを押したら並び順が元通りに戻る
+        if (Input.GetKeyDown(KeyCode.Space) && g_nFirstPage != 0)
+        {
+
+            //少しずつずらせるようなカウント
+            int ShiftCount = 0;
+
+            //座標を変更できる用の変数を用意する
+            Vector3 pos;
+
+            //一番手前(初期)のページよりも後ろの人たちをまずは移動させる
+            for (int i = g_nFirstPage; i < g_nCountPage; i++, ShiftCount++)
+            {
+                //リストの情報を退避させる
+                SaveObject = PageList[i];
+
+                //そこのリストの情報を消す
+                PageList.RemoveAt(i);
+
+                //変数にそれぞれの座標を代入する
+                pos = SaveObject.transform.position;
+
+                //番号に応じた分の距離を移動させる
+                pos.z += (0.05f * g_nFirstPage);
+
+                //計算した距離を適用させる
+                SaveObject.transform.position = pos;
+
+
+                //リストの並び順も変えなければならない
+                //リストの先頭に追加する
+                PageList.Insert(ShiftCount, SaveObject);
+
+            }
+
+            //一番手前(初期)のページよりも前にいる人たちを移動させる
+            for (int i = (g_nCountPage - g_nFirstPage); i < g_nCountPage; i++, ShiftCount++)
+            {
+                //リストの移動の為に代入する
+                SaveObject = PageList[i];
+
+                //リストにあったものを削除する
+                PageList.RemoveAt(i);
+
+                //変数にそれぞれの座標を代入する
+                pos = SaveObject.transform.position;
+
+                //番号に応じた分の距離を移動させる(初期ページのあった位置分足す)
+                pos.z -= (0.05f * (g_nCountPage - g_nFirstPage));
+
+                //計算した距離を適用させる
+                SaveObject.transform.position = pos;
+
+                //リストの並び順も変えなければならない
+                //リストの最後尾に追加する
+                PageList.Insert(ShiftCount, SaveObject);
+            }
+
+            //ページはリセットされるため0にする
+            g_nFirstPage = 0;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Return)) {
+            for (int i = 0;i < g_nCountPage ;i++) {
+                Debug.Log(i,PageList[i]);
+                Debug.Log(99,SaveObject);
             }
         }
     }

@@ -643,6 +643,7 @@ MonoBehaviour:
   moveSpeed: 2
   applySpeed: 0.2
   jump: 5
+  refCamera: {fileID: 0}
   eCharaMove: 0
   isjump: 0
 --- !u!95 &1186470062

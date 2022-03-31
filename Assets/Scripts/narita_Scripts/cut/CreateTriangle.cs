@@ -18,15 +18,15 @@ public class CreateTriangle : MonoBehaviour
     void CreateMesh()
     {
         var uvs1 = new List<Vector2>();         // 新しく生成するオブジェクトのUV座標のリスト
-        var vertices1 = new List<Vector3>();   // 新しく生成するオブジェクトの頂点のリスト
+        var vertices1 = new List<Vector3>();    // 新しく生成するオブジェクトの頂点のリスト
         var triangles1 = new List<int>();       // 新しく生成するオブジェクトの頂点数のリスト
         var normals1 = new List<Vector3>();     // 新しく生成するオブジェクトの法線情報のリスト
 
         // 頂点座標
         vertices1.Add(new Vector3(-paperSizeX,  paperSizeY, 0.0f));  // 左上
-        vertices1.Add(new Vector3( paperSizeX,  paperSizeY, 0.0f));   // 右上
+        vertices1.Add(new Vector3( paperSizeX,  paperSizeY, 0.0f));  // 右上
         vertices1.Add(new Vector3( paperSizeX, -paperSizeY, 0.0f));  // 右下
-        vertices1.Add(new Vector3(-paperSizeX, -paperSizeY, 0.0f)); // 左下
+        vertices1.Add(new Vector3(-paperSizeX, -paperSizeY, 0.0f));  // 左下
         // uv
         uvs1.Add(new Vector2(0, 1));
         uvs1.Add(new Vector2(1, 1));

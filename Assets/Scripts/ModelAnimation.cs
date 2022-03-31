@@ -53,6 +53,7 @@ public class ModelAnimation : MonoBehaviour
 		//	anim.CrossFade("Stand-by", 0);
 		//}
 	//}
+
 	public void SetAnim(string name)
 	{
 		anim.CrossFade(name, 0);

@@ -15,48 +15,53 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMove : MonoBehaviour
 {
-	[SerializeField] public bool onGround;					// 陸上か空中か
+	[SerializeField] public bool onGround;                  // 陸上か空中か
 	[SerializeField] private Vector3 velocity;              // 移動方向
 	[SerializeField] private float moveSpeed = 0.01f;        // 移動速度
 	[SerializeField] private float applySpeed = 0.2f;       // 振り向きの適用速度
 	[SerializeField] private float jump = 5.0f;
 	[SerializeField] private Camera refCamera;  // カメラの水平回転を参照する用
 
-    private Rigidbody rb;
-	//private ModelAnimation animation;
+	private Rigidbody rb;
+	private ModelAnimation animation;
 
-    public EMoveCharacter eCharaMove;
+	public EMoveCharacter eCharaMove;
 	public bool isjump;
 
 	Camera mainCamera;
 	public enum EMoveCharacter
-    {
-        STOP_MOVE = 0,
-        RIGHT_MOVE,
-        LEFT_MOVE,
+	{
+		STOP_MOVE = 0,
+		RIGHT_MOVE,
+		LEFT_MOVE,
 
 
-        MAX_MOVE
-    }
+		MAX_MOVE
+	}
 
-    void Start()
-    {
+	void Start()
+	{
 		onGround = true;
 		rb = GetComponent<Rigidbody>();
-		//animation = GetComponent<ModelAnimation>();
-        eCharaMove = EMoveCharacter.STOP_MOVE;
-        isjump = false;
-		mainCamera = Camera.main;
-        //rb.constraints = RigidbodyConstraints.FreezeRotation;
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //if(Input.GetAxis("Vertical") > 0)
-        //{
-        //    Debug.LogWarning("");
-        //}
+		animation = null;
+		var check = GetComponent<ModelAnimation>();
+		if (check != null)
+			animation = GetComponent<ModelAnimation>();
+
+		eCharaMove = EMoveCharacter.STOP_MOVE;
+		isjump = false;
+		mainCamera = Camera.main;
+		//rb.constraints = RigidbodyConstraints.FreezeRotation;
+	}
+
+	// Update is called once per frame
+	void Update()
+	{
+		//if(Input.GetAxis("Vertical") > 0)
+		//{
+		//    Debug.LogWarning("");
+		//}
 
 		velocity = Vector3.zero;
 		if ((Input.GetKeyDown(KeyCode.Space) || Input.GetAxis("Vertical") > 0) && !isjump && onGround)
@@ -68,34 +73,37 @@ public class PlayerMove : MonoBehaviour
 		else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") < 0)
 		{
 			eCharaMove = EMoveCharacter.RIGHT_MOVE;
-            Debug.LogWarning("RIGHT_MOVE");
+			Debug.LogWarning("RIGHT_MOVE");
 		}
 		else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") > 0)
 		{
 			eCharaMove = EMoveCharacter.LEFT_MOVE;
-            Debug.LogWarning("LEFT_MOVE");
+			Debug.LogWarning("LEFT_MOVE");
 		}
 		else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical") < 0)
 		{
 			eCharaMove = EMoveCharacter.STOP_MOVE;
-            Debug.LogWarning("STOP_MOVE");
-        }
+			Debug.LogWarning("STOP_MOVE");
+		}
 
-        switch (eCharaMove)
-        {
-            case EMoveCharacter.RIGHT_MOVE:
-				//animation.SetAnim("Walk");
+		switch (eCharaMove)
+		{
+			case EMoveCharacter.RIGHT_MOVE:
+				if (animation != null)
+					animation.SetAnim("Walk");
 				velocity.x -= 1;
-                break;
-            case EMoveCharacter.LEFT_MOVE:
-				//animation.SetAnim("Walk");
+				break;
+			case EMoveCharacter.LEFT_MOVE:
+				if (animation != null)
+					animation.SetAnim("Walk");
 				velocity.x += 1;
 				break;
-            case EMoveCharacter.STOP_MOVE:
-				//animation.SetAnim("Stand-by");
+			case EMoveCharacter.STOP_MOVE:
+				if (animation != null)
+					animation.SetAnim("Stand-by");
 				velocity.x = 0;
 				break;
-        }
+		}
 
 		// 速度ベクトルの長さを1秒でmoveSpeedだけ進むように調整します
 		velocity = velocity.normalized * moveSpeed * Time.deltaTime;
@@ -147,23 +155,23 @@ public class PlayerMove : MonoBehaviour
 
 	//地面に接触したらonGroundをtrue、inJumpingをfalseにする
 	void OnCollisionEnter(Collision col)
-    {
-        if (col.gameObject.tag == "Ground")
-        {
+	{
+		if (col.gameObject.tag == "Ground")
+		{
 			Debug.Log($"CollisionEnter : Ground");
-            onGround = true;
+			onGround = true;
 			isjump = false;
-            Destroy(gameObject, 0.2f);
-        }
-        
-        //if (col.gameObject.tag == "Player")
-        //{
-            
-        //    if (Input.GetKey(KeyCode.F6))
-        //    {
-        //        SceneManager.LoadScene("Title");
-        //    }
-        //}
-    }  
+			Destroy(gameObject, 0.2f);
+		}
+
+		//if (col.gameObject.tag == "Player")
+		//{
+
+		//    if (Input.GetKey(KeyCode.F6))
+		//    {
+		//        SceneManager.LoadScene("Title");
+		//    }
+		//}
+	}
 }
 

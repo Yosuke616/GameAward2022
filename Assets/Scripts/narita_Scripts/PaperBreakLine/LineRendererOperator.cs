@@ -10,7 +10,7 @@ public class LineRendererOperator : MonoBehaviour
     // ラインレンダラー
     [SerializeField] private LineRenderer lineRenderer;
     // 座標リストのサイズ
-    [SerializeField] private int positionCount;
+    //[SerializeField] private int positionCount;
     [SerializeField] List<Vector3> breakline = new List<Vector3>();
     // カメラとの距離
     //private float posZ;
@@ -23,7 +23,7 @@ public class LineRendererOperator : MonoBehaviour
         lineRenderer = GetComponent<LineRenderer>();
 
         lineRenderer.useWorldSpace = false;
-        positionCount = 0;
+        //positionCount = 0;
 
         // メインカメラ
         mainCamera = Camera.main;

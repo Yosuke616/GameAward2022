@@ -16,7 +16,7 @@ public class DivideTriangle : MonoBehaviour
     [SerializeField] List<int> cuttingVertexNumbers;
     // メッシュの頂点座標群(デバッグ用)
     [SerializeField] List<Vector3> debugList = new List<Vector3>();
-    
+
 
     // 初期化
     void Start()
@@ -29,6 +29,7 @@ public class DivideTriangle : MonoBehaviour
         cuttingVertexNumbers = new List<int>();
     }
 
+
     /* 破る処理
      * 戻り値:メッシュを一度でも三角形分割していたらtrue
      */
@@ -39,6 +40,8 @@ public class DivideTriangle : MonoBehaviour
         Vector3 Start, End;
         Start = MousePoints[MousePoints.Count - 2];
         End = MousePoints[MousePoints.Count - 1];
+        // 始点-終点ベクトル
+        var CurrentEdge = End - Start;
 
         // メッシュを一度でも三角形分割していたらtrue
         bool bDivide = false;
@@ -56,11 +59,10 @@ public class DivideTriangle : MonoBehaviour
         int e = 0;
 
         // 三角形の頂点格納先
-        Vector3 p1, p2, p3;
+        Vector3[] p = new Vector3[3];
+        int[] n = new int[3];
         // 辺と交わっているかどうか
         bool[] IsCrossing = new bool[3];
-        // 線分の終点が内側にあるかどうか
-        bool bInside;
 
         // 新しく設定するメッシュ情報
         List<Vector3> vertices = new List<Vector3>();   // 頂点座標
@@ -76,694 +78,252 @@ public class DivideTriangle : MonoBehaviour
         normals.AddRange(attachedMesh.normals);
 
         // 三角形と線分の交点の座標と頂点番号を保持する
-        List<Vector3> crossVertices = new List<Vector3>();
+        List<Vector3> tempCrosses = new List<Vector3>();
         List<int> crossVertexNumbers = new List<int>();
 
 
-        // ---三角形の頂点から始めるかどうか
+        // ---破り始めの座標と三角形の頂点座標がかぶっているか
         first = true;
-        for (int i = 0; i < attachedMesh.triangles.Length; i += 3)
+        if (vertices.Contains(Start)) first = false;
+
+        // index=0の三角形 0,1,2    index=3の三角形 3,4,5   index=6の三角形 6,7,8
+        for (int index = 0; index < attachedMesh.triangles.Length; index += 3)
         {
+            // 交差フラグ３辺
+            IsCrossing[0] = IsCrossing[1] = IsCrossing[2] = false;
+            cross1 = cross2 = Vector3.zero;
+
             //三角形の頂点を取得
-            p1 = attachedMesh.vertices[attachedMesh.triangles[i]];
-            p2 = attachedMesh.vertices[attachedMesh.triangles[i + 1]];
-            p3 = attachedMesh.vertices[attachedMesh.triangles[i + 2]];
+            p[0] = attachedMesh.vertices[attachedMesh.triangles[index]];
+            p[1] = attachedMesh.vertices[attachedMesh.triangles[index + 1]];
+            p[2] = attachedMesh.vertices[attachedMesh.triangles[index + 2]];
+            // 三角形の頂点番号取得
+            n[0] = attachedMesh.triangles[index];
+            n[1] = attachedMesh.triangles[index + 1];
+            n[2] = attachedMesh.triangles[index + 2];
 
-            if (Start.Equals(p1) || Start.Equals(p2) || Start.Equals(p3))
+            #region ---①三角形と線分との「交点」を求める
+            for (int cnt = 0; cnt < 3; cnt++)
             {
-                // 始点がメッシュの頂点の座標と等しい
-                first = false;
-            }
-        }
+                // 交点までの距離の比率
+                float t1, t2;
+                // 交差フラグ
+                bool bCross = false;
+                // 三角形の１辺
+                Vector3 triangleEdge = p[(cnt + 1) % 3] - p[cnt];
 
-        // １回目
-        if (first == true)
-        {
-            // i=0の三角形 0,1,2    i=3の三角形 3,4,5   i=6の三角形 6,7,8
-            for (int i = 0; i < attachedMesh.triangles.Length; i += 3)
-            {
-                // 交差したかのフラグを初期化
-                IsCrossing[0] = IsCrossing[1] = IsCrossing[2] = false;
-                cross1 = cross2 = Vector3.zero;
-                bInside = true;
+                // 交差確認
+                bCross = CalcCrossVertex(Start, p[cnt], CurrentEdge, triangleEdge, out t1, out t2);
 
-                //三角形の頂点を取得
-                p1 = attachedMesh.vertices[attachedMesh.triangles[i]];
-                p2 = attachedMesh.vertices[attachedMesh.triangles[i + 1]];
-                p3 = attachedMesh.vertices[attachedMesh.triangles[i + 2]];
-                // 三角形の頂点番号取得
-                int n1 = attachedMesh.triangles[i];
-                int n2 = attachedMesh.triangles[i + 1];
-                int n3 = attachedMesh.triangles[i + 2];
-
-                #region ---①三角形と線分との「交点」を求める
-                for (int nVertexNum = 0; nVertexNum < 3; nVertexNum++)
+                // 交差判定
+                if (bCross)
                 {
-                    // 線分のベクトル、辺のベクトル、始点１から始点２までのベクトル
-                    Vector3 v1, v2, v;
-                    // 交点までの距離の比率
-                    float t1, t2;
-                    // 線分のベクトル(マウスで決めた2点間のベクトルのため固定)
-                    v1 = End - Start;
-
-                    // 調べる辺を決める
-                    switch (nVertexNum)
+                    // ２つ目の交点の場合
+                    if (IsCrossing[0] || IsCrossing[1])
                     {
-                        case 0: // ①p1-p2の辺をまたいでいるか
-                            v = p1 - Start; // 始点１から始点２までのベクトル
-                            v2 = p2 - p1;   // 頂点１から頂点２までのベクトル
-                            break;
-                        case 1: // ②p2-p3の辺をまたいでいるか
-                            v = p2 - Start;
-                            v2 = p3 - p2;   // 頂点２から頂点３までのベクトル
-                            break;
-                        case 2: // ③p3-p1の辺をまたいでいるか
-                            v = p3 - Start;
-                            v2 = p1 - p3;   // 頂点３から頂点１までのベクトル
-                            break;
+                        // ２つ目の交点の座標を求める
+                        cross2 = Start + (t1 * CurrentEdge);
+                        // 交差フラグON
+                        IsCrossing[cnt] = true;
 
-                        default: continue;
-                    }
+                        // 交点と始点が同じ位置の場合、交差判定を取り消す
+                        if (Start.Equals(cross2)) IsCrossing[cnt] = false;
 
-                    // それぞれの線分の始点から交点になりうる座標までのベクトルの比率を求める
-                    t1 = Vector3.Cross(v, v2).z / Vector3.Cross(v1, v2).z;
-                    t2 = Vector3.Cross(v, v1).z / Vector3.Cross(v1, v2).z;
-
-                    // 交差判定
-                    if ((0 <= t1 && t1 <= 1) && (0 <= t2 && t2 <= 1))
-                    {
-                        // ２つ目の交点の場合
-                        if (IsCrossing[0] == true || IsCrossing[1] == true)
+                        // tempCrossesとcross2がかぶっていない場合、頂点リストに追加
+                        if(tempCrosses.Contains(cross2))
                         {
-                            // ２つ目の交点の座標を求める
-                            cross2 = Start + (t1 * v1);
-
-                            // 交差フラグON
-                            IsCrossing[nVertexNum] = true;
-                            // 交点と始点が同じ位置の場合、交差判定を取り消す
-                            if (Start.Equals(cross2)) IsCrossing[nVertexNum] = false;
-
-                            // 頂点情報がかぶっていない場合、頂点リストに追加
-                            bool sameVertex = false;
-                            for (int n = 0; n < crossVertices.Count; n++)
-                            {
-                                if (crossVertices[n].Equals(cross2))
-                                {
-                                    // かぶっていた場合、元からある頂点の番号に設定する
-                                    c2 = crossVertexNumbers[n];
-                                    sameVertex = true;
-                                    break;
-                                }
-                            }
-                            if (!sameVertex)
-                            {
-                                // 交点2を追加
-                                vertices.Add(cross2);
-                                uvs.Add(CalcUV(nVertexNum, i, t2));
-                                normals.Add(attachedMesh.normals[attachedMesh.triangles[i]]);
-                                c2 = vertices.Count - 1;
-
-                                // 交点を保存しておく
-                                crossVertices.Add(cross2);
-                                crossVertexNumbers.Add(c2);
-                            }
-
+                            // かぶっていた場合、元からある頂点の番号に設定する
+                            c2 = crossVertexNumbers[tempCrosses.IndexOf(cross2)];
                         }
-                        // １つ目の交点の場合
                         else
                         {
-                            // 交点を求める
-                            cross1 = Start + (t1 * v1);
-                            // 交差フラグON
-                            IsCrossing[nVertexNum] = true;
-                            // 交点と始点が同じ位置の場合、交差判定を取り消す
-                            if (Start.Equals(cross1)) IsCrossing[nVertexNum] = false;
+                            // 交点2を追加
+                            vertices.Add(cross2);
+                            uvs.Add(CalcUV(cnt, index, t2));
+                            normals.Add(attachedMesh.normals[attachedMesh.triangles[index]]);
+                            c2 = vertices.Count - 1;
 
-                            // 頂点情報がかぶっていない場合、頂点リストに追加
-                            bool sameVertex = false;
-                            for (int n = 0; n < crossVertices.Count; n++)
+                            // 交点を保存しておく
+                            tempCrosses.Add(cross2);
+                            crossVertexNumbers.Add(c2);
+                        }
+                    }
+                    // １つ目の交点の場合
+                    else
+                    {
+                        // 交点を求める
+                        cross1 = Start + (t1 * CurrentEdge);
+                        // 交差フラグON
+                        IsCrossing[cnt] = true;
+                        // 交点と始点が同じ位置の場合、交差判定を取り消す
+                        if (Start.Equals(cross1))
+                        {
+                            IsCrossing[cnt] = false;
+                            //****
+                            if (!first)
                             {
-                                if (crossVertices[n].Equals(cross1))
+                                // 切断パスと被っているはずなので
+                                if(cuttingPath.Contains(cross1))
                                 {
-                                    // かぶっていた場合、元からある頂点の番号に設定する
-                                    c1 = crossVertexNumbers[n];
-                                    sameVertex = true;
-                                    break;
+                                    tempCrosses.Add(cross1);
+                                    crossVertexNumbers.Add(cuttingVertexNumbers[cuttingPath.IndexOf(cross1)]);
                                 }
                             }
-                            if (!sameVertex)
-                            {
-                                // 頂点リストにを追加
-                                vertices.Add(cross1);
-                                uvs.Add(CalcUV(nVertexNum, i, t2));
-                                normals.Add(attachedMesh.normals[attachedMesh.triangles[i]]);
-                                c1 = vertices.Count - 1;
+                        }
 
-                                // 交点を保存しておく
-                                crossVertices.Add(cross1);
-                                crossVertexNumbers.Add(c1);
-                            }
+                        // 頂点情報がかぶっていない場合、頂点リストに追加
+                        if(tempCrosses.Contains(cross1))
+                        {
+                            // かぶっていた場合、元からある頂点の番号に設定する
+                            c1 = crossVertexNumbers[tempCrosses.IndexOf(cross1)];
+                        }
+                        else
+                        {
+                            // 頂点リストにを追加
+                            vertices.Add(cross1);
+                            uvs.Add(CalcUV(cnt, index, t2));
+                            normals.Add(attachedMesh.normals[attachedMesh.triangles[index]]);
+                            c1 = vertices.Count - 1;
+
+                            // 交点を保存しておく
+                            tempCrosses.Add(cross1);
+                            crossVertexNumbers.Add(c1);
                         }
                     }
                 }
-                #endregion
+            }
+            #endregion
 
-                #region ---②終点が三角形の内部にあるかないか判定
-                //線上は外側とみなします。
-                Vector3 Area1 = p2 - p1; Vector3 AreaP1 = End - p1;
-                Vector3 Area2 = p3 - p2; Vector3 AreaP2 = End - p2;
-                Vector3 Area3 = p1 - p3; Vector3 AreaP3 = End - p3;
-                Vector3 cr1 = Vector3.Cross(Area1, AreaP1);
-                Vector3 cr2 = Vector3.Cross(Area2, AreaP2);
-                Vector3 cr3 = Vector3.Cross(Area3, AreaP3);
-                //内積で順方向か逆方向か調べる
-                float dot_12 = Vector3.Dot(cr1, cr2);
-                float dot_13 = Vector3.Dot(cr1, cr3);
-                if (dot_12 > 0 && dot_13 > 0)
+            #region ---②終点が三角形の内部にあるかないか判定
+            bool bInside = IsInsideTriangle(p[0], p[1], p[2], End);
+            // 内側にある場合、カーソルの終点を頂点として登録する
+            if (bInside)
+            {
+                //--- 内側判定
+
+                // 破るフラグON
+                bDivide = true;
+
+                // 終点を頂点として追加する
+                if(tempCrosses.Contains(End))
                 {
-                    //***** 内側
-                    bInside = true;
-
-                    bDivide = true;
-
-                    bool sameVertex = false;
-                    for (int n = 0; n < crossVertices.Count; n++)
-                    {
-                        if (crossVertices[n].Equals(End))
-                        {
-                            // かぶっていた場合、元からある頂点の番号に設定する
-                            e = crossVertexNumbers[n];
-                            sameVertex = true;
-                            break;
-                        }
-                    }
-                    if(!sameVertex)
-                    {
-                        // 終点を追加
-                        vertices.Add(End);
-                        uvs.Add(CalcEndingPointUV(i, End));
-                        normals.Add(attachedMesh.normals[attachedMesh.triangles[i]]);
-                        e = vertices.Count - 1;
-                    }
+                    // かぶっていた場合、元からある頂点の番号に設定する
+                    e = crossVertexNumbers[tempCrosses.IndexOf(End)];
                 }
                 else
                 {
-                    //***** 外側
-                    bInside = false;
+                    // 終点を追加
+                    vertices.Add(End);
+                    uvs.Add(CalcEndingPointUV(index, End));
+                    normals.Add(attachedMesh.normals[attachedMesh.triangles[index]]);
+                    e = vertices.Count - 1;
                 }
-                #endregion
+            }
+            #endregion
 
-                #region ---③終点が「内側」の処理
-                if (bInside == true)
+            if(first)
+            {
+                //=== 初回の破る処理のみ
+                if (bInside)
                 {
+                    //--- 終点が内側にある
+
                     //*** 「交差していない」
                     if (!IsCrossing[0] && !IsCrossing[1] && !IsCrossing[2])
                     {
                         // 現在の三角形の状態のまま保存
-                        for (int nVertexNum = 0; nVertexNum < 3; nVertexNum++)
-                        {
-                            triangles.Add(attachedMesh.triangles[i + nVertexNum]);
-                        }
+                        for (int cnt = 0; cnt < 3; cnt++)
+                            triangles.Add(attachedMesh.triangles[index + cnt]);
                     }
                     //*** 「１辺」と交わっている
                     else
                     {
                         // 三角形の頂点座標３つ、「交差した座標」、「終点」の計5つの頂点で三角形を「３つ」作る
-
-                        // 頂点のつなげ方を決める
-                        if (IsCrossing[0])
-                        {
-                            //Debug.Log("p1-p2の辺が交差していいる");
-                            // p1-p2の辺1が交差していた場合
-
-                            // １個目の三角形
-                            triangles.Add(e); triangles.Add(n1); triangles.Add(c1);
-                            // ２個目の三角形
-                            triangles.Add(e); triangles.Add(c1); triangles.Add(n2);
-                            // ３個目の三角形
-                            triangles.Add(e); triangles.Add(n2); triangles.Add(n3);
-                            // ４個目の三角形
-                            triangles.Add(e); triangles.Add(n3); triangles.Add(n1);
-                        }
-                        else if (IsCrossing[1])
-                        {
-                            //Debug.Log("p2-p3の辺が交差している");
-
-                            // １個目の三角形
-                            triangles.Add(e); triangles.Add(n2); triangles.Add(c1);
-                            // ２個目の三角形
-                            triangles.Add(e); triangles.Add(c1); triangles.Add(n3);
-                            // ３個目の三角形
-                            triangles.Add(e); triangles.Add(n3); triangles.Add(n1);
-                            // ４個目の三角形
-                            triangles.Add(e); triangles.Add(n1); triangles.Add(n2);
-                        }
-                        else if (IsCrossing[2])
-                        {
-                            //Debug.Log("p3-p1の辺が交差している");
-
-                            // １個目の三角形
-                            triangles.Add(e); triangles.Add(n3); triangles.Add(c1);
-                            // ２個目の三角形
-                            triangles.Add(e); triangles.Add(c1); triangles.Add(n1);
-                            // ３個目の三角形
-                            triangles.Add(e); triangles.Add(n1); triangles.Add(n2);
-                            // ４個目の三角形
-                            triangles.Add(e); triangles.Add(n2); triangles.Add(n3);
-                        }
-                        else
-                        {
-                            Debug.LogError("エラー発生");
-                            triangles.Add(n1); triangles.Add(n2); triangles.Add(n3);
-                        }
+                        Dividing_one_triangle_into_Four_triangles(ref triangles, IsCrossing, n, e, c1);
                     }
                 }
-                #endregion
-
-                #region ---④終点が「外側」の処理
-                if (bInside == false)
+                else
                 {
+                    //--- 終点が外側にある
                     //*** 線分が三角形の「２辺」と交わっている
                     if ((IsCrossing[0] && IsCrossing[1]) || (IsCrossing[1] && IsCrossing[2]) || (IsCrossing[2] && IsCrossing[0]))
                     {
                         // 三角形の頂点座標３つ、交差した座標２つの計5つの頂点で三角形を「３つ」作る
-
-                        // 頂点のつなぎ方を決める
-                        if (IsCrossing[0] && IsCrossing[1])
-                        {
-                            //Debug.Log("辺p1-p2と辺p2-p3で交わっている");
-
-                            // １個目の三角形
-                            triangles.Add(c2); triangles.Add(c1); triangles.Add(n2);
-                            // ２個目の三角形
-                            triangles.Add(c2); triangles.Add(n1); triangles.Add(c1);
-                            // ３個目の三角形
-                            triangles.Add(c2); triangles.Add(n3); triangles.Add(n1);
-                        }
-                        else if (IsCrossing[1] && IsCrossing[2])
-                        {
-                            //Debug.Log("辺p2-p3と辺p3-p1で交わっている");
-
-                            // １個目の三角形
-                            triangles.Add(c2); triangles.Add(c1); triangles.Add(n3);
-                            // ２個目の三角形
-                            triangles.Add(c2); triangles.Add(n2); triangles.Add(c1);
-                            // ３個目の三角形
-                            triangles.Add(c2); triangles.Add(n1); triangles.Add(n2);
-                        }
-                        else if (IsCrossing[2] && IsCrossing[0])
-                        {
-                            //Debug.Log("辺p3-p1と辺p1-p2で交わっている");
-                            // １個目の三角形
-                            triangles.Add(c2); triangles.Add(n1); triangles.Add(c1);
-                            // ２個目の三角形
-                            triangles.Add(c2); triangles.Add(c1); triangles.Add(n2);
-                            // ３個目の三角形
-                            triangles.Add(c2); triangles.Add(n2); triangles.Add(n3);
-                        }
+                        Dividing_one_triangle_into_Three_triangles_by_two_intersections(ref triangles, IsCrossing, n, c1, c2);
                     }
                     //*** 線分が三角形と「交わっていない」
                     else
                     {
                         // 現在の三角形の状態のまま保存
-                        for (int nVertexNum = 0; nVertexNum < 3; nVertexNum++)
-                        {
-                            triangles.Add(attachedMesh.triangles[i + nVertexNum]);
-                        }
+                        for (int cnt = 0; cnt < 3; cnt++)
+                            triangles.Add(attachedMesh.triangles[index + cnt]);
                     }
                 }
-                #endregion
-
             }
-        }
-        // 2回目から(始点が頂点)
-        else
-        {
-            // i=0の三角形 0,1,2    i=3の三角形 3,4,5   i=6の三角形 6,7,8
-            for (int i = 0; i < attachedMesh.triangles.Length; i += 3)
+            else
             {
-                // 交差したかのフラグを初期化
-                IsCrossing[0] = IsCrossing[1] = IsCrossing[2] = false;
-                cross1 = cross2 = Vector3.zero;
-                bInside = true;
-
-                //三角形の頂点を取得
-                p1 = attachedMesh.vertices[attachedMesh.triangles[i]];
-                p2 = attachedMesh.vertices[attachedMesh.triangles[i + 1]];
-                p3 = attachedMesh.vertices[attachedMesh.triangles[i + 2]];
-                // 三角形の頂点番号取得
-                int n1 = attachedMesh.triangles[i];
-                int n2 = attachedMesh.triangles[i + 1];
-                int n3 = attachedMesh.triangles[i + 2];
-
-                #region ---①三角形と線分との「交点」を求める
-                for (int nVertexNum = 0; nVertexNum < 3; nVertexNum++)
+                //=== 破る処理２回目以降
+                if (bInside)
                 {
-                    // 線分のベクトル、辺のベクトル、始点１から始点２までのベクトル
-                    Vector3 v1, v2, v;
-                    // 交点までの距離の比率
-                    float t1, t2;
-                    // 線分のベクトル(マウスで決めた2点間のベクトルのため固定)
-                    v1 = End - Start;
+                    //--- 終点が内側にある
 
-                    // 調べる辺を決める
-                    switch (nVertexNum)
-                    {
-                        case 0: // ①p1-p2の辺をまたいでいるか
-                            v = p1 - Start; // 始点１から始点２までのベクトル
-                            v2 = p2 - p1;   // 頂点１から頂点２までのベクトル
-                            break;
-                        case 1: // ②p2-p3の辺をまたいでいるか
-                            v = p2 - Start;
-                            v2 = p3 - p2;   // 頂点２から頂点３までのベクトル
-                            break;
-                        case 2: // ③p3-p1の辺をまたいでいるか
-                            v = p3 - Start;
-                            v2 = p1 - p3;   // 頂点３から頂点１までのベクトル
-                            break;
-
-                        default: continue;
-                    }
-
-                    // それぞれの線分の始点から交点になりうる座標までのベクトルの比率を求める
-                    t1 = Vector3.Cross(v, v2).z / Vector3.Cross(v1, v2).z;
-                    t2 = Vector3.Cross(v, v1).z / Vector3.Cross(v1, v2).z;
-
-                    // 交差判定
-                    if ((0 <= t1 && t1 <= 1) && (0 <= t2 && t2 <= 1))
-                    {
-                        // ２つ目の交点の場合
-                        if (IsCrossing[0] == true || IsCrossing[1] == true)
-                        {
-                            // ２つ目の交点の座標を求める
-                            cross2 = Start + (t1 * v1);
-
-                            // 交差フラグON
-                            IsCrossing[nVertexNum] = true;
-                            // 交点と始点が同じ位置の場合、交差判定を取り消す
-                            if (Start.Equals(cross2))
-                            {
-                                IsCrossing[nVertexNum] = false;
-
-                                // 切断パスと被っているはずなので
-                                for (int n = 0; n < cuttingPath.Count; n++)
-                                {
-                                    if (cuttingPath[n].Equals(cross2))
-                                    {
-                                        crossVertices.Add(cuttingPath[n]);
-                                        crossVertexNumbers.Add(cuttingVertexNumbers[n]);
-                                        break;
-                                    }
-                                }
-                            }
-
-                            // 頂点情報がかぶっていない場合、頂点リストに追加
-                            bool sameVertex = false;
-                            for (int n = 0; n < crossVertices.Count; n++)
-                            {
-                                if (crossVertices[n].Equals(cross2))
-                                {
-                                    // かぶっていた場合、元からある頂点の番号に設定する
-                                    c2 = crossVertexNumbers[n];
-                                    sameVertex = true;
-                                    break;
-                                }
-                            }
-                            // かぶっていなかったら追加
-                            if (!sameVertex)
-                            {
-                                // 交点2を追加
-                                vertices.Add(cross2);
-                                uvs.Add(CalcUV(nVertexNum, i, t2));
-                                normals.Add(attachedMesh.normals[attachedMesh.triangles[i]]);
-                                c2 = vertices.Count - 1;
-
-                                // 交点を保存しておく
-                                crossVertices.Add(cross2);
-                                crossVertexNumbers.Add(c2);
-
-                                //Debug.Log(cross2);
-                            }
-
-                        }
-                        // １つ目の交点の場合
-                        else
-                        {
-                            // 交点を求める
-                            cross1 = Start + (t1 * v1);
-                            // 交差フラグON
-                            IsCrossing[nVertexNum] = true;
-                            // 交点と始点が同じ位置の場合、交差判定を取り消す
-                            if (Start.Equals(cross1))
-                            {
-                                IsCrossing[nVertexNum] = false;
-
-                                // 切断パスと被っているはずなので
-                                for (int n = 0; n < cuttingPath.Count; n++)
-                                {
-                                    if (cuttingPath[n].Equals(cross1))
-                                    {
-                                        crossVertices.Add(cuttingPath[n]);
-                                        crossVertexNumbers.Add(cuttingVertexNumbers[n]);
-                                        break;
-                                    }
-                                }
-                            }
-
-                            bool sameVertex = false;
-                            // 頂点情報がかぶっていない場合、頂点リストに追加
-                            for (int n = 0; n < crossVertices.Count; n++)
-                            {
-                                if (crossVertices[n].Equals(cross1))
-                                {
-                                    // かぶっていた場合、元からある頂点の番号に設定する
-                                    c1 = crossVertexNumbers[n];
-                                    sameVertex = true;
-                                    break;
-                                }
-                            }
-                            if (!sameVertex)
-                            {
-                                // 頂点リストにを追加
-                                vertices.Add(cross1);
-                                uvs.Add(CalcUV(nVertexNum, i, t2));
-                                normals.Add(attachedMesh.normals[attachedMesh.triangles[i]]);
-                                c1 = vertices.Count - 1;
-
-                                // 交点を保存しておく
-                                crossVertices.Add(cross1);
-                                crossVertexNumbers.Add(c1);
-
-                                //Debug.Log(cross1);
-                            }
-                        }
-                    }
-                }
-                #endregion
-
-                #region ---②終点が三角形の内部にあるかないか判定
-                //線上は外側とみなします。
-                Vector3 Area1 = p2 - p1; Vector3 AreaP1 = End - p1;
-                Vector3 Area2 = p3 - p2; Vector3 AreaP2 = End - p2;
-                Vector3 Area3 = p1 - p3; Vector3 AreaP3 = End - p3;
-                Vector3 cr1 = Vector3.Cross(Area1, AreaP1);
-                Vector3 cr2 = Vector3.Cross(Area2, AreaP2);
-                Vector3 cr3 = Vector3.Cross(Area3, AreaP3);
-                //内積で順方向か逆方向か調べる
-                float dot_12 = Vector3.Dot(cr1, cr2);
-                float dot_13 = Vector3.Dot(cr1, cr3);
-                if (dot_12 > 0 && dot_13 > 0)
-                {
-                    //***** 内側
-                    bInside = true;
-
-                    bDivide = true;
-
-                    bool sameVertex = false;
-                    for (int n = 0; n < crossVertices.Count; n++)
-                    {
-                        if (crossVertices[n].Equals(End))
-                        {
-                            // かぶっていた場合、元からある頂点の番号に設定する
-                            e = crossVertexNumbers[n];
-                            sameVertex = true;
-                            break;
-                        }
-                    }
-                    if (!sameVertex)
-                    {
-                        // 終点を追加
-                        vertices.Add(End);
-                        uvs.Add(CalcEndingPointUV(i, End));
-                        normals.Add(attachedMesh.normals[attachedMesh.triangles[i]]);
-                        e = vertices.Count - 1;
-                    }
-                }
-                else
-                {
-                    //***** 外側
-                    bInside = false;
-                }
-                #endregion
-
-                #region ---③終点が「内側」の処理
-                if (bInside == true)
-                {
                     // パターン① 「交わっていない」
                     if (!IsCrossing[0] && !IsCrossing[1] && !IsCrossing[2])
                     {
-                        //Debug.Log("パターン①");
-
-                        // 頂点のつなげ方を決める
-                        // １個目の三角形
-                        triangles.Add(e); triangles.Add(n1); triangles.Add(n2);
-                        // ２個目の三角形
-                        triangles.Add(e); triangles.Add(n2); triangles.Add(n3);
-                        // ３個目の三角形
-                        triangles.Add(e); triangles.Add(n3); triangles.Add(n1);
+                        // 三角形の頂点座標３つ、「終点」の計4つの頂点で三角形を「３つ」作る
+                        Dividing_one_triangle_into_Three_triangles_by_center(ref triangles, n, e);
                     }
                     // パターン② 「１辺」と交わっている
                     else if (IsCrossing[0] || IsCrossing[1] || IsCrossing[2])
                     {
                         //Debug.Log("パターン②");
-
-                        // 頂点のつなげ方を決める
-                        if (IsCrossing[0])
-                        {
-                            // １つ目
-                            triangles.Add(e); triangles.Add(n1); triangles.Add(c1);
-                            // ２つ目
-                            triangles.Add(e); triangles.Add(c1); triangles.Add(n2);
-                            // ３つ目
-                            triangles.Add(e); triangles.Add(n2); triangles.Add(n3);
-                            // ４つ目
-                            triangles.Add(e); triangles.Add(n3); triangles.Add(n1);
-                        }
-                        else if (IsCrossing[1])
-                        {
-                            // １つ目
-                            triangles.Add(e); triangles.Add(n2); triangles.Add(c1);
-                            // ２つ目
-                            triangles.Add(e); triangles.Add(c1); triangles.Add(n3);
-                            // ３つ目
-                            triangles.Add(e); triangles.Add(n3); triangles.Add(n1);
-                            // ４つ目
-                            triangles.Add(e); triangles.Add(n1); triangles.Add(n2);
-                        }
-                        else if (IsCrossing[2])
-                        {
-                            // １つ目
-                            triangles.Add(e); triangles.Add(n3); triangles.Add(c1);
-                            // ２つ目
-                            triangles.Add(e); triangles.Add(c1); triangles.Add(n1);
-                            // ３つ目
-                            triangles.Add(e); triangles.Add(n1); triangles.Add(n2);
-                            // ４つ目
-                            triangles.Add(e); triangles.Add(n2); triangles.Add(n3);
-                        }
+                        Dividing_one_triangle_into_Four_triangles(ref triangles, IsCrossing, n, e, c1);
                     }
                     // 例外パターン
                     else
                     {
-                        Debug.Log("エラー");
+                        Debug.LogError("例外パターン");
                         // 現在の三角形の状態のまま保存
-                        for (int nVertexNum = 0; nVertexNum < 3; nVertexNum++)
-                        {
-                            triangles.Add(attachedMesh.triangles[i + nVertexNum]);
-                        }
+                        for (int cnt = 0; cnt < 3; cnt++)
+                            triangles.Add(attachedMesh.triangles[index + cnt]);
                     }
                 }
-                #endregion
-
-                #region ---④終点が「外側」の処理
-                else if (bInside == false)
+                else
                 {
+                    //--- 終点が外側
+
                     // パターン③ １辺だけが交わっている
                     if ((IsCrossing[0] && !IsCrossing[1] && !IsCrossing[2]) ||
                         (!IsCrossing[0] && IsCrossing[1] && !IsCrossing[2]) ||
                         (!IsCrossing[0] && !IsCrossing[1] && IsCrossing[2]))
                     {
-                        // 三角形を「２つ」に分ける
-                        //Debug.Log("パターン③");
+                        // 交点を基準に”２つ”に分ける
+                        Dividing_one_triangle_into_Two_triangles_by_intersection(ref triangles, IsCrossing, n, c1);
 
-
-                        // 頂点のつなげ方を決める
-                        if (IsCrossing[0])
-                        {
-                            // １つ目
-                            triangles.Add(c1); triangles.Add(n3); triangles.Add(n1);
-                            // ２つ目
-                            triangles.Add(c1); triangles.Add(n2); triangles.Add(n3);
-                        }
-                        else if (IsCrossing[1])
-                        {
-                            // １つ目
-                            triangles.Add(c1); triangles.Add(n1); triangles.Add(n2);
-                            // ２つ目
-                            triangles.Add(c1); triangles.Add(n3); triangles.Add(n1);
-                        }
-                        else if (IsCrossing[2])
-                        {
-                            // １つ目
-                            triangles.Add(c1); triangles.Add(n2); triangles.Add(n3);
-                            // ２つ目
-                            triangles.Add(c1); triangles.Add(n1); triangles.Add(n2);
-                        }
                     }
                     // パターン④ ２辺が交わっているとき
                     else if ((IsCrossing[0] && IsCrossing[1] && !IsCrossing[2]) ||
                              (!IsCrossing[0] && IsCrossing[1] && IsCrossing[2]) ||
                              (IsCrossing[0] && !IsCrossing[1] && IsCrossing[2]))
                     {
-                        // 三角形を「3つ」に分ける
-                        //Debug.Log("パターン④");
-
-                        // 頂点のつなげ方を決める
-                        if (IsCrossing[0] && IsCrossing[1])
-                        {
-                            // １つ目
-                            triangles.Add(c1); triangles.Add(n2); triangles.Add(c2);
-                            // ２つ目
-                            triangles.Add(c1); triangles.Add(c2); triangles.Add(n1);
-                            // 3つ目
-                            triangles.Add(c2); triangles.Add(n3); triangles.Add(n1);
-                        }
-                        else if (IsCrossing[1] && IsCrossing[2])
-                        {
-                            // １つ目
-                            triangles.Add(c1); triangles.Add(n3); triangles.Add(c2);
-                            // ２つ目
-                            triangles.Add(c1); triangles.Add(c2); triangles.Add(n2);
-                            // 3つ目
-                            triangles.Add(c2); triangles.Add(n1); triangles.Add(n2);
-                        }
-                        else if (IsCrossing[2] && IsCrossing[0])
-                        {
-                            // １つ目
-                            triangles.Add(n1); triangles.Add(c1); triangles.Add(c2);
-                            // ２つ目
-                            triangles.Add(c2); triangles.Add(c1); triangles.Add(n2);
-                            // 3つ目
-                            triangles.Add(c2); triangles.Add(n2); triangles.Add(n3);
-                        }
+                        // 二つの交点によって”３つ”の三角形に分割する
+                        Dividing_one_triangle_into_Three_triangles_by_two_intersections(ref triangles, IsCrossing, n, c1, c2);
                     }
                     // パターン⑤ 「交わっていない」
                     else
                     {
-                        //Debug.Log("パターン⑤");
                         // 現在の三角形の状態のまま保存
-                        for (int nVertexNum = 0; nVertexNum < 3; nVertexNum++)
-                        {
-                            triangles.Add(attachedMesh.triangles[i + nVertexNum]);
-                        }
+                        for (int cnt = 0; cnt < 3; cnt++)
+                            triangles.Add(attachedMesh.triangles[index + cnt]);
                     }
                 }
-                #endregion
             }
+
         }
 
-        
 
+        // メッシュの情報を整理
+        DecVertices(ref vertices, ref uvs, ref normals, ref triangles);
 
         // メッシユ情報の更新
         attachedMesh.vertices = vertices.ToArray();
@@ -772,26 +332,24 @@ public class DivideTriangle : MonoBehaviour
         attachedMesh.normals = normals.ToArray();
         debugList = vertices;
 
-
-        // 頂点群に終点が入っていたら座標と頂点番号を保存する
-        for (int nVertexNum = 0; nVertexNum < attachedMesh.vertices.Length; nVertexNum++)
+        // 切断パスの更新
+        for (int index = 0; index < attachedMesh.vertices.Length; index++)
         {
-            // 終点 == メッシュの頂点の座標
-            if (End.Equals(attachedMesh.vertices[nVertexNum]))
+            // 終点座標 == メッシュの頂点の座標
+            if (End.Equals(attachedMesh.vertices[index]))
             {
-                cuttingPath.Add(attachedMesh.vertices[nVertexNum]);
-                cuttingVertexNumbers.Add(attachedMesh.triangles[nVertexNum]);
+                // 切断パスに登録する
+                cuttingPath.Add(End);
+                cuttingVertexNumbers.Add(attachedMesh.triangles[index]);
             }
         }
 
-        // オブジェクトを分断しているか
-        bool bCut = false;
+
         // 始点と終点を計算する
         // 終点が外周の辺だった場合、オブジェクトを二つに分ける
-        bCut = SetStartOrEndPoint(crossVertices, first, End);
+        bool bCut = SetStartOrEndPoint(tempCrosses, first, End);
 
-        // メッシュの情報を整理
-        DecVertices(ref vertices, ref uvs, ref normals, ref triangles);
+        // 切断パスの整理
         DecCuttingPath(ref cuttingPath);
 
         // 紙の破れ更新
@@ -818,8 +376,7 @@ public class DivideTriangle : MonoBehaviour
         List<Vector3> objOutline2 = new List<Vector3>();
         // このオブジェクトの外周の頂点リストを取得
         var Outlines = GetComponent<OutLinePath>().OutLineVertices;
-        
-        //===== １つ目 =====
+
         var uvs1 = new List<Vector2>();
         var normals1 = new List<Vector3>();
         var uvs2 = new List<Vector2>();
@@ -829,11 +386,21 @@ public class DivideTriangle : MonoBehaviour
         bool start = true;
 
         // デバッグ------
+        var d = new List<Vector3>();
         int crossNum = 0;
         foreach (var vec in Outlines)
             foreach (var cutting in cuttingPath)
-                if (vec.Equals(cutting)) crossNum++;
-        if (crossNum != 2) Debug.LogError(crossNum);    // 切断パスとアウトラインが3つ以上かぶっている
+                if (vec.Equals(cutting))
+                {
+                    crossNum++;
+                    d.Add(cutting);
+                }
+        // 切断パスとアウトラインが3つ以上かぶっている
+        if (crossNum != 2)
+        {
+            foreach (var v in d) Debug.LogWarning(v + "   ");
+            Debug.LogError(crossNum);
+        }
         //-------------
 
 
@@ -843,7 +410,7 @@ public class DivideTriangle : MonoBehaviour
             // 切断パスと被った場合
             if (cuttingPath[0].Equals(Outlines[i]))
             {
-                Debug.Log("パターン①"); Debug.Log(cuttingPath[0]); Debug.Log(cuttingPath[cuttingPath.Count - 1]);
+                //Debug.Log("パターン①"); Debug.Log(cuttingPath[0]); Debug.Log(cuttingPath[cuttingPath.Count - 1]);
                 // 切断パスの"始点"と外周の頂点が等しいです
                 start = true;
 
@@ -857,14 +424,14 @@ public class DivideTriangle : MonoBehaviour
                     objOutline2.Add(Outlines[i]);
                     // 次の座標へ
                     i++;
-                    if (i >= Outlines.Count) { Debug.LogError("外周の頂点情報がおかしい"); }
+                    if (i >= Outlines.Count) { Debug.LogError("外周の頂点情報がおかしい"); break; }
                 }
                 // 二つ目のアウトラインに追加しておく
                 objOutline2.Add(Outlines[i]);
             }
-            else if(cuttingPath[cuttingPath.Count - 1].Equals(Outlines[i]))
+            else if (cuttingPath[cuttingPath.Count - 1].Equals(Outlines[i]))
             {
-                Debug.Log("パターン②"); Debug.Log(cuttingPath[0]); Debug.Log(cuttingPath[cuttingPath.Count - 1]);
+                //Debug.Log("パターン②"); Debug.Log(cuttingPath[0]); Debug.Log(cuttingPath[cuttingPath.Count - 1]);
                 // 切断パスの"終点"と外周の頂点が等しいです
                 start = false;
 
@@ -880,7 +447,7 @@ public class DivideTriangle : MonoBehaviour
 
                     // 次の座標へ
                     i++;
-                    if (i >= Outlines.Count) Debug.LogError("外周の頂点情報がおかしい");
+                    if (i >= Outlines.Count) { Debug.LogError("外周の頂点情報がおかしい");  break; }
                 }
                 // 二つ目のアウトラインに追加しておく
                 objOutline2.Add(Outlines[i]);
@@ -909,20 +476,22 @@ public class DivideTriangle : MonoBehaviour
         #endregion
 
 
+        
+
         // エラー対応
-        if (objOutline1.Count < 3){ Debug.LogError("エラー objOutline1.Count"); return; }
-        if (objOutline2.Count < 3){ Debug.LogError("エラー objOutline2.Count"); return; }
-       
+        if (objOutline1.Count < 3) { Debug.LogError("エラー objOutline1.Count"); return; }
+        if (objOutline2.Count < 3) { Debug.LogError("エラー objOutline2.Count"); return; }
+
         // ---１つ目のuv、法線リストを作成
         for (int i = 0; i < objOutline1.Count; i++)
         {
-            for (int nVertexNum = 0; nVertexNum < attachedMesh.vertices.Length; nVertexNum++)
+            for (int index = 0; index < attachedMesh.vertices.Length; index++)
             {
                 // アウトラインの頂点座標と頂点群が等しい場合その頂点のuvと法線の値を使う
-                if (objOutline1[i].Equals(attachedMesh.vertices[nVertexNum]))
+                if (objOutline1[i].Equals(attachedMesh.vertices[index]))
                 {
-                    normals1.Add(attachedMesh.normals[nVertexNum]);
-                    uvs1.Add(attachedMesh.uv[nVertexNum]);
+                    normals1.Add(attachedMesh.normals[index]);
+                    uvs1.Add(attachedMesh.uv[index]);
                     break;
                 }
             }
@@ -931,26 +500,26 @@ public class DivideTriangle : MonoBehaviour
         // ---2つ目のuv、法線リストを作成
         for (int i = 0; i < objOutline2.Count; i++)
         {
-            for (int nVertexNum = 0; nVertexNum < attachedMesh.vertices.Length; nVertexNum++)
+            for (int index = 0; index < attachedMesh.vertices.Length; index++)
             {
                 // アウトラインの頂点座標と頂点群が等しい場合その頂点のuvと法線の値を使う
-                if (objOutline2[i].Equals(attachedMesh.vertices[nVertexNum]))
+                if (objOutline2[i].Equals(attachedMesh.vertices[index]))
                 {
-                    normals2.Add(attachedMesh.normals[nVertexNum]);
-                    uvs2.Add(attachedMesh.uv[nVertexNum]);
+                    normals2.Add(attachedMesh.normals[index]);
+                    uvs2.Add(attachedMesh.uv[index]);
                     break;
                 }
             }
         }
 
-        
+
         #region １つ目のカットされたオブジェクトを作成
         GameObject obj1 = GetComponent<DrawMesh>().CreateMesh(objOutline1);
         // ---Components
         obj1.AddComponent<DrawMesh>();
         obj1.AddComponent<DivideTriangle>();
-        var collider1   = obj1.AddComponent<MeshCollider>();
-        var outline1    = obj1.AddComponent<OutLinePath>();
+        var collider1 = obj1.AddComponent<MeshCollider>();
+        var outline1 = obj1.AddComponent<OutLinePath>();
         var meshFilter1 = obj1.GetComponent<MeshFilter>();
         var trun = obj1.AddComponent<Turn_Shader>();
         // ---Settings
@@ -1003,150 +572,152 @@ public class DivideTriangle : MonoBehaviour
 
 
         #region ---紙の破れをどちらのオブジェクトにつけるかを決める
-        // 過去の切断パスは座標を確認してどちらにつけるか決める
-        for (int i = 0; i < transform.childCount; i++)
+        // obj1のアウトラインがデフォルトの形（四角形）のライン上に存在するかどうか
+        List<Vector3> defaultOutline = new List<Vector3>();
+        defaultOutline.Add(new Vector3(-CreateTriangle.paperSizeX, CreateTriangle.paperSizeY, 0.0f));
+        defaultOutline.Add(new Vector3(CreateTriangle.paperSizeX, CreateTriangle.paperSizeY, 0.0f));
+        defaultOutline.Add(new Vector3(CreateTriangle.paperSizeX, -CreateTriangle.paperSizeY, 0.0f));
+        defaultOutline.Add(new Vector3(-CreateTriangle.paperSizeX, -CreateTriangle.paperSizeY, 0.0f));
+        List<bool> boolList1 = new List<bool>();
+        List<bool> boolList2 = new List<bool>();
+        List<Vector3> breakLine1 = new List<Vector3>();
+        List<Vector3> breakLine2 = new List<Vector3>();
+
+        // オブジェクト1のアウトライン
+        for (int i = 0; i < objOutline1.Count; i++)
         {
-            GameObject line = transform.GetChild(i).gameObject;
-            // brokenを探す
-            if (line.name == "broken paper line")
+            bool ret = true;
+            // obj1の辺
+            Vector3 obj1Edge = objOutline1[(i + 1) % objOutline1.Count] - objOutline1[i];
+
+            for (int j = 0; j < defaultOutline.Count; j++)
             {
-                // アウトラインと重なっていた場合、それを新しい座標リストとして渡す
-                var lineRenderer = line.GetComponent<LineRendererOperator>();
-                var breakPoints = lineRenderer.GetLines();
-                List<Vector3> brokenPaperline1 = new List<Vector3>();
-                List<Vector3> brokenPaperline2 = new List<Vector3>();
+                // デフォルトの辺
+                Vector3 defEdge = defaultOutline[(j + 1) % defaultOutline.Count] - defaultOutline[j];
 
-                for (int index = 0; index < breakPoints.Count; index++)
+                // 平行
+                if (defEdge.normalized.Equals(obj1Edge.normalized))
                 {
-                    // obj1のアウトライン
-                    for (int vertexNum = 0; vertexNum < objOutline1.Count; vertexNum++)
+                    if(Has(defaultOutline[(j + 1) % defaultOutline.Count], defaultOutline[j], objOutline1[i]))
                     {
-                        // obj1のアウトラインと破れ座標がかぶっているか
-                        if (breakPoints[index].Equals(objOutline1[vertexNum]))
-                            brokenPaperline1.Add(breakPoints[index]);
-                        
+                        ret = false;
+                        break;
                     }
-
-                    // obj2のアウトライン
-                    for (int vertexNum = 0; vertexNum < objOutline2.Count; vertexNum++)
-                    {
-                        // obj2のアウトラインと座標がかぶっているか
-                        if (breakPoints[index].Equals(objOutline2[vertexNum]))
-                            brokenPaperline2.Add(breakPoints[index]);
-
-                    }
-
-                }
-
-
-                // 切断パスの終点を追加する
-                for (int index = 0; index < breakPoints.Count - 1; index++)
-                {
-                    // 点breakPoints[index + 1]と点breakPoints[index]の線分
-                    Vector3 breakEdge = breakPoints[index + 1] - breakPoints[index];
-                    // 切断パスの終点と点breakPoints[index]の線分
-                    Vector3 vec = cuttingPath[cuttingPath.Count - 1] - breakPoints[index];
-                    float judge = Vector3.Cross(breakEdge.normalized, vec.normalized).sqrMagnitude;
-                    if (-0.001f < judge && judge < 0.0001f)
-                    {
-
-                        // 切断パスの終点が紙の破れ線に入っていることが分かったので、
-                        // obj1、obj2のどちらにも入っているのが確定したので
-                        // 始点になるのか終点になるのか決める
-
-                        // 破れ１のインデックスを保存
-                        int breakLineIndex1 = -1;
-                        for (int a = 0; a < brokenPaperline1.Count; a++)
-                            if (breakPoints[index].Equals(brokenPaperline1[a])) breakLineIndex1 = a;
-
-                        // 破れ２のインデックスを保存
-                        int breakLineIndex2 = -1;
-                        for (int a = 0; a < brokenPaperline2.Count; a++)
-                            if (breakPoints[index].Equals(brokenPaperline2[a])) breakLineIndex2 = a;
-
-                        if (breakLineIndex1 == 0)
-                        {
-                            Debug.LogWarning("１の始点に引っかかった");
-                            // 1の始点にインサート
-                            brokenPaperline1.Insert(0, cuttingPath[cuttingPath.Count - 1]);
-                            // 2の終点にAdd
-                            brokenPaperline2.Add(cuttingPath[cuttingPath.Count - 1]);
-                        }
-                        else if(breakLineIndex1 == brokenPaperline1.Count - 1)
-                        {
-                            Debug.LogWarning("1の終点に引っかかった");
-                            // 1の終点Add
-                            brokenPaperline1.Add(cuttingPath[cuttingPath.Count - 1]);
-                            // 2の始点
-                            brokenPaperline2.Insert(0, cuttingPath[cuttingPath.Count - 1]);
-                        }
-                        else if (breakLineIndex2 == 0)
-                        {
-                            Debug.LogWarning("2の始点に引っかかった");
-                            // 1の終点Add
-                            brokenPaperline1.Add(cuttingPath[cuttingPath.Count - 1]);
-                            // 2の始点
-                            brokenPaperline2.Insert(0, cuttingPath[cuttingPath.Count - 1]);
-                        }
-                        else if (breakLineIndex2 == brokenPaperline2.Count - 1)
-                        {
-                            Debug.LogWarning("２の終点に引っかかった");
-                            // 1の始点にインサート
-                            brokenPaperline1.Insert(0, cuttingPath[cuttingPath.Count - 1]);
-                            // 2の終点にAdd
-                            brokenPaperline2.Add(cuttingPath[cuttingPath.Count - 1]);
-                        }
-                    }
-                }
-
-                // obj1に新しく生成する
-                if (brokenPaperline1.Count >= 2)
-                {
-                    var line1 = PaperBreakLineManager.Instance.CreateBreakLine(brokenPaperline1, obj1);
-                    line1.name = "broken paper line";
-                    line1.GetComponent<LineRendererOperator>().hoge();
-                    Debug.Log(line1.GetComponent<LineRendererOperator>().GetLines().Count);
-                }
-                // obj2に新しく生成
-                if(brokenPaperline2.Count >= 2)
-                {
-                    var line2 = PaperBreakLineManager.Instance.CreateBreakLine(brokenPaperline2, obj2);
-                    line2.name = "broken paper line";
-                    line2.GetComponent<LineRendererOperator>().hoge();
-                    Debug.Log(line2.GetComponent<LineRendererOperator>().GetLines().Count);
                 }
             }
+
+            // ブレークライン生成フラグ追加
+            boolList1.Add(ret);
+        }
+        bool oldFlag = false;
+        for (int i = 0; i < boolList1.Count; i++)
+        {
+            if (boolList1[i])
+            {
+                //--- 現在のフラグが立っている
+
+                // その辺の座標２つをプッシュ
+                breakLine1.Add(objOutline1[i]);                             // i
+                breakLine1.Add(objOutline1[(i + 1) % objOutline1.Count]);   // i + 1
+            }
+            else
+            {
+                //--- 現在のフラグが立っていない
+                if (oldFlag)
+                {
+                    //--- 前回のフラグが立っている
+
+                    // ブレークライン生成
+                    var line1 = PaperBreakLineManager.Instance.CreateBreakLine(breakLine1, obj1);
+                    line1.name = "broken paper line";
+                    line1.GetComponent<LineRendererOperator>().hoge();
+                    // ブレークラインを初期化
+                    breakLine1.Clear();
+                }
+            }
+
+            // 退避
+            oldFlag = boolList1[i];
+        }
+        if(oldFlag)
+        {
+            // ブレークライン生成
+            var line1 = PaperBreakLineManager.Instance.CreateBreakLine(breakLine1, obj1);
+            line1.name = "broken paper line";
+            line1.GetComponent<LineRendererOperator>().hoge();
         }
 
-        // 現在進行形の切断パスはどちらにも付ける
-        if (transform.Find("breaking paper line") != null)
+
+
+
+
+        // オブジェクト２のアウトライン
+        for (int i = 0; i < objOutline2.Count; i++)
         {
-            // オリジナル
-            GameObject breakline1 = transform.Find("breaking paper line").gameObject;
-            // コピー
-            GameObject breakline2 = GameObject.Instantiate(breakline1);
+            bool ret = true;
+            // obj２の辺
+            Vector3 obj2Edge = objOutline2[(i + 1) % objOutline2.Count] - objOutline2[i];
 
-            // アウトラインを更新しておく
-            List<Vector3> newCuttingPath1 = new List<Vector3>();
-            List<Vector3> newCuttingPath2 = new List<Vector3>();
-            newCuttingPath1.AddRange(cuttingPath);
-            newCuttingPath2.AddRange(cuttingPath);
-            breakline1.GetComponent<LineRendererOperator>().SetPoints(newCuttingPath1);
-            breakline2.GetComponent<LineRendererOperator>().SetPoints(newCuttingPath2);
+            for (int j = 0; j < defaultOutline.Count; j++)
+            {
+                // デフォルトの辺
+                Vector3 defEdge = defaultOutline[(j + 1) % defaultOutline.Count] - defaultOutline[j];
 
-            // 名前変更
-            breakline1.name = breakline2.name ="broken paper line";
-            // オリジナルはobj1を親に
-            breakline1.transform.SetParent(obj1.transform);
-            // コピーはobj2を親に
-            breakline2.transform.SetParent(obj2.transform);
+                // 平行
+                if (defEdge.normalized.Equals(obj2Edge.normalized))
+                {
+                    // かつ、直線状に存在するかどうか
+                    if(Has(defaultOutline[(j + 1) % defaultOutline.Count], defaultOutline[j], objOutline2[i]))
+                    {
+                        ret = false;
+                        break;
+                    }
 
-            // マテリアルを変更する
-            breakline1.GetComponent<LineRendererOperator>().hoge();
-            breakline2.GetComponent<LineRendererOperator>().hoge();
+                }
+            }
 
+            // ブレークライン生成フラグ追加
+            boolList2.Add(ret);
+        }
+        bool oldFlag2 = false;
+        foreach (var item in boolList2) Debug.Log(item);
+        for (int i = 0; i < boolList2.Count; i++)
+        {
+            if (boolList2[i])
+            {
+                //--- 現在のフラグが立っている
+
+                // その辺の座標２つをプッシュ
+                breakLine2.Add(objOutline2[i]);                             // i
+                breakLine2.Add(objOutline2[(i + 1) % objOutline2.Count]);   // i + 1
+            }
+            else
+            {
+                //--- 現在のフラグが立っていない
+                if (oldFlag2)
+                {
+                    //--- 前回のフラグが立っている
+                    // ブレークライン生成
+                    var line2 = PaperBreakLineManager.Instance.CreateBreakLine(breakLine2, obj2);
+                    line2.name = "broken paper line";
+                    line2.GetComponent<LineRendererOperator>().hoge();
+                    // ブレークラインを初期化
+                    breakLine2.Clear();
+                }
+            }
+
+            // 退避
+            oldFlag2 = boolList2[i];
+        }
+        if(oldFlag2)
+        {
+            // ブレークライン生成
+            var line2 = PaperBreakLineManager.Instance.CreateBreakLine(breakLine2, obj2);
+            line2.name = "broken paper line";
+            line2.GetComponent<LineRendererOperator>().hoge();
         }
         #endregion
+
 
         // 切断パスをクリア
         cuttingPath.Clear();
@@ -1184,7 +755,6 @@ public class DivideTriangle : MonoBehaviour
 
 
             var alpha = obj1.AddComponent<Alpha>();
-            //var del = obj.AddComponent<DeleteAlpha>();
             Material mat = (Material)Resources.Load("Effects/Alpha");
             switch (number)
             {
@@ -1200,7 +770,6 @@ public class DivideTriangle : MonoBehaviour
                 default: break;
             }
             obj1.GetComponent<Renderer>().material = mat;
-            //obj.GetComponent<Renderer>().material.SetFloat("_Value", 0.2f);
             alpha.SetAlpha(number);
 
             //obj1の方のアウトラインをセットする
@@ -1222,7 +791,6 @@ public class DivideTriangle : MonoBehaviour
             CollisionField.Instance.UpdateStage(checkCollisionPoints(obj2, CollisionField.Instance.cellPoints()));
 
             var alpha = obj2.AddComponent<Alpha>();
-            //var del = obj2.AddComponent<DeleteAlpha>();
             Material mat = (Material)Resources.Load("Effects/Alpha");
             switch (number)
             {
@@ -1238,7 +806,6 @@ public class DivideTriangle : MonoBehaviour
                 default: break;
             }
             obj2.GetComponent<Renderer>().material = mat;
-            //obj2.GetComponent<Renderer>().material.SetFloat("_Value", 0.2f);
             alpha.SetAlpha(number);
 
             //obj1の方のアウトラインをセットする
@@ -1249,6 +816,18 @@ public class DivideTriangle : MonoBehaviour
         // 破れるSE
         SoundManager.Instance.PlaySeByName("RipUpPaper07");
 
+    }
+
+
+    // 線分上に点が存在するか
+    public bool Has(Vector3 point1, Vector3 point2, Vector3 p)
+    {
+        float ac = Vector3.Distance(point1, p);
+        float cb = Vector3.Distance(p, point2);
+        float ab = Vector3.Distance(point1, point2);
+
+        float ret = ac + cb - ab;
+        return (ret < 0.000001f);
     }
 
     // 交点のuv座標を計算する
@@ -1335,6 +914,11 @@ public class DivideTriangle : MonoBehaviour
     // 戻り値 : 切断パスの終点が設定されたらtrue
     private bool SetStartOrEndPoint(List<Vector3> crossVertices, bool first, Vector3 EndPoint)
     {
+        // アウトラインの線上に交点が存在するか調べる
+        // 存在する場合は、その交点が"切断パスの始点"又は"切断パスの終点となる"
+        // 終点の場合は、切断フラグをtrueに
+
+
         // きるフラグ
         bool cut = false;
         // 外周上の交点の数
@@ -1349,83 +933,76 @@ public class DivideTriangle : MonoBehaviour
         start = end = Vector3.zero;
 
         // 現在の外周の頂点
-        var outlineVertices = GetComponent<OutLinePath>().OutLineVertices;
+        var outlinePath = GetComponent<OutLinePath>();
+        var outline = outlinePath.OutLineVertices;
 
-        // 交点がアウトライン上に存在するか判定
-        // 存在する場合は、その交点が"切断パスの始点"又は"切断パスの終点となる"
-        // 終点の場合は、切断フラグをtrueに
-        for (int i = 0; i < outlineVertices.Count; i++)     // オブジェクトの外周の頂点の数
+        
+        for (int i = 0; i < outline.Count; i++)     // オブジェクトの外周の頂点の数
         {
             // 外周の辺のベクトル
-            Vector3 outlineEdge = outlineVertices[(i + 1) % (outlineVertices.Count)] - outlineVertices[i];
+            Vector3 outlineEdge = outline[(i + 1) % (outline.Count)] - outline[i];
 
             for (int j = 0; j < crossVertices.Count; j++)   // 今回の交点の数
             {
                 // 外周の頂点-交点ベクトル
-                Vector3 vec = crossVertices[j] - outlineVertices[i];
+                Vector3 vec = crossVertices[j] - outline[i];
 
                 // 2つのベクトルの外積が0だったら、外周上の点である
                 float judge = Vector3.Cross(outlineEdge.normalized, vec.normalized).sqrMagnitude;
-                Debug.Log(outlineEdge.normalized + "  " + vec.normalized + "     " + judge);
+
                 // 0.0001未満の誤差を許す
                 if (-0.0001f < judge && judge < 0.00001f)
                 {
-                    //Debug.LogWarning(outlineEdge.normalized + "  " + vec.normalized + "     " + judge);
 
-                    // 外周上の点だった場合、カウントする
-                    findNum++;
-
-                    // 初回呼び出しの場合、その交点は切断パスの始点とみなす
-                    if (first)
+                    // 辺よりvecの方が大きい場合外分点
+                    if (Has(outline[(i + 1) % (outline.Count)], outline[i], crossVertices[j]))
                     {
-                        // 初回呼び出しで外周上の頂点が2つある場合、切断パスの終点も設定する
-                        if (findNum == 1)
+                        // 初回呼び出しの場合、その交点は切断パスの始点とみなす
+                        if (first)
                         {
-                            //Debug.Log("始点が見つかりました");
-                            // 始点追加
-                            cuttingPath.Insert(0, crossVertices[j]);
-                            // アウトラインの番号を保存
-                            nStart = i + 1;
+                            // 外周上の点だった場合、カウントする
+                            findNum++;
+
+                            // 初回呼び出しで外周上の頂点が2つある場合、切断パスの終点も設定する
+                            if (findNum == 1)
+                            {
+                                //Debug.LogWarning(outline[i] + "  " + outline[(i + 1) % (outline.Count)] + "     " + crossVertices[j] + "  始点");
+                                // 始点追加
+                                cuttingPath.Insert(0, crossVertices[j]);
+                                // アウトラインの番号を保存
+                                nStart = i + 1;
+                            }
+                            else if (findNum == 2)
+                            {
+                                //Debug.LogWarning(outline[i] + "  " + outline[(i + 1) % (outline.Count)] + "     " + crossVertices[j] + "  終点");
+                                //Debug.Log("１度で切りました");
+
+                                // 終点追加
+                                cuttingPath.Add(crossVertices[j]);
+                                // アウトラインの番号を保存
+                                nEnd = i + 2;
+                                // 切断フラグ
+                                cut = true;
+                            }
+                            else
+                            {
+                                //Debug.LogWarning(outline[i] + "  " + outline[(i + 1) % (outline.Count)] + "     " + crossVertices[j] + "  外分点");
+                                Debug.LogError("3個目の外周上の点が見つかりました");
+                            }
+
+                            cuttingVertexNumbers.Add(0);
+
                         }
-                        else if(findNum == 2)
-                        {
-                            Debug.Log("１度で切りました");
-
-                            // 終点追加
-                            cuttingPath.Add(crossVertices[j]);
-
-                            // アウトラインの番号を保存
-                            nEnd = i + 2;
-                            // 切断フラグ
-                            cut = true;
-
-                            break;
-                        }
+                        // 初回呼び出しではない場合、その交点は切断パスの終点とみなす
                         else
                         {
-                            Debug.LogWarning("3個目の外周上の点が見つかりました");
-                        }
-
-                        cuttingVertexNumbers.Add(0);
-                    }
-                    // 初回呼び出しではない場合、その交点は切断パスの終点とみなす
-                    else
-                    {
-                        if(outlineEdge.magnitude > vec.magnitude)
-                        {
-                            Debug.Log("終点がが見つかりました");
+                            //Debug.LogWarning(outline[i] + "  " + outline[(i + 1) % (outline.Count)] + "     " + crossVertices[j] + "  終点");
                             // 終点追加
                             cuttingPath.Add(crossVertices[j]);
                             // アウトラインの番号を保存
                             nEnd = i + 1;
-
+                            // 切断フラグ
                             cut = true;
-                        }
-                        else
-                        {
-                            Debug.LogWarning("外分点");
-                            Debug.LogWarning(outlineEdge.magnitude);
-                            Debug.LogWarning(vec.magnitude);
                         }
                     }
                 }
@@ -1437,12 +1014,12 @@ public class DivideTriangle : MonoBehaviour
         if (nStart != -1)
         {
             // 切断パスが追加されている
-            GetComponent<OutLinePath>().InsertPoint(cuttingPath[0], nStart);
+            outlinePath.InsertPoint(cuttingPath[0], nStart);
         }
 
         if (nEnd != -1)
         {
-            GetComponent<OutLinePath>().InsertPoint(cuttingPath[cuttingPath.Count - 1], nEnd);
+            outlinePath.InsertPoint(cuttingPath[cuttingPath.Count - 1], nEnd);
         }
 
         return cut;
@@ -1468,7 +1045,7 @@ public class DivideTriangle : MonoBehaviour
                 // トライアングルの番号jをiに書き換える
                 for (int k = 0; k < triangles.Count; k++)
                 {
-                    if(triangles[k] == j) triangles[k] = i;
+                    if (triangles[k] == j) triangles[k] = i;
                 }
 
                 // 頂点を削除
@@ -1496,7 +1073,7 @@ public class DivideTriangle : MonoBehaviour
                 // 頂点を削除
                 cutting.RemoveAt(j);
 
-                Debug.LogWarning("CuttingPathの座標にかぶりが発生したので一つ取り除きました");
+                Debug.LogWarning("CuttingPathの座標にかぶりが発生したので一つ取り除きました   " + cutting[i]);
             }
         }
     }
@@ -1541,6 +1118,172 @@ public class DivideTriangle : MonoBehaviour
     public void SetNumber(int num) { number = num; }
     // 番号の取得
     public int GetNumber() { return number; }
+
+
+    /*
+    * @fn		CalcCrossVertex
+    * @brief	線分と線分が交差しているかチェックする
+    * @param	(Vector3) Startpoint1   線分１の始点の座標
+    * @param	(Vector3) Startpoint2   線分２の始点の座標
+    * @param	(Vector3) edge1         線分１のベクトル（長さも含んでいるためnormalizeしない）
+    * @param	(Vector3) edge2         線分２のベクトル（長さも含んでいるためnormalizeしない）
+    * @return   true:交差してる  false:交差していない	
+    * @detail	交差している場合、下記の式で交点の座標が求められる
+    *           Startpoint1 + edge1 * t1
+    */
+    private bool CalcCrossVertex(Vector3 Startpoint1, Vector3 Startpoint2, Vector3 edge1, Vector3 edge2, out float t1, out float t2)
+    {
+        // 線分１の始点から線分２の始点へのベクトル
+        Vector3 distance = Startpoint2 - Startpoint1;
+
+        // それぞれの線分の始点から交点になりうる座標までのベクトルの比率を求める
+        t1 = Vector3.Cross(distance, edge2).z / Vector3.Cross(edge1, edge2).z;
+        t2 = Vector3.Cross(distance, edge1).z / Vector3.Cross(edge1, edge2).z;
+
+        // 交差判定
+        return ((0 <= t1 && t1 <= 1) && (0 <= t2 && t2 <= 1));
+    }
+
+    /*
+    * @fn		CalcCrossVertex
+    * @brief	点が三角形の内側に存在するか
+    * @param	(Vector3) p1            三角形の頂点１
+    * @param	(Vector3) p2            三角形の頂点２
+    * @param	(Vector3) p3            三角形の頂点３
+    * @param	(Vector3) checkPoint    調べる点
+    * @return   true:存在する  false:存在しない
+    */
+    private bool IsInsideTriangle(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 checkPoint)
+    {
+        bool ret = false;
+
+        //線上は外側とみなします。
+        Vector3 Area1 = p2 - p1; Vector3 AreaP1 = checkPoint - p1;
+        Vector3 Area2 = p3 - p2; Vector3 AreaP2 = checkPoint - p2;
+        Vector3 Area3 = p1 - p3; Vector3 AreaP3 = checkPoint - p3;
+        Vector3 cr1 = Vector3.Cross(Area1, AreaP1);
+        Vector3 cr2 = Vector3.Cross(Area2, AreaP2);
+        Vector3 cr3 = Vector3.Cross(Area3, AreaP3);
+        //内積で順方向か逆方向か調べる
+        float dot_12 = Vector3.Dot(cr1, cr2);
+        float dot_13 = Vector3.Dot(cr1, cr3);
+        if (dot_12 > 0 && dot_13 > 0)
+        {
+            ret = true;
+        }
+
+
+        return ret;
+    }
+
+    // 3で割った余りを返す
+    private int Percent3(int num)
+    {
+        return num % 3;
+    }
+
+    // 1つの三角形を”４つ”の三角形に分割する
+    void Dividing_one_triangle_into_Four_triangles(ref List<int> triangles, bool[] IsCrossing, int[] triangle, int center, int cross)
+    {
+        // 三角形の頂点座標３つ、「交差した座標」、「終点」の計5つの頂点で三角形を「３つ」作る
+
+        int num = 0;
+        // 頂点のつなげ方を決める
+
+        // p1-p2の辺1が交差していた場合
+        if (IsCrossing[0]) num = 0;
+        // p2-p3の辺1が交差していた場合
+        else if (IsCrossing[1]) num = 1;
+        // p3-p1の辺1が交差していた場合
+        else if (IsCrossing[2]) num = 2;
+        else Debug.LogError("エラー発生");
+        
+
+        // １個目の三角形
+        triangles.Add(center); triangles.Add(triangle[Percent3(num + 0)]); triangles.Add(cross);
+        // ２個目の三角形
+        triangles.Add(center); triangles.Add(cross); triangles.Add(triangle[Percent3(num + 1)]);
+        // ３個目の三角形
+        triangles.Add(center); triangles.Add(triangle[Percent3(num + 1)]); triangles.Add(triangle[Percent3(num + 2)]);
+        // ４個目の三角形
+        triangles.Add(center); triangles.Add(triangle[Percent3(num + 2)]); triangles.Add(triangle[Percent3(num + 0)]);
+    }
+
+
+    // 1つの三角形を”二つの交点によって３つ”の三角形に分割する
+    void Dividing_one_triangle_into_Three_triangles_by_two_intersections(ref List<int> triangles, bool[] IsCrossing, int[] triangle, int cross1, int cross2)
+    {
+        //if (IsCrossing[0] && IsCrossing[1]) Debug.Log("パターン④ 辺１と辺２");
+        //if (IsCrossing[1] && IsCrossing[2]) Debug.Log("パターン⑤ 辺２と辺３");
+        //if (IsCrossing[2] && IsCrossing[0]) Debug.Log("パターン⑥ 辺３と辺１");
+        // 三角形の頂点座標３つ、交差した座標２つの計5つの頂点で三角形を「３つ」作る
+
+
+        // 辺１、辺２で交差
+        if (IsCrossing[0] && IsCrossing[1])
+        {
+            //Debug.Log("辺p1-p2と辺p2-p3で交わっている");
+        
+            // １個目の三角形
+            triangles.Add(cross2); triangles.Add(cross1); triangles.Add(triangle[1]);
+            // ２個目の三角形
+            triangles.Add(cross2); triangles.Add(triangle[0]); triangles.Add(cross1);
+            // ３個目の三角形
+            triangles.Add(cross2); triangles.Add(triangle[2]); triangles.Add(triangle[0]);
+        }
+        // 辺２、辺３で交差
+        else if (IsCrossing[1] && IsCrossing[2])
+        {
+            //Debug.Log("辺p2-p3と辺p3-p1で交わっている");
+        
+            // １個目の三角形
+            triangles.Add(cross2); triangles.Add(cross1); triangles.Add(triangle[2]);
+            // ２個目の三角形
+            triangles.Add(cross2); triangles.Add(triangle[1]); triangles.Add(cross1);
+            // ３個目の三角形
+            triangles.Add(cross2); triangles.Add(triangle[0]); triangles.Add(triangle[1]);
+        }
+        // 辺３、辺１で交差
+        else if (IsCrossing[2] && IsCrossing[0])
+        {
+            //Debug.Log("辺p3-p1と辺p1-p2で交わっている");
+            // １個目の三角形
+            triangles.Add(cross2); triangles.Add(triangle[0]); triangles.Add(cross1);
+            // ２個目の三角形
+            triangles.Add(cross2); triangles.Add(cross1); triangles.Add(triangle[1]);
+            // ３個目の三角形
+            triangles.Add(cross2); triangles.Add(triangle[1]); triangles.Add(triangle[2]);
+        }
+        else Debug.LogError("エラー発生");
+    }
+
+
+    // 1つの三角形を”点を基準として３つ”の三角形に分割する
+    void Dividing_one_triangle_into_Three_triangles_by_center(ref List<int> triangles, int[] triangle, int center)
+    {
+        // 頂点のつなげ方を決める
+        // １個目の三角形
+        triangles.Add(center); triangles.Add(triangle[0]); triangles.Add(triangle[1]);
+        // ２個目の三角形
+        triangles.Add(center); triangles.Add(triangle[1]); triangles.Add(triangle[2]);
+        // ３個目の三角形
+        triangles.Add(center); triangles.Add(triangle[2]); triangles.Add(triangle[0]);
+    }
+
+
+    // 1つの三角形を”一つの交点によって２つ”の三角形に分割する
+    void Dividing_one_triangle_into_Two_triangles_by_intersection(ref List<int> triangles, bool[] IsCrossing, int[] triangle, int cross)
+    {
+        int num = 0;
+        if (IsCrossing[0]) num = 0;
+        if (IsCrossing[1]) num = 1;
+        if (IsCrossing[2]) num = 2;
+
+        // １つ目
+        triangles.Add(cross); triangles.Add(triangle[Percent3(num + 2)]); triangles.Add(triangle[Percent3(num + 0)]);
+        // ２つ目
+        triangles.Add(cross); triangles.Add(triangle[Percent3(num + 1)]); triangles.Add(triangle[Percent3(num + 2)]);
+    }
 
 
     // その座標群がメッシュ内に存在するか

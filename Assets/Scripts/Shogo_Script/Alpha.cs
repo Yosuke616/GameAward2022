@@ -16,7 +16,7 @@ public class Alpha : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        _mat.SetFloat("_Value", 1.0f);
     }
 
     // Update is called once per frame
@@ -34,20 +34,10 @@ public class Alpha : MonoBehaviour
         }
     }
 
+    // フェード開始
     public void SetAlpha(int num)
     {
-        switch (num)
-        {
-            case 1:
-                _mat = (Material)Resources.Load("Effects/Alpha");
-                break;
-            case 2:
-                _mat = (Material)Resources.Load("Effects/Alpha_002");
-                break;
-            case 3:
-                _mat = (Material)Resources.Load("Effects/Alpha_003");
-                break;
-        }
+        _mat = GetComponent<MeshRenderer>().material;
         bStart = true;
         valueAlpha = 1.0f;
     }

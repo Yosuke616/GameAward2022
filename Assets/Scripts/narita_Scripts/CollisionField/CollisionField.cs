@@ -108,7 +108,7 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                 // ‚ ‚½‚è”»’èƒŠƒXƒg‚É“o˜^
                 CollisionGrid[(y * gridNumX) + x] = mass;
 
-                Debug.Log(mass.name + "   " + mass.tag + "   " + _stageGrid[x + y].tag);
+                //Debug.Log(mass.name + "   " + mass.tag + "   " + _stageGrid[x + y].tag);
             }
 
 

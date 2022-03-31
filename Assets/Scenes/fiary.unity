@@ -3760,7 +3760,6 @@ MonoBehaviour:
   ColorSet:
   - {fileID: 0}
   - {fileID: 0}
-  collisionGrid: []
   Grid: []
   cameraName: SubCamera3
   layer: 2
@@ -4540,7 +4539,6 @@ MonoBehaviour:
   ColorSet:
   - {fileID: 0}
   - {fileID: 0}
-  collisionGrid: []
   Grid: []
   cameraName: SubCamera1
   layer: 0
@@ -6632,7 +6630,6 @@ MonoBehaviour:
   ColorSet:
   - {fileID: 0}
   - {fileID: 0}
-  collisionGrid: []
   Grid: []
   cameraName: SubCamera2
   layer: 1

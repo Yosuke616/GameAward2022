@@ -67,11 +67,13 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
             valueSpeed += FADESPEED * Time.deltaTime;
             _backGround.material.SetFloat("_Value", valueSpeed);
 
-            //SoundManager.Instance.StopBgm();
+            SoundManager.Instance.Volume -= FADESPEED * Time.deltaTime;
 
             // ‰æ–Ê‚ªˆÃ‚­‚È‚Á‚½‚ç
             if (valueSpeed >= 1.0f)
             {
+                SoundManager.Instance.StopBgm();
+                SoundManager.Instance.StopSe();
                 _loadDisplay.SetActive(true);
                 StartCoroutine("LoadScene");
                 _isFadeOut = false;
@@ -96,6 +98,9 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
             //_backGround.color -= new Color(0.0f, 0.0f, 0.0f, FADESPEED * Time.deltaTime);
             valueSpeed -= FADESPEED * Time.deltaTime;
             _backGround.material.SetFloat("_Value", valueSpeed);
+
+            SoundManager.Instance.Volume += FADESPEED * Time.deltaTime;
+
             // ‰æ–Ê‚ª–¾‚é‚­‚È‚Á‚½‚ç
             if (valueSpeed <= currentSpeed)
             {

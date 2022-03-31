@@ -1363,6 +1363,17 @@ RectTransform:
   m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &987278564 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6955501983493578181, guid: dda263db29645634ba4dd85fc40f5cc9, type: 3}
+  m_PrefabInstance: {fileID: 6955501983225287655}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1060713846
 GameObject:
   m_ObjectHideFlags: 0
@@ -1728,6 +1739,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1388285020 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6955501982599500536, guid: dda263db29645634ba4dd85fc40f5cc9, type: 3}
+  m_PrefabInstance: {fileID: 6955501983225287655}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1434533914 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6955501983884455925, guid: dda263db29645634ba4dd85fc40f5cc9, type: 3}
+  m_PrefabInstance: {fileID: 6955501983225287655}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1530149037
 GameObject:
   m_ObjectHideFlags: 0
@@ -2000,6 +2033,17 @@ RectTransform:
   m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2016802768 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6955501984382877759, guid: dda263db29645634ba4dd85fc40f5cc9, type: 3}
+  m_PrefabInstance: {fileID: 6955501983225287655}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3858745472646978176
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2154,7 +2198,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4225847671156816718, guid: 716a4739cd0ed5744b1e6877fbbf7713, type: 3}
       propertyPath: _setScene.m_SceneName
-      value: LoadingTest
+      value: Title
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 716a4739cd0ed5744b1e6877fbbf7713, type: 3}
@@ -2305,6 +2349,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Option
       objectReference: {fileID: 0}
+    - target: {fileID: 6955501983884455924, guid: dda263db29645634ba4dd85fc40f5cc9, type: 3}
+      propertyPath: SESlider
+      value: 
+      objectReference: {fileID: 987278564}
+    - target: {fileID: 6955501983884455924, guid: dda263db29645634ba4dd85fc40f5cc9, type: 3}
+      propertyPath: BGMSlider
+      value: 
+      objectReference: {fileID: 2016802768}
+    - target: {fileID: 6955501983884455924, guid: dda263db29645634ba4dd85fc40f5cc9, type: 3}
+      propertyPath: BackButton
+      value: 
+      objectReference: {fileID: 1388285020}
+    - target: {fileID: 6955501983884455924, guid: dda263db29645634ba4dd85fc40f5cc9, type: 3}
+      propertyPath: MasterSlider
+      value: 
+      objectReference: {fileID: 1434533914}
     - target: {fileID: 6955501984065044946, guid: dda263db29645634ba4dd85fc40f5cc9, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

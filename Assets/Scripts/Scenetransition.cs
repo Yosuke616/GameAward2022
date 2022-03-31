@@ -21,52 +21,56 @@ public class Scenetransition : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.F1)) {
-            SceneManager.LoadScene("PeparCutTest");
-        }
-        if (Input.GetKey(KeyCode.F2))
-        {
-            SceneManager.LoadScene("SampleScene");
-        }
-        if (Input.GetKey(KeyCode.F3))
-        {
-            SceneManager.LoadScene("PlayerMove");
-        }
-        if (Input.GetKey(KeyCode.F4))
-        {
-            SceneManager.LoadScene("TurnPaper");
-        }
-        if (Input.GetKey(KeyCode.F5))
-        {
-            SceneManager.LoadScene("SampleScene");
-        }
-        if (Input.GetKey(KeyCode.F6))
-        {
-            SceneManager.LoadScene("SampleScene");
-        }
-        if (Input.GetKey(KeyCode.F7))
-        {
-            SceneManager.LoadScene("SampleScene");
-        }
-        if (Input.GetKey(KeyCode.F8))
-        {
-            SceneManager.LoadScene("SampleScene");
-        }
-        if (Input.GetKey(KeyCode.F9))
-        {
-            SceneManager.LoadScene("SampleScene");
-        }
+        //if (Input.GetKey(KeyCode.F1)) {
+        //    //FadeManager.Instance.FadeStart("SelectScene");
+        //    //SceneManager.LoadScene("PeparCutTest");
+        //}
+        //if (Input.GetKey(KeyCode.F2))
+        //{
+        //    SceneManager.LoadScene("SampleScene");
+        //}
+        //if (Input.GetKey(KeyCode.F3))
+        //{
+        //    SceneManager.LoadScene("PlayerMove");
+        //}
+        //if (Input.GetKey(KeyCode.F4))
+        //{
+        //    SceneManager.LoadScene("TurnPaper");
+        //}
+        //if (Input.GetKey(KeyCode.F5))
+        //{
+        //    SceneManager.LoadScene("SampleScene");
+        //}
+        //if (Input.GetKey(KeyCode.F6))
+        //{
+        //    SceneManager.LoadScene("SampleScene");
+        //}
+        //if (Input.GetKey(KeyCode.F7))
+        //{
+        //    SceneManager.LoadScene("SampleScene");
+        //}
+        //if (Input.GetKey(KeyCode.F8))
+        //{
+        //    SceneManager.LoadScene("SampleScene");
+        //}
+        //if (Input.GetKey(KeyCode.F9))
+        //{
+        //    SceneManager.LoadScene("SampleScene");
+        //}
         if (Input.GetKey(KeyCode.F10))
         {
-            SceneManager.LoadScene("SampleScene");
+            FadeManager.Instance.FadeStart("Title");
+            //SceneManager.LoadScene("SampleScene");
         }
         if (Input.GetKey(KeyCode.F11))
         {
-            SceneManager.LoadScene("SampleScene");
+            FadeManager.Instance.FadeStart("SelectScene");
+            //SceneManager.LoadScene("SampleScene");
         }
         if (Input.GetKey(KeyCode.F12))
         {
-            SceneManager.LoadScene("SampleScene");
+            FadeManager.Instance.FadeStart("test_Stage1");
+            //SceneManager.LoadScene("SampleScene");
         }
     }
 }

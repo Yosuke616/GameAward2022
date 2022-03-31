@@ -28,6 +28,10 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
     //紙の中心の座標をセットする
     Vector2 Paper_Center;
 
+    //クリックした場所を保存する変数
+    Vector3 Old_Click_Pos;
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -71,6 +75,23 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
         //カーソルをセットした座標に移動させる
         this.transform.position = Cross_Pos;
 
+        //破るためのスクリプトを用意する
+        GameObject Cur = GameObject.Find("Cursor");
+        CursorSystem Cur_SY = Cur.GetComponent<CursorSystem>();
+        //破る状態になったときにカーソルをそこに移動させる関数を呼ぶ
+        if (Cur_SY.GetBreakFlg())
+        {
+            CursorBreak();
+        }
+        else {
+            Old_Click_Pos = Input.mousePosition;
+            Old_Click_Pos.z = 10.0f;
+
+
+            var Pos = Camera.main.ScreenToWorldPoint(Old_Click_Pos);
+
+            //Debug.LogWarning(Old_Click_Pos);
+        }
     }
 
     //線分と線分の計算をするための関数
@@ -134,6 +155,21 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
 
         //中心座標を更新する
         Paper_Center = Center;
+    }
+
+    //破る時にカーソルをそこに移動させる
+    private void CursorBreak() {
+        Vector3 Pos;
+        //ボタンを押した座標に持っていく
+        if (Input.GetMouseButtonDown(0)) {
+            Old_Click_Pos = Input.mousePosition;
+            Old_Click_Pos.z = 10.0f;
+        }
+
+        Pos = Camera.main.ScreenToWorldPoint(Old_Click_Pos);
+        Debug.LogWarning(Pos);
+        //var Pos = Old_Click_Pos.WorldToScreenPoint(Old_Click_Pos);
+        this.transform.position = Pos;
     }
 
 }

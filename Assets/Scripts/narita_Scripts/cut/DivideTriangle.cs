@@ -7,7 +7,7 @@ public class DivideTriangle : MonoBehaviour
     // メッシュ
     MeshFilter attachedMeshFilter;
     Mesh attachedMesh;
-
+    
     // ペーパーナンバー
     [SerializeField] private int number = 0;
     // 切断パス
@@ -754,23 +754,21 @@ public class DivideTriangle : MonoBehaviour
             CollisionField.Instance.UpdateStage(checkCollisionPoints(obj1, CollisionField.Instance.cellPoints()));
 
 
+            obj2.GetComponent<MeshRenderer>().materials = GetComponent<MeshRenderer>().materials;
+
             var alpha = obj1.AddComponent<Alpha>();
-            Material mat = (Material)Resources.Load("Effects/Alpha");
-            switch (number)
+            //alpha.SetMaterial(GetComponent<MeshRenderer>().material);
+            alpha.SetMaterial(GameManager.Instance._mats[number - 1]);
+            alpha.SetAlpha();
+
+            // 紙の破れにもAlphaを適用させる
+            for (int i = 0; i < obj1.transform.childCount; i++)
             {
-                case 1:
-                    mat = (Material)Resources.Load("Effects/Alpha");
-                    break;
-                case 2:
-                    mat = (Material)Resources.Load("Effects/Alpha_002");
-                    break;
-                case 3:
-                    mat = (Material)Resources.Load("Effects/Alpha_003");
-                    break;
-                default: break;
+                var breakline = obj1.transform.GetChild(i).gameObject.AddComponent<Alpha>();
+                Material breaklineMat = (Material)Resources.Load("Effects/PaperLineAlpha");
+                breakline.SetMaterial(breaklineMat);
+                breakline.SetAlpha();
             }
-            obj1.GetComponent<Renderer>().material = mat;
-            alpha.SetAlpha(number);
 
             //obj1の方のアウトラインをセットする
             //GameObject cursor = GameObject.Find("cursor");
@@ -791,22 +789,18 @@ public class DivideTriangle : MonoBehaviour
             CollisionField.Instance.UpdateStage(checkCollisionPoints(obj2, CollisionField.Instance.cellPoints()));
 
             var alpha = obj2.AddComponent<Alpha>();
-            Material mat = (Material)Resources.Load("Effects/Alpha");
-            switch (number)
+            alpha.SetMaterial(GameManager.Instance._mats[number - 1]);
+            //alpha.SetMaterial(GetComponent<MeshRenderer>().material);
+            alpha.SetAlpha();
+
+            // 紙の破れにもAlphaを適用させる
+            for (int i = 0; i < obj2.transform.childCount; i++)
             {
-                case 1:
-                    mat = (Material)Resources.Load("Effects/Alpha");
-                    break;
-                case 2:
-                    mat = (Material)Resources.Load("Effects/Alpha_002");
-                    break;
-                case 3:
-                    mat = (Material)Resources.Load("Effects/Alpha_003");
-                    break;
-                default: break;
+                var breakline = obj2.transform.GetChild(i).gameObject.AddComponent<Alpha>();
+                Material breaklineMat = (Material)Resources.Load("Effects/PaperLineAlpha");
+                breakline.SetMaterial(breaklineMat);
+                breakline.SetAlpha();
             }
-            obj2.GetComponent<Renderer>().material = mat;
-            alpha.SetAlpha(number);
 
             //obj1の方のアウトラインをセットする
             //GameObject cursor = GameObject.Find("cursor");

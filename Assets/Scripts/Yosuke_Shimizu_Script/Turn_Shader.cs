@@ -34,7 +34,6 @@ public class Turn_Shader : MonoBehaviour {
                 mat.SetFloat("_Flip",Flip_Num);
                 if (Flip_Num >= -1) {
                     Flip_Num -= 0.05f;
-                    Debug.LogWarning("");
                 }
                 break;
             case 2:         //Œ»‚ê‚é

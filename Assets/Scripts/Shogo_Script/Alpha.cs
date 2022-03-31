@@ -10,13 +10,13 @@ public class Alpha : MonoBehaviour
 {
     private Material _mat;
 
-    private float valueAlpha;
+    public float valueAlpha;
     private bool bStart = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        _mat.SetFloat("_Value", 1.0f);
+        //_mat.SetFloat("_Value", 1.0f);
     }
 
     // Update is called once per frame
@@ -31,14 +31,23 @@ public class Alpha : MonoBehaviour
                 bStart = false;
             }
             _mat.SetFloat("_Value", valueAlpha);
+            _mat = GetComponent<Renderer>().sharedMaterial;
         }
     }
 
     // フェード開始
-    public void SetAlpha(int num)
+    public void SetAlpha()
     {
-        _mat = GetComponent<MeshRenderer>().material;
+        //_mat = GetComponent<MeshRenderer>().material;
         bStart = true;
         valueAlpha = 1.0f;
+        //_mat.SetFloat("_Value", valueAlpha);
+    }
+
+    // マテリアルの設定
+    public void SetMaterial(Material mat)
+    {
+        GetComponent<Renderer>().material = mat;
+        _mat = GetComponent<Renderer>().sharedMaterial;
     }
 }

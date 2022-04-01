@@ -6,10 +6,14 @@ public class collsion_test : MonoBehaviour
 {
     [SerializeField] private bool exist = true;
 
+    //GameObject obj;
+
     // Start is called before the first frame update
     void Start()
     {
         exist = true;
+
+        //obj = new GameObject();
     }
 
     // Update is called once per frame
@@ -54,8 +58,23 @@ public class collsion_test : MonoBehaviour
             this.tag = collider.gameObject.tag;
 
             transform.Rotate(collider.gameObject.transform.localEulerAngles);
+
+            //obj = collider.gameObject;
+
+            // ŽÖ‚¾‚Á‚½‚ç
+            if (collider.gameObject.tag == "enemy")
+            {
+                if(collider.gameObject.GetComponent<Enemy>() == null)
+                    collider.gameObject.AddComponent<Enemy>();
+            }
         }
+
     }
+
+    //public GameObject Get()
+    //{
+    //    return obj;
+    //}
 
     public bool IsExisted()
     {

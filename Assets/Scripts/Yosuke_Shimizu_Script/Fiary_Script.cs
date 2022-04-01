@@ -11,8 +11,9 @@ public class Fiary_Script : MonoBehaviour
     //定数定義=================================================
     //妖精の状態を示す
     public enum FIARY_MOVE {
-        FIARY_PLAYER_TRACKING = 0,
-        FIARY_BREAK_PAPER,
+        FIARY_PLAYER_TRACKING = 0,          //プレイヤーに追従する
+        FIARY_BREAK_PAPER,                  //外周をたどる
+        FIARY_PAPER_IN,                     //紙が中に入っている
 
         FIARY_MAX
     }
@@ -42,6 +43,9 @@ public class Fiary_Script : MonoBehaviour
     //カーソルのシステムを得るための関数
     GameObject Cursor_System;
 
+    //一回だけ外枠に行けるように
+    private bool gFirst_Flg;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -59,6 +63,9 @@ public class Fiary_Script : MonoBehaviour
 
         //最初は読み込めるようにする
         g_bFirst_Load = false;
+
+        //最初だけ外枠を見れるようにするためのフラグ
+        gFirst_Flg = true;
     }
 
     // Update is called once per frame
@@ -86,7 +93,14 @@ public class Fiary_Script : MonoBehaviour
         //クリックしていた場合
         if (CS_Script.GetBreakFlg())
         {
-            g_FiaryMove = FIARY_MOVE.FIARY_BREAK_PAPER;   
+            //破るモードで最初に一回だけは外周を回るモードに移行する
+            if (gFirst_Flg)
+            {
+                g_FiaryMove = FIARY_MOVE.FIARY_BREAK_PAPER;
+            }
+            else {
+                g_FiaryMove = FIARY_MOVE.FIARY_PAPER_IN;
+            }
         }
         //クリックしていなかった場合
         else
@@ -100,7 +114,7 @@ public class Fiary_Script : MonoBehaviour
 
                 //親オブジェクトの座標を更新する
                 ParentObj = this.transform.parent.gameObject;
-
+                
                 //親オブジェクトの座標を保存する
                 PlayerPos = ParentObj.transform.position;
 
@@ -111,7 +125,23 @@ public class Fiary_Script : MonoBehaviour
             case FIARY_MOVE.FIARY_BREAK_PAPER:
                 //マウスのポジションに移動させる
                 this.transform.position = OutSide_Cursor.GetComponent<OutSide_Paper_Script_Second>().GetCursorPos();
+                //個々の中に入っているときにクリックすると中にゆっくり移動していくモードに変わる
+                if (Input.GetMouseButtonDown(0)) {
+                    g_FiaryMove = FIARY_MOVE.FIARY_PAPER_IN;
+                    gFirst_Flg = false;
+                }
+      
                 break;
+            case FIARY_MOVE.FIARY_PAPER_IN:
+                //クリックした場所をここに保存する
+                Vector3 vPos = OutSide_Cursor.GetComponent<OutSide_Paper_Script_Second>().GetCursorPos();
+                //妖精の元の場所との差分を出して妖精を移動させる(仮でできた後で必ず手直しする)
+                Vector3 velocity = new Vector3(0.0f,0.0f,0.0f);
+                velocity += (vPos - this.transform.position)* 0.05f;
+                velocity *= 0.5f;
+                this.transform.position += velocity;                
+                break;
+            
             default:break;
         }
 

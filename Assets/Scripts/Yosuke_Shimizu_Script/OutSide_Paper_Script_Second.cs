@@ -30,7 +30,9 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
 
     //クリックした場所を保存する変数
     Vector3 Old_Click_Pos;
-    
+
+    //最終的に決める座標
+    Vector3 Pos;
 
     // Start is called before the first frame update
     void Start()
@@ -145,7 +147,7 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
 
     //妖精の場所を変更するためのゲッター
     public Vector2 GetCursorPos() {
-        return Cross_Pos;
+        return Pos;
     }
 
     //アウトラインのリストを更新する為の関数
@@ -159,7 +161,7 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
 
     //破る時にカーソルをそこに移動させる
     private void CursorBreak() {
-        Vector3 Pos;
+        Pos = new Vector3(0.0f,0.0f,0.0f);
         //ボタンを押した座標に持っていく
         if (Input.GetMouseButtonDown(0)) {
             Old_Click_Pos = Input.mousePosition;

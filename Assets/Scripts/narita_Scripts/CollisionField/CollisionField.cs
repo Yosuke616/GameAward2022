@@ -150,6 +150,7 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                             // 次もある
                             // タグの変更
                             CollisionGrid[objCount].tag = StageInfo[layerList[objCount] + 1][objCount].tag;
+                            if (CollisionGrid[objCount].tag == "enemy") CollisionGrid[objCount].AddComponent<Enemy>();
 
                             // 次のレイヤーに更新
                             layerList[objCount]++;
@@ -213,62 +214,63 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
      }
 
     // 紙の切れ端とのあたり判定を取る用のオブジェクト生成
-    public void CheckCollisionwasteOfPaper(Transform trans)
-    {
-        float GridSizeX = CreateGridScript.paperGridSizeX;
-        float GridSizeY = CreateGridScript.paperGridSizeY;
-        int gridNumX = CreateGridScript.horizon;
-        int gridNumY = CreateGridScript.virtical;
-        Material[] mats = new Material[1];
-
-        //ｶﾒﾗをヒエラルキーから引っ張り出してくる
-        GameObject Cameraobj = GameObject.Find("MainCamera");
-
-        //名前を変えるためにカウントを作る
-        int nNameCnt = 0;
-
-        // 描画開始位置 = カメラ座標 - gridの横幅 * 数の半分
-        Vector3 StartPoint;
-        StartPoint.x = Cameraobj.transform.position.x - GridSizeX * gridNumX * 0.5f + (GridSizeX * 0.5f);
-        StartPoint.y = Cameraobj.transform.position.y + GridSizeY * gridNumY * 0.5f - (GridSizeY * 0.5f);
-
-        // マスごとにあたり判定を取る用のオブジェクトを生成
-        for (int y = 0; y < gridNumY; y++)
-        {
-            for (int x = 0; x < gridNumX; x++, nNameCnt++)
-            {
-                //スクリプトでオブジェクトを追加する
-                //GameObject mass = StageGrid.CreateMesh(GridSizeX, GridSizeY, mats);
-                GameObject mass = CreateCollisionObject(
-                    "chage_mass" + nNameCnt,            // 名前
-                    new Vector3(
-                        StartPoint.x + (GridSizeX * x), // 座標
-                        StartPoint.y - (GridSizeY * y),
-                        trans.position.z),
-                    Vector3.zero,
-                    "none",                             // タグ
-                    Cameraobj                           // 親オブジェクト
-                    );
-
-                mass.transform.localScale = new Vector3(CreateGridScript.paperGridSizeX, CreateGridScript.paperGridSizeY, 1);
-
-                mass.GetComponent<BoxCollider>().isTrigger = true;
-
-                // rigidbody
-                var rb = mass.AddComponent<Rigidbody>();
-                rb.constraints = RigidbodyConstraints.FreezePosition;
-                rb.freezeRotation = true;
-                rb.useGravity = false;
-
-                //---オブジェクトの設定
-
-                // 当たった時どのようなふるまいをするか
-                mass.AddComponent<collsion_test>();
-
-                storeObject.Add(mass);
-            }
-        }
-    }
+    //public void CheckCollisionwasteOfPaper(Transform trans)
+    //{
+    //    float GridSizeX = CreateGridScript.paperGridSizeX;
+    //    float GridSizeY = CreateGridScript.paperGridSizeY;
+    //    int gridNumX = CreateGridScript.horizon;
+    //    int gridNumY = CreateGridScript.virtical;
+    //    Material[] mats = new Material[1];
+    //
+    //    //ｶﾒﾗをヒエラルキーから引っ張り出してくる
+    //    GameObject Cameraobj = GameObject.Find("MainCamera");
+    //
+    //    //名前を変えるためにカウントを作る
+    //    int nNameCnt = 0;
+    //
+    //    // 描画開始位置 = カメラ座標 - gridの横幅 * 数の半分
+    //    Vector3 StartPoint;
+    //    StartPoint.x = Cameraobj.transform.position.x - GridSizeX * gridNumX * 0.5f + (GridSizeX * 0.5f);
+    //    StartPoint.y = Cameraobj.transform.position.y + GridSizeY * gridNumY * 0.5f - (GridSizeY * 0.5f);
+    //
+    //    // マスごとにあたり判定を取る用のオブジェクトを生成
+    //    for (int y = 0; y < gridNumY; y++)
+    //    {
+    //        for (int x = 0; x < gridNumX; x++, nNameCnt++)
+    //        {
+    //            //スクリプトでオブジェクトを追加する
+    //            //GameObject mass = StageGrid.CreateMesh(GridSizeX, GridSizeY, mats);
+    //            GameObject mass = CreateCollisionObject(
+    //                "chage_mass" + nNameCnt,            // 名前
+    //                new Vector3(
+    //                    StartPoint.x + (GridSizeX * x), // 座標
+    //                    StartPoint.y - (GridSizeY * y),
+    //                    trans.position.z),
+    //                Vector3.zero,
+    //                "none",                             // タグ
+    //                Cameraobj                           // 親オブジェクト
+    //                );
+    //
+    //            mass.transform.localScale = new Vector3(CreateGridScript.paperGridSizeX, CreateGridScript.paperGridSizeY, 1);
+    //
+    //            mass.GetComponent<BoxCollider>().isTrigger = true;
+    //
+    //            // rigidbody
+    //            var rb = mass.AddComponent<Rigidbody>();
+    //            rb.constraints = RigidbodyConstraints.FreezePosition;
+    //            rb.freezeRotation = true;
+    //            rb.useGravity = false;
+    //
+    //            //---オブジェクトの設定
+    //
+    //            // 当たった時どのようなふるまいをするか
+    //            mass.AddComponent<collsion_test>();
+    //
+    //            storeObject.Add(mass);
+    //            //Debug.LogError("");
+    //        }
+    //    }
+    //}
 
 
     public List<Vector2> cellPoints()
@@ -303,36 +305,35 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
     }
 
 
-    private void CheckCollisionFlags()
-    {
-        List<bool> changes = new List<bool>();
-
-        for (int i = 0; i < storeObject.Count; i++)
-        {
-            if (storeObject[i] == null)
-            {
-                changes.Add(false);
-                continue;
-            }
-
-            // タグに変更があったらフラグを立てる
-            if (storeObject[i].tag != "waste")
-            {
-                changes.Add(true);
-                Destroy(storeObject[i]);
-            }
-            else
-            {
-                changes.Add(false);
-            }
-
-        }
-
-
-        storeObject.Clear();
-
-        UpdateStage(changes);
-    }
+    //private void CheckCollisionFlags()
+    //{
+    //    List<bool> changes = new List<bool>();
+    //
+    //    for (int i = 0; i < storeObject.Count; i++)
+    //    {
+    //        if (storeObject[i] == null)
+    //        {
+    //            changes.Add(false);
+    //            continue;
+    //        }
+    //
+    //        // タグに変更があったらフラグを立てる
+    //        if (storeObject[i].tag != "waste")
+    //        {
+    //            changes.Add(true);
+    //            Destroy(storeObject[i]);
+    //        }
+    //        else
+    //        {
+    //            changes.Add(false);
+    //        }
+    //
+    //    }
+    //
+    //    storeObject.Clear();
+    //
+    //    UpdateStage(changes);
+    //}
 
 
     private GameObject CreateCollisionObject(string name, Vector3 pos, Vector3 rot, string tag, GameObject parent)
@@ -349,6 +350,12 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
         mass.name = name;
         //タグを付ける
         mass.tag = tag;
+
+        if(tag == "enemy")
+        {
+            Debug.Log("蛇");
+            mass.AddComponent<Enemy>();
+        }
 
         return mass;
     }

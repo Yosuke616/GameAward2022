@@ -90,7 +90,7 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
             Old_Click_Pos.z = 10.0f;
 
 
-            var Pos = Camera.main.ScreenToWorldPoint(Old_Click_Pos);
+            //var Pos = Camera.main.ScreenToWorldPoint(Old_Click_Pos);
 
             //Debug.LogWarning(Old_Click_Pos);
         }
@@ -168,10 +168,10 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
             Old_Click_Pos.z = 10.0f;
         }
 
-        Pos = Camera.main.ScreenToWorldPoint(Old_Click_Pos);
-        Debug.LogWarning(Pos);
+        //Pos = Camera.main.ScreenToWorldPoint(Old_Click_Pos);
+        //Debug.LogWarning(Pos);
         //var Pos = Old_Click_Pos.WorldToScreenPoint(Old_Click_Pos);
-        this.transform.position = Pos;
+        //this.transform.position = Pos;
     }
 
 }

@@ -60,17 +60,17 @@ public class PlayerMove2 : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.gameObject.tag == "goal")
-        {
-            tex.text = "ゴール！";
-        }
-        else if (other.gameObject.gameObject.tag == "enemy")
-        {
-            tex.text = "失敗！";
-        }
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.gameObject.gameObject.tag == "goal")
+    //    {
+    //        tex.text = "ゴール！";
+    //    }
+    //    else if (other.gameObject.gameObject.tag == "enemy")
+    //    {
+    //        tex.text = "失敗！";
+    //    }
+    //}
 
     //public void CreateSphere()
     //{

@@ -13,7 +13,8 @@ public class Fiary_Script : MonoBehaviour
     public enum FIARY_MOVE {
         FIARY_PLAYER_TRACKING = 0,          //プレイヤーに追従する
         FIARY_BREAK_PAPER,                  //外周をたどる
-        FIARY_PAPER_IN,                     //紙が中に入っている
+        FIARY_PAPER_IN,                     //紙を破っている情報を保存している状態
+        FIARY_BREAK_MOVE,                   //紙を実際破るために移動している状態
 
         FIARY_MAX
     }
@@ -46,6 +47,12 @@ public class Fiary_Script : MonoBehaviour
     //一回だけ外枠に行けるように
     private bool gFirst_Flg;
 
+   //クリックしたところを保存するためのリスト
+    private List<Vector3> MousePos;
+
+    //前回の座標を保存するための変数
+    private Vector3 Old_Mouse_Pos;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -66,6 +73,12 @@ public class Fiary_Script : MonoBehaviour
 
         //最初だけ外枠を見れるようにするためのフラグ
         gFirst_Flg = true;
+
+        //リストの中身を初期化する
+        MousePos.Clear();
+
+        //前回の座標を保存するための変数
+        Old_Mouse_Pos = new Vector3(0.0f,0.0f,0.0f);
     }
 
     // Update is called once per frame
@@ -105,7 +118,13 @@ public class Fiary_Script : MonoBehaviour
         //クリックしていなかった場合
         else
         {
+            //何もなかったらプレイヤーの横に移動してもらう
             g_FiaryMove = FIARY_MOVE.FIARY_PLAYER_TRACKING;
+
+            //中身が存在するのならばこの中に入る
+            if (MousePos.Count > 0) {
+                g_FiaryMove = FIARY_MOVE.FIARY_BREAK_MOVE;
+            }
         }
 
         //状態によって更新の内容を変える
@@ -133,13 +152,47 @@ public class Fiary_Script : MonoBehaviour
       
                 break;
             case FIARY_MOVE.FIARY_PAPER_IN:
+
+                //↓後々使う
                 //クリックした場所をここに保存する
                 Vector3 vPos = OutSide_Cursor.GetComponent<OutSide_Paper_Script_Second>().GetCursorPos();
+
+
+                //===============================================================================================
                 //妖精の元の場所との差分を出して妖精を移動させる(仮でできた後で必ず手直しする)
-                Vector3 velocity = new Vector3(0.0f,0.0f,0.0f);
-                velocity += (vPos - this.transform.position)* 0.05f;
+                //差分を出してそれを保存するための変数
+
+                Vector3 velocity = new Vector3(0.0f, 0.0f, 0.0f);
+                //ターゲットと自身とのポジションを引いて移動させたい速度をかける
+                velocity += (vPos - this.transform.position) * 0.05f;
+                //加速度的なものこれが無いと一定の速度になる
                 velocity *= 0.5f;
-                this.transform.position += velocity;                
+                //最後に移動しようとさせる
+                this.transform.position += velocity;
+                //===============================================================================================
+
+
+                //クリックされた場所をリストに保存する(前回の座標と違ったときにリストに追加する)
+                if (!(vPos == Old_Mouse_Pos)) {
+                    ////リストに追加する
+                    //MousePos.Add(vPos);
+                    ////過去の座標と比べるために今の座標を保存しておく
+                    Old_Mouse_Pos = vPos;
+                    Debug.Log("ロゼッタ大好き");
+                }
+
+                //リストに中身が入っている状態で破れるフラグがオフになっていたら破くモーションに移る
+                //リストをたどって妖精を移動させる
+
+                if (Input.GetKey(KeyCode.Space)) {
+                    Debug.Log(vPos);
+                    Debug.Log(Old_Mouse_Pos);
+                }
+
+                break;
+
+            case FIARY_MOVE.FIARY_BREAK_MOVE:
+
                 break;
             
             default:break;

@@ -53,6 +53,9 @@ public class Fiary_Script : MonoBehaviour
     //前回の座標を保存するための変数
     private Vector3 Old_Mouse_Pos;
 
+    //紙の外周の座標を保存するための変数
+    private Vector3 Paper_Out;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -79,6 +82,9 @@ public class Fiary_Script : MonoBehaviour
 
         //前回の座標を保存するための変数
         Old_Mouse_Pos = new Vector3(0.0f,0.0f,0.0f);
+
+        //外周をほぞんするっための変数の初期化
+        Paper_Out = new Vector3(0.0f,0.0f,0.0f);
     }
 
     // Update is called once per frame
@@ -130,38 +136,43 @@ public class Fiary_Script : MonoBehaviour
                 //プレイヤーの少し横に移動させる
                 this.transform.position = new Vector3(PlayerPos.x + 1.0f, PlayerPos.y + 1.0f, PlayerPos.z);
 
-
-
                 //ここで破るフラグが立っていたら変える
                 if (CS_Script.GetBreakFlg())
                 {
-                    //破るモードで最初に一回だけは外周を回るモードに移行する
-                    if (gFirst_Flg)
+                    if (!gFirst_Flg)
                     {
                         g_FiaryMove = FIARY_MOVE.FIARY_PAPER_IN;
                     }
-                    else
-                    {
-                        g_FiaryMove = FIARY_MOVE.FIARY_PAPER_IN;
+
+                }
+                else {
+                    if (Input.GetMouseButtonDown(0)) {
+                        g_FiaryMove = FIARY_MOVE.FIARY_BREAK_PAPER;
                     }
                 }
 
-                Debug.Log("FIARY_PLAYER_TRACKING");
-
                 break;
             case FIARY_MOVE.FIARY_BREAK_PAPER:
+
                 //マウスのポジションに移動させる
                 this.transform.position = OutSide_Cursor.GetComponent<OutSide_Paper_Script_Second>().GetCursorPos();
+
+                Debug.Log(OutSide_Cursor.GetComponent<OutSide_Paper_Script_Second>().GetCursorPos());
+
                 //個々の中に入っているときにクリックすると中にゆっくり移動していくモードに変わる
                 if (Input.GetMouseButtonDown(0)) {
                     g_FiaryMove = FIARY_MOVE.FIARY_PLAYER_TRACKING;
                     gFirst_Flg = false;
                 }
 
-                Debug.Log("FIARY_BREAK_PAPER");
+                //外周用に保存しておく
+                Paper_Out = OutSide_Cursor.GetComponent<OutSide_Paper_Script_Second>().GetCursorPos();
 
                 break;
             case FIARY_MOVE.FIARY_PAPER_IN:
+
+                //妖精の位置は壱か所に固定しておく
+                this.transform.position = Paper_Out;
 
                 //↓後々使う
                 //クリックした場所をここに保存する
@@ -169,7 +180,7 @@ public class Fiary_Script : MonoBehaviour
                 Debug.Log(vPos);
 
                 //クリックされた場所をリストに保存する(前回の座標と違ったときにリストに追加する)
-                if (!(vPos == Old_Mouse_Pos)) {
+                if (!(vPos == Old_Mouse_Pos)&& Input.GetMouseButtonDown(0)) {
                     ////リストに追加する
                     MousePos.Add(vPos);
                     ////過去の座標と比べるために今の座標を保存しておく
@@ -182,9 +193,6 @@ public class Fiary_Script : MonoBehaviour
                     Debug.Log(MousePos.Count);
                 }
 
-                Debug.Log("FIARY_PAPER_IN");
-
-
                 break;
 
             case FIARY_MOVE.FIARY_BREAK_MOVE:
@@ -196,7 +204,8 @@ public class Fiary_Script : MonoBehaviour
 
                 //このままだと一瞬で終わるのでこの中のリストのなかみが全て消えたらプレイヤー追従モードにする
 
-
+                Debug.Log(this.transform.position);
+                Debug.Log(MousePos.Count);
 
                 //===============================================================================================
                 //妖精の元の場所との差分を出して妖精を移動させる(仮でできた後で必ず手直しする)
@@ -216,12 +225,11 @@ public class Fiary_Script : MonoBehaviour
                     MousePos.RemoveAt(0);
                 }
 
-                Debug.Log("FIARY_BREAK_MOVE");
-
                 //リストの中身が無くなったらゆっくり消していく
                 if (MousePos.Count == 0) {
                     g_FiaryMove = FIARY_MOVE.FIARY_PLAYER_TRACKING;
                     gFirst_Flg = true;
+                    Paper_Out = new Vector3(0.0f,0.0f,0.0f);
                 }
 
                 break;

@@ -26,13 +26,19 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
 
     //紙の中心座標は常に一体なのでここでセットする
     //紙の中心の座標をセットする
-    Vector2 Paper_Center;
+    private Vector2 Paper_Center;
 
     //クリックした場所を保存する変数
-    Vector3 Old_Click_Pos;
+    private Vector3 Old_Click_Pos;
 
     //最終的に決める座標
-    Vector3 Pos;
+    private Vector3 Pos;
+
+    //紙の外周を保存するための変数
+    private Vector3 OutPaper_Pos;
+
+    //一回だけクリックしたときにそこで止まるためのフラグ
+    private bool First_Flg;
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +48,12 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
 
         //初期化するたびにfalseにして読み込めるようにする
         g_bFirst_Load = false;
+
+        //紙の外周用の変数を初期化する
+        OutPaper_Pos = new Vector3(0.0f,0.0f,0.0f);
+
+        //最初のフラグはfalseになっている(trueで一回目は終了)
+        First_Flg = false;
 
     }
 
@@ -63,6 +75,8 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
             //最初の一回だけ読み込めるようにする
             g_bFirst_Load = true;
         }
+        //これで問題ないはず
+        if (Camera.main == null) { return; }
 
         //マウス座標をここでゲットします
         Vector2 Mouse_Pos = Input.mousePosition;
@@ -71,11 +85,7 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
         Mouse_Pos.x -= Screen.width/2;
         Mouse_Pos.y -= Screen.height/2;
 
-        //マウスと中心とそれぞれどの辺かを考える(関数を作って) 
-        Cross_Pos = CalculationVector(Mouse_Pos,Paper_Center, OutLinePaper);
         
-        //カーソルをセットした座標に移動させる
-        this.transform.position = Cross_Pos;
 
         //破るためのスクリプトを用意する
         GameObject Cur = GameObject.Find("Cursor");
@@ -84,15 +94,36 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
         if (Cur_SY.GetBreakFlg())
         {
             CursorBreak();
+            First_Flg = false;
         }
         else {
             Old_Click_Pos = Input.mousePosition;
             Old_Click_Pos.z = 10.0f;
 
 
-            //var Pos = Camera.main.ScreenToWorldPoint(Old_Click_Pos);
+            var Pos2 = Camera.main.ScreenToWorldPoint(Old_Click_Pos);
 
-            //Debug.LogWarning(Old_Click_Pos);
+                //一回クリックされたらそこでカーソルは止まる
+                if ((!First_Flg))
+                {
+                    //マウスと中心とそれぞれどの辺かを考える(関数を作って) 
+                    Cross_Pos = CalculationVector(Mouse_Pos, Paper_Center, OutLinePaper);
+
+                    //カーソルをセットした座標に移動させる
+                    this.transform.position = Cross_Pos;
+
+                    OutPaper_Pos = Cross_Pos;
+
+                    if (Input.GetMouseButtonDown(0)) {
+                        First_Flg = true;
+                    }
+
+                }
+                else {
+                    this.transform.position = Cross_Pos;
+                    Debug.Log(234567890);
+                }
+
         }
     }
 
@@ -113,7 +144,7 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
             //順番に外周を使っていく
             //ここで外周の長さが出るがこれは使わない
             //この考え方事態は必要
-            //Vector2 outlineEdge = Square[(i + 1) % (Square.Count)] - Square[i];
+            Vector2 outlineEdge = Square[(i + 1) % (Square.Count)] - Square[i];
 
             //振る番号を作る
             int VegetaNum = ((i+1)%(Square.Count));
@@ -147,7 +178,7 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
 
     //妖精の場所を変更するためのゲッター
     public Vector2 GetCursorPos() {
-        return Pos;
+        return Cross_Pos;
     }
 
     //アウトラインのリストを更新する為の関数
@@ -168,10 +199,10 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
             Old_Click_Pos.z = 10.0f;
         }
 
-        //Pos = Camera.main.ScreenToWorldPoint(Old_Click_Pos);
+        Pos = Camera.main.ScreenToWorldPoint(Old_Click_Pos);
         //Debug.LogWarning(Pos);
-        //var Pos = Old_Click_Pos.WorldToScreenPoint(Old_Click_Pos);
-        //this.transform.position = Pos;
+        //Pos = Old_Click_Pos.WorldToScreenPoint(Old_Click_Pos);
+        this.transform.position = Pos;
     }
 
 }

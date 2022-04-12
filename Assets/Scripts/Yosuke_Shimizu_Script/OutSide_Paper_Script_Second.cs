@@ -26,13 +26,13 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
 
     //紙の中心座標は常に一体なのでここでセットする
     //紙の中心の座標をセットする
-    Vector2 Paper_Center;
+    private Vector2 Paper_Center;
 
     //クリックした場所を保存する変数
-    Vector3 Old_Click_Pos;
+    private Vector3 Old_Click_Pos;
 
     //最終的に決める座標
-    Vector3 Pos;
+    private Vector3 Pos;
 
     // Start is called before the first frame update
     void Start()
@@ -63,6 +63,8 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
             //最初の一回だけ読み込めるようにする
             g_bFirst_Load = true;
         }
+        //これで問題ないはず
+        if (Camera.main == null) { return; }
 
         //マウス座標をここでゲットします
         Vector2 Mouse_Pos = Input.mousePosition;
@@ -90,7 +92,7 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
             Old_Click_Pos.z = 10.0f;
 
 
-            //var Pos = Camera.main.ScreenToWorldPoint(Old_Click_Pos);
+            var Pos = Camera.main.ScreenToWorldPoint(Old_Click_Pos);
 
             //Debug.LogWarning(Old_Click_Pos);
         }
@@ -113,7 +115,7 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
             //順番に外周を使っていく
             //ここで外周の長さが出るがこれは使わない
             //この考え方事態は必要
-            //Vector2 outlineEdge = Square[(i + 1) % (Square.Count)] - Square[i];
+            Vector2 outlineEdge = Square[(i + 1) % (Square.Count)] - Square[i];
 
             //振る番号を作る
             int VegetaNum = ((i+1)%(Square.Count));
@@ -168,10 +170,10 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
             Old_Click_Pos.z = 10.0f;
         }
 
-        //Pos = Camera.main.ScreenToWorldPoint(Old_Click_Pos);
+        Pos = Camera.main.ScreenToWorldPoint(Old_Click_Pos);
         //Debug.LogWarning(Pos);
-        //var Pos = Old_Click_Pos.WorldToScreenPoint(Old_Click_Pos);
-        //this.transform.position = Pos;
+        //Pos = Old_Click_Pos.WorldToScreenPoint(Old_Click_Pos);
+        this.transform.position = Pos;
     }
 
 }

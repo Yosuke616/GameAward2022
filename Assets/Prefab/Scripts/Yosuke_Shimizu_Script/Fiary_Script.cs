@@ -151,6 +151,8 @@ public class Fiary_Script : MonoBehaviour
                     }
                 }
 
+                Debug.Log("FIARY_PLAYER_TRACKING");
+
                 break;
             case FIARY_MOVE.FIARY_BREAK_PAPER:
 
@@ -168,6 +170,8 @@ public class Fiary_Script : MonoBehaviour
                 //外周用に保存しておく
                 Paper_Out = OutSide_Cursor.GetComponent<OutSide_Paper_Script_Second>().GetCursorPos();
 
+                Debug.Log("FIARY_BREAK_PAPER");
+
                 break;
             case FIARY_MOVE.FIARY_PAPER_IN:
 
@@ -177,15 +181,18 @@ public class Fiary_Script : MonoBehaviour
                 //↓後々使う
                 //クリックした場所をここに保存する
                 Vector3 vPos = OutSide_Cursor.GetComponent<OutSide_Paper_Script_Second>().GetCursorPos();
-                Debug.Log(vPos);
 
                 //クリックされた場所をリストに保存する(前回の座標と違ったときにリストに追加する)
-                if (!(vPos == Old_Mouse_Pos)&& Input.GetMouseButtonDown(0)) {
+                if (!(vPos == Old_Mouse_Pos)) {
                     ////リストに追加する
                     MousePos.Add(vPos);
                     ////過去の座標と比べるために今の座標を保存しておく
                     Old_Mouse_Pos = vPos;
+
+                    Debug.Log("いい感じだね");
                 }
+
+
 
                 if (Input.GetKey(KeyCode.Space)) {
                     Debug.Log(vPos);
@@ -193,6 +200,7 @@ public class Fiary_Script : MonoBehaviour
                     Debug.Log(MousePos.Count);
                 }
 
+                Debug.Log("FIARY_PAPER_IN");
                 break;
 
             case FIARY_MOVE.FIARY_BREAK_MOVE:
@@ -213,7 +221,7 @@ public class Fiary_Script : MonoBehaviour
                 Vector3 vPos2 = OutSide_Cursor.GetComponent<OutSide_Paper_Script_Second>().GetCursorPos();
                 Vector3 velocity = new Vector3(0.0f, 0.0f, 0.0f);
                 //ターゲットと自身とのポジションを引いて移動させたい速度をかける
-                velocity += (MousePos[0] - this.transform.position)* 0.5f;
+                velocity += (MousePos[0] - this.transform.position)* 0.1f;
                 //加速度的なものこれが無いと一定の速度になる
                 //velocity *= 0.5f;
                 //最後に移動しようとさせる
@@ -232,11 +240,11 @@ public class Fiary_Script : MonoBehaviour
                     Paper_Out = new Vector3(0.0f,0.0f,0.0f);
                 }
 
+                Debug.Log("FIARY_BREAK_MOVE");
+
                 break;
             
-            default:break;
+                default:break;
         }
-
-
     }
 }

@@ -160,4 +160,9 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
         seAudioSource.clip = null;
     }
 
+    public void DispBGMindex()
+    {
+        Debug.Log(bgm.Length);
+    }
+
 }

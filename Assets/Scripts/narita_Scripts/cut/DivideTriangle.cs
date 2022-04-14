@@ -333,6 +333,7 @@ public class DivideTriangle : MonoBehaviour
         attachedMesh.uv = uvs.ToArray();
         attachedMesh.triangles = triangles.ToArray();
         attachedMesh.normals = normals.ToArray();
+
         debugList = vertices;
 
         // 切断パスの更新
@@ -904,6 +905,8 @@ public class DivideTriangle : MonoBehaviour
                     outline1.Add(outline[index]);
                 }
 
+                
+
                 // 交点と２回重なるまで切断パスをなぞる
                 int cnt = 0;
                 for (int index = 0; index < cuttingPath.Count; index++)
@@ -919,39 +922,55 @@ public class DivideTriangle : MonoBehaviour
                     if (cnt == 2) { Debug.LogWarning("第2関門突破"); break; }
                 }
 
+
+                
+
+                // 始点の位置をずらす
+                Vector3 newStart = cuttingPath[0] + (outline[saveOutlineIndex] - outline[saveOutlineIndex - 1]).normalized * 0.5f;
+                Vector3 newCross = cross + (outline[saveOutlineIndex] - outline[saveOutlineIndex - 1]).normalized * 0.5f;
                 // 交点を追加する
-                outline1.Add(cross);
+                outline1.Add(newCross);
 
                 // edgeIndexの値をもとに逆の順番でなぞる
-                for (int index = edgeIndex; index >= 0; index--)
-                {
+                for (int index = edgeIndex; index >= 1; index--)
                     outline1.Add(cuttingPath[index]);
-                }
+
+                outline1.Add(newStart);
+
+                //outline1.Add(cuttingPath[0]);
 
                 // 残りの外周をなぞる
-                for (int index = saveOutlineIndex; index < outline.Count; index++)
-                {
+                for (int index = saveOutlineIndex + 1; index < outline.Count; index++)
                     outline1.Add(outline[index]);
-                }
 
                 // ---１つ目のuv、法線リストを作成
                 for (int i = 0; i < outline1.Count; i++)
                 {
+                    bool add = false;
                     for (int index = 0; index < attachedMesh.vertices.Length; index++)
                     {
                         // アウトラインの頂点座標と頂点群が等しい場合その頂点のuvと法線の値を使う
                         if (outline1[i].Equals(attachedMesh.vertices[index]))
                         {
+                            add = true;
                             normals1.Add(attachedMesh.normals[index]);
                             uvs1.Add(attachedMesh.uv[index]);
                             break;
                         }
                         else if(outline1[i].Equals(cross))
                         {
+                            add = true;
                             uvs1.Add(uv);
                             normals1.Add(normal);
                             break;
                         }
+                    }
+
+                    if(!add)
+                    {
+                        Debug.LogWarning("");
+                        uvs1.Add(Vector2.zero);
+                        normals1.Add(Vector3.zero);
                     }
                 }
 
@@ -986,6 +1005,9 @@ public class DivideTriangle : MonoBehaviour
                 #endregion
 
                 Destroy(gameObject);
+
+                foreach (var vec in outline1)
+                    Debug.Log(vec);
 
                 ret = true;
             }

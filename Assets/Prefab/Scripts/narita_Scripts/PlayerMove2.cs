@@ -6,40 +6,76 @@ using UnityEngine.UI;
 // プレイヤーの移動クラス
 public class PlayerMove2 : MonoBehaviour
 {
+    enum PLAYER_STATE
+    {
+        STATE_STOP,
+        STATE_LEFT_MOVE,
+        STATE_RIGHT_MOVE,
+    }
+
+
     Rigidbody rb;
     //bool bGround;
     public float speed = 1.0f;
 
     public Text tex;
+    public Text timerTex;
+    public Image _resultBG;
+    private PLAYER_STATE _state;
+
+    private bool flg;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
 
         //bGround = false;
+
+        _resultBG.gameObject.SetActive(false);
+        flg = true;
+
+        _state = PLAYER_STATE.STATE_STOP;
     }
 
     // 更新
     void Update()
     {
-        // プレイヤーの向き
-        if (Input.GetKey(KeyCode.A))
+        if (flg)
         {
-            //transform.Rotate(0, -0.3f, 0);
-            transform.position += -transform.right * speed;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            transform.position += transform.right * speed;
-            //transform.Rotate(0, 0.3f, 0);
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            GetComponent<Rigidbody>().AddForce(new Vector3(0, 15.0f, 0), ForceMode.Impulse);
-            //transform.position += transform.right * speed;
-            //transform.Rotate(0, 0.3f, 0);
-        }
+            // プレイヤーの向き
+            if (Input.GetKey(KeyCode.A))
+            {
+                _state = PLAYER_STATE.STATE_LEFT_MOVE;
+                //transform.Rotate(0, -0.3f, 0);
+                //transform.position += -transform.right * speed;
+            }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                _state = PLAYER_STATE.STATE_RIGHT_MOVE;
+                //transform.position += transform.right * speed;
+                //transform.Rotate(0, 0.3f, 0);
+            }
+            else if(Input.GetKeyDown(KeyCode.S))
+            {
+                _state = PLAYER_STATE.STATE_STOP;
+            }
+            else if (Input.GetKeyDown(KeyCode.W))
+            {
+                GetComponent<Rigidbody>().AddForce(new Vector3(0, 15.0f, 0), ForceMode.Impulse);
+                //transform.position += transform.right * speed;
+                //transform.Rotate(0, 0.3f, 0);
+            }
 
+
+            switch (_state)
+            {
+                case PLAYER_STATE.STATE_STOP: break;
+                case PLAYER_STATE.STATE_LEFT_MOVE: transform.position += -transform.right * speed; break;
+                case PLAYER_STATE.STATE_RIGHT_MOVE: transform.position += transform.right * speed; break;
+                default:
+                    break;
+            }
+        }
 
     }
 
@@ -52,11 +88,19 @@ public class PlayerMove2 : MonoBehaviour
         //}
         if (collision.gameObject.gameObject.tag == "goal")
         {
-            tex.text = "ゴール！";
+            tex.text = "クリアタイム:" + timerTex.text;
+            SoundManager.Instance.StopBgm();
+            SoundManager.Instance.PlaySeByName("clear");
+            _resultBG.gameObject.SetActive(true);
+            flg = false;
         }
-        else if(collision.gameObject.gameObject.tag == "enemy")
+        else if (collision.gameObject.gameObject.tag == "enemy")
         {
-            tex.text = "失敗！";
+            tex.text = "　　　　失敗！";
+            SoundManager.Instance.StopBgm();
+            SoundManager.Instance.PlaySeByName("jingle37");
+            _resultBG.gameObject.SetActive(true);
+            flg = false;
         }
     }
 
@@ -65,10 +109,15 @@ public class PlayerMove2 : MonoBehaviour
     //    if (other.gameObject.gameObject.tag == "goal")
     //    {
     //        tex.text = "ゴール！";
+    //        SoundManager.Instance.StopBgm();
+    //        SoundManager.Instance.PlaySeByName("SE_GAMECLEAR");
+    //        GetComponent<GameClear>().ClearGame();
     //    }
     //    else if (other.gameObject.gameObject.tag == "enemy")
     //    {
     //        tex.text = "失敗！";
+    //        SoundManager.Instance.StopBgm();
+    //        SoundManager.Instance.PlaySeByName("SE_GameOver");
     //    }
     //}
 

@@ -6,6 +6,15 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 {
     public Material[] _mats = new Material[3];
 
+    enum GameState
+    {
+        MODE_NONE,          // ‘€ì‚Å‚«‚È‚¢
+        MODE_NOT_DIVIDE,    // ”j‚éó‘Ô‚Å‚È‚¢(—d¸‚ªƒvƒŒƒCƒ„[ü‚è‚É‚¢‚é)
+        MODE_DIVIDE,        // ”j‚éˆ—Às’†(—d¸‚ª“®‚¢‚Ä‚¢‚é)
+
+    }
+
+
     private void Awake()
     {
         Application.targetFrameRate = 60;

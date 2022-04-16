@@ -180,25 +180,36 @@ public class Fiary_Script : MonoBehaviour
 
                 //↓後々使う
                 //クリックした場所をここに保存する
-                Vector3 vPos = OutSide_Cursor.GetComponent<OutSide_Paper_Script_Second>().GetCursorPos();
+                //Vector3 vPos = OutSide_Cursor.GetComponent<OutSide_Paper_Script_Second>().GetCursorPos();
+                //スクリーン座標
+                Vector3 vPos = Input.mousePosition;
+
+                //画面の半分の大きさをマイナスすることにより整合性を図るぜ
+                //vPos.x -= Screen.width / 2;
+                //vPos.y -= Screen.height / 2;
+                vPos.z += 10.0f;
+
+                var WorldPos = Camera.main.ScreenToWorldPoint(vPos);
+
 
                 //クリックされた場所をリストに保存する(前回の座標と違ったときにリストに追加する)
-                if (!(vPos == Old_Mouse_Pos)) {
-                    ////リストに追加する
-                    MousePos.Add(vPos);
-                    ////過去の座標と比べるために今の座標を保存しておく
-                    Old_Mouse_Pos = vPos;
+                if (!(WorldPos == Old_Mouse_Pos)) {
+                    if (Input.GetMouseButtonDown(0)) {
+                        Debug.Log("いい感じだね");
+                        ////リストに追加する
+                        MousePos.Add(WorldPos);
+                        ////過去の座標と比べるために今の座標を保存しておく
+                        Old_Mouse_Pos = WorldPos;
+                    }
 
-                    Debug.Log("いい感じだね");
                 }
 
-
-
                 if (Input.GetKey(KeyCode.Space)) {
-                    Debug.Log(vPos);
+                    Debug.Log(WorldPos);
                     Debug.Log(Old_Mouse_Pos);
                     Debug.Log(MousePos.Count);
                 }
+                
 
                 Debug.Log("FIARY_PAPER_IN");
                 break;

@@ -83,9 +83,7 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
 
         //画面の半分の大きさをマイナスすることにより整合性を図るぜ
         Mouse_Pos.x -= Screen.width/2;
-        Mouse_Pos.y -= Screen.height/2;
-
-        
+        Mouse_Pos.y -= Screen.height/2; 
 
         //破るためのスクリプトを用意する
         GameObject Cur = GameObject.Find("Cursor");
@@ -121,7 +119,6 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
                 }
                 else {
                     this.transform.position = Cross_Pos;
-                    Debug.Log(234567890);
                 }
 
         }

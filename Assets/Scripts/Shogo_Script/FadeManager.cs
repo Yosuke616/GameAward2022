@@ -104,6 +104,7 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
             // ‰æ–Ê‚ª–¾‚é‚­‚È‚Á‚½‚ç
             if (valueSpeed <= currentSpeed)
             {
+                SoundManager.Instance.Volume = 1;
                 _backGround.gameObject.SetActive(false);
                 _isFadeIn = false;
             }

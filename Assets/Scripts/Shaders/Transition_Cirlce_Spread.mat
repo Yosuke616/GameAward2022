@@ -26,6 +26,6 @@ Material:
     m_Floats:
     - _Div: 24
     - _Inverse: 1
-    - _Value: -0.008862198
+    - _Value: 1.0022353
     m_Colors: []
   m_BuildTextureStacks: []

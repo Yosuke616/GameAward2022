@@ -6,10 +6,6 @@ public class CameraChanger : MonoBehaviour
 {
     public Camera MainCamera;
 	public List<Camera> SubCamera;
-    //public Camera SubCamera0;
-    //public Camera SubCamera1;
-    //public Camera SubCamera2;
-    //public Camera SubCamera3;
 
     // Start is called before the first frame update
     void Start()

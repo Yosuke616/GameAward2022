@@ -190,6 +190,11 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
         return Cross_Pos;
     }
 
+    //中に入ったカーソルの場所を送るための関数
+    public Vector3 GetCursorPoss_IN() {
+        return this.transform.position;
+    }
+
     //アウトラインのリストを更新する為の関数
     public void SetMoveLine(List<Vector3> Line, Vector3 Center)
     {

@@ -1,5 +1,5 @@
 /*
- 2022/3/18 ShimizuYosuke 
+ 2022/3/18 ShimizuYosuke
  画面いっぱいに当たり判定のある透明四角いオブジェクトを生成する(横400、縦300)
  */
 
@@ -21,7 +21,7 @@ public class StageGrid : MonoBehaviour
     // 全マスのオブジェクト
     [SerializeField] private List<GameObject> Grid = new List<GameObject>();
     // どのカメラの前にグリッドを表示させるか
-    [SerializeField] string cameraName = "MainCamera";
+    //[SerializeField] string cameraName = "MainCamera";
     // 描画開始位置
     private Vector2 StartPoint;
 
@@ -46,8 +46,8 @@ public class StageGrid : MonoBehaviour
         gridNumX = CreateGridScript.horizon;
         gridNumY = CreateGridScript.virtical;
 
-        //ｶﾒﾗをヒエラルキーから引っ張り出してくる
-        GameObject Cameraobj = GameObject.Find(cameraName);
+        //親オブジェクトを取得
+        GameObject Cameraobj = this.transform.parent.gameObject;
 
         //名前を変えるためにカウントを作る
         int nNameCnt = 0;
@@ -62,7 +62,7 @@ public class StageGrid : MonoBehaviour
             for (int u = 0; u < gridNumX; u++, nNameCnt++)
             {
                 //スクリプトでオブジェクトを追加する
-                GameObject mass = CreateMesh(GridSizeX, GridSizeY, ColorSet); 
+                GameObject mass = CreateMesh(GridSizeX, GridSizeY, ColorSet);
 
                 //親と子の設定をする(ここではｶﾒﾗを親にする)
                 mass.transform.SetParent(Cameraobj.transform);
@@ -135,7 +135,7 @@ public class StageGrid : MonoBehaviour
     }
 
 
-   
+
 
     // Quad作成
     static public GameObject CreateMesh(float GridSizeX, float GridSizeY, Material[] mats)
@@ -178,7 +178,7 @@ public class StageGrid : MonoBehaviour
         mesh.normals = normals1.ToArray();      // 法線
         obj.GetComponent<MeshRenderer>().materials = mats;
         obj.GetComponent<MeshFilter>().mesh = mesh;                // メッシュフィルターにメッシュをセット
-        //obj.GetComponent<MeshCollider>().sharedMesh = mesh;        // メッシュコライダーにメッシュをセット 
+        //obj.GetComponent<MeshCollider>().sharedMesh = mesh;        // メッシュコライダーにメッシュをセット
 
         return obj;
     }

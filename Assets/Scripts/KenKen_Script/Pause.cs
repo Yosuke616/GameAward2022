@@ -84,7 +84,7 @@ public class Pause : MonoBehaviour
     public void OnTitle()
     {
         // “¯ˆêƒV[ƒ“‚ğ“Ç
-        SceneManager.LoadScene("Title");
+        SceneManager.LoadScene("StageSelect");
         Time.timeScale = 1f;
     }
 

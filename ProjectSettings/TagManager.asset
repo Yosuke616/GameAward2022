@@ -13,6 +13,8 @@ TagManager:
   - waste
   - goal
   - enemy
+  - Paper_OutSide_Cursor
+  - SubCamera
   layers:
   - Default
   - TransparentFX

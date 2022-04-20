@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 // プレイヤーの移動クラス
 public class PlayerMove2 : MonoBehaviour
@@ -71,6 +72,9 @@ public class PlayerMove2 : MonoBehaviour
         // ゴールに触れたとき
         if (collision.gameObject.gameObject.tag == "goal")
         {
+            // ステージ進捗保存
+            StageSelect.UpdateProgress(SceneManager.GetActiveScene().name);
+
             if (tex && timerTex) tex.text = "クリアタイム:" + timerTex.text;
 
             SoundManager.Instance.StopBgm();
@@ -79,6 +83,7 @@ public class PlayerMove2 : MonoBehaviour
             _resultBG.gameObject.SetActive(true);
             flg = false;
         }
+
         // 敵に触れたとき
         else if (collision.gameObject.gameObject.tag == "enemy")
         {

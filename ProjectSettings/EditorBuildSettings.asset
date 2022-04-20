@@ -38,5 +38,11 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Pause.unity
     guid: c7b8bda7dea3db84b847a6ddc93b7138
+  - enabled: 1
+    path: Assets/Scenes/StageSelect.unity
+    guid: 7b37ae4496eb7f84a87a7ccc831ef55d
+  - enabled: 1
+    path: Assets/Scenes/1-2.unity
+    guid: 9317c54d6a08c6f4f93f735795949249
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: fba200bbd05de7a48a53a3ca7e3a917b, type: 2}

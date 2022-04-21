@@ -978,7 +978,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   Grid: []
-  cameraName: SubCamera2
   layer: 1
   MainGrid: {fileID: 0}
 --- !u!23 &335924716
@@ -2631,7 +2630,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   Grid: []
-  cameraName: SubCamera1
   layer: 0
   MainGrid: {fileID: 0}
 --- !u!23 &851585156
@@ -2758,7 +2756,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   Grid: []
-  cameraName: SubCamera3
   layer: 2
   MainGrid: {fileID: 0}
 --- !u!23 &880086035

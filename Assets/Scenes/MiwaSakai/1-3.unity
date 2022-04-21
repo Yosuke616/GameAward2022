@@ -8336,7 +8336,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MainCamera: {fileID: 1365717806}
-  SubCamera: []
+  SubCamera0: {fileID: 2144038061}
+  SubCamera1: {fileID: 1631063174}
+  SubCamera2: {fileID: 757695203}
+  SubCamera3: {fileID: 1755412561}
 --- !u!4 &1770805090
 Transform:
   m_ObjectHideFlags: 0
@@ -9012,7 +9015,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: 58605522f5716bb42997df0cc3627d37, type: 3}
 --- !u!4 &1991571964 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 6300710876383018588, guid: 58605522f5716bb42997df0cc3627d37, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8691050807308716072, guid: 58605522f5716bb42997df0cc3627d37, type: 3}
   m_PrefabInstance: {fileID: 1991571963}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1998526951

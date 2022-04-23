@@ -52,23 +52,52 @@ public class Pause : MonoBehaviour
             }
         }
 
-        switch(SelectButton)
+        //èÌÇ…èÈÇ…Ç©Ç¶ÇƒÇ®Ç≠
+        Resume.GetComponentInChildren<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        Retry.GetComponentInChildren<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        Title.GetComponentInChildren<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        Option.GetComponentInChildren<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+
+        switch (SelectButton)
         {
             case 0:
                 Resume.Select();
+                Resume.GetComponentInChildren<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                Debug.Log("Resume");
                 break;
 
             case 1:
                 Retry.Select();
+                Retry.GetComponentInChildren<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                Debug.Log("Select");
                 break;
-
             case 2:
                 Title.Select();
+                Title.GetComponentInChildren<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                Debug.Log("Title");
                 break;
 
             case 3:
                 Option.Select();
+                Option.GetComponentInChildren<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                Debug.Log("Option");
                 break;
+        }
+
+
+        //É{É^ÉìÇâüÇπÇÈÇ©Ç«Ç§Ç©Çîªï Ç∑ÇÈ
+        GameObject Camera = GameObject.Find("MainCamera");
+        if (Camera.GetComponent<PauseContorol>().GetPauseFlf()) {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                switch (SelectButton) {
+                    case 0: OnResume(); break;
+                    case 1: OnRetry(); break;
+                    case 2: OnTitle(); break;
+                    case 3: OnOption(); break;
+                }
+            }
+
         }
     }
 

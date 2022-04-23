@@ -16,13 +16,19 @@ public class PauseContorol : MonoBehaviour
     //止めるオブジェクト
     public GameObject gameobject;
 
+    //ポーズかポーズじゃないかを判別するフラグ
+    private bool bPauseFlg;
+
     // Start is called before the first frame update
     void Start()
     {
         // プレハブ生成
         PauseObj = Instantiate(PauseObj, parant);
         PauseObj.SetActive(false);
+        //初めはポーズしていない
         OnUnPause();
+        //ポーズフラグを管理する変数
+        bPauseFlg = false;
     }
 
     // Update is called once per frame
@@ -43,9 +49,6 @@ public class PauseContorol : MonoBehaviour
         {
             OnUnPause();
         }
-
-        Debug.Log(gameobject.transform.childCount);
-
     }
 
     //ポーズメニューに移行するための関数
@@ -53,6 +56,7 @@ public class PauseContorol : MonoBehaviour
         Time.timeScale = 0f;
         //子オブジェクトの全てのスクリプトを止める
         StopUpdate(gameobject.transform);
+        bPauseFlg = true;
     }
 
     //ポーズメニューを解除するための関数
@@ -60,6 +64,7 @@ public class PauseContorol : MonoBehaviour
         Time.timeScale = 1f;
         //子オブジェクトの全てのスクリプトを再開
         StartUpdate(gameobject.transform);
+        bPauseFlg = false;
     }
 
     //子オブジェクトのアップデートを止めるための関数
@@ -87,5 +92,10 @@ public class PauseContorol : MonoBehaviour
                 mb.enabled = true;
             }
         }
+    }
+
+    //ポーズかどうかを判別するためのフラグを送る巻子
+    public  bool GetPauseFlf() {
+        return bPauseFlg;
     }
 }

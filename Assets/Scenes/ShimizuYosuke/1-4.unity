@@ -1264,6 +1264,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3858745473991764272, guid: ae58a55ee336e044ba8d1debbe310f52, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3858745474292480557, guid: ae58a55ee336e044ba8d1debbe310f52, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ae58a55ee336e044ba8d1debbe310f52, type: 3}
 --- !u!1 &272266698
@@ -4071,8 +4079,8 @@ MonoBehaviour:
   ColorSet:
   - {fileID: 0}
   - {fileID: 0}
-  Grid: []
   layer: 1
+  z: 22
   MainGrid: {fileID: 0}
 --- !u!23 &919811627
 MeshRenderer:
@@ -4203,8 +4211,8 @@ MonoBehaviour:
   ColorSet:
   - {fileID: 0}
   - {fileID: 0}
-  Grid: []
   layer: 0
+  z: 22
   MainGrid: {fileID: 0}
 --- !u!23 &962113055
 MeshRenderer:
@@ -4436,8 +4444,8 @@ MonoBehaviour:
   ColorSet:
   - {fileID: 0}
   - {fileID: 0}
-  Grid: []
   layer: 2
+  z: 22
   MainGrid: {fileID: 0}
 --- !u!23 &998854107
 MeshRenderer:

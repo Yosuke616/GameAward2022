@@ -1,9 +1,9 @@
 /*
- 2022/3/18 ShimizuYosuke 
- ‰æ–Ê‚¢‚Á‚Ï‚¢‚É“–‚½‚è”»’è‚Ì‚ ‚é“§–¾lŠp‚¢ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚·‚é(‰¡400Ac300)
+ 2022/3/18 ShimizuYosuke
+ ç”»é¢ã„ã£ã±ã„ã«å½“ãŸã‚Šåˆ¤å®šã®ã‚ã‚‹é€æ˜å››è§’ã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã™ã‚‹(æ¨ª400ã€ç¸¦300)
 
-    ŠeX‚Ì†‚Ì‚ ‚½‚è”»’è‚ğ‚±‚ÌƒXƒNƒŠƒvƒg‚ÅŠm”F‚µ‚ÄA
-    CollisionField.cs‚Éî•ñ‚ğ‘—‚é
+    å„ã€…ã®ç´™ã®ã‚ãŸã‚Šåˆ¤å®šã‚’ã“ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã§ç¢ºèªã—ã¦ã€
+    CollisionField.csã«æƒ…å ±ã‚’é€ã‚‹
 
  */
 
@@ -17,45 +17,45 @@ using UnityEngine;
 public class StageGrid : MonoBehaviour
 {
 
-    //F”z’u‚·‚éƒ}ƒeƒŠƒAƒ‹‚Ìİ’è
+    //è‰²é…ç½®ã™ã‚‹ãƒãƒ†ãƒªã‚¢ãƒ«ã®è¨­å®š
     public Material[] ColorSet = new Material[2];
 
-    // ‘Sƒ}ƒX‚Ì‚ ‚½‚è”»’è‚Ìí—Ş
+    // å…¨ãƒã‚¹ã®ã‚ãŸã‚Šåˆ¤å®šã®ç¨®é¡
     [SerializeField] private List<StageBlock> collisionGrid = new List<StageBlock>();
-    // ‘Sƒ}ƒX‚ÌƒIƒuƒWƒFƒNƒg
+    // å…¨ãƒã‚¹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
     [SerializeField] private List<GameObject> Grids = new List<GameObject>();
-    // ‚Ç‚ÌƒJƒƒ‰‚Ì‘O‚ÉƒOƒŠƒbƒh‚ğ•\¦‚³‚¹‚é‚©
-    [SerializeField] string cameraName = "MainCamera";
-    // •`‰æŠJnˆÊ’u
+    // ã©ã®ã‚«ãƒ¡ãƒ©ã®å‰ã«ã‚°ãƒªãƒƒãƒ‰ã‚’è¡¨ç¤ºã•ã›ã‚‹ã‹
+    //[SerializeField] string cameraName = "MainCamera";
+    // æç”»é–‹å§‹ä½ç½®
     private Vector2 StartPoint;
 
-    // †‚Ì”Ô†
+    // ç´™ã®ç•ªå·
     public int layer = 0;
 
     public float z = 0.0f;
 
     public GameObject MainGrid;
-    //c‚Ì”‚Æ‰¡‚Ì”‚ğİ’è‚·‚éˆ×‚Ì•Ï”
+    //ç¸¦ã®æ•°ã¨æ¨ªã®æ•°ã‚’è¨­å®šã™ã‚‹ç‚ºã®å¤‰æ•°
     private int gridNumX;
     private int gridNumY;
-    // ƒOƒŠƒbƒh‚Ì‰¡•‚Æ‚‚³
+    // ã‚°ãƒªãƒƒãƒ‰ã®æ¨ªå¹…ã¨é«˜ã•
     private float GridSizeX;
     private float GridSizeY;
 
     //void Start()
     //{
-    //    // ƒ}ƒX‚Ì‰¡Ec‚Ì”
+    //    // ãƒã‚¹ã®æ¨ªãƒ»ç¸¦ã®æ•°
     //    gridNumX = CreateGridScript.horizon;
     //    gridNumY = CreateGridScript.virtical;
     //
-    //    //–¼‘O‚ğ•Ï‚¦‚é‚½‚ß‚ÉƒJƒEƒ“ƒg‚ğì‚é
+    //    //åå‰ã‚’å¤‰ãˆã‚‹ãŸã‚ã«ã‚«ã‚¦ãƒ³ãƒˆã‚’ä½œã‚‹
     //    int nNameCnt = 0;
     //
     //    for (int i = 0; i < gridNumY; i++)
     //    {
     //        for (int u = 0; u < gridNumX; u++, nNameCnt++)
     //        {
-    //            // ‹ó‚ÌƒuƒƒbƒN‚ğ’Ç‰Á‚µ‚Ä‚¨‚­
+    //            // ç©ºã®ãƒ–ãƒ­ãƒƒã‚¯ã‚’è¿½åŠ ã—ã¦ãŠã
     //            collisionGrid.Add(new StageBlock());
     //        }
     //    }
@@ -66,19 +66,19 @@ public class StageGrid : MonoBehaviour
 
     public void RayToGrid()
     {
-        // ƒ}ƒX‚Ì‰¡Ec‚Ì”
+        // ãƒã‚¹ã®æ¨ªãƒ»ç¸¦ã®æ•°
         float gridSizeX = CreateGridScript.gridSizeX;
         float gridSizeY = CreateGridScript.gridSizeY;
         int gridNumX = CreateGridScript.horizon;
         int gridNumY = CreateGridScript.virtical;
 
         Vector2 start;
-        // ray‚ğ”ò‚Î‚·À•W
+        // rayã‚’é£›ã°ã™åº§æ¨™
         start.x = -gridSizeX * gridNumX / 2.0f + (gridSizeX * 0.5f);
         start.y = gridSizeY * gridNumY / 2.0f - (gridSizeY * 0.5f);
 
 
-        // ƒJƒƒ‰‚ğŒ©‚Â‚¯‚é
+        // ã‚«ãƒ¡ãƒ©ã‚’è¦‹ã¤ã‘ã‚‹
         GameObject cameraObj = GameObject.Find(cameraName);
 
         int cnt = 0;
@@ -89,11 +89,11 @@ public class StageGrid : MonoBehaviour
                 RaycastHit hit;
                 if (Physics.Raycast(cameraObj.transform.position, new Vector3(start.x + (gridSizeX * x), start.y - (gridSizeY * y), z), out hit))
                 {
-                    // Õ“Ëˆ—‚Ìí—Ş‚ğƒZƒbƒg‚·‚é
+                    // è¡çªå‡¦ç†ã®ç¨®é¡ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
                     collisionGrid[(y * gridNumX) + x].tag = hit.collider.tag;
                     Debug.Log(collisionGrid[(y * gridNumX) + x].tag);
 
-                    // ‰ñ“]Šp‚àƒZƒbƒg‚·‚é
+                    // å›è»¢è§’ã‚‚ã‚»ãƒƒãƒˆã™ã‚‹
                     collisionGrid[(y * gridNumX) + x].rotate = hit.collider.transform.localEulerAngles;
 
                     cnt++;
@@ -104,83 +104,77 @@ public class StageGrid : MonoBehaviour
             }
         Debug.LogWarning(cnt);
 
-        // CollisionSystem‚Ìƒ}ƒX‚É”½‰f‚³‚¹‚é
+        // CollisionSystemã®ãƒã‚¹ã«åæ˜ ã•ã›ã‚‹
         CollisionField.Instance.AddStageInfo(layer, collisionGrid);
 
-        // 1–‡–Ú‚Ì_‚¾‚Á‚½ê‡A‚ ‚½‚è”»’è‚Æ‚µ‚Äİ’è‚·‚é
+        // 1æšç›®ã®ç¥ã ã£ãŸå ´åˆã€ã‚ãŸã‚Šåˆ¤å®šã¨ã—ã¦è¨­å®šã™ã‚‹
         if (layer == 0) CollisionField.Instance.SetStage(layer);
     }
 
-    // ‰Šú‰»
+    // åˆæœŸåŒ–
     void Start()
     {
-        // 1ƒ}ƒX‚Ì‘å‚«‚³
+        // 1ãƒã‚¹ã®å¤§ãã•
         GridSizeX = CreateGridScript.gridSizeX;
         GridSizeY = CreateGridScript.gridSizeY;
-        // ƒ}ƒX‚Ì”
+        // ãƒã‚¹ã®æ•°
         gridNumX = CreateGridScript.horizon;
         gridNumY = CreateGridScript.virtical;
-    
-        //¶Ò×‚ğƒqƒGƒ‰ƒ‹ƒL[‚©‚çˆø‚Á’£‚èo‚µ‚Ä‚­‚é
-        GameObject Cameraobj = GameObject.Find(cameraName);
-    
-        //–¼‘O‚ğ•Ï‚¦‚é‚½‚ß‚ÉƒJƒEƒ“ƒg‚ğì‚é
+        //åå‰ã‚’å¤‰ãˆã‚‹ãŸã‚ã«ã‚«ã‚¦ãƒ³ãƒˆã‚’ä½œã‚‹
         int nNameCnt = 0;
     
-        // •`‰æŠJnˆÊ’u = ƒJƒƒ‰À•W - grid‚Ì‰¡• * ”‚Ì”¼•ª
+        // æç”»é–‹å§‹ä½ç½® = ã‚«ãƒ¡ãƒ©åº§æ¨™ - gridã®æ¨ªå¹… * æ•°ã®åŠåˆ†
         StartPoint.x = Cameraobj.transform.position.x - GridSizeX * gridNumX * 0.5f + (GridSizeX * 0.5f);
         StartPoint.y = Cameraobj.transform.position.y + GridSizeY * gridNumY * 0.5f - (GridSizeY * 0.5f);
     
-        // ƒ}ƒX‚²‚Æ‚É‚ ‚½‚è”»’è‚ğæ‚é—p‚ÌƒIƒuƒWƒFƒNƒg‚ğ¶¬
+        // ãƒã‚¹ã”ã¨ã«ã‚ãŸã‚Šåˆ¤å®šã‚’å–ã‚‹ç”¨ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆ
         for (int i = 0; i < gridNumY; i++)
         {
             for (int u = 0; u < gridNumX; u++, nNameCnt++)
             {
-                //ƒXƒNƒŠƒvƒg‚ÅƒIƒuƒWƒFƒNƒg‚ğ’Ç‰Á‚·‚é
-                GameObject mass = CreateMesh(GridSizeX, GridSizeY, ColorSet); 
-    
-                //e‚Æq‚Ìİ’è‚ğ‚·‚é(‚±‚±‚Å‚Í¶Ò×‚ğe‚É‚·‚é)
+                //ã‚¹ã‚¯ãƒªãƒ—ãƒˆã§ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿½åŠ ã™ã‚‹
+                //è¦ªã¨å­ã®è¨­å®šã‚’ã™ã‚‹(ã“ã“ã§ã¯ï½¶ï¾’ï¾—ã‚’è¦ªã«ã™ã‚‹)
                 mass.transform.SetParent(Cameraobj.transform);
     
-                //---ƒIƒuƒWƒFƒNƒg‚Ìİ’è
-                // À•W
+                //---ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¨­å®š
+                // åº§æ¨™
                 mass.transform.position = new Vector3(
                     StartPoint.x + (GridSizeX * u),
                     StartPoint.y - (GridSizeY * i),
                     transform.position.z);
     
-                //–¼‘O‚Ìİ’è(ÅŒã‚Ìi‚Í‰½s–Ú‚É‚ ‚é‚©)
+                //åå‰ã®è¨­å®š(æœ€å¾Œã®iã¯ä½•è¡Œç›®ã«ã‚ã‚‹ã‹)
                 mass.name = "Grid_No." + nNameCnt + ":" + i;
     
-                //F‚Ìİ’è(‰Šú’l‚ÍÔ)
+                //è‰²ã®è¨­å®š(åˆæœŸå€¤ã¯èµ¤)
                 mass.GetComponent<MeshRenderer>().material = ColorSet[1];
     
-                //ƒ}ƒEƒX‚Ì“–‚½‚è”»’è—p‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ’Ç‰Á‚·‚é
+                //ãƒã‚¦ã‚¹ã®å½“ãŸã‚Šåˆ¤å®šç”¨ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’è¿½åŠ ã™ã‚‹
                 mass.AddComponent<BoxCollider>();
                 var Coll = mass.GetComponent<BoxCollider>();
                 Coll.enabled = true;
     
-                // “–‚½‚Á‚½‚Ç‚Ì‚æ‚¤‚È‚Ó‚é‚Ü‚¢‚ğ‚·‚é‚©
+                // å½“ãŸã£ãŸæ™‚ã©ã®ã‚ˆã†ãªãµã‚‹ã¾ã„ã‚’ã™ã‚‹ã‹
                 mass.AddComponent<collsion_test>();
     
                 mass.GetComponent<BoxCollider>().isTrigger = true;
     
-                //ƒ^ƒO‚ğ•t‚¯‚é
+                //ã‚¿ã‚°ã‚’ä»˜ã‘ã‚‹
                 mass.tag = "none";
     
-                // ƒIƒuƒWƒFƒNƒgƒŠƒXƒg‚É’Ç‰Á
+                // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒªã‚¹ãƒˆã«è¿½åŠ 
                 Grids.Add(mass);
     
-                // ‹ó‚ÌƒuƒƒbƒN‚ğ’Ç‰Á‚µ‚Ä‚¨‚­
+                // ç©ºã®ãƒ–ãƒ­ãƒƒã‚¯ã‚’è¿½åŠ ã—ã¦ãŠã
                 collisionGrid.Add(new StageBlock());
             }
         }
     
-        // ˆêuŠÔ‚ğ’u‚¢‚ÄDelayMethod()‚ğŒÄ‚Ô
+        // ä¸€ç¬æ™‚é–“ã‚’ç½®ã„ã¦DelayMethod()ã‚’å‘¼ã¶
         Invoke("DelayMethod", 0.001f);
     }
 
-     //Start()‚Å¶¬‚µ‚½ƒIƒuƒWƒFƒNƒg‚ÌOnCollisionTrigger‚ªŒÄ‚Î‚ê‚½Œã‚É‚±‚Ìƒƒ\ƒbƒh‚ğŒÄ‚Ñ‚½‚¢
+     //Start()ã§ç”Ÿæˆã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®OnCollisionTriggerãŒå‘¼ã°ã‚ŒãŸå¾Œã«ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³ãŸã„
 
     private void DelayMethod()
     {
@@ -188,33 +182,33 @@ public class StageGrid : MonoBehaviour
         {
             if (Grids[i] == null) continue;
     
-            // Õ“Ëˆ—‚Ìí—Ş‚ğƒZƒbƒg‚·‚é
+            // è¡çªå‡¦ç†ã®ç¨®é¡ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
             collisionGrid[i].tag = Grids[i].tag;
             Debug.Log(collisionGrid[i].tag);
     
-            // ‰ñ“]Šp‚àƒZƒbƒg‚·‚é
+            // å›è»¢è§’ã‚‚ã‚»ãƒƒãƒˆã™ã‚‹
             collisionGrid[i].rotate = Grids[i].transform.localEulerAngles;
     
-            // ‚ ‚½‚è”»’èŠm”F—pƒIƒuƒWƒFƒNƒg‚ğíœ
+            // ã‚ãŸã‚Šåˆ¤å®šç¢ºèªç”¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å‰Šé™¤
             Destroy(Grids[i]);
         }
     
         Grids.Clear();
     
-        // CollisionSystem‚Ìƒ}ƒX‚É”½‰f‚³‚¹‚é
+        // CollisionSystemã®ãƒã‚¹ã«åæ˜ ã•ã›ã‚‹
         CollisionField.Instance.AddStageInfo(layer, collisionGrid);
     
-        // layer‚ª0‚¾‚Á‚½‚çƒZƒbƒg‚·‚é
+        // layerãŒ0ã ã£ãŸã‚‰ã‚»ãƒƒãƒˆã™ã‚‹
         if(layer == 0)
         {
             CollisionField.Instance.SetStage(layer);
         }
     }
 
-    // ƒvƒŒƒCƒ„[‚ª”s‚ê‚½†‘¤‚É‚ ‚é‚©‚Ç‚¤‚©
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ•—ã‚ŒãŸç´™å´ã«ã‚ã‚‹ã‹ã©ã†ã‹
     static public bool CheckPlayerSideOfThePaper(string FindTag, List<bool> changes, GameObject cameraObject)
     {
-        // ƒ}ƒX‚Ì‰¡Ec‚Ì”
+        // ãƒã‚¹ã®æ¨ªãƒ»ç¸¦ã®æ•°
         float gridSizeX = CreateGridScript.gridSizeX;
         float gridSizeY = CreateGridScript.gridSizeY;
         int gridNumX = CreateGridScript.horizon;
@@ -226,10 +220,10 @@ public class StageGrid : MonoBehaviour
         {
             for (int x = 0; x < gridNumX; x++)
             {
-                // •ÏX‚ª‚ ‚éƒ}ƒX‚¾‚¯RayCast
+                // å¤‰æ›´ãŒã‚ã‚‹ãƒã‚¹ã ã‘RayCast
                 if (changes[y * gridNumX + x])
                 {
-                    // ray‚ğ”ò‚Î‚·À•W
+                    // rayã‚’é£›ã°ã™åº§æ¨™
                     start.x = -gridSizeX * gridNumX / 2.0f + (gridSizeX * 0.5f);
                     start.y =  gridSizeY * gridNumY / 2.0f - (gridSizeY * 0.5f);
 
@@ -249,30 +243,31 @@ public class StageGrid : MonoBehaviour
     }
 
 
-    // Quadì¬
+
+    // Quadä½œæˆ
     static public GameObject CreateMesh(float GridSizeX, float GridSizeY, Material[] mats)
     {
-        var uvs1 = new List<Vector2>();         // V‚µ‚­¶¬‚·‚éƒIƒuƒWƒFƒNƒg‚ÌUVÀ•W‚ÌƒŠƒXƒg
-        var vertices1 = new List<Vector3>();   // V‚µ‚­¶¬‚·‚éƒIƒuƒWƒFƒNƒg‚Ì’¸“_‚ÌƒŠƒXƒg
-        var triangles1 = new List<int>();       // V‚µ‚­¶¬‚·‚éƒIƒuƒWƒFƒNƒg‚Ì’¸“_”‚ÌƒŠƒXƒg
-        var normals1 = new List<Vector3>();     // V‚µ‚­¶¬‚·‚éƒIƒuƒWƒFƒNƒg‚Ì–@üî•ñ‚ÌƒŠƒXƒg
+        var uvs1 = new List<Vector2>();         // æ–°ã—ãç”Ÿæˆã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®UVåº§æ¨™ã®ãƒªã‚¹ãƒˆ
+        var vertices1 = new List<Vector3>();   // æ–°ã—ãç”Ÿæˆã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®é ‚ç‚¹ã®ãƒªã‚¹ãƒˆ
+        var triangles1 = new List<int>();       // æ–°ã—ãç”Ÿæˆã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®é ‚ç‚¹æ•°ã®ãƒªã‚¹ãƒˆ
+        var normals1 = new List<Vector3>();     // æ–°ã—ãç”Ÿæˆã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ³•ç·šæƒ…å ±ã®ãƒªã‚¹ãƒˆ
 
-        // ’¸“_À•W
-        vertices1.Add(new Vector3(-GridSizeX * 0.5f,  GridSizeY * 0.5f, 0.0f));  // ¶ã
-        vertices1.Add(new Vector3( GridSizeX * 0.5f,  GridSizeY * 0.5f, 0.0f));  // ‰Eã
-        vertices1.Add(new Vector3( GridSizeX * 0.5f, -GridSizeY * 0.5f, 0.0f));  // ‰E‰º
-        vertices1.Add(new Vector3(-GridSizeX * 0.5f, -GridSizeY * 0.5f, 0.0f));  // ¶‰º
+        // é ‚ç‚¹åº§æ¨™
+        vertices1.Add(new Vector3(-GridSizeX * 0.5f,  GridSizeY * 0.5f, 0.0f));  // å·¦ä¸Š
+        vertices1.Add(new Vector3( GridSizeX * 0.5f,  GridSizeY * 0.5f, 0.0f));  // å³ä¸Š
+        vertices1.Add(new Vector3( GridSizeX * 0.5f, -GridSizeY * 0.5f, 0.0f));  // å³ä¸‹
+        vertices1.Add(new Vector3(-GridSizeX * 0.5f, -GridSizeY * 0.5f, 0.0f));  // å·¦ä¸‹
         // uv
         uvs1.Add(new Vector2(0, 1));
         uvs1.Add(new Vector2(1, 1));
         uvs1.Add(new Vector2(1, 0));
         uvs1.Add(new Vector2(0, 0));
-        // –@ü
+        // æ³•ç·š
         normals1.Add(new Vector3(0.0f, 0.0f, -1.0f));
         normals1.Add(new Vector3(0.0f, 0.0f, -1.0f));
         normals1.Add(new Vector3(0.0f, 0.0f, -1.0f));
         normals1.Add(new Vector3(0.0f, 0.0f, -1.0f));
-        // ’¸“_ƒCƒ“ƒfƒbƒNƒX
+        // é ‚ç‚¹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
         triangles1.Add(0);
         triangles1.Add(1);
         triangles1.Add(3);
@@ -280,17 +275,17 @@ public class StageGrid : MonoBehaviour
         triangles1.Add(2);
         triangles1.Add(3);
 
-        //ƒJƒbƒgŒã‚ÌƒIƒuƒWƒFƒNƒg¶¬A‚¢‚ë‚¢‚ë‚Æ‚¢‚ê‚é
+        //ã‚«ãƒƒãƒˆå¾Œã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆã€ã„ã‚ã„ã‚ã¨ã„ã‚Œã‚‹
         GameObject obj = new GameObject("colliderBlock",
             typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider));
         var mesh = new Mesh();
-        mesh.vertices = vertices1.ToArray();    // ’¸“_î•ñ
-        mesh.triangles = triangles1.ToArray();  // ’¸“_‚Ì”
+        mesh.vertices = vertices1.ToArray();    // é ‚ç‚¹æƒ…å ±
+        mesh.triangles = triangles1.ToArray();  // é ‚ç‚¹ã®æ•°
         mesh.uv = uvs1.ToArray();               // uv
-        mesh.normals = normals1.ToArray();      // –@ü
+        mesh.normals = normals1.ToArray();      // æ³•ç·š
         obj.GetComponent<MeshRenderer>().materials = mats;
-        obj.GetComponent<MeshFilter>().mesh = mesh;                // ƒƒbƒVƒ…ƒtƒBƒ‹ƒ^[‚ÉƒƒbƒVƒ…‚ğƒZƒbƒg
-        //obj.GetComponent<MeshCollider>().sharedMesh = mesh;        // ƒƒbƒVƒ…ƒRƒ‰ƒCƒ_[‚ÉƒƒbƒVƒ…‚ğƒZƒbƒg 
+        obj.GetComponent<MeshFilter>().mesh = mesh;                // ãƒ¡ãƒƒã‚·ãƒ¥ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ã«ãƒ¡ãƒƒã‚·ãƒ¥ã‚’ã‚»ãƒƒãƒˆ
+        //obj.GetComponent<MeshCollider>().sharedMesh = mesh;        // ãƒ¡ãƒƒã‚·ãƒ¥ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã«ãƒ¡ãƒƒã‚·ãƒ¥ã‚’ã‚»ãƒƒãƒˆ
 
         return obj;
     }

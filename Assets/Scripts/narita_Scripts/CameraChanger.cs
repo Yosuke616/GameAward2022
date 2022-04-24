@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,7 +25,7 @@ public class CameraChanger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // �؂�ւ�
+        // 切り替え
         if (Input.GetKeyDown(KeyCode.F1))
         {
             MainCamera.enabled = true;
@@ -42,7 +42,7 @@ public class CameraChanger : MonoBehaviour
             SubCamera2.enabled = false;
             SubCamera3.enabled = false;
         }
-        else if(Input.GetKeyDown(KeyCode.F3))
+        else if (Input.GetKeyDown(KeyCode.F3))
         {
             MainCamera.enabled = false;
             SubCamera0.enabled = false;

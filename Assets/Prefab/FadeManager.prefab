@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3858745472292517159
 RectTransform:
   m_ObjectHideFlags: 0
@@ -389,8 +389,8 @@ MonoBehaviour:
   _loadDisplay: {fileID: 3858745474157090463}
   _percentage: {fileID: 3858745473753840368}
   _progressbar: {fileID: 3858745474217164029}
-  FADESPEED: 0.8
-  valueSpeed: 0
+  FADESPEED: 0.25
+  valueSpeed: 0.5
 --- !u!1 &3858745473910382559
 GameObject:
   m_ObjectHideFlags: 0
@@ -524,7 +524,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 812352e7b0a7ccc4fb8be88fdfd787ee, type: 2}
+  m_Material: {fileID: 2100000, guid: b1c8bc013369ed245bad519df65ae1f1, type: 2}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}

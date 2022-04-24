@@ -84,6 +84,7 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
             _backGround.color = Color.black;
             _loadDisplay.SetActive(true);
             StartCoroutine("LoadScene");
+            _isFadeOut = false;
         }
     }
     /// <summary>
@@ -99,7 +100,12 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
             valueSpeed -= FADESPEED * Time.deltaTime;
             _backGround.material.SetFloat("_Value", valueSpeed);
 
+            //‚±‚±‚Í‚¢‚Â‚©Žè’¼‚µ‚µ‚È‚¢‚Æ‚¢‚¯‚È‚¢
             SoundManager.Instance.Volume += FADESPEED * Time.deltaTime;
+
+            if (SoundManager.Instance.Volume >= Valume.MasterVal) {
+                SoundManager.Instance.Volume = Valume.MasterVal;
+            }
 
             // ‰æ–Ê‚ª–¾‚é‚­‚È‚Á‚½‚ç
             if (valueSpeed <= currentSpeed)
@@ -110,6 +116,7 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
         }
         else
         {
+            SoundManager.Instance.Volume = 1;
             _backGround.gameObject.SetActive(false);
             _isFadeIn = false;
         }

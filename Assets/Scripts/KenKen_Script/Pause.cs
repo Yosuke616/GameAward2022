@@ -21,9 +21,12 @@ public class Pause : MonoBehaviour
 
     private int Cnt = 0;
 
+    private bool OptionFlg;
+
     public void Start()
     {
         Optionpanel.SetActive(false);
+        OptionFlg = false;
     }
 
     // Update is called once per frame
@@ -52,7 +55,7 @@ public class Pause : MonoBehaviour
             }
         }
 
-        //èÌÇ…èÈÇ…Ç©Ç¶ÇƒÇ®Ç≠
+        //èÌÇ…îíÇ…Ç©Ç¶ÇƒÇ®Ç≠
         Resume.GetComponentInChildren<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         Retry.GetComponentInChildren<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         Title.GetComponentInChildren<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
@@ -87,7 +90,7 @@ public class Pause : MonoBehaviour
 
         //É{É^ÉìÇâüÇπÇÈÇ©Ç«Ç§Ç©Çîªï Ç∑ÇÈ
         GameObject Camera = GameObject.Find("MainCamera");
-        if (Camera.GetComponent<PauseContorol>().GetPauseFlf()) {
+        if (Camera.GetComponent<PauseContorol>().GetPauseFlf() && OptionFlg == false) {
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 switch (SelectButton) {
@@ -129,6 +132,7 @@ public class Pause : MonoBehaviour
     {
         Pausepanel.SetActive(false);
         Optionpanel.SetActive(true);
+        OptionFlg = true;
     }
 
     public void OffOption()
@@ -136,4 +140,5 @@ public class Pause : MonoBehaviour
         Pausepanel.SetActive(true);
         Optionpanel.SetActive(false);
     }
+
 }

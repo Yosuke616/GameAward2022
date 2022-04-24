@@ -57,6 +57,7 @@ public class PauseContorol : MonoBehaviour
         //子オブジェクトの全てのスクリプトを止める
         StopUpdate(gameobject.transform);
         bPauseFlg = true;
+
     }
 
     //ポーズメニューを解除するための関数
@@ -98,4 +99,5 @@ public class PauseContorol : MonoBehaviour
     public  bool GetPauseFlf() {
         return bPauseFlg;
     }
+
 }

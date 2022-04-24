@@ -32,6 +32,7 @@ public class Pause : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         Cnt--;
         if (Cnt < 0)
         {
@@ -90,9 +91,12 @@ public class Pause : MonoBehaviour
 
         //ボタンを押せるかどうかを判別する
         GameObject Camera = GameObject.Find("MainCamera");
+        Debug.Log(OptionFlg);
         if (Camera.GetComponent<PauseContorol>().GetPauseFlf() && OptionFlg == false) {
+            Debug.Log("ロゼッタ様ー");
             if (Input.GetKeyDown(KeyCode.Return))
             {
+                Debug.Log("入ったよー");
                 switch (SelectButton) {
                     case 0: OnResume(); break;
                     case 1: OnRetry(); break;
@@ -139,6 +143,11 @@ public class Pause : MonoBehaviour
     {
         Pausepanel.SetActive(true);
         Optionpanel.SetActive(false);
+    }
+
+    //もう一度ボタンを押すためのフラグをセットする為の関数
+    public void SetPauseFlg(bool Flg) {
+        OptionFlg = Flg;
     }
 
 }

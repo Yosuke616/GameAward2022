@@ -800,6 +800,9 @@ MonoBehaviour:
   BGMSlider: {fileID: 1975590233459421706}
   SESlider: {fileID: 6711878987467775641}
   BackButton: {fileID: 5533158051227806420}
+  Pausepanel: {fileID: 754158135200263216}
+  Optionpanel: {fileID: 2197908695601334047}
+  PauseUi: {fileID: 7798653126426691855}
 --- !u!1 &2559632810256269303
 GameObject:
   m_ObjectHideFlags: 0

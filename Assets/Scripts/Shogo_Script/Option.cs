@@ -20,10 +20,9 @@ public class Option : MonoBehaviour
     // 入力間隔
     private int Cnt = 0;
 
-    //効果音のスライダーを決める奴
-    //public float MasterVal;
-    //public float BGMVal;
-    //public float SEVal;
+    public GameObject Pausepanel;
+    public GameObject Optionpanel;
+    public GameObject PauseUi;
 
     // Start is called before the first frame update
     void Start()
@@ -105,6 +104,16 @@ public class Option : MonoBehaviour
                 BackButton.Select();
                 BackButton.GetComponentInChildren<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
                 Debug.Log("再開");
+
+                if (Input.GetKeyDown(KeyCode.Return)) {
+                    GameObject Sarch = GameObject.Find("PausePanel(Clone)");
+                    Sarch.GetComponent<Pause>().SetPauseFlg(false);
+                    Pausepanel.SetActive(true);
+                    Optionpanel.SetActive(false);
+                    PauseUi.SetActive(false);
+                    Time.timeScale = 1f;
+                }
+
                 break;
         }
 

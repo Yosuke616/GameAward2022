@@ -16,5 +16,8 @@ public class atodekesu : MonoBehaviour
         Debug.Log(Valume.MasterVal);
         Debug.Log(Valume.BGMVal);
         Debug.Log(Valume.SEVal);
+
+        GameObject aaa = GameObject.Find("MainCamera");
+        Debug.Log(aaa.GetComponent<PauseContorol>().GetPauseFlf());
     }
 }

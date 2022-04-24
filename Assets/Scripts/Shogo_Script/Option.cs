@@ -21,9 +21,9 @@ public class Option : MonoBehaviour
     private int Cnt = 0;
 
     //効果音のスライダーを決める奴
-    public float MasterVal;
-    public float BGMVal;
-    public float SEVal;
+    //public float MasterVal;
+    //public float BGMVal;
+    //public float SEVal;
 
     // Start is called before the first frame update
     void Start()
@@ -37,21 +37,17 @@ public class Option : MonoBehaviour
         BGMSlider.minValue = 0.0f;
         SESlider.minValue = 0.0f;
 
-        //初期の音の大きさ
-        MasterVal = 1.0f;
-        BGMVal = 1.0f;
-        SEVal = 1.0f;
-
         //スライダー自体の初期の音の設定
-        MasterSlider.value = MasterVal;
-        BGMSlider.value = BGMVal;
-        SESlider.value = SEVal;
+        MasterSlider.value = Valume.MasterVal;
+        BGMSlider.value = Valume.BGMVal;
+        SESlider.value = Valume.SEVal;
 
     }
 
     // Update is called once per frame
     void Update()
     {
+
         Cnt--;
         if (Cnt < 0)
         {
@@ -119,29 +115,33 @@ public class Option : MonoBehaviour
 
     //スライダーを移動させる関数
     private void SetSlider() {
+        MasterSlider.value = Valume.MasterVal;
+        BGMSlider.value = Valume.BGMVal;
+        SESlider.value = Valume.SEVal;
+
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") > 0)
         {
             switch (SelectButton) {
                 case 0:
-                    MasterVal -= 0.05f;
-                    if (MasterVal < 0.0f) {
-                        MasterVal = 0.0f;
+                    Valume.MasterVal -= 0.05f;
+                    if (Valume.MasterVal < 0.0f) {
+                        Valume.MasterVal = 0.0f;
                     }
-                    MasterSlider.value = MasterVal;
+                    MasterSlider.value = Valume.MasterVal;
                     break;
                 case 1:
-                    BGMVal -= 0.05f;
-                    if (BGMVal < 0.0f){
-                        BGMVal = 0.0f;
+                    Valume.BGMVal -= 0.05f;
+                    if (Valume.BGMVal < 0.0f){
+                        Valume.BGMVal = 0.0f;
                     }
-                    BGMSlider.value = BGMVal;
+                    BGMSlider.value = Valume.BGMVal;
                     break;
                 case 2:
-                    SEVal -= 0.05f;
-                    if (SEVal < 0.0f){
-                        SEVal = 0.0f;
+                    Valume.SEVal -= 0.05f;
+                    if (Valume.SEVal < 0.0f){
+                        Valume.SEVal = 0.0f;
                     }
-                    SESlider.value = SEVal;
+                    SESlider.value = Valume.SEVal;
                     break;
             }   
         }
@@ -150,25 +150,25 @@ public class Option : MonoBehaviour
             switch (SelectButton)
             {
                 case 0:
-                    MasterVal += 0.05f;
-                    if (MasterVal > 1.0f){
-                        MasterVal = 1.0f;
+                    Valume.MasterVal += 0.05f;
+                    if (Valume.MasterVal > 1.0f){
+                        Valume.MasterVal = 1.0f;
                     }
-                    MasterSlider.value = MasterVal;
+                    MasterSlider.value = Valume.MasterVal;
                     break;
                 case 1:
-                    BGMVal += 0.05f;
-                    if (BGMVal > 1.0f){
-                        BGMVal = 1.0f;
+                    Valume.BGMVal += 0.05f;
+                    if (Valume.BGMVal > 1.0f){
+                        Valume.BGMVal = 1.0f;
                     }
-                    BGMSlider.value = BGMVal;
+                    BGMSlider.value = Valume.BGMVal;
                     break;
                 case 2:
-                    SEVal += 0.05f;
-                    if (SEVal > 1.0f){
-                        SEVal = 1.0f;
+                    Valume.SEVal += 0.05f;
+                    if (Valume.SEVal > 1.0f){
+                        Valume.SEVal = 1.0f;
                     }
-                    SESlider.value = SEVal;
+                    SESlider.value = Valume.SEVal;
                     break;
             }
         }

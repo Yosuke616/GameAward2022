@@ -84,6 +84,7 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
             _backGround.color = Color.black;
             _loadDisplay.SetActive(true);
             StartCoroutine("LoadScene");
+            _isFadeOut = false;
         }
     }
     /// <summary>
@@ -111,6 +112,7 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
         }
         else
         {
+            SoundManager.Instance.Volume = 1;
             _backGround.gameObject.SetActive(false);
             _isFadeIn = false;
         }

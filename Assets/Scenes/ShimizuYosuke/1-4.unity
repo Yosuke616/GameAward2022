@@ -4079,6 +4079,8 @@ MonoBehaviour:
   ColorSet:
   - {fileID: 0}
   - {fileID: 0}
+  Grids: []
+  cameraName: SubCamera2
   layer: 1
   z: 22
   MainGrid: {fileID: 0}
@@ -4211,6 +4213,8 @@ MonoBehaviour:
   ColorSet:
   - {fileID: 0}
   - {fileID: 0}
+  Grids: []
+  cameraName: SubCamera1
   layer: 0
   z: 22
   MainGrid: {fileID: 0}
@@ -4444,6 +4448,8 @@ MonoBehaviour:
   ColorSet:
   - {fileID: 0}
   - {fileID: 0}
+  Grids: []
+  cameraName: SubCamera3
   layer: 2
   z: 22
   MainGrid: {fileID: 0}

@@ -125,7 +125,6 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
             else
             {
                 this.transform.position = Cross_Pos;
-                Debug.Log(234567890);
             }
 
         }

@@ -11,11 +11,11 @@ using UnityEngine;
 public class SoundManager : SingletonMonoBehaviour<SoundManager>
 {
     [SerializeField, Range(0, 1), Tooltip("ƒ}ƒXƒ^‰¹—Ê")]
-    float volume = 1;
+    float volume = Valume.MasterVal;
     [SerializeField, Range(0, 1), Tooltip("BGM‚Ì‰¹—Ê")]
-    float bgmVolume = 1;
+    float bgmVolume = Valume.BGMVal;
     [SerializeField, Range(0, 1), Tooltip("SE‚Ì‰¹—Ê")]
-    float seVolume = 1;
+    float seVolume = Valume.SEVal;
 
     AudioClip[] bgm;
     AudioClip[] se;

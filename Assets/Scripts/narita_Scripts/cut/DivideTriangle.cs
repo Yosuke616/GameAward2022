@@ -671,9 +671,6 @@ public class DivideTriangle : MonoBehaviour
         }
 
 
-
-
-
         // オブジェクト２のアウトライン
         for (int i = 0; i < objOutline2.Count; i++)
         {
@@ -741,6 +738,7 @@ public class DivideTriangle : MonoBehaviour
         }
         #endregion
 
+        
 
         // 切断パスをクリア
         cuttingPath.Clear();
@@ -828,6 +826,8 @@ public class DivideTriangle : MonoBehaviour
             //obj1の方のアウトラインをセットする
             //GameObject cursor = GameObject.Find("cursor");
             //cursor.GetComponent<OutSide_Paper_Script_Second>().SetMoveLine(objOutline1,pos1);
+
+            Partition.CreatePartition(obj1, objOutline1, GetComponent<DrawMesh>(), transform.position.z);
         }
 
         // 破れるSE

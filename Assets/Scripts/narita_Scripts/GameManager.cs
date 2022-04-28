@@ -6,6 +6,13 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 {
     public Material[] _mats = new Material[3];
 
+    // Resorce.Loadで直接読み込みの方法がわからなかったのでここでマテリアルを指定できるようにする
+    public Material[] partitionMaterial = new Material[1];
+    public Material GetPartitionMaterial()
+    {
+        return partitionMaterial[0];
+    }
+
     enum GameState
     {
         MODE_NONE,          // 操作できない
@@ -19,9 +26,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     {
         Application.targetFrameRate = 60;
 
-        //_mats[0] = (Material)Resources.Load("Effects/Alpha");
-        //_mats[1] = (Material)Resources.Load("Effects/Alpha_002");
-        //_mats[2] = (Material)Resources.Load("Effects/Alpha_003");
     }
 
     // Start is called before the first frame update

@@ -470,6 +470,38 @@ InputManager:
     axis: 6
     joyNum: 0
   - serializedVersion: 3
+    m_Name: Horizontal2
+    descriptiveName: Stick R Left
+    descriptiveNegativeName: Stick R Right
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 0
+    dead: 0.19
+    sensitivity: 1
+    snap: 0
+    invert: 1
+    type: 2
+    axis: 3
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: Vertical2
+    descriptiveName: Stick R Up
+    descriptiveNegativeName: Stick R Down
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 0
+    dead: 0.19
+    sensitivity: 1
+    snap: 0
+    invert: 1
+    type: 2
+    axis: 4
+    joyNum: 0
+  - serializedVersion: 3
     m_Name: Debug Horizontal
     descriptiveName: 
     descriptiveNegativeName: 

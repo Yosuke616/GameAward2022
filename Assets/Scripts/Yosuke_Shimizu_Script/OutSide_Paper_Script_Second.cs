@@ -135,6 +135,20 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
     //引数  :マウスの座標と紙の中心の座標と紙の4辺の情報が入ったリスト
     private Vector2 CalculationVector(Vector2 Mouse, Vector2 Center, List<Vector3> Square)
     {
+        //コントローラーのやつ
+        GameObject CTRL = GameObject.Find("CTRLCur");
+
+        Vector3 ctrl = CTRL.GetComponent<CTRLCur>().GetCTRLPos();
+
+        Vector2 mmm;
+
+        mmm.x = ctrl.x;
+        mmm.y = ctrl.y;
+
+        Mouse = mmm;
+
+        Mouse *= 100;
+
         //最後に返すときのための2次元ベクトル
         Vector2 CrossVector = new Vector2(0.0f, 0.0f);
 
@@ -161,6 +175,9 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
             //縦と横の計算をする
             float X = ((Square[i].x - Center.x) * (Square[VegetaNum].y - Square[i].y) - (Square[i].y - Center.y) * (Square[VegetaNum].x - Square[i].x)) / Num;
             float Y = ((Square[i].x - Center.x) * (Mouse.y - Center.y) - (Square[i].y - Center.y) * (Mouse.x - Center.x)) / Num;
+
+            Debug.Log(X);
+            Debug.Log(Y);
 
             //範囲外だったら次の数字に行く
             if (X < 0.0f || X > 1.0f || Y < 0.0f || Y > 1.0f)

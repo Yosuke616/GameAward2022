@@ -751,7 +751,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 26580896f63275b4abac6bdc7709549b, type: 2}
+  - {fileID: 2100000, guid: 4fbce3e746aa9d244b8ee9313aa090fa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2962,6 +2962,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70dca85759f37d64396712260a73290e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  offScrren: -12.4
   speed: 0.06
   tex: {fileID: 1148121904}
   timerTex: {fileID: 1634328633}
@@ -7126,7 +7127,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4225847671156816718, guid: 716a4739cd0ed5744b1e6877fbbf7713, type: 3}
       propertyPath: _setScene.m_SceneName
-      value: StageSelect
+      value: SelectScene
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 716a4739cd0ed5744b1e6877fbbf7713, type: 3}
@@ -7445,7 +7446,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 26580896f63275b4abac6bdc7709549b, type: 2}
+  - {fileID: 2100000, guid: 939a3a6ad7e163f4fb73a3266b6b943f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7758,7 +7759,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 26580896f63275b4abac6bdc7709549b, type: 2}
+  - {fileID: 2100000, guid: 0bc2034a5b545de43a76ca7c6d0da7f9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

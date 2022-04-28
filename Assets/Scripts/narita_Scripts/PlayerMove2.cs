@@ -14,6 +14,8 @@ public class PlayerMove2 : MonoBehaviour
         STATE_RIGHT_MOVE,
     }
 
+    public float offScrren = -12.4f;
+
 
     Rigidbody rb;
     
@@ -58,6 +60,18 @@ public class PlayerMove2 : MonoBehaviour
                 case PLAYER_STATE.STATE_RIGHT_MOVE: transform.position += transform.right * speed; break;
                 default: break;
             }
+        }
+
+        // 画面外に出たらゲームオーバー
+        if(transform.position.y < offScrren)
+        {
+            if (tex != null) tex.text = "　　　　失敗！";
+
+            SoundManager.Instance.StopBgm();
+            SoundManager.Instance.PlaySeByName("jingle37");
+
+            _resultBG.gameObject.SetActive(true);
+            flg = false;
         }
     }
 

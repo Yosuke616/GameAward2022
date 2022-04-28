@@ -840,7 +840,6 @@ public class DivideTriangle : MonoBehaviour
     {
         if (!exsitStartPoint) return false;
         bool ret = false;
-        bool cut = false;
 
         float f1, f2;
 
@@ -878,6 +877,8 @@ public class DivideTriangle : MonoBehaviour
                 uv = Vector2.Lerp(uv1, uv2, f2);
 
 
+
+                return true;
                 Debug.Log("クロス   " + cross + "uv  " + uv);
 
                 // この場合、切る処理は行うが

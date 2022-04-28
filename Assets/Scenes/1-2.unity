@@ -801,6 +801,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   z: 0.1
   number: 3
+  partition: 1
 --- !u!23 &261311942
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1093,7 +1094,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   Grids: []
-  cameraName: MainCamera
+  cameraName: SubCamera2
   layer: 1
   z: 0
   MainGrid: {fileID: 0}
@@ -1213,6 +1214,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   z: 0.05
   number: 2
+  partition: 1
 --- !u!23 &402374810
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2621,7 +2623,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 26580896f63275b4abac6bdc7709549b, type: 2}
+  - {fileID: 2100000, guid: 166d4b855c9749d4db52d47a24da58f6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2816,7 +2818,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   Grids: []
-  cameraName: MainCamera
+  cameraName: SubCamera1
   layer: 0
   z: 0
   MainGrid: {fileID: 0}
@@ -2944,7 +2946,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   Grids: []
-  cameraName: MainCamera
+  cameraName: SubCamera3
   layer: 2
   z: 0
   MainGrid: {fileID: 0}
@@ -5115,6 +5117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70dca85759f37d64396712260a73290e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  offScrren: -12.4
   speed: 0.06
   tex: {fileID: 1970496341}
   timerTex: {fileID: 552843424}
@@ -5242,6 +5245,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   z: 0
   number: 1
+  partition: 1
 --- !u!23 &1490655770
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7317,6 +7321,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 5aee6d388a5b873408b39ea8afcb3fc4, type: 2}
   - {fileID: 2100000, guid: 11114280d0f892d4da0177dcfeeda5ac, type: 2}
   - {fileID: 2100000, guid: e45929e3ac0ee044cad249d9e8dd40a5, type: 2}
+  partitionMaterial:
+  - {fileID: 0}
 --- !u!4 &1959623445
 Transform:
   m_ObjectHideFlags: 0
@@ -7533,6 +7539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75e650abf3db45c4daa3c75ade2d6752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxLayerNum: 2
   CollisionGrid: []
   layerList: 
   MainGrid: {fileID: 0}

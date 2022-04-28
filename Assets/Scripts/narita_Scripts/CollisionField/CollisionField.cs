@@ -17,15 +17,17 @@ public class StageBlock
 
 public class CollisionField : SingletonMonoBehaviour<CollisionField>
 {
-    
-
+    // 0から数えるので
+    // ３枚の場合は2に設定
+    // ４枚の場合は3に設定
+    public int MaxLayerNum = 2;
 
 
     // 実際のあたり判定を行っているシーンのカメラ
     private string cameraName = "SubCamera0";
 
     // ステージ(紙)情報
-    [SerializeField] private List<StageBlock>[] StageInfo = new List<StageBlock>[3];
+    [SerializeField] private List<StageBlock>[] StageInfo;
     // メインカメラで見えている部分のあたり判定のリスト
     [SerializeField] private List<GameObject> CollisionGrid = new List<GameObject>();
     [SerializeField] private List<int> layerList = new List<int>();
@@ -45,6 +47,8 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
 
     void Start()
     {
+        StageInfo = new List<StageBlock>[MaxLayerNum + 1];
+
         // グリッドの数、サイズを取得
         gridSizeX = CreateGridScript.gridSizeX;
         gridSizeY = CreateGridScript.gridSizeY;
@@ -144,7 +148,7 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                 if(changes[objCount])
                 {
                     // レイヤーが最後だった場合、あたり判定オブジェクトを消す
-                    if (layerList[objCount] == 2)
+                    if (layerList[objCount] == MaxLayerNum)
                     {
                         if(CollisionGrid[objCount])
                         {

@@ -804,6 +804,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75e650abf3db45c4daa3c75ade2d6752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxLayerNum: 3
   CollisionGrid: []
   layerList: 
   MainGrid: {fileID: 0}
@@ -1386,6 +1387,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   z: 0.05
   number: 2
+  partition: 1
 --- !u!23 &402885582
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1711,6 +1713,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   z: 0.15
   number: 4
+  partition: 1
 --- !u!23 &476910572
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1982,7 +1985,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 26580896f63275b4abac6bdc7709549b, type: 2}
+  - {fileID: 2100000, guid: 1153f5092fcc8de4eb599b909f403923, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2242,7 +2245,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 26580896f63275b4abac6bdc7709549b, type: 2}
+  - {fileID: 2100000, guid: f044b7f5ae3b17f40b9cb5860281cabc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2654,6 +2657,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70dca85759f37d64396712260a73290e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  offScrren: -12.4
   speed: 0.06
   tex: {fileID: 288037037}
   timerTex: {fileID: 1559485264}
@@ -3100,6 +3104,14 @@ PrefabInstance:
     - target: {fileID: 1797254435904172760, guid: c9d20305676ad69498eb86174d491d9a, type: 3}
       propertyPath: m_Name
       value: Rock (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1797254435904172766, guid: c9d20305676ad69498eb86174d491d9a, type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1797254435904172766, guid: c9d20305676ad69498eb86174d491d9a, type: 3}
+      propertyPath: m_Center.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1797254435904172767, guid: c9d20305676ad69498eb86174d491d9a, type: 3}
       propertyPath: m_RootOrder
@@ -4510,7 +4522,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 26580896f63275b4abac6bdc7709549b, type: 2}
+  - {fileID: 2100000, guid: f93ef7cf36c82ef459e7d9187fdff064, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4581,8 +4593,10 @@ MonoBehaviour:
   ColorSet:
   - {fileID: 0}
   - {fileID: 0}
-  Grid: []
+  Grids: []
+  cameraName: SubCamera2
   layer: 1
+  z: 0
   MainGrid: {fileID: 0}
 --- !u!23 &919811627
 MeshRenderer:
@@ -4702,8 +4716,10 @@ MonoBehaviour:
   ColorSet:
   - {fileID: 0}
   - {fileID: 0}
-  Grid: []
+  Grids: []
+  cameraName: SubCamera1
   layer: 0
+  z: 0
   MainGrid: {fileID: 0}
 --- !u!23 &962113055
 MeshRenderer:
@@ -5047,8 +5063,10 @@ MonoBehaviour:
   ColorSet:
   - {fileID: 0}
   - {fileID: 0}
-  Grid: []
+  Grids: []
+  cameraName: SubCamera3
   layer: 2
+  z: 0
   MainGrid: {fileID: 0}
 --- !u!23 &998854107
 MeshRenderer:
@@ -6164,7 +6182,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 26580896f63275b4abac6bdc7709549b, type: 2}
+  - {fileID: 2100000, guid: 59bdc0c37f77f5e43939f3213cb15a2f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7215,6 +7233,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   z: 0
   number: 1
+  partition: 1
 --- !u!23 &1599715285
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -7274,6 +7293,14 @@ PrefabInstance:
     - target: {fileID: 1797254435904172760, guid: c9d20305676ad69498eb86174d491d9a, type: 3}
       propertyPath: m_Name
       value: Rock (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1797254435904172766, guid: c9d20305676ad69498eb86174d491d9a, type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1797254435904172766, guid: c9d20305676ad69498eb86174d491d9a, type: 3}
+      propertyPath: m_Center.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1797254435904172767, guid: c9d20305676ad69498eb86174d491d9a, type: 3}
       propertyPath: m_RootOrder
@@ -8681,8 +8708,10 @@ MonoBehaviour:
   ColorSet:
   - {fileID: 0}
   - {fileID: 0}
-  Grid: []
+  Grids: []
+  cameraName: SubCamera4
   layer: 3
+  z: 0
   MainGrid: {fileID: 0}
 --- !u!23 &1814096931
 MeshRenderer:
@@ -8901,6 +8930,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   z: 0.1
   number: 3
+  partition: 1
 --- !u!23 &1886164725
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8960,6 +8990,14 @@ PrefabInstance:
     - target: {fileID: 1797254435904172760, guid: c9d20305676ad69498eb86174d491d9a, type: 3}
       propertyPath: m_Name
       value: Rock
+      objectReference: {fileID: 0}
+    - target: {fileID: 1797254435904172766, guid: c9d20305676ad69498eb86174d491d9a, type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1797254435904172766, guid: c9d20305676ad69498eb86174d491d9a, type: 3}
+      propertyPath: m_Center.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1797254435904172767, guid: c9d20305676ad69498eb86174d491d9a, type: 3}
       propertyPath: m_RootOrder
@@ -9040,6 +9078,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 5aee6d388a5b873408b39ea8afcb3fc4, type: 2}
   - {fileID: 2100000, guid: 11114280d0f892d4da0177dcfeeda5ac, type: 2}
   - {fileID: 2100000, guid: e45929e3ac0ee044cad249d9e8dd40a5, type: 2}
+  partitionMaterial:
+  - {fileID: 2100000, guid: 955eca4f718de6546a239f614bc5c002, type: 2}
 --- !u!4 &1895199600
 Transform:
   m_ObjectHideFlags: 0
@@ -10229,6 +10269,14 @@ PrefabInstance:
     - target: {fileID: 1797254435904172760, guid: c9d20305676ad69498eb86174d491d9a, type: 3}
       propertyPath: m_Name
       value: Rock
+      objectReference: {fileID: 0}
+    - target: {fileID: 1797254435904172766, guid: c9d20305676ad69498eb86174d491d9a, type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1797254435904172766, guid: c9d20305676ad69498eb86174d491d9a, type: 3}
+      propertyPath: m_Center.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1797254435904172767, guid: c9d20305676ad69498eb86174d491d9a, type: 3}
       propertyPath: m_RootOrder

@@ -35,6 +35,10 @@ public class CTRLCur : MonoBehaviour
             this.transform.position += new Vector3(0.0f, 0.25f, 0.0f);
         }
 
+        //if (Input.GetAxis("LTrigger") == 1) {
+        //    Debug.Log("mario");
+        //}
+
         SendPos = this.transform.position;
     }
 

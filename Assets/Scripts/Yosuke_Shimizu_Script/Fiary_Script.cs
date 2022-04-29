@@ -157,7 +157,7 @@ public class Fiary_Script : MonoBehaviour
                 }
                 else
                 {
-                    if (Input.GetMouseButtonDown(0))
+                    if (Input.GetMouseButtonDown(0)|| Input.GetAxis("LTrigger") == 1)
                     {
                         g_FiaryMove = FIARY_MOVE.FIARY_BREAK_PAPER;
                     }
@@ -173,7 +173,7 @@ public class Fiary_Script : MonoBehaviour
                 this.transform.position = OutSide_Cursor.GetComponent<OutSide_Paper_Script_Second>().GetCursorPos();
 
                 //個々の中に入っているときにクリックすると中にゆっくり移動していくモードに変わる
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(0) || Input.GetAxis("LTrigger") == 1)
                 {
                     g_FiaryMove = FIARY_MOVE.FIARY_PLAYER_TRACKING;
                     gFirst_Flg = false;
@@ -202,7 +202,7 @@ public class Fiary_Script : MonoBehaviour
                 //クリックされた場所をリストに保存する(前回の座標と違ったときにリストに追加する)
                 if (!(vWorldPos == Old_Mouse_Pos))
                 {
-                    if (Input.GetMouseButtonDown(0)) {
+                    if (Input.GetMouseButtonDown(0) || Input.GetAxis("LTrigger") == 1) {
                         ////リストに追加する
                         MousePos.Add(vWorldPos);
                         ////過去の座標と比べるために今の座標を保存しておく

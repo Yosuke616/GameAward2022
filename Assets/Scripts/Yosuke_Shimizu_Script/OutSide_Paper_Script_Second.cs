@@ -95,6 +95,7 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
         if (Cur_SY.GetBreakFlg())
         {
             CursorBreak();
+            //Debug.Log("12345ui");
             First_Flg = false;
         }
         else
@@ -116,8 +117,11 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
 
                 OutPaper_Pos = Cross_Pos;
 
-                if (Input.GetMouseButtonDown(0))
+                Debug.Log(456);
+
+                if (Input.GetMouseButtonDown(0) || Input.GetAxis("LTrigger") == 1)
                 {
+                    Debug.Log(123);
                     First_Flg = true;
                 }
 
@@ -176,9 +180,6 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
             float X = ((Square[i].x - Center.x) * (Square[VegetaNum].y - Square[i].y) - (Square[i].y - Center.y) * (Square[VegetaNum].x - Square[i].x)) / Num;
             float Y = ((Square[i].x - Center.x) * (Mouse.y - Center.y) - (Square[i].y - Center.y) * (Mouse.x - Center.x)) / Num;
 
-            Debug.Log(X);
-            Debug.Log(Y);
-
             //範囲外だったら次の数字に行く
             if (X < 0.0f || X > 1.0f || Y < 0.0f || Y > 1.0f)
             {
@@ -226,7 +227,7 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
     {
         Pos = new Vector3(0.0f, 0.0f, 0.0f);
         //ボタンを押した座標に持っていく
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) || Input.GetAxis("LTrigger") == 1)
         {
             Old_Click_Pos = Input.mousePosition;
             Old_Click_Pos.z = 10.0f;
@@ -235,7 +236,15 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
         Pos = Camera.main.ScreenToWorldPoint(Old_Click_Pos);
         //Debug.LogWarning(Pos);
         //Pos = Old_Click_Pos.WorldToScreenPoint(Old_Click_Pos);
-        this.transform.position = Pos;
+
+        GameObject TPA = GameObject.Find("CTRLCur");
+
+        this.transform.position = TPA.transform.position;
+    }
+
+    //一回目かどうかのフラグを送るための関数
+    public bool GetFirstFlg() {
+        return First_Flg;
     }
 
 }

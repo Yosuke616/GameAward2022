@@ -309,7 +309,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 256730650}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4200, y: 0, z: 200}
+  m_LocalPosition: {x: 4200, y: 700, z: 200}
   m_LocalScale: {x: 550, y: 300, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -405,7 +405,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 385071007}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3000, y: 0, z: 200}
+  m_LocalPosition: {x: 3000, y: 500, z: 200}
   m_LocalScale: {x: 550, y: 300, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -501,7 +501,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 493577194}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2400, y: 0, z: 200}
+  m_LocalPosition: {x: 2400, y: 400, z: 200}
   m_LocalScale: {x: 550, y: 300, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -663,7 +663,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 930585837}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1800, y: 0, z: 200}
+  m_LocalPosition: {x: 1800, y: 300, z: 200}
   m_LocalScale: {x: 550, y: 300, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -759,7 +759,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1314460543}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1200, y: 0, z: 200}
+  m_LocalPosition: {x: 1200, y: 200, z: 200}
   m_LocalScale: {x: 550, y: 300, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -855,7 +855,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1520092953}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3600, y: 0, z: 200}
+  m_LocalPosition: {x: 3600, y: 600, z: 200}
   m_LocalScale: {x: 550, y: 300, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -992,7 +992,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 1538329705}
-  SpeedCamera: 50
+  SpeedCamera: 1
   RangeCamera: 600
 --- !u!1 &1703693831
 GameObject:
@@ -1084,7 +1084,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1703693831}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 600, y: 0, z: 200}
+  m_LocalPosition: {x: 600, y: 100, z: 200}
   m_LocalScale: {x: 550, y: 300, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

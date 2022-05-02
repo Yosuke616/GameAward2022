@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;  // シーン遷移用
 public class StageSelect : MonoBehaviour
 {
     // 現在の進捗
-    public static int ProgressStage = 0;
+    public static int ProgressStage = 4;
 
     // メインカメラ選択
     public Camera camera;
@@ -74,10 +74,21 @@ public class StageSelect : MonoBehaviour
             }
         }
 
+        // カメラY移動
+        //if (_STATE != CAMERA_STATE.NONE)
+        //{
+        //    if (MoveCamera < RangeCamera / 2)
+        //        camera.transform.position -= new Vector3(0, SpeedCamera / 2, 0);
+        //    else
+        //        camera.transform.position += new Vector3(0, SpeedCamera / 2, 0);
+        //}
+
+        // カメラX移動
         switch (_STATE)
         {
             case CAMERA_STATE.LEFT:
                 camera.transform.position -= new Vector3(SpeedCamera, 0, 0);
+                camera.transform.position -= new Vector3(0, SpeedCamera/6, 0);
                 MoveCamera += SpeedCamera;
                 if (MoveCamera >= RangeCamera)
                 {
@@ -88,6 +99,7 @@ public class StageSelect : MonoBehaviour
 
             case CAMERA_STATE.RIGHT:
                 camera.transform.position += new Vector3(SpeedCamera, 0, 0);
+                camera.transform.position += new Vector3(0, SpeedCamera/6, 0);
                 MoveCamera += SpeedCamera;
                 if (MoveCamera >= RangeCamera)
                 {
@@ -100,13 +112,14 @@ public class StageSelect : MonoBehaviour
                 break;
         }
 
-            // ステージ突入
+       
+        // ステージ突入
         if (Input.GetKeyDown(KeyCode.Return))
         {
             switch (Select)
             {
                 case 0:
-                SceneManager.LoadScene("test_Stage1");
+                SceneManager.LoadScene("1-1");
                 break;
 
                 case 1:
@@ -128,7 +141,7 @@ public class StageSelect : MonoBehaviour
     // ステージクリア時に進捗保存関数
     public static void UpdateProgress(string name)
     {
-        if (name == "test_Stage1") 
+        if (name == "1-1") 
         {
             if (ProgressStage <= 1)
                 ProgressStage = 1;

@@ -24,10 +24,23 @@ public class StageSelect2 : MonoBehaviour
     public float Speed;
 
     // パネル移動制御
-    public float Range;
+    public float Range_X;
+    public float Range_Y;
+    public float Range_Z;
 
     // 移動量保存
-    private float Move = 0;
+    private float Move_X = 0;
+    private float Move_Y = 0;
+    private float Move_Z = 0;
+
+    // 奥行調整用
+    private float Base_Z = 850;
+
+    // 左パネル枚数
+    private float LeftPanel = 7;
+
+    // 右パネル枚数
+    private float RightPanel = 0;
 
     // パネル状態
     enum PANEL_STATE
@@ -40,6 +53,8 @@ public class StageSelect2 : MonoBehaviour
 
     // 現在選択
     private int Select = 0;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -60,10 +75,7 @@ public class StageSelect2 : MonoBehaviour
                 if (Select > 0)
                 {
                     PanelState = PANEL_STATE.LEFT;
-                    Select--;
                 }
-                else
-                    Select = 0;
             }
 
             // →画面移動
@@ -80,29 +92,77 @@ public class StageSelect2 : MonoBehaviour
         switch (PanelState)
         {
             case PANEL_STATE.LEFT:
-                Stages[Select].transform.position -= new Vector3(Speed, 0, 0);
-                Stages[Select].transform.position -= new Vector3(0, Speed, 0);
-                Move += Speed;
-                if (Move >= Range)
+                if (Move_X < Range_X)
                 {
-                    Move = 0;
+                    Stages[Select].transform.position -= new Vector3(Speed, 0, 0);
+                    Stages[Select - 1].transform.position -= new Vector3(Speed, 0, 0);
+                    Move_X += Speed;
+                }
+                if (Move_Y < Range_Y)
+                {
+                    Stages[Select].transform.position += new Vector3(0, Speed / 2, 0);
+                    Stages[Select - 1].transform.position -= new Vector3(0, Speed / 2, 0);
+                    Move_Y += Speed / 2;
+                }
+                if (Move_Z < Range_Z)
+                {
+                    Stages[Select].transform.position += new Vector3(0, 0, Speed / 2);
+                    Stages[Select - 1].transform.position -= new Vector3(0, 0, Speed / 2);
+                    Move_Z += Speed / 2;
+                }
+                if (Move_X >= Range_X &&
+                    Move_Y >= Range_Y &&
+                    Move_Z >= Range_Z)
+                {
+                    Move_X = 0;
+                    Move_Y = 0;
+                    Move_Z = 0;
                     PanelState = PANEL_STATE.NONE;
+
+                    Stages[Select].transform.position = new Vector3(Stages[Select].transform.position.x,
+                                                                        Stages[Select].transform.position.y,
+                                                                        Base_Z - LeftPanel);
+                    LeftPanel++;
+                    RightPanel--;
+                    Select--;
                 }
                 break;
 
             case PANEL_STATE.RIGHT:
-                Stages[Select].transform.position += new Vector3(Speed, 0, 0);
-                Stages[Select].transform.position += new Vector3(0, Speed, 0);
-                Move += Speed;
-                if (Move >= Range)
+                if (Move_X < Range_X)
                 {
-                    Move = 0;
+                    Stages[Select].transform.position += new Vector3(Speed, 0, 0);
+                    Stages[Select + 1].transform.position += new Vector3(Speed, 0, 0);
+                    Move_X += Speed;
+                }
+                if (Move_Y < Range_Y)
+                {
+                    Stages[Select].transform.position += new Vector3(0, Speed / 2, 0);
+                    Stages[Select + 1].transform.position -= new Vector3(0, Speed / 2, 0);
+                    Move_Y += Speed / 2;
+                }
+                if (Move_Z < Range_Z)
+                {
+                    Stages[Select].transform.position += new Vector3(0, 0, Speed / 2);
+                    Stages[Select + 1].transform.position -= new Vector3(0, 0, Speed / 2);
+                    Move_Z += Speed / 2;
+                }
+                if (Move_X >= Range_X &&
+                    Move_Y >= Range_Y &&
+                    Move_Z >= Range_Z)
+                {
+                    Move_X = 0;
+                    Move_Y = 0;
+                    Move_Z = 0;
                     PanelState = PANEL_STATE.NONE;
 
-                    if (Select < ProgressStages)
-                        Select++;
-                    else
-                        Select = ProgressStages;
+                    Stages[Select].transform.position = new Vector3(Stages[Select].transform.position.x,
+                                                                        Stages[Select].transform.position.y,
+                                                                        Base_Z - RightPanel);
+
+                    LeftPanel--;
+                    RightPanel++;
+                    Select++;
                 }
                 break;
 

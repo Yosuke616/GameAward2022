@@ -95,6 +95,7 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
         if (Cur_SY.GetBreakFlg())
         {
             CursorBreak();
+            //Debug.Log("12345ui");
             First_Flg = false;
         }
         else
@@ -116,8 +117,11 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
 
                 OutPaper_Pos = Cross_Pos;
 
-                if (Input.GetMouseButtonDown(0))
+                Debug.Log(456);
+
+                if (Input.GetMouseButtonDown(0) || Input.GetAxis("LTrigger") == 1)
                 {
+                    Debug.Log(123);
                     First_Flg = true;
                 }
 
@@ -135,6 +139,20 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
     //引数  :マウスの座標と紙の中心の座標と紙の4辺の情報が入ったリスト
     private Vector2 CalculationVector(Vector2 Mouse, Vector2 Center, List<Vector3> Square)
     {
+        //コントローラーのやつ
+        GameObject CTRL = GameObject.Find("CTRLCur");
+
+        Vector3 ctrl = CTRL.GetComponent<CTRLCur>().GetCTRLPos();
+
+        Vector2 mmm;
+
+        mmm.x = ctrl.x;
+        mmm.y = ctrl.y;
+
+        Mouse = mmm;
+
+        Mouse *= 100;
+
         //最後に返すときのための2次元ベクトル
         Vector2 CrossVector = new Vector2(0.0f, 0.0f);
 
@@ -209,7 +227,7 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
     {
         Pos = new Vector3(0.0f, 0.0f, 0.0f);
         //ボタンを押した座標に持っていく
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) || Input.GetAxis("LTrigger") == 1)
         {
             Old_Click_Pos = Input.mousePosition;
             Old_Click_Pos.z = 10.0f;
@@ -218,7 +236,15 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
         Pos = Camera.main.ScreenToWorldPoint(Old_Click_Pos);
         //Debug.LogWarning(Pos);
         //Pos = Old_Click_Pos.WorldToScreenPoint(Old_Click_Pos);
-        this.transform.position = Pos;
+
+        GameObject TPA = GameObject.Find("CTRLCur");
+
+        this.transform.position = TPA.transform.position;
+    }
+
+    //一回目かどうかのフラグを送るための関数
+    public bool GetFirstFlg() {
+        return First_Flg;
     }
 
 }

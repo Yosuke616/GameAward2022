@@ -1039,6 +1039,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75e650abf3db45c4daa3c75ade2d6752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxLayerNum: 2
   CollisionGrid: []
   layerList: 
   MainGrid: {fileID: 0}
@@ -2045,7 +2046,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 26580896f63275b4abac6bdc7709549b, type: 2}
+  - {fileID: 2100000, guid: 1e35d24395ef4974db81e6d2f0df0c47, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2305,7 +2306,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 26580896f63275b4abac6bdc7709549b, type: 2}
+  - {fileID: 2100000, guid: 219c309c248999440b07f980fe6c7686, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4010,7 +4011,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 26580896f63275b4abac6bdc7709549b, type: 2}
+  - {fileID: 2100000, guid: b01f5133c7bf0ee45855b8ac201e54bd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

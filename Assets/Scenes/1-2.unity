@@ -7322,7 +7322,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 11114280d0f892d4da0177dcfeeda5ac, type: 2}
   - {fileID: 2100000, guid: e45929e3ac0ee044cad249d9e8dd40a5, type: 2}
   partitionMaterial:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 955eca4f718de6546a239f614bc5c002, type: 2}
 --- !u!4 &1959623445
 Transform:
   m_ObjectHideFlags: 0

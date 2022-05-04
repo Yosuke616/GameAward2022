@@ -51,7 +51,7 @@ public class PlayerMove2 : MonoBehaviour
             else if (Input.GetKey(KeyCode.D))   _state = PLAYER_STATE.STATE_RIGHT_MOVE;
             else if(Input.GetKeyDown(KeyCode.S))_state = PLAYER_STATE.STATE_STOP;
             // ジャンプ
-            else if (Input.GetKeyDown(KeyCode.W)) GetComponent<Rigidbody>().AddForce(new Vector3(0, 15.0f, 0), ForceMode.Impulse);
+            else if (Input.GetKeyDown(KeyCode.W)) GetComponent<Rigidbody>().AddForce(new Vector3(0, 10.0f, 0), ForceMode.Impulse);
 
             switch (_state)
             {

@@ -86,8 +86,6 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
         Mouse_Pos.x -= Screen.width / 2;
         Mouse_Pos.y -= Screen.height / 2;
 
-
-
         //破るためのスクリプトを用意する
         GameObject Cur = GameObject.Find("Cursor");
         CursorSystem Cur_SY = Cur.GetComponent<CursorSystem>();
@@ -95,7 +93,6 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
         if (Cur_SY.GetBreakFlg())
         {
             CursorBreak();
-            //Debug.Log("12345ui");
             First_Flg = false;
         }
         else
@@ -117,11 +114,14 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
 
                 OutPaper_Pos = Cross_Pos;
 
-                Debug.Log(456);
+                //コントローラーを押せるようのオブジェクトをゲットする
+                GameObject obj = GameObject.Find("MainCamera");
 
-                if (Input.GetMouseButtonDown(0) || Input.GetAxis("LTrigger") == 1)
+                Debug.Log(obj.GetComponent<InputTrigger>().GetOneTimeDown());
+
+                if (Input.GetMouseButtonDown(0) || obj.GetComponent<InputTrigger>().GetOneTimeDown())
                 {
-                    Debug.Log(123);
+                    Debug.Log("成功");
                     First_Flg = true;
                 }
 
@@ -225,18 +225,6 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
     //破る時にカーソルをそこに移動させる
     private void CursorBreak()
     {
-        Pos = new Vector3(0.0f, 0.0f, 0.0f);
-        //ボタンを押した座標に持っていく
-        if (Input.GetMouseButtonDown(0) || Input.GetAxis("LTrigger") == 1)
-        {
-            Old_Click_Pos = Input.mousePosition;
-            Old_Click_Pos.z = 10.0f;
-        }
-
-        Pos = Camera.main.ScreenToWorldPoint(Old_Click_Pos);
-        //Debug.LogWarning(Pos);
-        //Pos = Old_Click_Pos.WorldToScreenPoint(Old_Click_Pos);
-
         GameObject TPA = GameObject.Find("CTRLCur");
 
         this.transform.position = TPA.transform.position;

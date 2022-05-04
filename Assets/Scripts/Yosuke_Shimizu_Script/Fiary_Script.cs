@@ -119,6 +119,9 @@ public class Fiary_Script : MonoBehaviour
         //クリックしていた場合
         //プレイヤーに追従しているときだけこの中に入る
 
+        //コントローラーを押せるようのオブジェクトをゲットする
+        GameObject obj = GameObject.Find("MainCamera");
+
         if (!CS_Script.GetBreakFlg())
         //クリックしていなかった場合
         {
@@ -128,6 +131,7 @@ public class Fiary_Script : MonoBehaviour
                 g_FiaryMove = FIARY_MOVE.FIARY_BREAK_MOVE;
             }
         }
+
 
         //状態によって更新の内容を変える
         switch (g_FiaryMove)
@@ -157,7 +161,7 @@ public class Fiary_Script : MonoBehaviour
                 }
                 else
                 {
-                    if (Input.GetMouseButtonDown(0)|| Input.GetAxis("LTrigger") == 1)
+                    if (Input.GetMouseButtonDown(0)|| obj.GetComponent<InputTrigger>().GetOneTimeDown())
                     {
                         g_FiaryMove = FIARY_MOVE.FIARY_BREAK_PAPER;
                     }
@@ -173,7 +177,7 @@ public class Fiary_Script : MonoBehaviour
                 this.transform.position = OutSide_Cursor.GetComponent<OutSide_Paper_Script_Second>().GetCursorPos();
 
                 //個々の中に入っているときにクリックすると中にゆっくり移動していくモードに変わる
-                if (Input.GetMouseButtonDown(0) || Input.GetAxis("LTrigger") == 1)
+                if (Input.GetMouseButtonDown(0) || obj.GetComponent<InputTrigger>().GetOneTimeDown())
                 {
                     g_FiaryMove = FIARY_MOVE.FIARY_PLAYER_TRACKING;
                     gFirst_Flg = false;
@@ -202,7 +206,7 @@ public class Fiary_Script : MonoBehaviour
                 //クリックされた場所をリストに保存する(前回の座標と違ったときにリストに追加する)
                 if (!(vWorldPos == Old_Mouse_Pos))
                 {
-                    if (Input.GetMouseButtonDown(0) || Input.GetAxis("LTrigger") == 1) {
+                    if (Input.GetMouseButtonDown(0) || obj.GetComponent<InputTrigger>().GetOneTimeDown()) {
                         ////リストに追加する
                         MousePos.Add(vWorldPos);
                         ////過去の座標と比べるために今の座標を保存しておく

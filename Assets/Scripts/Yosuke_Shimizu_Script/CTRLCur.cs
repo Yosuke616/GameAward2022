@@ -6,12 +6,16 @@ public class CTRLCur : MonoBehaviour
 {
     private Vector3 SendPos;
 
+    //ボタンを押したときのフラグ
+    private bool g_bFirstFlg;
+
     // Start is called before the first frame update
     void Start()
     {
         //初期化でオブジェクトの場所を決める
         this.transform.position = new Vector3(0.0f,0.0f,0.0f);
         SendPos = new Vector3(0.0f,0.0f,0.0f);
+        g_bFirstFlg = false;
     }
 
     // Update is called once per frame

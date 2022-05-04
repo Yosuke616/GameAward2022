@@ -76,6 +76,8 @@ public class CursorSystem : MonoBehaviour
 
         //カーソルの座標を送る
         GameObject Cursor = GameObject.Find("cursor");
+        GameObject obj = GameObject.Find("CTRLCur");
+        GameObject camera = GameObject.Find("MainCamera");
 
         //座標の保存用の変数
         Vector3 SavePos = new Vector3(0.0f,0.0f,0.0f);
@@ -83,21 +85,17 @@ public class CursorSystem : MonoBehaviour
         //送るものの座標を変える
         if (Cursor.GetComponent<OutSide_Paper_Script_Second>().GetFirstFlg())
         {
-            GameObject obj = GameObject.Find("CTRLCur");
             SavePos = obj.transform.position;
-            Debug.Log(SavePos);
-            Debug.Log("みくみく");
         }
         else {
 
             SavePos = Cursor.transform.position;
-            Debug.Log(SavePos);
-            Debug.Log("はつね");
         }
 
         // 座標保存
-        if (Input.GetMouseButtonDown(0) || Input.GetAxis("LTrigger") == 1)
+        if (Input.GetMouseButtonDown(0) || camera.GetComponent<InputTrigger>().GetOneTimeDown())
         {
+
             cnt = 0;          
 
             // 座標リストに追加

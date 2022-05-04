@@ -21,22 +21,29 @@ public class InputTrigger : MonoBehaviour
     //一回だけ押して連続で押したことにしないための関数
     public bool GetOneTimeDown()
     {
-        //ボタンを押したときかつあるフラグがオフだったらいいかんじにする
-        //g_bFirstFlg = false;
-        if (Input.GetAxis("LTrigger") == 1)
+        // 前フレームに押されていなかったら
+        if (!g_bFirstFlg)
         {
-            g_bFirstFlg = true;
-        }
-
-        if (g_bFirstFlg)
-        {
-            if (Input.GetAxis("LTrigger") < 1)
+            // 現在押されていたら
+            if (Input.GetAxis("LTrigger") == 1)
             {
                 Debug.Log("1っかいだよー");
                 g_bFirstFlg = false;
                 return true;
             }
         }
+
+        // 押されているフラグの更新
+        if (Input.GetAxis("LTrigger") == 1)
+        {
+            g_bFirstFlg = true;
+        }
+        else
+        {
+            g_bFirstFlg = false;
+
+        }
+
 
         return false;
     }

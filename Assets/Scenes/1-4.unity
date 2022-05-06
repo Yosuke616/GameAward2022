@@ -4165,7 +4165,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2757064548010683858, guid: 22b010e2b7af9b34f8586a08efcb0446, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2757064548010683858, guid: 22b010e2b7af9b34f8586a08efcb0446, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4729,8 +4729,8 @@ Transform:
   - {fileID: 1213968022}
   - {fileID: 2144052778}
   - {fileID: 513847271}
-  - {fileID: 1961952330}
   - {fileID: 1214867685}
+  - {fileID: 1961952330}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5746,7 +5746,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1365717805}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5649a87b789b3564eb3c53c1bdf8e1e5, type: 3}
+  m_Script: {fileID: 11500000, guid: 672b7985406b780479c1c55e41221f78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1391095942

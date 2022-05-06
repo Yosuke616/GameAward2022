@@ -54,7 +54,6 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
         gridSizeY = CreateGridScript.gridSizeY;
         gridNumX = CreateGridScript.horizon;
         gridNumY = CreateGridScript.virtical;
-        Debug.Log(gridNumX * gridNumY);
         // あたり判定リストのサイズをマスの数と同じだけ増やす
         for (int i = 0; i < gridNumX * gridNumY; i++)
         {
@@ -128,7 +127,6 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
         // 最初は1枚目なのでlayerを0にしておく
         for (int i = 0; i < LayerList.Count; i++)
             LayerList[i] = 0;
-        Debug.Log(LayerList.Count);
     }
 
 
@@ -171,7 +169,6 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
 
                             // 次のレイヤーに更新
                             layerList[objCount]++;
-                            Debug.Log("パターン①");
                         }
                         else
                         {
@@ -186,7 +183,6 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
 
                             // 次のレイヤーに更新
                             layerList[objCount]++;
-                            Debug.Log("パターン②");
                         }
                     }
                     // ない
@@ -212,7 +208,6 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
 
                             // 次のレイヤーに更新
                             layerList[objCount]++;
-                            Debug.Log("パターン③");
                         }
                         else
                         {
@@ -226,7 +221,6 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
 
                             // 次のレイヤーに更新
                             layerList[objCount]++;
-                            Debug.Log("パターン④");
                         }
                     }
                 }
@@ -287,7 +281,6 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
 
         if(tag == "enemy")
         {
-            Debug.Log("蛇");
             mass.AddComponent<Enemy>();
         }
 

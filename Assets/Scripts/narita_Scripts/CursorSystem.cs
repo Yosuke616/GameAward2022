@@ -48,8 +48,8 @@ public class CursorSystem : MonoBehaviour
         {
             UpdatePage();
             // めくる
-            var a = papers[Select]; if (!a) Debug.LogError("a");
-            var b = a.GetComponent<Turn_Shader>(); if(!b) Debug.LogError("b");
+            var a = papers[Select];
+            var b = a.GetComponent<Turn_Shader>();
             b.SetPaperSta(1);
             Select++;
             if (Select > 2) Select = 2;
@@ -58,8 +58,8 @@ public class CursorSystem : MonoBehaviour
         {
             UpdatePage();
             // めくるのを戻す
-            var a = papers[Select]; if (!a) Debug.LogError("a");
-            var b = a.GetComponent<Turn_Shader>(); if (!b) Debug.LogError("b");
+            var a = papers[Select];
+            var b = a.GetComponent<Turn_Shader>();
             b.SetPaperSta(2);
 
             Select--;
@@ -99,7 +99,8 @@ public class CursorSystem : MonoBehaviour
             cnt = 0;          
 
             // 座標リストに追加
-            MousePoints.Add(SavePos);
+            //MousePoints.Add(SavePos);
+            MousePoints.Add(transform.position);
 
 
             if (MousePoints.Count >= 2)

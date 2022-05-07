@@ -760,13 +760,13 @@ public class DivideTriangle : MonoBehaviour
         if (width1 * height1 < width2 * height2)
         {
             // obj1を飛ばして消す
-            var move = obj1.AddComponent<PaperMove>();
+            //var move = obj1.AddComponent<PaperMove>();
             // 飛ばす方向
-            move.SetDirection(pos1 - pos2);
+            //move.SetDirection(pos1 - pos2);
             // タグの変更（廃棄する紙）
             obj1.tag = "waste";
             // 数秒後にデリート
-            Destroy(obj1, 3.0f);
+            Destroy(obj1, 2.0f);
 
             // ステージの更新
             CollisionField.Instance.UpdateStage(checkCollisionPoints(obj1, CollisionField.Instance.cellPoints()));
@@ -774,10 +774,14 @@ public class DivideTriangle : MonoBehaviour
 
             obj2.GetComponent<MeshRenderer>().materials = GetComponent<MeshRenderer>().materials;
 
-            var alpha = obj1.AddComponent<Alpha>();
+            var BreakPaper = obj1.AddComponent<BreakingPaper>();
             //alpha.SetMaterial(GetComponent<MeshRenderer>().material);
-            alpha.SetMaterial(GameManager.Instance._mats[number - 1]);
-            alpha.SetAlpha();
+            BreakPaper.SetMaterial(GameManager.Instance._mats[number - 1]);
+            // めくる方向を決める
+            if (pos1.x >= 0.0f)
+                BreakPaper.SetRight();
+            else if (pos1.x < 0.0f)
+                BreakPaper.SetLeft();
 
             // 紙の破れにもAlphaを適用させる
             for (int i = 0; i < obj1.transform.childCount; i++)
@@ -795,9 +799,9 @@ public class DivideTriangle : MonoBehaviour
         else
         {
             // obj2の方が遠い位置にある
-            var move = obj2.AddComponent<PaperMove>();
+            //var move = obj2.AddComponent<PaperMove>();
             // 飛ばす方向
-            move.SetDirection(pos2 - pos1);
+            //move.SetDirection(pos2 - pos1);
             // タグの変更（廃棄する紙）
             obj2.tag = "waste";
             // 数秒後にデリート
@@ -806,10 +810,14 @@ public class DivideTriangle : MonoBehaviour
             // ステージの更新
             CollisionField.Instance.UpdateStage(checkCollisionPoints(obj2, CollisionField.Instance.cellPoints()));
 
-            var alpha = obj2.AddComponent<Alpha>();
-            alpha.SetMaterial(GameManager.Instance._mats[number - 1]);
+            var BreakPaper = obj2.AddComponent<BreakingPaper>();
+            BreakPaper.SetMaterial(GameManager.Instance._mats[number - 1]);
             //alpha.SetMaterial(GetComponent<MeshRenderer>().material);
-            alpha.SetAlpha();
+            // めくる方向を決める
+            if (pos2.x >= 0.0f)
+                BreakPaper.SetRight();
+            else if (pos2.x < 0.0f)
+                BreakPaper.SetLeft();
 
             // 紙の破れにもAlphaを適用させる
             for (int i = 0; i < obj2.transform.childCount; i++)

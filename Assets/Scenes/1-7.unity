@@ -1850,7 +1850,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 361416712}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.02, z: -8.65}
+  m_LocalPosition: {x: 0, y: -0.02, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1744604135}
@@ -5989,6 +5989,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 5aee6d388a5b873408b39ea8afcb3fc4, type: 2}
   - {fileID: 2100000, guid: 11114280d0f892d4da0177dcfeeda5ac, type: 2}
   - {fileID: 2100000, guid: e45929e3ac0ee044cad249d9e8dd40a5, type: 2}
+  - {fileID: 2100000, guid: e45929e3ac0ee044cad249d9e8dd40a5, type: 2}
   partitionMaterial:
   - {fileID: 2100000, guid: 955eca4f718de6546a239f614bc5c002, type: 2}
 --- !u!4 &1103807893
@@ -7041,7 +7042,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 8400000, guid: d661a772ffa69244e899b9073a532529, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: afacd14488d8d224ab033dde95cb1d8a, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
@@ -8771,7 +8772,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: dfbf198c9220ebf438be11a7bf1b79e9, type: 2}
+  - {fileID: 2100000, guid: 2397259bd080a5341b63736595758052, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

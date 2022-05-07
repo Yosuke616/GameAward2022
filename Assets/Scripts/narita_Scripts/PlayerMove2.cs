@@ -87,14 +87,18 @@ public class PlayerMove2 : MonoBehaviour
         if (collision.gameObject.gameObject.tag == "goal")
         {
             // ステージ進捗保存
-            StageSelect.UpdateProgress(SceneManager.GetActiveScene().name);
+            //StageSelect.UpdateProgress(SceneManager.GetActiveScene().name);
 
-            if (tex && timerTex) tex.text = "クリアタイム:" + timerTex.text;
+            //if (tex && timerTex) tex.text = "クリアタイム:" + timerTex.text;
 
-            SoundManager.Instance.StopBgm();
-            SoundManager.Instance.PlaySeByName("clear");
+            //SoundManager.Instance.StopBgm();
+            //SoundManager.Instance.PlaySeByName("clear");
 
-            _resultBG.gameObject.SetActive(true);
+            //_resultBG.gameObject.SetActive(true);
+
+            GameObject camera = GameObject.Find("MainCamera");
+            camera.GetComponent<Result_Script>().SetGoalFlg(true);
+
             flg = false;
         }
 
@@ -109,6 +113,11 @@ public class PlayerMove2 : MonoBehaviour
             _resultBG.gameObject.SetActive(true);
             flg = false;
         }
+    }
+
+    //ゴールしたか死んだか
+    public bool GetFlg() {
+        return flg;
     }
 
 }

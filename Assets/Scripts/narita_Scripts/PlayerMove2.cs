@@ -47,9 +47,9 @@ public class PlayerMove2 : MonoBehaviour
         if (flg)
         {
             // プレイヤーの向き
-            if (Input.GetKey(KeyCode.A))        _state = PLAYER_STATE.STATE_LEFT_MOVE;
-            else if (Input.GetKey(KeyCode.D))   _state = PLAYER_STATE.STATE_RIGHT_MOVE;
-            else if(Input.GetKeyDown(KeyCode.S))_state = PLAYER_STATE.STATE_STOP;
+            if (Input.GetKey(KeyCode.A) || Input.GetAxis("Horizontal") == -1)        _state = PLAYER_STATE.STATE_LEFT_MOVE;
+            else if (Input.GetKey(KeyCode.D)|| Input.GetAxis("Horizontal") == 1)   _state = PLAYER_STATE.STATE_RIGHT_MOVE;
+            else if(Input.GetKeyDown(KeyCode.S) || Input.GetAxis("Vertical") < 0) _state = PLAYER_STATE.STATE_STOP;
             // ジャンプ
             else if (Input.GetKeyDown(KeyCode.W)) GetComponent<Rigidbody>().AddForce(new Vector3(0, 10.0f, 0), ForceMode.Impulse);
 

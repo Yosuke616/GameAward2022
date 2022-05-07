@@ -43,29 +43,55 @@ public class CursorSystem : MonoBehaviour
 
         if (Camera.main == null) { return; }
 
-
-        if(Input.GetKeyDown(KeyCode.UpArrow)|| Input.GetKeyDown("joystick button 4"))
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown("joystick button 4"))
         {
             UpdatePage();
+            var topPaper = papers[Select];
+            var turnShader = topPaper.GetComponent<Turn_Shader>();
             // めくる
-            var a = papers[Select];
-            var b = a.GetComponent<Turn_Shader>();
-            b.SetPaperSta(1);
+            turnShader.SetPaperSta(1);
+            // めくった枚数をカウント
             Select++;
+            // めくる枚数の上限
             if (Select > 2) Select = 2;
+
+            //--- 紙の子オブジェクトのブレークラインも消す
+            for (int i = 0; i < topPaper.transform.childCount; i++)
+            {
+                // 子オブジェクトの取得
+                var childObject = topPaper.transform.GetChild(i).gameObject;
+                // 仕切りの場合は何もしない
+                if (childObject.tag == "partition") continue;
+
+                // アクティブを解除
+                childObject.SetActive(false);
+            }
         }
-        else if(Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown("joystick button 5"))
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown("joystick button 5"))
         {
             UpdatePage();
             // めくるのを戻す
-            var a = papers[Select];
-            var b = a.GetComponent<Turn_Shader>();
-            b.SetPaperSta(2);
-
+            var topPaper = papers[Select];
+            var turnShader = topPaper.GetComponent<Turn_Shader>();
+            // めくってある状態から戻す
+            turnShader.SetPaperSta(2);
+            // めくった枚数をカウント
             Select--;
+            // めくる枚数の下限
             if (Select < 0) Select = 0;
-        }
 
+            //--- ブレークラインも戻す
+            for (int i = 0; i < topPaper.transform.childCount; i++)
+            {
+                // 子オブジェクトの取得
+                var childObject = topPaper.transform.GetChild(i).gameObject;
+                // 仕切りの場合は何もしない
+                if (childObject.tag == "partition") continue;
+
+                // アクティブにする
+                childObject.SetActive(true);
+            }
+        }
 
         // このオブジェクトのワールド座標をスクリーン座標に変換した値を代入
         this.screenPoint = Camera.main.WorldToScreenPoint(transform.position);

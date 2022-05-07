@@ -29,6 +29,14 @@ public class Result_Script : MonoBehaviour
     //使用する画像
     public Image _resultBG;
 
+    //星の画像
+    public Image Star_1;
+    public Image Star_2;
+    public Image Star_3;
+
+    //タイムを記録する人
+    private float Timer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +45,12 @@ public class Result_Script : MonoBehaviour
 
         //アクティブにしない
         _resultBG.gameObject.SetActive(false);
+
+        //星はデフォルトではアクティブにしない
+        Star_1.gameObject.SetActive(false);
+        Star_2.gameObject.SetActive(false);
+        Star_3.gameObject.SetActive(false);
+
     }
 
     // Update is called once per frame
@@ -46,7 +60,12 @@ public class Result_Script : MonoBehaviour
             g_bGoal = true;
         }
 
+        if (!g_bGoal) {
+            //時間を取得してある程度早かったら星の画像を出す
+            GameObject Time = GameObject.Find("Timer");
 
+            Timer = Time.GetComponent<TimerScript>().GetTime();
+        }
 
         if (g_bGoal) {
             //カメラがよる
@@ -69,6 +88,12 @@ public class Result_Script : MonoBehaviour
                 SoundManager.Instance.PlaySeByName("clear");
 
                 _resultBG.gameObject.SetActive(true);
+
+                if (Timer < 30.0f) {
+                    Star_1.gameObject.SetActive(true);
+                    Star_2.gameObject.SetActive(true);
+                }
+
             }
             //Camera.transform.position = new Vector3(3.5f,-1.5f,-5.0f);
 

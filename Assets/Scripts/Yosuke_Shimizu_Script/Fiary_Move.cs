@@ -36,8 +36,6 @@ public class Fiary_Move : MonoBehaviour
             return;
         }
 
-        Debug.Log("ƒƒ[ƒbƒ^—lÅ‚");
-
         GameObject ParentObj = transform.parent.gameObject;
 
         if (this.GetComponent<Fiary_Script>().GetMove()) {

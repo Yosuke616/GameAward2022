@@ -279,13 +279,11 @@ public class DivideTriangle : MonoBehaviour
                     // パターン② 「１辺」と交わっている
                     else if (IsCrossing[0] || IsCrossing[1] || IsCrossing[2])
                     {
-                        //Debug.Log("パターン②");
                         Dividing_one_triangle_into_Four_triangles(ref triangles, IsCrossing, n, e, c1);
                     }
                     // 例外パターン
                     else
                     {
-                        Debug.LogError("例外パターン");
                         // 現在の三角形の状態のまま保存
                         for (int cnt = 0; cnt < 3; cnt++)
                             triangles.Add(attachedMesh.triangles[index + cnt]);
@@ -502,8 +500,8 @@ public class DivideTriangle : MonoBehaviour
         
 
         // エラー対応
-        if (objOutline1.Count < 3) { Debug.LogError("エラー objOutline1.Count"); return; }
-        if (objOutline2.Count < 3) { Debug.LogError("エラー objOutline2.Count"); return; }
+        //if (objOutline1.Count < 3) { Debug.LogError("エラー objOutline1.Count"); return; }
+        //if (objOutline2.Count < 3) { Debug.LogError("エラー objOutline2.Count"); return; }
 
         // ---１つ目のuv、法線リストを作成
         for (int i = 0; i < objOutline1.Count; i++)
@@ -692,7 +690,6 @@ public class DivideTriangle : MonoBehaviour
                         ret = false;
                         break;
                     }
-
                 }
             }
 
@@ -700,7 +697,7 @@ public class DivideTriangle : MonoBehaviour
             boolList2.Add(ret);
         }
         bool oldFlag2 = false;
-        foreach (var item in boolList2) Debug.Log(item);
+        //foreach (var item in boolList2) Debug.Log(item);
         for (int i = 0; i < boolList2.Count; i++)
         {
             if (boolList2[i])
@@ -763,13 +760,13 @@ public class DivideTriangle : MonoBehaviour
         if (width1 * height1 < width2 * height2)
         {
             // obj1を飛ばして消す
-            var move = obj1.AddComponent<PaperMove>();
+            //var move = obj1.AddComponent<PaperMove>();
             // 飛ばす方向
-            move.SetDirection(pos1 - pos2);
+            //move.SetDirection(pos1 - pos2);
             // タグの変更（廃棄する紙）
             obj1.tag = "waste";
             // 数秒後にデリート
-            Destroy(obj1, 3.0f);
+            Destroy(obj1, 2.0f);
 
             // ステージの更新
             CollisionField.Instance.UpdateStage(checkCollisionPoints(obj1, CollisionField.Instance.cellPoints()));
@@ -777,10 +774,14 @@ public class DivideTriangle : MonoBehaviour
 
             obj2.GetComponent<MeshRenderer>().materials = GetComponent<MeshRenderer>().materials;
 
-            var alpha = obj1.AddComponent<Alpha>();
+            var BreakPaper = obj1.AddComponent<BreakingPaper>();
             //alpha.SetMaterial(GetComponent<MeshRenderer>().material);
-            alpha.SetMaterial(GameManager.Instance._mats[number - 1]);
-            alpha.SetAlpha();
+            BreakPaper.SetMaterial(GameManager.Instance._mats[number - 1]);
+            // めくる方向を決める
+            if (pos1.x >= 0.0f)
+                BreakPaper.SetRight();
+            else if (pos1.x < 0.0f)
+                BreakPaper.SetLeft();
 
             // 紙の破れにもAlphaを適用させる
             for (int i = 0; i < obj1.transform.childCount; i++)
@@ -798,9 +799,9 @@ public class DivideTriangle : MonoBehaviour
         else
         {
             // obj2の方が遠い位置にある
-            var move = obj2.AddComponent<PaperMove>();
+            //var move = obj2.AddComponent<PaperMove>();
             // 飛ばす方向
-            move.SetDirection(pos2 - pos1);
+            //move.SetDirection(pos2 - pos1);
             // タグの変更（廃棄する紙）
             obj2.tag = "waste";
             // 数秒後にデリート
@@ -809,10 +810,14 @@ public class DivideTriangle : MonoBehaviour
             // ステージの更新
             CollisionField.Instance.UpdateStage(checkCollisionPoints(obj2, CollisionField.Instance.cellPoints()));
 
-            var alpha = obj2.AddComponent<Alpha>();
-            alpha.SetMaterial(GameManager.Instance._mats[number - 1]);
+            var BreakPaper = obj2.AddComponent<BreakingPaper>();
+            BreakPaper.SetMaterial(GameManager.Instance._mats[number - 1]);
             //alpha.SetMaterial(GetComponent<MeshRenderer>().material);
-            alpha.SetAlpha();
+            // めくる方向を決める
+            if (pos2.x >= 0.0f)
+                BreakPaper.SetRight();
+            else if (pos2.x < 0.0f)
+                BreakPaper.SetLeft();
 
             // 紙の破れにもAlphaを適用させる
             for (int i = 0; i < obj2.transform.childCount; i++)
@@ -879,138 +884,138 @@ public class DivideTriangle : MonoBehaviour
 
 
                 return true;
-                Debug.Log("クロス   " + cross + "uv  " + uv);
-
-                // この場合、切る処理は行うが
-                // 切断パスが共通でないのでCut()関数では正しく動かない
-                // よって、ここでそれぞれのアウトラインを作成する
-
-                List<Vector3> outline1 = new List<Vector3>();
-                List<Vector3> outline2 = new List<Vector3>();
-                var uvs1 = new List<Vector2>();
-                var normals1 = new List<Vector3>();
-                var uvs2 = new List<Vector2>();
-                var normals2 = new List<Vector3>();
-
-                var outline = GetComponent<OutLinePath>().OutLineVertices;
-
-                // 始点に当たるまで外周をなぞる
-                // 始点と重なった時に要素を保存しておく
-                int saveOutlineIndex = 0;
-                for (int index = 0; index < outline.Count; index++)
-                {
-                    // 始点かcheck
-                    if (outline[index].Equals(cuttingPath[0])) { Debug.LogWarning("第1関門突破"); saveOutlineIndex = index; break; }
-
-                    // obj1に追加①
-                    outline1.Add(outline[index]);
-                }
-
-                
-
-                // 交点と２回重なるまで切断パスをなぞる
-                int cnt = 0;
-                for (int index = 0; index < cuttingPath.Count; index++)
-                {
-                    // obj1に追加②
-                    outline1.Add(cuttingPath[index]);
-
-                    // 交点座標を持っているか
-                    if(Has(cuttingPath[(index + 1) % cuttingPath.Count], cuttingPath[index], cross))
-                    {
-                        cnt++;
-                    }
-                    if (cnt == 2) { Debug.LogWarning("第2関門突破"); break; }
-                }
-
-
-                
-
-                // 始点の位置をずらす
-                Vector3 newStart = cuttingPath[0] + (outline[saveOutlineIndex] - outline[saveOutlineIndex - 1]).normalized * 0.5f;
-                Vector3 newCross = cross + (outline[saveOutlineIndex] - outline[saveOutlineIndex - 1]).normalized * 0.5f;
-                // 交点を追加する
-                outline1.Add(newCross);
-
-                // edgeIndexの値をもとに逆の順番でなぞる
-                for (int index = edgeIndex; index >= 1; index--)
-                    outline1.Add(cuttingPath[index]);
-
-                outline1.Add(newStart);
-
-                //outline1.Add(cuttingPath[0]);
-
-                // 残りの外周をなぞる
-                for (int index = saveOutlineIndex + 1; index < outline.Count; index++)
-                    outline1.Add(outline[index]);
-
-                // ---１つ目のuv、法線リストを作成
-                for (int i = 0; i < outline1.Count; i++)
-                {
-                    bool add = false;
-                    for (int index = 0; index < attachedMesh.vertices.Length; index++)
-                    {
-                        // アウトラインの頂点座標と頂点群が等しい場合その頂点のuvと法線の値を使う
-                        if (outline1[i].Equals(attachedMesh.vertices[index]))
-                        {
-                            add = true;
-                            normals1.Add(attachedMesh.normals[index]);
-                            uvs1.Add(attachedMesh.uv[index]);
-                            break;
-                        }
-                        else if(outline1[i].Equals(cross))
-                        {
-                            add = true;
-                            uvs1.Add(uv);
-                            normals1.Add(normal);
-                            break;
-                        }
-                    }
-
-                    if(!add)
-                    {
-                        Debug.LogWarning("");
-                        uvs1.Add(Vector2.zero);
-                        normals1.Add(Vector3.zero);
-                    }
-                }
-
-                //Debug.LogError("外周サイズ   " + outline1.Count + "   uvサイズ" + uvs1.Count);
-
-                #region １つ目のカットされたオブジェクトを作成
-                GameObject obj1 = GetComponent<DrawMesh>().CreateMesh(outline1);
-                // ---Components
-                obj1.AddComponent<DrawMesh>();
-                obj1.AddComponent<DivideTriangle>();
-                var collider1 = obj1.AddComponent<MeshCollider>();
-                var outlinePath1 = obj1.AddComponent<OutLinePath>();
-                var meshFilter1 = obj1.GetComponent<MeshFilter>();
-                var trun = obj1.AddComponent<Turn_Shader>();
-                // ---Settings
-                // uv
-                meshFilter1.mesh.uv = uvs1.ToArray();
-                // 法線
-                meshFilter1.mesh.normals = normals1.ToArray();
-                // メッシュコライダーにメッシュをセット
-                collider1.sharedMesh = meshFilter1.mesh;
-                // アウトラインを格納
-                outlinePath1.UpdateOutLine(outline1);
-                // タグ
-                obj1.tag = "paper";
-                // 現在のマテリアルを受け継ぐ
-                obj1.GetComponent<MeshRenderer>().materials = GetComponent<MeshRenderer>().materials;
-                // レイヤー番号も引き継ぐ
-                obj1.GetComponent<DivideTriangle>().number = this.number;
-                // z座標を引き継ぐ
-                obj1.transform.position += new Vector3(0, 0, transform.position.z);
-                #endregion
-
-                Destroy(gameObject);
-
-                foreach (var vec in outline1)
-                    Debug.Log(vec);
-
-                ret = true;
+                //Debug.Log("クロス   " + cross + "uv  " + uv);
+                //
+                //// この場合、切る処理は行うが
+                //// 切断パスが共通でないのでCut()関数では正しく動かない
+                //// よって、ここでそれぞれのアウトラインを作成する
+                //
+                //List<Vector3> outline1 = new List<Vector3>();
+                //List<Vector3> outline2 = new List<Vector3>();
+                //var uvs1 = new List<Vector2>();
+                //var normals1 = new List<Vector3>();
+                //var uvs2 = new List<Vector2>();
+                //var normals2 = new List<Vector3>();
+                //
+                //var outline = GetComponent<OutLinePath>().OutLineVertices;
+                //
+                //// 始点に当たるまで外周をなぞる
+                //// 始点と重なった時に要素を保存しておく
+                //int saveOutlineIndex = 0;
+                //for (int index = 0; index < outline.Count; index++)
+                //{
+                //    // 始点かcheck
+                //    if (outline[index].Equals(cuttingPath[0])) { Debug.LogWarning("第1関門突破"); saveOutlineIndex = index; break; }
+                //
+                //    // obj1に追加①
+                //    outline1.Add(outline[index]);
+                //}
+                //
+                //
+                //
+                //// 交点と２回重なるまで切断パスをなぞる
+                //int cnt = 0;
+                //for (int index = 0; index < cuttingPath.Count; index++)
+                //{
+                //    // obj1に追加②
+                //    outline1.Add(cuttingPath[index]);
+                //
+                //    // 交点座標を持っているか
+                //    if(Has(cuttingPath[(index + 1) % cuttingPath.Count], cuttingPath[index], cross))
+                //    {
+                //        cnt++;
+                //    }
+                //    if (cnt == 2) { Debug.LogWarning("第2関門突破"); break; }
+                //}
+                //
+                //
+                //
+                //
+                //// 始点の位置をずらす
+                //Vector3 newStart = cuttingPath[0] + (outline[saveOutlineIndex] - outline[saveOutlineIndex - 1]).normalized * 0.5f;
+                //Vector3 newCross = cross + (outline[saveOutlineIndex] - outline[saveOutlineIndex - 1]).normalized * 0.5f;
+                //// 交点を追加する
+                //outline1.Add(newCross);
+                //
+                //// edgeIndexの値をもとに逆の順番でなぞる
+                //for (int index = edgeIndex; index >= 1; index--)
+                //    outline1.Add(cuttingPath[index]);
+                //
+                //outline1.Add(newStart);
+                //
+                ////outline1.Add(cuttingPath[0]);
+                //
+                //// 残りの外周をなぞる
+                //for (int index = saveOutlineIndex + 1; index < outline.Count; index++)
+                //    outline1.Add(outline[index]);
+                //
+                //// ---１つ目のuv、法線リストを作成
+                //for (int i = 0; i < outline1.Count; i++)
+                //{
+                //    bool add = false;
+                //    for (int index = 0; index < attachedMesh.vertices.Length; index++)
+                //    {
+                //        // アウトラインの頂点座標と頂点群が等しい場合その頂点のuvと法線の値を使う
+                //        if (outline1[i].Equals(attachedMesh.vertices[index]))
+                //        {
+                //            add = true;
+                //            normals1.Add(attachedMesh.normals[index]);
+                //            uvs1.Add(attachedMesh.uv[index]);
+                //            break;
+                //        }
+                //        else if(outline1[i].Equals(cross))
+                //        {
+                //            add = true;
+                //            uvs1.Add(uv);
+                //            normals1.Add(normal);
+                //            break;
+                //        }
+                //    }
+                //
+                //    if(!add)
+                //    {
+                //        Debug.LogWarning("");
+                //        uvs1.Add(Vector2.zero);
+                //        normals1.Add(Vector3.zero);
+                //    }
+                //}
+                //
+                ////Debug.LogError("外周サイズ   " + outline1.Count + "   uvサイズ" + uvs1.Count);
+                //
+                //#region １つ目のカットされたオブジェクトを作成
+                //GameObject obj1 = GetComponent<DrawMesh>().CreateMesh(outline1);
+                //// ---Components
+                //obj1.AddComponent<DrawMesh>();
+                //obj1.AddComponent<DivideTriangle>();
+                //var collider1 = obj1.AddComponent<MeshCollider>();
+                //var outlinePath1 = obj1.AddComponent<OutLinePath>();
+                //var meshFilter1 = obj1.GetComponent<MeshFilter>();
+                //var trun = obj1.AddComponent<Turn_Shader>();
+                //// ---Settings
+                //// uv
+                //meshFilter1.mesh.uv = uvs1.ToArray();
+                //// 法線
+                //meshFilter1.mesh.normals = normals1.ToArray();
+                //// メッシュコライダーにメッシュをセット
+                //collider1.sharedMesh = meshFilter1.mesh;
+                //// アウトラインを格納
+                //outlinePath1.UpdateOutLine(outline1);
+                //// タグ
+                //obj1.tag = "paper";
+                //// 現在のマテリアルを受け継ぐ
+                //obj1.GetComponent<MeshRenderer>().materials = GetComponent<MeshRenderer>().materials;
+                //// レイヤー番号も引き継ぐ
+                //obj1.GetComponent<DivideTriangle>().number = this.number;
+                //// z座標を引き継ぐ
+                //obj1.transform.position += new Vector3(0, 0, transform.position.z);
+                //#endregion
+                //
+                //Destroy(gameObject);
+                //
+                //foreach (var vec in outline1)
+                //    Debug.Log(vec);
+                //
+                //ret = true;
             }
 
         }
@@ -1252,8 +1257,6 @@ public class DivideTriangle : MonoBehaviour
 
                 // 頂点を削除
                 vertices.RemoveAt(j);
-
-                Debug.LogWarning("MeshFilterの同じ座標を消去しました");
             }
         }
     }
@@ -1274,8 +1277,6 @@ public class DivideTriangle : MonoBehaviour
 
                 // 頂点を削除
                 cutting.RemoveAt(j);
-
-                Debug.LogWarning("CuttingPathの座標にかぶりが発生したので一つ取り除きました   " + cutting[i]);
             }
         }
     }
@@ -1415,9 +1416,6 @@ public class DivideTriangle : MonoBehaviour
     // 1つの三角形を”二つの交点によって３つ”の三角形に分割する
     void Dividing_one_triangle_into_Three_triangles_by_two_intersections(ref List<int> triangles, bool[] IsCrossing, int[] triangle, int cross1, int cross2)
     {
-        //if (IsCrossing[0] && IsCrossing[1]) Debug.Log("パターン④ 辺１と辺２");
-        //if (IsCrossing[1] && IsCrossing[2]) Debug.Log("パターン⑤ 辺２と辺３");
-        //if (IsCrossing[2] && IsCrossing[0]) Debug.Log("パターン⑥ 辺３と辺１");
         // 三角形の頂点座標３つ、交差した座標２つの計5つの頂点で三角形を「３つ」作る
 
 

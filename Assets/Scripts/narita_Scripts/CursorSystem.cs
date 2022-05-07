@@ -30,117 +30,154 @@ public class CursorSystem : MonoBehaviour
 
     void Update()
     {
-        // debug用
-        if (Input.GetKeyDown(KeyCode.X))
+        GameObject player = GameObject.Find("ParentPlayer");
+
+        if (player.GetComponent<PlayerMove2>().GetFlg())
         {
-            List<bool> a = new List<bool>();
-            for (int i = 0; i < 2880; i++)
+
+            // debug用
+            if (Input.GetKeyDown(KeyCode.X))
             {
-                a.Add(true);
-            }
-            CollisionField.Instance.UpdateStage(a);
-        }
-
-        if (Camera.main == null) { return; }
-
-
-        if(Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            UpdatePage();
-            // めくる
-            var a = papers[Select]; if (!a) Debug.LogError("a");
-            var b = a.GetComponent<Turn_Shader>(); if(!b) Debug.LogError("b");
-            b.SetPaperSta(1);
-            Select++;
-            if (Select > 2) Select = 2;
-        }
-        else if(Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            UpdatePage();
-            // めくるのを戻す
-            var a = papers[Select]; if (!a) Debug.LogError("a");
-            var b = a.GetComponent<Turn_Shader>(); if (!b) Debug.LogError("b");
-            b.SetPaperSta(2);
-
-            Select--;
-            if (Select < 0) Select = 0;
-        }
-
-
-        // このオブジェクトのワールド座標をスクリーン座標に変換した値を代入
-        this.screenPoint = Camera.main.WorldToScreenPoint(transform.position);
-        // マウス座標のzの値を0にする
-        Vector3 cursor = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10.0f);
-        // マウス座標をワールド座標に変換する
-        transform.position = Camera.main.ScreenToWorldPoint(cursor);
-
-        //カーソルの座標を送る
-        GameObject Cursor = GameObject.Find("cursor");
-        GameObject obj = GameObject.Find("CTRLCur");
-        GameObject camera = GameObject.Find("MainCamera");
-
-        //座標の保存用の変数
-        Vector3 SavePos = new Vector3(0.0f,0.0f,0.0f);
-
-        //送るものの座標を変える
-        if (Cursor.GetComponent<OutSide_Paper_Script_Second>().GetFirstFlg())
-        {
-            SavePos = obj.transform.position;
-        }
-        else {
-
-            SavePos = Cursor.transform.position;
-        }
-
-        // 座標保存
-        if (Input.GetMouseButtonDown(0) || camera.GetComponent<InputTrigger>().GetOneTimeDown())
-        {
-
-            cnt = 0;          
-
-            // 座標リストに追加
-            MousePoints.Add(SavePos);
-
-
-            if (MousePoints.Count >= 2)
-            {
-                papers.Clear();
-                // 紙のリストを作る
-                //List<GameObject> objects = new List<GameObject>();
-                papers.AddRange(GameObject.FindGameObjectsWithTag("paper"));
-
-                if (papers != null)
+                List<bool> a = new List<bool>();
+                for (int i = 0; i < 2880; i++)
                 {
-                    // ソート
-                    if(papers.Count >= 2)
-                    {
-                        // 紙の番号、昇順
-                        papers.Sort((a, b) => a.GetComponent<DivideTriangle>().GetNumber() - b.GetComponent<DivideTriangle>().GetNumber());
-                    }
+                    a.Add(true);
+                }
+                CollisionField.Instance.UpdateStage(a);
+            }
 
-                    
-                    bDivide = false;
+            if (Camera.main == null) { return; }
 
-                    for (int i = 0; i < papers.Count; i++)
+            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown("joystick button 4"))
+            {
+                UpdatePage();
+                var topPaper = papers[Select];
+                var turnShader = topPaper.GetComponent<Turn_Shader>();
+                // めくる
+                turnShader.SetPaperSta(1);
+                // めくった枚数をカウント
+                Select++;
+                // めくる枚数の上限
+                if (Select > 2) Select = 2;
+
+                //--- 紙の子オブジェクトのブレークラインも消す
+                for (int i = 0; i < topPaper.transform.childCount; i++)
+                {
+                    // 子オブジェクトの取得
+                    var childObject = topPaper.transform.GetChild(i).gameObject;
+                    // 仕切りの場合は何もしない
+                    if (childObject.tag == "partition") continue;
+
+                    // アクティブを解除
+                    childObject.SetActive(false);
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown("joystick button 5"))
+            {
+                UpdatePage();
+                // めくるのを戻す
+                var topPaper = papers[Select];
+                var turnShader = topPaper.GetComponent<Turn_Shader>();
+                // めくってある状態から戻す
+                turnShader.SetPaperSta(2);
+                // めくった枚数をカウント
+                Select--;
+                // めくる枚数の下限
+                if (Select < 0) Select = 0;
+
+                //--- ブレークラインも戻す
+                for (int i = 0; i < topPaper.transform.childCount; i++)
+                {
+                    // 子オブジェクトの取得
+                    var childObject = topPaper.transform.GetChild(i).gameObject;
+                    // 仕切りの場合は何もしない
+                    if (childObject.tag == "partition") continue;
+
+                    // アクティブにする
+                    childObject.SetActive(true);
+                }
+            }
+
+            // このオブジェクトのワールド座標をスクリーン座標に変換した値を代入
+            this.screenPoint = Camera.main.WorldToScreenPoint(transform.position);
+            // マウス座標のzの値を0にする
+            Vector3 cursor = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10.0f);
+            // マウス座標をワールド座標に変換する
+            transform.position = Camera.main.ScreenToWorldPoint(cursor);
+
+            //カーソルの座標を送る
+            GameObject Cursor = GameObject.Find("cursor");
+            GameObject obj = GameObject.Find("CTRLCur");
+            GameObject camera = GameObject.Find("MainCamera");
+
+            //座標の保存用の変数
+            Vector3 SavePos = new Vector3(0.0f, 0.0f, 0.0f);
+
+            //送るものの座標を変える
+            if (Cursor.GetComponent<OutSide_Paper_Script_Second>().GetFirstFlg())
+            {
+                SavePos = obj.transform.position;
+            }
+            else
+            {
+
+                SavePos = Cursor.transform.position;
+            }
+
+            // 座標保存
+            if (Input.GetMouseButtonDown(0) || camera.GetComponent<InputTrigger>().GetOneTimeDown())
+            {
+
+                cnt = 0;
+
+                // 座標リストに追加
+                //MousePoints.Add(SavePos);
+                MousePoints.Add(transform.position);
+
+
+                if (MousePoints.Count >= 2)
+                {
+                    papers.Clear();
+                    // 紙のリストを作る
+                    //List<GameObject> objects = new List<GameObject>();
+                    papers.AddRange(GameObject.FindGameObjectsWithTag("paper"));
+
+                    if (papers != null)
                     {
-                        var divideTriangle = papers[i].GetComponent<DivideTriangle>();
-                        if (divideTriangle)
+                        // ソート
+                        if (papers.Count >= 2)
                         {
-                            // 破る
-                            bDivide = divideTriangle.Divide(ref MousePoints);
-                            cnt++;
+                            // 紙の番号、昇順
+                            papers.Sort((a, b) => a.GetComponent<DivideTriangle>().GetNumber() - b.GetComponent<DivideTriangle>().GetNumber());
+                        }
 
-                            // 一度破ったら、奥の紙は切らない
-                            if (bDivide) break;
+
+                        bDivide = false;
+
+                        for (int i = 0; i < papers.Count; i++)
+                        {
+                            var divideTriangle = papers[i].GetComponent<DivideTriangle>();
+                            if (divideTriangle)
+                            {
+                                // 破る
+                                bDivide = divideTriangle.Divide(ref MousePoints);
+                                cnt++;
+
+                                // 一度破ったら、奥の紙は切らない
+                                if (bDivide) break;
+                            }
                         }
                     }
                 }
             }
-        }
 
-        if (Input.GetMouseButtonDown(1))
-        {
-            MousePoints.Clear();
+            if (Input.GetMouseButtonDown(1))
+            {
+                MousePoints.Clear();
+            }
+        }
+        else {
+            this.gameObject.SetActive(false);
         }
 
     }

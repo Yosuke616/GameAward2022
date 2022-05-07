@@ -38,7 +38,7 @@ public class Pause : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetAxis("Vertical") > 0)
             {
-                Cnt = 75;
+                Cnt = 10;
                 SelectButton--;
                 if (SelectButton < 0)
                 {
@@ -47,7 +47,7 @@ public class Pause : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical") < 0)
             {
-                Cnt = 75;
+                Cnt = 10;
                 SelectButton++;
                 if (SelectButton > MaxButton)
                 {
@@ -94,7 +94,7 @@ public class Pause : MonoBehaviour
         Debug.Log(OptionFlg);
         if (Camera.GetComponent<PauseContorol>().GetPauseFlf() && OptionFlg == false) {
             Debug.Log("ロゼッタ様ー");
-            if (Input.GetKeyDown(KeyCode.Return))
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 1"))
             {
                 Debug.Log("入ったよー");
                 switch (SelectButton) {
@@ -143,6 +143,7 @@ public class Pause : MonoBehaviour
     {
         Pausepanel.SetActive(true);
         Optionpanel.SetActive(false);
+        OptionFlg = false;
     }
 
     //もう一度ボタンを押すためのフラグをセットする為の関数

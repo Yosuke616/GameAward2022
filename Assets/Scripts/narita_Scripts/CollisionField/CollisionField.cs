@@ -13,6 +13,8 @@ public class StageBlock
     public string tag = "none";
     public Vector3 rotate = Vector3.zero;
     public int type = 0;
+    // このあたり判定ブロックのもととなるオブジェクト
+    public GameObject sourceObject;
 }
 
 public class CollisionField : SingletonMonoBehaviour<CollisionField>
@@ -54,7 +56,6 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
         gridSizeY = CreateGridScript.gridSizeY;
         gridNumX = CreateGridScript.horizon;
         gridNumY = CreateGridScript.virtical;
-        Debug.Log(gridNumX * gridNumY);
         // あたり判定リストのサイズをマスの数と同じだけ増やす
         for (int i = 0; i < gridNumX * gridNumY; i++)
         {
@@ -119,6 +120,13 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                 // あたり判定リストに登録
                 CollisionGrid[(y * gridNumX) + x] = mass;
 
+                if (CollisionGrid[(y * gridNumX) + x].tag == "enemy")
+                {
+                    Enemy.AddEnemyFunction(CollisionGrid[(y * gridNumX) + x],
+                       _stageGrid[(y * gridNumX) + x].sourceObject.GetComponent<Enemy>());
+                    //CollisionGrid[objCount].AddComponent<Enemy>();
+                }
+
                 debugCnt++;
             }
 
@@ -128,7 +136,6 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
         // 最初は1枚目なのでlayerを0にしておく
         for (int i = 0; i < LayerList.Count; i++)
             LayerList[i] = 0;
-        Debug.Log(LayerList.Count);
     }
 
 
@@ -167,11 +174,15 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                             // 次もある
                             // タグの変更
                             CollisionGrid[objCount].tag = StageInfo[layerList[objCount] + 1][objCount].tag;
-                            if (CollisionGrid[objCount].tag == "enemy") CollisionGrid[objCount].AddComponent<Enemy>();
+                            if (CollisionGrid[objCount].tag == "enemy")
+                            {
+                                Enemy.AddEnemyFunction(CollisionGrid[objCount],
+                                    StageInfo[layerList[objCount] + 1][objCount].sourceObject.GetComponent<Enemy>());
+                                //CollisionGrid[objCount].AddComponent<Enemy>();
+                            }
 
                             // 次のレイヤーに更新
                             layerList[objCount]++;
-                            Debug.Log("パターン①");
                         }
                         else
                         {
@@ -186,7 +197,6 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
 
                             // 次のレイヤーに更新
                             layerList[objCount]++;
-                            Debug.Log("パターン②");
                         }
                     }
                     // ない
@@ -208,11 +218,16 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
 
                             float rate = gridSizeX * Mathf.Tan(gridSizeY / gridSizeX);
                             CollisionGrid[objCount].transform.localScale = new Vector3(gridSizeX, gridSizeY, 1);
-                            //CollisionGrid[objCount].transform.position += new Vector3(gridSizeX * 0.5f, gridSizeY * 0.5f, 0);
+
+                            if (CollisionGrid[objCount].tag == "enemy")
+                            {
+                                Enemy.AddEnemyFunction(CollisionGrid[objCount],
+                                    StageInfo[layerList[objCount] + 1][objCount].sourceObject.GetComponent<Enemy>());
+                                //CollisionGrid[objCount].AddComponent<Enemy>();
+                            }
 
                             // 次のレイヤーに更新
                             layerList[objCount]++;
-                            Debug.Log("パターン③");
                         }
                         else
                         {
@@ -226,7 +241,6 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
 
                             // 次のレイヤーに更新
                             layerList[objCount]++;
-                            Debug.Log("パターン④");
                         }
                     }
                 }
@@ -285,11 +299,13 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
         //タグを付ける
         mass.tag = tag;
 
-        if(tag == "enemy")
-        {
-            Debug.Log("蛇");
-            mass.AddComponent<Enemy>();
-        }
+        //if(tag == "enemy")
+        //{
+        //    // 何処のカメラのエネミーなのか → layerが0ならSubCamera1, 1ならSubCamera2
+        //
+        //
+        //    mass.AddComponent<Enemy>();
+        //}
 
         return mass;
     }

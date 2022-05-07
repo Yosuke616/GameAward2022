@@ -12,7 +12,7 @@ public class CreateTriangle : MonoBehaviour
     static public float paperSizeY = 5.0f;
 
     // Quadの枚数
-    static private int QuadNum = 10;
+    static private int QuadNum = 2;
 
     void Start()
     {

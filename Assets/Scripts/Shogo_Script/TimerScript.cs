@@ -29,7 +29,7 @@ public class TimerScript : MonoBehaviour
     {
         GameObject player = GameObject.Find("ParentPlayer");
 
-        if (player.GetComponent<PlayerMove2>().GetFlg())
+        if (player.GetComponent<PlayerMove2>().GetFlg() && player.GetComponent<PlayerMove2>().GetGameOverFlg())
         {
             seconds += Time.deltaTime;
             if (seconds >= 60f)

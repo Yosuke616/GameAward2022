@@ -84,7 +84,7 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
 
         GameObject player = GameObject.Find("ParentPlayer");
 
-        if (player.GetComponent<PlayerMove2>().GetFlg())
+        if (player.GetComponent<PlayerMove2>().GetFlg() && player.GetComponent<PlayerMove2>().GetGameOverFlg())
         {
 
 

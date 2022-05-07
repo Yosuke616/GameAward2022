@@ -13,7 +13,7 @@ public class CTRLCur : MonoBehaviour
     void Start()
     {
         //初期化でオブジェクトの場所を決める
-        this.transform.position = new Vector3(0.0f,0.0f,0.0f);
+        this.transform.position = new Vector3(0.0f,0.5f,0.0f);
         SendPos = new Vector3(0.0f,0.0f,0.0f);
         g_bFirstFlg = false;
     }
@@ -21,22 +21,33 @@ public class CTRLCur : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //右方向に動かす
-        if (Input.GetAxis("Horizontal2") < 0 && this.transform.position.x < 9.0f) {
-            this.transform.position += new Vector3(0.25f,0.0f,0.0f);
-        }
-        //左方向に動かす
-        if (Input.GetAxis("Horizontal2") > 0 && this.transform.position.x > -9.0f)
+        GameObject player = GameObject.Find("ParentPlayer");
+
+        if (player.GetComponent<PlayerMove2>().GetFlg())
         {
-            this.transform.position += new Vector3(-0.25f, 0.0f, 0.0f);
+            //右方向に動かす
+            if (Input.GetAxis("Horizontal2") < 0 && this.transform.position.x < 9.0f)
+            {
+                this.transform.position += new Vector3(0.25f, 0.0f, 0.0f);
+            }
+            //左方向に動かす
+            if (Input.GetAxis("Horizontal2") > 0 && this.transform.position.x > -9.0f)
+            {
+                this.transform.position += new Vector3(-0.25f, 0.0f, 0.0f);
+            }
+            //下方向に動かす
+            if (Input.GetAxis("Vertical2") < 0 && this.transform.position.y > -6.0f)
+            {
+                this.transform.position += new Vector3(0.0f, -0.25f, 0.0f);
+            }
+            //上方向に動かす
+            if (Input.GetAxis("Vertical2") > 0 && this.transform.position.y < 6.0f)
+            {
+                this.transform.position += new Vector3(0.0f, 0.25f, 0.0f);
+            }
         }
-        //下方向に動かす
-        if (Input.GetAxis("Vertical2") < 0 && this.transform.position.y > -6.0f) {
-            this.transform.position += new Vector3(0.0f, -0.25f, 0.0f);
-        }
-        //上方向に動かす
-        if (Input.GetAxis("Vertical2") > 0 && this.transform.position.y < 6.0f) {
-            this.transform.position += new Vector3(0.0f, 0.25f, 0.0f);
+        else {
+            this.gameObject.SetActive(false);
         }
 
         //if (Input.GetAxis("LTrigger") == 1) {

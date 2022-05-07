@@ -44,26 +44,54 @@ public class CursorSystem : MonoBehaviour
         if (Camera.main == null) { return; }
 
 
-        if(Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             UpdatePage();
+            var topPaper = papers[Select];
+            var turnShader = topPaper.GetComponent<Turn_Shader>();
             // めくる
-            var a = papers[Select];
-            var b = a.GetComponent<Turn_Shader>();
-            b.SetPaperSta(1);
+            turnShader.SetPaperSta(1);
+            // めくった枚数をカウント
             Select++;
+            // めくる枚数の上限
             if (Select > 2) Select = 2;
+
+            //--- 紙の子オブジェクトのブレークラインも消す
+            for (int i = 0; i < topPaper.transform.childCount; i++)
+            {
+                // 子オブジェクトの取得
+                var childObject = topPaper.transform.GetChild(i).gameObject;
+                // 仕切りの場合は何もしない
+                if (childObject.tag == "partition") continue;
+
+                // アクティブを解除
+                childObject.SetActive(false);
+            }
         }
-        else if(Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             UpdatePage();
             // めくるのを戻す
-            var a = papers[Select];
-            var b = a.GetComponent<Turn_Shader>();
-            b.SetPaperSta(2);
-
+            var topPaper = papers[Select];
+            var turnShader = topPaper.GetComponent<Turn_Shader>();
+            // めくってある状態から戻す
+            turnShader.SetPaperSta(2);
+            // めくった枚数をカウント
             Select--;
+            // めくる枚数の下限
             if (Select < 0) Select = 0;
+
+            //--- ブレークラインも戻す
+            for (int i = 0; i < topPaper.transform.childCount; i++)
+            {
+                // 子オブジェクトの取得
+                var childObject = topPaper.transform.GetChild(i).gameObject;
+                // 仕切りの場合は何もしない
+                if (childObject.tag == "partition") continue;
+
+                // アクティブにする
+                childObject.SetActive(true);
+            }
         }
 
 
@@ -154,11 +182,11 @@ public class CursorSystem : MonoBehaviour
 
     private void UpdatePage()
     {
+        // 紙のリストを空にする
         papers.Clear();
-
+        // もう一度紙のリストをpush
         papers.AddRange(GameObject.FindGameObjectsWithTag("paper"));
-
-        // 紙の番号、昇順
+        // 紙の番号から昇順に並び変え
         papers.Sort((a, b) => a.GetComponent<DivideTriangle>().GetNumber() - b.GetComponent<DivideTriangle>().GetNumber());
     }
 }

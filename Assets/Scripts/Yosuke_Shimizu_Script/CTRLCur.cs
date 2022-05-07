@@ -23,7 +23,7 @@ public class CTRLCur : MonoBehaviour
     {
         GameObject player = GameObject.Find("ParentPlayer");
 
-        if (player.GetComponent<PlayerMove2>().GetFlg())
+        if (player.GetComponent<PlayerMove2>().GetFlg() && player.GetComponent<PlayerMove2>().GetGameOverFlg())
         {
             //‰E•ûŒü‚É“®‚©‚·
             if (Input.GetAxis("Horizontal2") < 0 && this.transform.position.x < 9.0f)

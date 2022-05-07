@@ -56,11 +56,10 @@ public class Result_Script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return)) {
-            g_bGoal = true;
-        }
 
-        if (!g_bGoal) {
+        GameObject GO = GameObject.Find("ParentPlayer");
+
+        if (!g_bGoal && GO.GetComponent<PlayerMove2>().GetGameOverFlg()) {
             //ŠÔ‚ğæ“¾‚µ‚Ä‚ ‚é’ö“x‘‚©‚Á‚½‚ç¯‚Ì‰æ‘œ‚ğo‚·
             GameObject Time = GameObject.Find("Timer");
 

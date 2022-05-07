@@ -29,6 +29,9 @@ public class PlayerMove2 : MonoBehaviour
 
     private bool flg;
 
+    //敵に当たったときのゲームオーバーのフラグ
+    private bool GameOver_Flg_Enemy;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -86,16 +89,6 @@ public class PlayerMove2 : MonoBehaviour
         // ゴールに触れたとき
         if (collision.gameObject.gameObject.tag == "goal")
         {
-            // ステージ進捗保存
-            //StageSelect.UpdateProgress(SceneManager.GetActiveScene().name);
-
-            //if (tex && timerTex) tex.text = "クリアタイム:" + timerTex.text;
-
-            //SoundManager.Instance.StopBgm();
-            //SoundManager.Instance.PlaySeByName("clear");
-
-            //_resultBG.gameObject.SetActive(true);
-
             GameObject camera = GameObject.Find("MainCamera");
             camera.GetComponent<Result_Script>().SetGoalFlg(true);
 

@@ -40,6 +40,9 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
     //一回だけクリックしたときにそこで止まるためのフラグ
     private bool First_Flg;
 
+    //中央に行かないようにするための変数
+    private Vector3 Old_Pos;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -79,55 +82,75 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
         //これで問題ないはず
         if (Camera.main == null) { return; }
 
-        //マウス座標をここでゲットします
-        Vector2 Mouse_Pos = Input.mousePosition;
+        GameObject player = GameObject.Find("ParentPlayer");
 
-        //画面の半分の大きさをマイナスすることにより整合性を図るぜ
-        Mouse_Pos.x -= Screen.width / 2;
-        Mouse_Pos.y -= Screen.height / 2;
-
-        //破るためのスクリプトを用意する
-        GameObject Cur = GameObject.Find("Cursor");
-        CursorSystem Cur_SY = Cur.GetComponent<CursorSystem>();
-        //破る状態になったときにカーソルをそこに移動させる関数を呼ぶ
-        if (Cur_SY.GetBreakFlg())
+        if (player.GetComponent<PlayerMove2>().GetFlg())
         {
-            CursorBreak();
-            First_Flg = false;
-        }
-        else
-        {
-            Old_Click_Pos = Input.mousePosition;
-            Old_Click_Pos.z = 10.0f;
 
 
-            var Pos2 = Camera.main.ScreenToWorldPoint(Old_Click_Pos);
 
-            //一回クリックされたらそこでカーソルは止まる
-            if ((!First_Flg))
+            //マウス座標をここでゲットします
+            Vector2 Mouse_Pos = Input.mousePosition;
+
+            //画面の半分の大きさをマイナスすることにより整合性を図るぜ
+            Mouse_Pos.x -= Screen.width / 2;
+            Mouse_Pos.y -= Screen.height / 2;
+
+            //破るためのスクリプトを用意する
+            GameObject Cur = GameObject.Find("Cursor");
+            CursorSystem Cur_SY = Cur.GetComponent<CursorSystem>();
+            //破る状態になったときにカーソルをそこに移動させる関数を呼ぶ
+            if (Cur_SY.GetBreakFlg())
             {
-                //マウスと中心とそれぞれどの辺かを考える(関数を作って) 
-                Cross_Pos = CalculationVector(Mouse_Pos, Paper_Center, OutLinePaper);
-
-                //カーソルをセットした座標に移動させる
-                this.transform.position = Cross_Pos;
-
-                OutPaper_Pos = Cross_Pos;
-
-                //コントローラーを押せるようのオブジェクトをゲットする
-                GameObject obj = GameObject.Find("MainCamera");
-
-                if (Input.GetMouseButtonDown(0) || obj.GetComponent<InputTrigger>().GetOneTimeDown())
-                {
-                    First_Flg = true;
-                }
-
+                CursorBreak();
+                First_Flg = false;
             }
             else
             {
-                this.transform.position = Cross_Pos;
+                Old_Click_Pos = Input.mousePosition;
+                Old_Click_Pos.z = 10.0f;
+
+
+                var Pos2 = Camera.main.ScreenToWorldPoint(Old_Click_Pos);
+
+                //一回クリックされたらそこでカーソルは止まる
+                if ((!First_Flg))
+                {
+                    //マウスと中心とそれぞれどの辺かを考える(関数を作って) 
+                    Cross_Pos = CalculationVector(Mouse_Pos, Paper_Center, OutLinePaper);
+
+                    //カーソルをセットした座標に移動させる
+                    this.transform.position = Cross_Pos;
+
+                    OutPaper_Pos = Cross_Pos;
+
+                    //コントローラーを押せるようのオブジェクトをゲットする
+                    GameObject obj = GameObject.Find("MainCamera");
+
+                    if (Input.GetMouseButtonDown(0) || obj.GetComponent<InputTrigger>().GetOneTimeDown())
+                    {
+                        First_Flg = true;
+                    }
+
+                }
+                else
+                {
+                    this.transform.position = Cross_Pos;
+                }
+
+            }
+            if (!(this.transform.position == new Vector3(0.0f, 0.0f, 0.0f)))
+            {
+                Old_Pos = this.transform.position;
             }
 
+            if (this.transform.position == new Vector3(0.0f, 0.0f, 0.0f))
+            {
+                this.transform.position = Old_Pos;
+            }
+        }
+        else {
+            this.gameObject.SetActive(false);
         }
     }
 

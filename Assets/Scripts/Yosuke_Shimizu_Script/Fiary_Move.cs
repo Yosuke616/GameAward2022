@@ -32,12 +32,13 @@ public class Fiary_Move : MonoBehaviour
     void Update()
     {
         if (!qqq) {
+           　qqq = true;
             return;
         }
 
         GameObject ParentObj = transform.parent.gameObject;
 
-        if (ParentObj.GetComponent<Fiary_Script>().GetMove()) {
+        if (this.GetComponent<Fiary_Script>().GetMove()) {
             //親オブジェクトの座標を更新する
             ParentObj_Move = this.transform.parent.gameObject;
 

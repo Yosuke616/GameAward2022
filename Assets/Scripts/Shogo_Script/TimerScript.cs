@@ -14,6 +14,9 @@ public class TimerScript : MonoBehaviour
     //　タイマー表示用テキスト
     private Text timerText;
 
+    //合計の時間
+    private float SumTime;
+
     void Start()
     {
         minute = 0;
@@ -24,17 +27,32 @@ public class TimerScript : MonoBehaviour
 
     void Update()
     {
-        seconds += Time.deltaTime;
-        if (seconds >= 60f)
+        GameObject player = GameObject.Find("ParentPlayer");
+
+        if (player.GetComponent<PlayerMove2>().GetFlg())
         {
-            minute++;
-            seconds = seconds - 60;
+            seconds += Time.deltaTime;
+            if (seconds >= 60f)
+            {
+                minute++;
+                seconds = seconds - 60;
+            }
+            //　値が変わった時だけテキストUIを更新
+            if ((int)seconds != (int)oldSeconds)
+            {
+                timerText.text = minute.ToString("00") + ":" + ((int)seconds).ToString("00");
+            }
+            oldSeconds = seconds;
+
         }
-        //　値が変わった時だけテキストUIを更新
-        if ((int)seconds != (int)oldSeconds)
+        else
         {
-            timerText.text = minute.ToString("00") + ":" + ((int)seconds).ToString("00");
+            this.gameObject.SetActive(false);
         }
-        oldSeconds = seconds;
+        SumTime = seconds + (minute * 60);
+    }
+
+    public float GetTime() {
+        return SumTime;
     }
 }

@@ -44,7 +44,7 @@ public class CursorSystem : MonoBehaviour
         if (Camera.main == null) { return; }
 
 
-        if(Input.GetKeyDown(KeyCode.UpArrow))
+        if(Input.GetKeyDown(KeyCode.UpArrow)|| Input.GetKeyDown("joystick button 4"))
         {
             UpdatePage();
             // めくる
@@ -54,7 +54,7 @@ public class CursorSystem : MonoBehaviour
             Select++;
             if (Select > 2) Select = 2;
         }
-        else if(Input.GetKeyDown(KeyCode.DownArrow))
+        else if(Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown("joystick button 5"))
         {
             UpdatePage();
             // めくるのを戻す

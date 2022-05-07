@@ -65,14 +65,14 @@ public class Fiary_Script : MonoBehaviour
         //列挙隊を初期化する(最初はプレイヤーの周りを追従する)
         g_FiaryMove = FIARY_MOVE.FIARY_PLAYER_TRACKING;
 
-        //このオブジェクトの親の情報を取得する
-        ParentObj = this.transform.parent.gameObject;
+        ////このオブジェクトの親の情報を取得する
+        //ParentObj = this.transform.parent.gameObject;
 
-        //親オブジェクトの座標を保存する
-        PlayerPos = ParentObj.transform.position;
+        ////親オブジェクトの座標を保存する
+        //PlayerPos = ParentObj.transform.position;
 
-        //プレイヤーの少し横に移動させる
-        this.transform.position = new Vector3(PlayerPos.x + 1.0f, PlayerPos.y + 1.0f, PlayerPos.z);
+        ////プレイヤーの少し横に移動させる
+        //this.transform.position = new Vector3(PlayerPos.x + 1.0f, PlayerPos.y + 1.0f, PlayerPos.z);
 
         //最初は読み込めるようにする
         g_bFirst_Load = false;
@@ -139,14 +139,14 @@ public class Fiary_Script : MonoBehaviour
             case FIARY_MOVE.FIARY_PLAYER_TRACKING:
                 //プレイヤーに追従するモード
 
-                //親オブジェクトの座標を更新する
-                ParentObj = this.transform.parent.gameObject;
+                ////親オブジェクトの座標を更新する
+                //ParentObj = this.transform.parent.gameObject;
 
-                //親オブジェクトの座標を保存する
-                PlayerPos = ParentObj.transform.position;
+                ////親オブジェクトの座標を保存する
+                //PlayerPos = ParentObj.transform.position;
 
-                //プレイヤーの少し横に移動させる
-                this.transform.position = new Vector3(PlayerPos.x + 1.0f, PlayerPos.y + 1.0f, PlayerPos.z);
+                ////プレイヤーの少し横に移動させる
+                //this.transform.position = new Vector3(PlayerPos.x + 1.0f, PlayerPos.y + 1.0f, PlayerPos.z);
 
                 //ここで破るフラグが立っていたら変える
                 if (CS_Script.GetBreakFlg())
@@ -219,8 +219,6 @@ public class Fiary_Script : MonoBehaviour
                     for (int i = 0;i < MousePos.Count;i++) {
                         Debug.Log(MousePos[i]);
                     }
-                    Debug.Log(MousePos[0]);
-                    Debug.Log(MousePos.Count);
                 }
 
                 Debug.Log("FIARY_PAPER_IN");
@@ -278,5 +276,13 @@ public class Fiary_Script : MonoBehaviour
 
             default: break;
         }
+    }
+
+    public bool GetMove() {
+        if (g_FiaryMove == FIARY_MOVE.FIARY_PLAYER_TRACKING) {
+            return true;
+        }
+
+        return false;
     }
 }

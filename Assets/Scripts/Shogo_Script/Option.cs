@@ -47,12 +47,13 @@ public class Option : MonoBehaviour
     void Update()
     {
 
+
         Cnt--;
         if (Cnt < 0)
         {
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetAxis("Vertical") > 0)
             {
-                Cnt = 75;
+                Cnt = 10;
                 SelectButton--;
                 if (SelectButton < 0)
                 {
@@ -61,7 +62,7 @@ public class Option : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical") < 0)
             {
-                Cnt = 75;
+                Cnt = 10;
                 SelectButton++;
                 if (SelectButton > MaxButton)
                 {
@@ -105,7 +106,7 @@ public class Option : MonoBehaviour
                 BackButton.GetComponentInChildren<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
                 Debug.Log("再開");
 
-                if (Input.GetKeyDown(KeyCode.Return)) {
+                if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 1")) {
                     GameObject Sarch = GameObject.Find("PausePanel(Clone)");
                     Sarch.GetComponent<Pause>().SetPauseFlg(false);
                     Pausepanel.SetActive(true);
@@ -120,6 +121,11 @@ public class Option : MonoBehaviour
         //左右でスライダーの値を変える
         SetSlider();
 
+        if (Input.GetKeyDown("joystick button 0")) {
+            GameObject Sarch = GameObject.Find("PausePanel(Clone)");
+            Sarch.GetComponent<Pause>().OffOption();
+        }
+
     }
 
     //スライダーを移動させる関数
@@ -128,7 +134,7 @@ public class Option : MonoBehaviour
         BGMSlider.value = Valume.BGMVal;
         SESlider.value = Valume.SEVal;
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") > 0)
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal2") > 0)
         {
             switch (SelectButton) {
                 case 0:
@@ -154,7 +160,7 @@ public class Option : MonoBehaviour
                     break;
             }   
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") < 0)
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal2") < 0)
         {
             switch (SelectButton)
             {

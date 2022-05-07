@@ -117,11 +117,8 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
                 //コントローラーを押せるようのオブジェクトをゲットする
                 GameObject obj = GameObject.Find("MainCamera");
 
-                Debug.Log(obj.GetComponent<InputTrigger>().GetOneTimeDown());
-
                 if (Input.GetMouseButtonDown(0) || obj.GetComponent<InputTrigger>().GetOneTimeDown())
                 {
-                    Debug.Log("成功");
                     First_Flg = true;
                 }
 

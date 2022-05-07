@@ -5,6 +5,7 @@ using UnityEngine;
 public class collsion_test : MonoBehaviour
 {
     [SerializeField] private bool exist = true;
+    private GameObject originalObject = null;
 
     //GameObject obj;
 
@@ -59,6 +60,7 @@ public class collsion_test : MonoBehaviour
 
             transform.Rotate(collider.gameObject.transform.localEulerAngles);
 
+            originalObject = collider.gameObject;
             //obj = collider.gameObject;
 
             // ŽÖ‚¾‚Á‚½‚ç
@@ -68,7 +70,11 @@ public class collsion_test : MonoBehaviour
                     collider.gameObject.AddComponent<Enemy>();
             }
         }
+    }
 
+    public GameObject getOriginalObject()
+    {
+        return originalObject;
     }
 
     //public GameObject Get()

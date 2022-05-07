@@ -195,6 +195,9 @@ public class StageGrid : MonoBehaviour
             // 回転角もセットする
             collisionGrid[i].rotate = Grids[i].transform.localEulerAngles;
 
+            // オリジナルのオブジェクト
+            collisionGrid[i].sourceObject = Grids[i].GetComponent<collsion_test>().getOriginalObject();
+
             // あたり判定確認用オブジェクトを削除
             Destroy(Grids[i]);
         }

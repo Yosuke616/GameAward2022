@@ -113,6 +113,31 @@ public class PlayerMove2 : MonoBehaviour
             GameOver_Flg_Enemy = false;
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // ゴールに触れたとき
+        if (other.gameObject.gameObject.tag == "goal")
+        {
+            GameObject camera = GameObject.Find("MainCamera");
+            camera.GetComponent<Result_Script>().SetGoalFlg(true);
+
+            flg = false;
+        }
+
+        // 敵に触れたとき
+        else if (other.gameObject.gameObject.tag == "enemy")
+        {
+            if (tex != null) tex.text = "　　　　失敗！";
+
+            SoundManager.Instance.StopBgm();
+            SoundManager.Instance.PlaySeByName("jingle37");
+
+            _resultBG.gameObject.SetActive(true);
+            flg = false;
+        }
+    }
+
     public bool GetFlg() {
         return flg;
     }

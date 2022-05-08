@@ -113,8 +113,6 @@ public class PlayerMove2 : MonoBehaviour
             GameOver_Flg_Enemy = false;
         }
     }
-
-    //ゴールしたときのフラグ
     public bool GetFlg() {
         return flg;
     }

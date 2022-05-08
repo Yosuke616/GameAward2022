@@ -786,10 +786,21 @@ public class DivideTriangle : MonoBehaviour
             // 紙の破れにもAlphaを適用させる
             for (int i = 0; i < obj1.transform.childCount; i++)
             {
-                var breakline = obj1.transform.GetChild(i).gameObject.AddComponent<Alpha>();
-                Material breaklineMat = (Material)Resources.Load("Effects/PaperLineAlpha");
+                var breakline = obj1.transform.GetChild(i).gameObject.AddComponent<BreakLine>();
+                var move2 = obj1.transform.GetChild(i).gameObject.AddComponent<PaperMove>();
+                Material breaklineMat = (Material)Resources.Load("Effects/SecondBreakLine");
                 breakline.SetMaterial(breaklineMat);
-                breakline.SetAlpha();
+                // めくる方向を決める
+                if (pos1.x >= 0.0f)
+                {
+                    breakline.SetRightLine();
+                    //move2.SetDirection(pos1 - pos2);
+                }
+                else if (pos1.x < 0.0f)
+                {
+                    breakline.SetLeftLine();
+                    //move2.SetDirection(pos1 - pos2);
+                }
             }
 
             //obj1の方のアウトラインをセットする
@@ -822,10 +833,21 @@ public class DivideTriangle : MonoBehaviour
             // 紙の破れにもAlphaを適用させる
             for (int i = 0; i < obj2.transform.childCount; i++)
             {
-                var breakline = obj2.transform.GetChild(i).gameObject.AddComponent<Alpha>();
-                Material breaklineMat = (Material)Resources.Load("Effects/PaperLineAlpha");
+                //Vector3 line = new Vector3(400.0f, 100.0f, 0.0f);
+                var breakline = obj2.transform.GetChild(i).gameObject.AddComponent<BreakLine>();
+                Material breaklineMat = (Material)Resources.Load("Effects/SecondBreakLine");
                 breakline.SetMaterial(breaklineMat);
-                breakline.SetAlpha();
+                if (pos2.x >= 0.0f)
+                {
+                    breakline.SetRightLine();
+                    //move.SetDirection(pos2 - pos1 + line);
+                }
+                else if (pos2.x < 0.0f)
+                {
+                    breakline.SetLeftLine();
+                    //move.SetDirection(pos1 - pos2 + line);
+                }
+                //breakline.SetAlpha();
             }
 
             //obj1の方のアウトラインをセットする

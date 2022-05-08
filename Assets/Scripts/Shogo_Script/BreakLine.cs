@@ -52,7 +52,7 @@ public class BreakLine : MonoBehaviour
         valueAngle = 250.0f;
         valueRadius = 0.01f;*/
         bStart = true;
-        Add = 0.8f;
+        Add = 0.7f;
         valueChange = 47.0f;
         valueAngle = 220.0f;
         valueRadius = 0.01f;
@@ -62,7 +62,7 @@ public class BreakLine : MonoBehaviour
     public void SetLeftLine()
     {
         bStart = true;
-        Add = 0.8f;
+        Add = 0.7f;
         valueChange = 37.0f;
         valueAngle = 140.0f;
         valueRadius = 0.01f;

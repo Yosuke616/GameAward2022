@@ -23,13 +23,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         MODE_NONE,          // 操作できない
         MODE_NOT_DIVIDE,    // 破る状態でない(妖精がプレイヤー周りにいる)
         MODE_DIVIDE,        // 破る処理実行中(妖精が動いている)
-
     }
 
 
     private void Awake()
     {
-        Debug.Log("60fps");
         Application.targetFrameRate = 60;
 
     }
@@ -44,21 +42,21 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     // Update is called once per frame
     void Update()
     {
-        if (frameCount >= 0)
-        {
-            frameCount++;
-            if (frameCount >= openingCount)
-            {
-                if (openingCamera && mainCamera)
-                {
-                    // オープニングカメラからゲームカメラに切り替える
-                    openingCamera.enabled = false;
-                    mainCamera.enabled = true;
-
-                    // カウントするのをやめる
-                    frameCount = -1;
-                }
-            }
-        }
+        //if (frameCount >= 0)
+        //{
+        //    frameCount++;
+        //    if (frameCount >= openingCount)
+        //    {
+        //        if (openingCamera && mainCamera)
+        //        {
+        //            // オープニングカメラからゲームカメラに切り替える
+        //            openingCamera.enabled = false;
+        //            mainCamera.enabled = true;
+        //
+        //            // カウントするのをやめる
+        //            frameCount = -1;
+        //        }
+        //    }
+        //}
     }
 }

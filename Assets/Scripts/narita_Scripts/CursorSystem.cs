@@ -4,37 +4,58 @@ using UnityEngine;
 
 public class CursorSystem : MonoBehaviour
 {
-    [SerializeField]
-    private List<Vector3> MousePoints;
+    [SerializeField] private List<Vector3> MousePoints;
 
     public int cnt = 0;
 
     private bool bDivide;
 
-    int Select;
-
     // スクリーン座標
     Vector3 screenPoint;
 
+    [SerializeField] private int Select;
+
     [SerializeField] private List<GameObject> papers;
 
+    // ゲームモード
+    public enum GameState
+    {
+        MODE_OPENING, // ウサギのシーン
+        MODE_ACTION, // 紙を破れるモード
+        MODE_TURN_PAGES, // めくるモード
+    }
+    [SerializeField] static private GameState gameState;
+    static public void SetGameState(GameState state){ gameState = state; }
+
+
+    // 初期化
     void Start()
     {
         MousePoints = new List<Vector3>();
 
+        // 紙の束
         papers = new List<GameObject>();
+        papers.AddRange(GameObject.FindGameObjectsWithTag("paper"));
 
         Select = 0;
-        papers.AddRange(GameObject.FindGameObjectsWithTag("paper"));
+
+        // 最初はウサギのシーン
+        gameState = GameState.MODE_OPENING;
+
+        if(GameObject.Find("Rabbit") == null)
+        {
+            Debug.LogWarning("ウサギいないよ    MODE_ACTIONから始めるよ");
+            gameState = GameState.MODE_ACTION;
+
+        }
     }
 
     void Update()
     {
         GameObject player = GameObject.Find("ParentPlayer");
 
-        if (player.GetComponent<PlayerMove2>().GetFlg()&&player.GetComponent<PlayerMove2>().GetGameOverFlg())
+        if (player.GetComponent<PlayerMove2>().GetFlg() && player.GetComponent<PlayerMove2>().GetGameOverFlg())
         {
-
             // debug用
             if (Input.GetKeyDown(KeyCode.X))
             {
@@ -46,8 +67,13 @@ public class CursorSystem : MonoBehaviour
                 CollisionField.Instance.UpdateStage(a);
             }
 
+            // MainCameraがenableではない場合は何もしない
             if (Camera.main == null) { return; }
 
+            // オープニングモードの場合は何もしない
+            if (gameState == GameState.MODE_OPENING) return;
+
+            #region ---めくる処理
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown("joystick button 4"))
             {
                 UpdatePage();
@@ -71,19 +97,23 @@ public class CursorSystem : MonoBehaviour
                     // アクティブを解除
                     childObject.SetActive(false);
                 }
+
+                // めくるモードに変更
+                SetGameState(GameState.MODE_TURN_PAGES);
             }
             else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown("joystick button 5"))
             {
                 UpdatePage();
+                // めくった枚数をカウント
+                Select--;
+                // めくる枚数の下限
+                if (Select < 0) Select = 0;
+
                 // めくるのを戻す
                 var topPaper = papers[Select];
                 var turnShader = topPaper.GetComponent<Turn_Shader>();
                 // めくってある状態から戻す
                 turnShader.SetPaperSta(2);
-                // めくった枚数をカウント
-                Select--;
-                // めくる枚数の下限
-                if (Select < 0) Select = 0;
 
                 //--- ブレークラインも戻す
                 for (int i = 0; i < topPaper.transform.childCount; i++)
@@ -96,7 +126,18 @@ public class CursorSystem : MonoBehaviour
                     // アクティブにする
                     childObject.SetActive(true);
                 }
+
+                if(Select == 0)
+                {
+                    // めくるモード → アクションモード
+                    SetGameState(GameState.MODE_ACTION);
+                }
             }
+            #endregion
+
+            #region ---破る処理
+            // めくるモードの場合は処理を行わない
+            if (gameState == GameState.MODE_TURN_PAGES) return;
 
             // このオブジェクトのワールド座標をスクリーン座標に変換した値を代入
             this.screenPoint = Camera.main.WorldToScreenPoint(transform.position);
@@ -134,6 +175,7 @@ public class CursorSystem : MonoBehaviour
                 //MousePoints.Add(SavePos);
                 MousePoints.Add(transform.position);
 
+                Debug.LogWarning(transform.position);
 
                 if (MousePoints.Count >= 2)
                 {
@@ -175,6 +217,7 @@ public class CursorSystem : MonoBehaviour
             {
                 MousePoints.Clear();
             }
+            #endregion
         }
         else {
             this.gameObject.SetActive(false);

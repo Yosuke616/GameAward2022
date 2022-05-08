@@ -145,7 +145,7 @@ public class GameOverScript : MonoBehaviour
                 }
             }
 
-            Debug.Log("ロゼッタ最強");
+          
             //常に白に変えていく
             Select.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             Retry.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
@@ -154,18 +154,16 @@ public class GameOverScript : MonoBehaviour
             switch (SelectButton)
             {
                 case 0:
-                    Debug.Log("ロゼッタかわいい");
+                   
                     Select.Select();
                     Select.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
                     break;
                 case 1:
-                    Debug.Log("ロゼッタ美しい");
 
                     Retry.Select();
                     Retry.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
                     break;
                 case 2:
-                    Debug.Log("ロゼッタ最強");
 
                     Title.Select();
                     Title.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);

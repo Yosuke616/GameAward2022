@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;  // シーン遷移用
 
 public class StageSelect : MonoBehaviour
@@ -9,7 +10,7 @@ public class StageSelect : MonoBehaviour
     // 他のスクリプトに出張する変数
     //================================================================================
     // 現在の進捗
-    public static int ProgressStages = 4;
+    public static int ProgressStages = 0;
 
     // セレクトに帰ってきた時用フラグ
     public static bool bBackSelect = false;
@@ -53,16 +54,19 @@ public class StageSelect : MonoBehaviour
     private float Base_Z = 850;
 
     // 左パネル枚数
-    private float LeftPanel = 7;
+    private float LeftPanel = 0;
 
     // 右パネル枚数
-    private float RightPanel = 0;
+    private float RightPanel = 7;
    
     // ステージパネル配列
     private GameObject[] Stages;
 
     // ステージ情報表示パネル
     private GameObject InfoPanel;
+
+    // パネルのステージNo用
+    private Text StageNo;
 
     // 現在選択
     private int Select = 0;
@@ -90,6 +94,7 @@ public class StageSelect : MonoBehaviour
 
         // ステージ情報パネル取得
         InfoPanel = GameObject.Find("StageInfoPanel");
+        StageNo = GameObject.Find("Canvas").transform.Find("StageInfoPanel/StageNo").GetComponent<Text>(); ;
         InfoPanel.SetActive(true);
     }
 
@@ -100,15 +105,15 @@ public class StageSelect : MonoBehaviour
         // ステージからセレクトに戻ってきたときの画面調整
         if (bBackSelect)
         {
-            // クリアしたステージ分のパネルを右側に移動させる
+            // クリアしたステージ分のパネルを左側に移動させる
             for (i = 0; i < ProgressStages; i++)
             {
-                Stages[i].transform.position = new Vector3(Range_X,
+                Stages[i].transform.position = new Vector3(-Range_X,
                                                            Range_Y,
                                                            Base_Z - RightPanel - 1);
 
-                LeftPanel--;
-                RightPanel++;
+                LeftPanel++;
+                RightPanel--;
                 Select++;
             }
 
@@ -134,7 +139,7 @@ public class StageSelect : MonoBehaviour
             // ←画面移動
             if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") > 0) 
             {
-                if (Select > 0)
+                if (Select < ProgressStages)
                 {
                     PanelState = PANEL_STATE.LEFT;
                     InfoPanel.SetActive(false);
@@ -144,7 +149,7 @@ public class StageSelect : MonoBehaviour
             // →画面移動
             if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") < 0)
             {
-                if (Select < ProgressStages)
+                if (Select > 0)
                 {
                     PanelState = PANEL_STATE.RIGHT;
                     InfoPanel.SetActive(false);
@@ -162,44 +167,7 @@ public class StageSelect : MonoBehaviour
                 if (Move_X < Range_X)
                 {
                     Stages[Select].transform.position -= new Vector3(Speed, 0, 0);
-                    Stages[Select - 1].transform.position -= new Vector3(Speed, 0, 0);
-                    Move_X += Speed;
-                }
-                if (Move_Y < Range_Y)
-                {
-                    Stages[Select].transform.position += new Vector3(0, Speed, 0);
-                    Stages[Select - 1].transform.position -= new Vector3(0, Speed, 0);
-                    Move_Y += Speed;
-                }
-                if (Move_Z < Range_Z)
-                {
-                    Stages[Select].transform.position += new Vector3(0, 0, Speed);
-                    Stages[Select - 1].transform.position -= new Vector3(0, 0, Speed);
-                    Move_Z += Speed;
-                }
-                if (Move_X >= Range_X &&
-                    Move_Y >= Range_Y &&
-                    Move_Z >= Range_Z)
-                {
-                    Move_X = 0;
-                    Move_Y = 0;
-                    Move_Z = 0;
-                    PanelState = PANEL_STATE.NONE;
-
-                    Stages[Select].transform.position = new Vector3(Stages[Select].transform.position.x,
-                                                                        Stages[Select].transform.position.y,
-                                                                        Base_Z - LeftPanel - 1);
-                    LeftPanel++;
-                    RightPanel--;
-                    Select--;
-                }
-                break;
-
-            case PANEL_STATE.RIGHT:
-                if (Move_X < Range_X)
-                {
-                    Stages[Select].transform.position += new Vector3(Speed, 0, 0);
-                    Stages[Select + 1].transform.position += new Vector3(Speed, 0, 0);
+                    Stages[Select + 1].transform.position -= new Vector3(Speed, 0, 0);
                     Move_X += Speed;
                 }
                 if (Move_Y < Range_Y)
@@ -225,16 +193,55 @@ public class StageSelect : MonoBehaviour
 
                     Stages[Select].transform.position = new Vector3(Stages[Select].transform.position.x,
                                                                         Stages[Select].transform.position.y,
-                                                                        Base_Z - RightPanel - 1);
-
-                    LeftPanel--;
-                    RightPanel++;
+                                                                        Base_Z - LeftPanel - 1);
+                    LeftPanel++;
+                    RightPanel--;
                     Select++;
                 }
                 break;
 
+            case PANEL_STATE.RIGHT:
+                if (Move_X < Range_X)
+                {
+                    Stages[Select].transform.position += new Vector3(Speed, 0, 0);
+                    Stages[Select - 1].transform.position += new Vector3(Speed, 0, 0);
+                    Move_X += Speed;
+                }
+                if (Move_Y < Range_Y)
+                {
+                    Stages[Select].transform.position += new Vector3(0, Speed, 0);
+                    Stages[Select - 1].transform.position -= new Vector3(0, Speed, 0);
+                    Move_Y += Speed;
+                }
+                if (Move_Z < Range_Z)
+                {
+                    Stages[Select].transform.position += new Vector3(0, 0, Speed);
+                    Stages[Select - 1].transform.position -= new Vector3(0, 0, Speed);
+                    Move_Z += Speed;
+                }
+                if (Move_X >= Range_X &&
+                    Move_Y >= Range_Y &&
+                    Move_Z >= Range_Z)
+                {
+                    Move_X = 0;
+                    Move_Y = 0;
+                    Move_Z = 0;
+                    PanelState = PANEL_STATE.NONE;
+
+                    Stages[Select].transform.position = new Vector3(Stages[Select].transform.position.x,
+                                                                        Stages[Select].transform.position.y,
+                                                                        Base_Z - RightPanel - 1);
+
+                    LeftPanel--;
+                    RightPanel++;
+                    Select--;
+                }
+                break;
+
             case PANEL_STATE.NONE:
+                // ステージ情報表示
                 InfoPanel.SetActive(true);
+                StageNo.text = "Stage　" + Select.ToString();
                 break;
         }
         //================================================================================

@@ -5,164 +5,346 @@ using UnityEngine.SceneManagement;  // シーン遷移用
 
 public class StageSelect : MonoBehaviour
 {
+    //================================================================================
+    // 他のスクリプトに出張する変数
+    //================================================================================
     // 現在の進捗
-    public static int ProgressStage = 4;
+    public static int ProgressStages = 4;
 
-    // メインカメラ選択
-    public Camera camera;
+    // セレクトに帰ってきた時用フラグ
+    public static bool bBackSelect = false;
 
-    // カメラ移動速度（スピード）
-    public float SpeedCamera;
+    // クリアしてきたフラグ
+    public static bool bClearStage = false;
+    //================================================================================
 
-    // カメラ移動量範囲
-    public float RangeCamera;
 
-    // カメラ移動量
-    private float MoveCamera = 0;
+    //================================================================================
+    // パブリックでのパネル移動に関する設定
+    //================================================================================
+    // パネル移動時のスピード
+    public float Speed;
 
-    // カメラ状態
-    enum CAMERA_STATE
+    // パネル移動制御
+    public float Range_X;
+    public float Range_Y;
+    public float Range_Z;
+
+    // 移動量保存
+    private float Move_X = 0;
+    private float Move_Y = 0;
+    private float Move_Z = 0;
+    //================================================================================
+
+
+    //================================================================================
+    // スクリプト内での変数
+    //================================================================================
+    // パネル状態
+    enum PANEL_STATE
     {
-        LEFT,
-        RIGHT,
-        NONE
+        LEFT,       // 左移動
+        RIGHT,      // 右移動
+        NONE        // 無し
     }
-    private CAMERA_STATE _STATE = CAMERA_STATE.NONE;
+    private PANEL_STATE PanelState = PANEL_STATE.NONE;
 
-    // 今現在の選択パネル
+    // 奥行調整用
+    private float Base_Z = 850;
+
+    // 左パネル枚数
+    private float LeftPanel = 7;
+
+    // 右パネル枚数
+    private float RightPanel = 0;
+   
+    // ステージパネル配列
+    private GameObject[] Stages;
+
+    // ステージ情報表示パネル
+    private GameObject InfoPanel;
+
+    // 現在選択
     private int Select = 0;
+
+    // ループ用変数
+    private int i;
+    //================================================================================
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        // ステージ選択パネル検索
+        GameObject Stage1 = GameObject.Find("1-1");
+        GameObject Stage2 = GameObject.Find("1-2");
+        GameObject Stage3 = GameObject.Find("1-3");
+        GameObject Stage4 = GameObject.Find("1-4");
+        GameObject Stage5 = GameObject.Find("1-5");
+        GameObject Stage6 = GameObject.Find("1-6");
+        GameObject Stage7 = GameObject.Find("1-7");
+        GameObject Stage8 = GameObject.Find("1-8");
+
+        // パネルを配列に
+        Stages = new GameObject[] { Stage1, Stage2, Stage3, Stage4, Stage5, Stage6, Stage7, Stage8 };
+
+        // ステージ情報パネル取得
+        InfoPanel = GameObject.Find("StageInfoPanel");
+        InfoPanel.SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        // 進捗状況によって最初の状況変化（クリア演出含む）
-        //switch(ProgressStage)
-        //{
-        //}
+        //================================================================================
+        // ステージからセレクトに戻ってきたときの画面調整
+        if (bBackSelect)
+        {
+            // クリアしたステージ分のパネルを右側に移動させる
+            for (i = 0; i < ProgressStages; i++)
+            {
+                Stages[i].transform.position = new Vector3(Range_X,
+                                                           Range_Y,
+                                                           Base_Z - RightPanel - 1);
 
+                LeftPanel--;
+                RightPanel++;
+                Select++;
+            }
+
+            // 次挑戦するクリアしていないステージを真ん中に
+            Stages[i].transform.position = new Vector3(0, 0, 450);
+
+            // クリアしてきた時に演出を出す・・・？
+            if(bClearStage)
+            {
+
+                bClearStage = false;
+            }
+
+            bBackSelect = false;
+        }
+        //================================================================================
+
+
+        //================================================================================
         // ステージ選択
-        if (_STATE == CAMERA_STATE.NONE)
+        if (PanelState == PANEL_STATE.NONE)
         {
             // ←画面移動
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") > 0) 
             {
                 if (Select > 0)
                 {
-                    Select--;
-                    _STATE = CAMERA_STATE.LEFT;
+                    PanelState = PANEL_STATE.LEFT;
+                    InfoPanel.SetActive(false);
                 }
-                else
-                    Select = 0;
             }
 
             // →画面移動
-            if (Input.GetKeyDown(KeyCode.RightArrow))
+            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") < 0)
             {
-                if (Select < ProgressStage)
+                if (Select < ProgressStages)
                 {
-                    Select++;
-                    _STATE = CAMERA_STATE.RIGHT;
+                    PanelState = PANEL_STATE.RIGHT;
+                    InfoPanel.SetActive(false);
                 }
-                else
-                    Select = ProgressStage;
             }
         }
+        //================================================================================
 
-        // カメラY移動
-        //if (_STATE != CAMERA_STATE.NONE)
-        //{
-        //    if (MoveCamera < RangeCamera / 2)
-        //        camera.transform.position -= new Vector3(0, SpeedCamera / 2, 0);
-        //    else
-        //        camera.transform.position += new Vector3(0, SpeedCamera / 2, 0);
-        //}
 
-        // カメラX移動
-        switch (_STATE)
+        //================================================================================
+        // パネル移動
+        switch (PanelState)
         {
-            case CAMERA_STATE.LEFT:
-                camera.transform.position -= new Vector3(SpeedCamera, 0, 0);
-                camera.transform.position -= new Vector3(0, SpeedCamera/6, 0);
-                MoveCamera += SpeedCamera;
-                if (MoveCamera >= RangeCamera)
+            case PANEL_STATE.LEFT:
+                if (Move_X < Range_X)
                 {
-                    MoveCamera = 0;
-                    _STATE = CAMERA_STATE.NONE;
+                    Stages[Select].transform.position -= new Vector3(Speed, 0, 0);
+                    Stages[Select - 1].transform.position -= new Vector3(Speed, 0, 0);
+                    Move_X += Speed;
+                }
+                if (Move_Y < Range_Y)
+                {
+                    Stages[Select].transform.position += new Vector3(0, Speed, 0);
+                    Stages[Select - 1].transform.position -= new Vector3(0, Speed, 0);
+                    Move_Y += Speed;
+                }
+                if (Move_Z < Range_Z)
+                {
+                    Stages[Select].transform.position += new Vector3(0, 0, Speed);
+                    Stages[Select - 1].transform.position -= new Vector3(0, 0, Speed);
+                    Move_Z += Speed;
+                }
+                if (Move_X >= Range_X &&
+                    Move_Y >= Range_Y &&
+                    Move_Z >= Range_Z)
+                {
+                    Move_X = 0;
+                    Move_Y = 0;
+                    Move_Z = 0;
+                    PanelState = PANEL_STATE.NONE;
+
+                    Stages[Select].transform.position = new Vector3(Stages[Select].transform.position.x,
+                                                                        Stages[Select].transform.position.y,
+                                                                        Base_Z - LeftPanel - 1);
+                    LeftPanel++;
+                    RightPanel--;
+                    Select--;
                 }
                 break;
 
-            case CAMERA_STATE.RIGHT:
-                camera.transform.position += new Vector3(SpeedCamera, 0, 0);
-                camera.transform.position += new Vector3(0, SpeedCamera/6, 0);
-                MoveCamera += SpeedCamera;
-                if (MoveCamera >= RangeCamera)
+            case PANEL_STATE.RIGHT:
+                if (Move_X < Range_X)
                 {
-                    MoveCamera = 0;
-                    _STATE = CAMERA_STATE.NONE;
+                    Stages[Select].transform.position += new Vector3(Speed, 0, 0);
+                    Stages[Select + 1].transform.position += new Vector3(Speed, 0, 0);
+                    Move_X += Speed;
+                }
+                if (Move_Y < Range_Y)
+                {
+                    Stages[Select].transform.position += new Vector3(0, Speed, 0);
+                    Stages[Select + 1].transform.position -= new Vector3(0, Speed, 0);
+                    Move_Y += Speed;
+                }
+                if (Move_Z < Range_Z)
+                {
+                    Stages[Select].transform.position += new Vector3(0, 0, Speed);
+                    Stages[Select + 1].transform.position -= new Vector3(0, 0, Speed);
+                    Move_Z += Speed;
+                }
+                if (Move_X >= Range_X &&
+                    Move_Y >= Range_Y &&
+                    Move_Z >= Range_Z)
+                {
+                    Move_X = 0;
+                    Move_Y = 0;
+                    Move_Z = 0;
+                    PanelState = PANEL_STATE.NONE;
+
+                    Stages[Select].transform.position = new Vector3(Stages[Select].transform.position.x,
+                                                                        Stages[Select].transform.position.y,
+                                                                        Base_Z - RightPanel - 1);
+
+                    LeftPanel--;
+                    RightPanel++;
+                    Select++;
                 }
                 break;
 
-            case CAMERA_STATE.NONE:
+            case PANEL_STATE.NONE:
+                InfoPanel.SetActive(true);
                 break;
         }
+        //================================================================================
 
-       
-        // ステージ突入
-        if (Input.GetKeyDown(KeyCode.Return))
+
+        //================================================================================
+        // ステージ移行
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
         {
+            // セレクトに戻った時用のフラグON
+            bBackSelect = true;
+
             switch (Select)
             {
                 case 0:
-                SceneManager.LoadScene("1-1");
-                break;
+                    SceneManager.LoadScene("1-1");
+                    break;
 
                 case 1:
-                SceneManager.LoadScene("1-2");
-                break;
+                    SceneManager.LoadScene("1-2");
+                    break;
 
                 case 2:
-                SceneManager.LoadScene("1-3");
-                break;
+                    SceneManager.LoadScene("1-3");
+                    break;
 
                 case 3:
-                SceneManager.LoadScene("1-4");
-                break;
+                    SceneManager.LoadScene("1-4");
+                    break;
+
+                case 4:
+                    SceneManager.LoadScene("1-5");
+                    break;
+
+                case 5:
+                    SceneManager.LoadScene("1-6");
+                    break;
+
+                case 6:
+                    SceneManager.LoadScene("1-7");
+                    break;
+
+                case 7:
+                    SceneManager.LoadScene("1-8");
+                    break;
             }
         }
+        //================================================================================
     }
 
 
+    //================================================================================
     // ステージクリア時に進捗保存関数
     public static void UpdateProgress(string name)
     {
         if (name == "1-1") 
         {
-            if (ProgressStage <= 1)
-                ProgressStage = 1;
+            if (ProgressStages <= 1)
+                ProgressStages = 1;
         }
 
         if (name == "1-2")
         {
-            if (ProgressStage <= 2)
-                ProgressStage = 2;
+            if (ProgressStages <= 2)
+                ProgressStages = 2;
         }
 
         if (name == "1-3")
         {
-            if (ProgressStage <= 3)
-                ProgressStage = 3;
+            if (ProgressStages <= 3)
+                ProgressStages = 3;
         }
 
         if (name == "1-4")
         {
-            if (ProgressStage <= 4)
-                ProgressStage = 4;
+            if (ProgressStages <= 4)
+                ProgressStages = 4;
         }
+
+        if (name == "1-5")
+        {
+            if (ProgressStages <= 5)
+                ProgressStages = 5;
+        }
+
+        if (name == "1-6")
+        {
+            if (ProgressStages <= 6)
+                ProgressStages = 6;
+        }
+
+        if (name == "1-6")
+        {
+            if (ProgressStages <= 6)
+                ProgressStages = 6;
+        }
+
+        if (name == "1-7")
+        {
+            if (ProgressStages <= 7)
+                ProgressStages = 7;
+        }
+
+        bClearStage = true;
+
+        //if (name == "1-8")
+        //{
+        //    if (ProgressStages <= 8)
+        //        ProgressStages = 8;
+        //}
     }
+    //================================================================================
 }

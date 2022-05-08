@@ -24,6 +24,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     private void Awake()
     {
+        Debug.Log("60fps");
         Application.targetFrameRate = 60;
 
     }

@@ -124,7 +124,8 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                 {
                     Enemy.AddEnemyFunction(CollisionGrid[(y * gridNumX) + x],
                        _stageGrid[(y * gridNumX) + x].sourceObject.GetComponent<Enemy>());
-                    //CollisionGrid[objCount].AddComponent<Enemy>();
+
+                    CollisionGrid[(y * gridNumX) + x].GetComponent<BoxCollider>().isTrigger = true;
                 }
 
                 debugCnt++;
@@ -179,6 +180,7 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                                 Enemy.AddEnemyFunction(CollisionGrid[objCount],
                                     StageInfo[layerList[objCount] + 1][objCount].sourceObject.GetComponent<Enemy>());
                                 //CollisionGrid[objCount].AddComponent<Enemy>();
+                                CollisionGrid[objCount].GetComponent<BoxCollider>().isTrigger = true;
                             }
 
                             // 次のレイヤーに更新
@@ -224,6 +226,7 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                                 Enemy.AddEnemyFunction(CollisionGrid[objCount],
                                     StageInfo[layerList[objCount] + 1][objCount].sourceObject.GetComponent<Enemy>());
                                 //CollisionGrid[objCount].AddComponent<Enemy>();
+                                CollisionGrid[objCount].GetComponent<BoxCollider>().isTrigger = true;
                             }
 
                             // 次のレイヤーに更新

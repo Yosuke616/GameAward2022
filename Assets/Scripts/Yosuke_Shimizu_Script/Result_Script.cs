@@ -37,6 +37,14 @@ public class Result_Script : MonoBehaviour
     //タイムを記録する人
     private float Timer;
 
+
+    //ボタンを追加しておく
+    public Button Select;
+    public Button Retry;
+    public Button Title;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -95,7 +103,6 @@ public class Result_Script : MonoBehaviour
 
             }
             //Camera.transform.position = new Vector3(3.5f,-1.5f,-5.0f);
-
         }
     }
 

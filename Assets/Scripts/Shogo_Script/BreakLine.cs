@@ -1,21 +1,17 @@
-/*
-作成日：2022/5/07 Shimizu Shogo
-内容  ：切り取られた紙を変形させる
-*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BreakingPaper : MonoBehaviour
+public class BreakLine : MonoBehaviour
 {
-    private Material _mat;          // マテリアル
+    private Material _mat;
 
-    public float Add;               // 変化させる値
-    public float valueChange;       // Shaderに渡す値
-    public float valueAngle;        // 角度(左か右か)
-    public float valueRadius;       // 固定値
+    public float Add;
+    public float valueChange;
+    public float valueAngle;
+    public float valueRadius;
 
-    private bool bStart = false;    // 動作フラグ
+    private bool bStart = false;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +24,7 @@ public class BreakingPaper : MonoBehaviour
     {
         if (bStart)
         {
+
             valueChange += Add;
             if (valueChange >= 300.0f)
             {
@@ -46,26 +43,29 @@ public class BreakingPaper : MonoBehaviour
         }
     }
 
-    // 右側にめくる
-    public void SetRight()
+    // 右側
+    public void SetRightLine()
     {
+        /*bStart = true;
+        Add = 0.5f;
+        valueChange = 50.0f;
+        valueAngle = 250.0f;
+        valueRadius = 0.01f;*/
         bStart = true;
         Add = 0.7f;
         valueChange = 47.0f;
         valueAngle = 220.0f;
         valueRadius = 0.01f;
-        Debug.Log("右だよ");
     }
 
-    // 左側にめくる
-    public void SetLeft()
+    // 左側
+    public void SetLeftLine()
     {
         bStart = true;
         Add = 0.7f;
         valueChange = 37.0f;
         valueAngle = 140.0f;
         valueRadius = 0.01f;
-        Debug.Log("左だよ");
     }
 
     // マテリアルの設定

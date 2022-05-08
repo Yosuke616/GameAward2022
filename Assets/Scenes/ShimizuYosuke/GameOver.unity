@@ -2068,6 +2068,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b93880bc25e58c64a9eb21865387f5da, type: 3}
+--- !u!114 &436267839 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6045232399459170676, guid: cc3eadcb1e06f024091f6223253b911e, type: 3}
+  m_PrefabInstance: {fileID: 8871513537738289457}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &470833081
 GameObject:
   m_ObjectHideFlags: 0
@@ -5330,6 +5341,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1204540574}
   m_Mesh: {fileID: 0}
+--- !u!114 &1223272794 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4713353600407688380, guid: cc3eadcb1e06f024091f6223253b911e, type: 3}
+  m_PrefabInstance: {fileID: 8871513537738289457}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1231032492
 GameObject:
   m_ObjectHideFlags: 0
@@ -7390,6 +7412,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1821347231}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1833425756 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6808129947767176744, guid: cc3eadcb1e06f024091f6223253b911e, type: 3}
+  m_PrefabInstance: {fileID: 8871513537738289457}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1851219743
 GameObject:
   m_ObjectHideFlags: 0
@@ -8007,6 +8040,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GO_Tex: {fileID: 8871513537738289458}
   _GameOverBG: {fileID: 8871513537738289459}
+  Select: {fileID: 1833425756}
+  Retry: {fileID: 436267839}
+  Title: {fileID: 1223272794}
 --- !u!114 &2036418798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8025,6 +8061,9 @@ MonoBehaviour:
   Star_1: {fileID: 949009613}
   Star_2: {fileID: 949009612}
   Star_3: {fileID: 949009611}
+  Select: {fileID: 0}
+  Retry: {fileID: 0}
+  Title: {fileID: 0}
 --- !u!114 &2036418799
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -114,6 +114,7 @@ public class GameOverScript : MonoBehaviour
                     SoundManager.Instance.PlaySeByName("jingle37");
 
                     _GameOverBG.gameObject.SetActive(true);
+                    Optionflg = true;
                 }
 
             }
@@ -122,11 +123,11 @@ public class GameOverScript : MonoBehaviour
         {
             nCnt2--;
 
-            if (nCnt < 0)
+            if (nCnt2 < 0)
             {
                 if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetAxis("Vertical") > 0)
                 {
-                    nCnt = 10;
+                    nCnt2 = 10;
                     SelectButton--;
                     if (SelectButton < 0)
                     {
@@ -135,7 +136,7 @@ public class GameOverScript : MonoBehaviour
                 }
                 if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical") < 0)
                 {
-                    nCnt = 10;
+                    nCnt2 = 10;
                     SelectButton++;
                     if (SelectButton > nMaxButton)
                     {
@@ -144,6 +145,7 @@ public class GameOverScript : MonoBehaviour
                 }
             }
 
+            Debug.Log("ロゼッタ最強");
             //常に白に変えていく
             Select.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             Retry.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
@@ -152,14 +154,19 @@ public class GameOverScript : MonoBehaviour
             switch (SelectButton)
             {
                 case 0:
+                    Debug.Log("ロゼッタかわいい");
                     Select.Select();
                     Select.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
                     break;
                 case 1:
+                    Debug.Log("ロゼッタ美しい");
+
                     Retry.Select();
                     Retry.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
                     break;
                 case 2:
+                    Debug.Log("ロゼッタ最強");
+
                     Title.Select();
                     Title.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
                     break;
@@ -190,12 +197,10 @@ public class GameOverScript : MonoBehaviour
     {
         // 同一シーンを読込
         SceneManager.LoadScene("StageSelect");
-        Debug.Log("ロゼッタかわいい");
     }
 
     public void OnRetry()
     {
-        Debug.Log("ロゼッタ美しい");
         // 同一シーンを読込
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
@@ -204,7 +209,6 @@ public class GameOverScript : MonoBehaviour
     {
         // 同一シーンを読込
         SceneManager.LoadScene("StageSelect");
-        Debug.Log("ロゼッタ最強");
     }
 
 

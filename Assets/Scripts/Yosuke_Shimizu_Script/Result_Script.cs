@@ -192,19 +192,18 @@ public class Result_Script : MonoBehaviour
     {
         // 同一シーンを読込
         SceneManager.LoadScene("StageSelect");
-        Debug.Log("ロゼッタかわいい");
+        
     }
 
     public void OnRetry() {
-        Debug.Log("ロゼッタ美しい");
+        
         // 同一シーンを読込
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void OnTitle() {
         // 同一シーンを読込
-        SceneManager.LoadScene("StageSelect");
-        Debug.Log("ロゼッタ最強");
+        SceneManager.LoadScene("StageSelect");   
     }
 
 }

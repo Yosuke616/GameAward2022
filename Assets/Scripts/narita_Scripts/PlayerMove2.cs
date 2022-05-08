@@ -128,13 +128,9 @@ public class PlayerMove2 : MonoBehaviour
         // 敵に触れたとき
         else if (other.gameObject.gameObject.tag == "enemy")
         {
-            if (tex != null) tex.text = "　　　　失敗！";
-
-            SoundManager.Instance.StopBgm();
-            SoundManager.Instance.PlaySeByName("jingle37");
-
-            _resultBG.gameObject.SetActive(true);
-            flg = false;
+            GameObject enemy = GameObject.Find("MainCamera");
+            enemy.GetComponent<GameOverScript>().SetGameOver_Flg(true);
+            GameOver_Flg_Enemy = false;
         }
     }
 

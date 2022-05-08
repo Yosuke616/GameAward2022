@@ -6,6 +6,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 {
     public Material[] _mats = new Material[3];
 
+    public Camera openingCamera;
+    public Camera mainCamera;
+    public int openingCount = 60 * 8;   // 現在は8秒
+    private int frameCount = 0;
+
     // Resorce.Loadで直接読み込みの方法がわからなかったのでここでマテリアルを指定できるようにする
     public Material[] partitionMaterial = new Material[1];
     public Material GetPartitionMaterial()
@@ -32,12 +37,28 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     // Start is called before the first frame update
     void Start()
     {
-        
+        frameCount = 0;
+        openingCount = 60 * 8;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (frameCount >= 0)
+        {
+            frameCount++;
+            if (frameCount >= openingCount)
+            {
+                if (openingCamera && mainCamera)
+                {
+                    // オープニングカメラからゲームカメラに切り替える
+                    openingCamera.enabled = false;
+                    mainCamera.enabled = true;
+
+                    // カウントするのをやめる
+                    frameCount = -1;
+                }
+            }
+        }
     }
 }

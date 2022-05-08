@@ -32,6 +32,12 @@ public class PlayerMove2 : MonoBehaviour
     //敵に当たったときのゲームオーバーのフラグ
     private bool GameOver_Flg_Enemy;
 
+    //ゲームオーバーの時に出すUIのやつ
+    public Image _GameOverBG;
+
+    //文字もゲームオーバー用のやつを使う
+    public Text GO_Tex;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -42,12 +48,16 @@ public class PlayerMove2 : MonoBehaviour
         flg = true;
 
         _state = PLAYER_STATE.STATE_STOP;
+
+        GameOver_Flg_Enemy = true;
+
+        _GameOverBG.gameObject.SetActive(false);
     }
 
     // 更新
     void Update()
     {
-        if (flg)
+        if (flg && GameOver_Flg_Enemy)
         {
             // プレイヤーの向き
             if (Input.GetKey(KeyCode.A) || Input.GetAxis("Horizontal") == -1)        _state = PLAYER_STATE.STATE_LEFT_MOVE;
@@ -98,43 +108,18 @@ public class PlayerMove2 : MonoBehaviour
         // 敵に触れたとき
         else if (collision.gameObject.gameObject.tag == "enemy")
         {
-            if(tex != null) tex.text = "　　　　失敗！";
-
-            SoundManager.Instance.StopBgm();
-            SoundManager.Instance.PlaySeByName("jingle37");
-
-            _resultBG.gameObject.SetActive(true);
-            flg = false;
+            GameObject enemy = GameObject.Find("MainCamera");
+            enemy.GetComponent<GameOverScript>().SetGameOver_Flg(true);
+            GameOver_Flg_Enemy = false;
         }
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        // ゴールに触れたとき
-        if (other.gameObject.gameObject.tag == "goal")
-        {
-            GameObject camera = GameObject.Find("MainCamera");
-            camera.GetComponent<Result_Script>().SetGoalFlg(true);
-
-            flg = false;
-        }
-
-        // 敵に触れたとき
-        else if (other.gameObject.gameObject.tag == "enemy")
-        {
-            if (tex != null) tex.text = "　　　　失敗！";
-
-            SoundManager.Instance.StopBgm();
-            SoundManager.Instance.PlaySeByName("jingle37");
-
-            _resultBG.gameObject.SetActive(true);
-            flg = false;
-        }
-    }
-
-    //ゴールしたか死んだか
     public bool GetFlg() {
         return flg;
+    }
+
+    //敵に当たったときのゲームオーバーのやつ
+    public bool GetGameOverFlg() {
+        return GameOver_Flg_Enemy;
     }
 
 }

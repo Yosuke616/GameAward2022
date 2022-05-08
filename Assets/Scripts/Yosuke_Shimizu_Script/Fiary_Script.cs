@@ -118,7 +118,7 @@ public class Fiary_Script : MonoBehaviour
         //プレイヤーの状況を得る
         GameObject player = GameObject.Find("ParentPlayer");
 
-        if (player.GetComponent<PlayerMove2>().GetFlg())
+        if (player.GetComponent<PlayerMove2>().GetFlg() && player.GetComponent<PlayerMove2>().GetGameOverFlg())
         {
             //左マウスをクリックしているか(場合によって)
             //クリックしていた場合
@@ -285,7 +285,7 @@ public class Fiary_Script : MonoBehaviour
             }
         }
         else {
-            this.gameObject.SetActive(false);
+            //this.gameObject.SetActive(false);
         }
     }
 

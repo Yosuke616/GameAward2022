@@ -16,6 +16,9 @@ TagManager:
   - Paper_OutSide_Cursor
   - SubCamera
   - partition
+  - Enemy
+  - Fiary
+  - PlayerSub
   layers:
   - Default
   - TransparentFX

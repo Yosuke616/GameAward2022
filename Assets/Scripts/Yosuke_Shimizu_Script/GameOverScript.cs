@@ -29,6 +29,21 @@ public class GameOverScript : MonoBehaviour
 
     int nCnt;
 
+    //ボタンを追加しておく
+    public Button Select;
+    public Button Retry;
+    public Button Title;
+
+    //ボタンの数
+    private int nMaxButton = 2;
+    private int SelectButton = 0;
+
+    //コントローラーの制御用
+    private int nCnt2;
+
+    //選択できるかのフラグ
+    private bool Optionflg;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,54 +59,124 @@ public class GameOverScript : MonoBehaviour
         MaxBlink = 10;
 
         nCnt = 10;
+
+        //初めは何にも動かせない
+        Optionflg = false;
+
+        nCnt2 = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (g_bGameOverFlg) {
-
-            nCnt--;
-
-            //点滅させてから画面を暗くする
-            if (g_bBlinking)
+        if (!Optionflg)
+        {
+            if (g_bGameOverFlg)
             {
-                GameObject camera = GameObject.Find("MainCamera");
 
-                if (Iine && nCnt < 0)
+                nCnt--;
+
+                //点滅させてから画面を暗くする
+                if (g_bBlinking)
                 {
-                    camera.GetComponent<Blink_Script>().Blink(Iine);
+                    GameObject camera = GameObject.Find("MainCamera");
 
-                    Iine = false;
-                    MaxBlink--;
-                    nCnt = 10;
-                   
+                    if (Iine && nCnt < 0)
+                    {
+                        camera.GetComponent<Blink_Script>().Blink(Iine);
+
+                        Iine = false;
+                        MaxBlink--;
+                        nCnt = 10;
+
+                    }
+                    else if (!Iine && nCnt < 0)
+                    {
+                        camera.GetComponent<Blink_Script>().Blink(Iine);
+
+                        Iine = true;
+                        MaxBlink--;
+                        nCnt = 10;
+                    }
+
+                    if (MaxBlink < 0)
+                    {
+                        camera.GetComponent<Blink_Script>().LastBlink();
+                        g_bBlinking = false;
+                    }
                 }
-                else if (!Iine && nCnt < 0)
-                {
-                    camera.GetComponent<Blink_Script>().Blink(Iine);
 
-                    Iine = true;
-                    MaxBlink--;
-                    nCnt = 10;
+                else
+                {
+                    if (GO_Tex != null) GO_Tex.text = "　　　　失敗！";
+
+                    SoundManager.Instance.StopBgm();
+                    SoundManager.Instance.PlaySeByName("jingle37");
+
+                    _GameOverBG.gameObject.SetActive(true);
                 }
 
-                if (MaxBlink < 0)
+            }
+        }
+        else
+        {
+            nCnt2--;
+
+            if (nCnt < 0)
+            {
+                if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetAxis("Vertical") > 0)
                 {
-                    camera.GetComponent<Blink_Script>().LastBlink();
-                    g_bBlinking = false;
+                    nCnt = 10;
+                    SelectButton--;
+                    if (SelectButton < 0)
+                    {
+                        SelectButton = nMaxButton;
+                    }
+                }
+                if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical") < 0)
+                {
+                    nCnt = 10;
+                    SelectButton++;
+                    if (SelectButton > nMaxButton)
+                    {
+                        SelectButton = 0;
+                    }
                 }
             }
 
-            else {
-                if (GO_Tex != null) GO_Tex.text = "　　　　失敗！";
+            //常に白に変えていく
+            Select.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            Retry.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            Title.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 
-                SoundManager.Instance.StopBgm();
-                SoundManager.Instance.PlaySeByName("jingle37");
-
-                _GameOverBG.gameObject.SetActive(true);
+            switch (SelectButton)
+            {
+                case 0:
+                    Select.Select();
+                    Select.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                    break;
+                case 1:
+                    Retry.Select();
+                    Retry.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                    break;
+                case 2:
+                    Title.Select();
+                    Title.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                    break;
             }
-           
+
+            //ボタンを押せるかどうかを判別する
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 1"))
+            {
+                Debug.Log("入ったよー");
+                switch (SelectButton)
+                {
+                    case 0: OnSelect(); break;
+                    case 1: OnRetry(); break;
+                    case 2: OnTitle(); break;
+                }
+            }
+
         }
     }
 
@@ -99,5 +184,28 @@ public class GameOverScript : MonoBehaviour
     public void SetGameOver_Flg(bool GO_Flg) {
         g_bGameOverFlg = GO_Flg;
     }
+
+
+    public void OnSelect()
+    {
+        // 同一シーンを読込
+        SceneManager.LoadScene("StageSelect");
+        Debug.Log("ロゼッタかわいい");
+    }
+
+    public void OnRetry()
+    {
+        Debug.Log("ロゼッタ美しい");
+        // 同一シーンを読込
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void OnTitle()
+    {
+        // 同一シーンを読込
+        SceneManager.LoadScene("StageSelect");
+        Debug.Log("ロゼッタ最強");
+    }
+
 
 }

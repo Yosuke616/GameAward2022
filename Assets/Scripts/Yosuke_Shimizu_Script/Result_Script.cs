@@ -43,7 +43,15 @@ public class Result_Script : MonoBehaviour
     public Button Retry;
     public Button Title;
 
+    //ボタンの数
+    private int nMaxButton = 2;
+    private int SelectButton = 0;
 
+    //コントローラーの制御用
+    private int nCnt;
+
+    //選択できるかのフラグ
+    private bool Optionflg;
 
     // Start is called before the first frame update
     void Start()
@@ -59,50 +67,119 @@ public class Result_Script : MonoBehaviour
         Star_2.gameObject.SetActive(false);
         Star_3.gameObject.SetActive(false);
 
+        //初めは何にも動かせない
+        Optionflg = false;
+
+        nCnt = 0;
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        //後でボタンを触れるようにする
+        if (!Optionflg)
+        {
 
-        GameObject GO = GameObject.Find("ParentPlayer");
+            GameObject GO = GameObject.Find("ParentPlayer");
 
-        if (!g_bGoal && GO.GetComponent<PlayerMove2>().GetGameOverFlg()) {
-            //時間を取得してある程度早かったら星の画像を出す
-            GameObject Time = GameObject.Find("Timer");
+            if (!g_bGoal && GO.GetComponent<PlayerMove2>().GetGameOverFlg())
+            {
+                //時間を取得してある程度早かったら星の画像を出す
+                GameObject Time = GameObject.Find("Timer");
 
-            Timer = Time.GetComponent<TimerScript>().GetTime();
-        }
-
-        if (g_bGoal) {
-            //カメラがよる
-            GameObject Camera = GameObject.Find("MainCamera");
-
-            
-            m_fvelocity += ((targetPos - Camera.transform.position) * m_fSpeed);
-
-            m_fvelocity *= m_fYukkuri;
-
-            Camera.transform.position += m_fvelocity;
-
-            if (Camera.transform.position == targetPos) {
-                // ステージ進捗保存
-                StageSelect.UpdateProgress(SceneManager.GetActiveScene().name);
-
-                if (tex && timerTex) tex.text = "クリアタイム:" + timerTex.text;
-
-                SoundManager.Instance.StopBgm();
-                SoundManager.Instance.PlaySeByName("clear");
-
-                _resultBG.gameObject.SetActive(true);
-
-                if (Timer < 30.0f) {
-                    Star_1.gameObject.SetActive(true);
-                    Star_2.gameObject.SetActive(true);
-                }
-
+                Timer = Time.GetComponent<TimerScript>().GetTime();
             }
-            //Camera.transform.position = new Vector3(3.5f,-1.5f,-5.0f);
+
+            if (g_bGoal)
+            {
+                //カメラがよる
+                GameObject Camera = GameObject.Find("MainCamera");
+
+
+                m_fvelocity += ((targetPos - Camera.transform.position) * m_fSpeed);
+
+                m_fvelocity *= m_fYukkuri;
+
+                Camera.transform.position += m_fvelocity;
+
+                if (Camera.transform.position == targetPos)
+                {
+                    // ステージ進捗保存
+                    StageSelect.UpdateProgress(SceneManager.GetActiveScene().name);
+
+                    if (tex && timerTex) tex.text = "クリアタイム:" + timerTex.text;
+
+                    SoundManager.Instance.StopBgm();
+                    SoundManager.Instance.PlaySeByName("clear");
+
+                    _resultBG.gameObject.SetActive(true);
+
+                    if (Timer < 30.0f)
+                    {
+                        Star_1.gameObject.SetActive(true);
+                        Star_2.gameObject.SetActive(true);
+                    }
+
+                    Optionflg = true;
+
+                }
+                //Camera.transform.position = new Vector3(3.5f,-1.5f,-5.0f);
+            }
+        }
+        else {
+            nCnt--;
+
+            if (nCnt < 0) {
+                if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetAxis("Vertical") > 0) {
+                    nCnt = 10;
+                    SelectButton--;
+                    if (SelectButton < 0) {
+                        SelectButton = nMaxButton;
+                    }
+                }
+                if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical") < 0) {
+                    nCnt = 10;
+                    SelectButton++;
+                    if (SelectButton > nMaxButton)
+                    {
+                        SelectButton = 0;
+                    }
+                }
+            }
+
+            //常に白に変えていく
+            Select.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            Retry.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            Title.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+
+            switch (SelectButton) {
+                case 0:
+                    Select.Select();
+                    Select.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                    break;
+                case 1:
+                    Retry.Select();
+                    Retry.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                    break;
+                case 2:
+                    Title.Select();
+                    Title.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                    break;
+            }
+
+            //ボタンを押せるかどうかを判別する
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 1"))
+            {
+                Debug.Log("入ったよー");
+                switch (SelectButton)
+                {
+                    case 0: OnSelect(); break;
+                    case 1: OnRetry(); break;
+                    case 2: OnTitle(); break;
+                }
+            }
+
         }
     }
 
@@ -110,4 +187,24 @@ public class Result_Script : MonoBehaviour
     public void SetGoalFlg(bool GoalFlg) {
         g_bGoal = GoalFlg;
     }
+
+    public void OnSelect()
+    {
+        // 同一シーンを読込
+        SceneManager.LoadScene("StageSelect");
+        Debug.Log("ロゼッタかわいい");
+    }
+
+    public void OnRetry() {
+        Debug.Log("ロゼッタ美しい");
+        // 同一シーンを読込
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void OnTitle() {
+        // 同一シーンを読込
+        SceneManager.LoadScene("StageSelect");
+        Debug.Log("ロゼッタ最強");
+    }
+
 }

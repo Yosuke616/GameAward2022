@@ -50,7 +50,7 @@ public class BreakingPaper : MonoBehaviour
     public void SetRight()
     {
         bStart = true;
-        Add = 0.8f;
+        Add = 0.7f;
         valueChange = 47.0f;
         valueAngle = 220.0f;
         valueRadius = 0.01f;
@@ -61,7 +61,7 @@ public class BreakingPaper : MonoBehaviour
     public void SetLeft()
     {
         bStart = true;
-        Add = 0.8f;
+        Add = 0.7f;
         valueChange = 37.0f;
         valueAngle = 140.0f;
         valueRadius = 0.01f;

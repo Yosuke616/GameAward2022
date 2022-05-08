@@ -17,6 +17,8 @@ TagManager:
   - SubCamera
   - partition
   - Enemy
+  - Fiary
+  - PlayerSub
   layers:
   - Default
   - TransparentFX

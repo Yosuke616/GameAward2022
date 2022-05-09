@@ -10,6 +10,7 @@ public class BreakLine : MonoBehaviour
     public float valueChange;
     public float valueAngle;
     public float valueRadius;
+    public float valueStrength;
 
     private bool bStart = false;
 
@@ -39,6 +40,7 @@ public class BreakLine : MonoBehaviour
             _mat.SetFloat("_BendPivot", valueChange);
             _mat.SetFloat("_BendAngle", valueAngle);
             _mat.SetFloat("_BendRadius", valueRadius);
+            _mat.SetFloat("_BendStrength", valueStrength);
             _mat = GetComponent<Renderer>().sharedMaterial;
         }
     }
@@ -56,6 +58,7 @@ public class BreakLine : MonoBehaviour
         valueChange = 47.0f;
         valueAngle = 220.0f;
         valueRadius = 0.01f;
+        valueStrength = 1.0f;
     }
 
     // ç∂ë§
@@ -66,6 +69,7 @@ public class BreakLine : MonoBehaviour
         valueChange = 37.0f;
         valueAngle = 140.0f;
         valueRadius = 0.01f;
+        valueStrength = 1.0f;
     }
 
     // É}ÉeÉäÉAÉãÇÃê›íË

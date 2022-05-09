@@ -104,14 +104,14 @@ public class Title_Scrupt : MonoBehaviour
     public void OnFirst() {
         Debug.Log("ロゼッター");
         // 同一シーンを読込
-        SceneManager.LoadScene("StageSelect");
+        //SceneManager.LoadScene("StageSelect");
     }
 
     //続きから
     public void OnCountinue() {
         Debug.Log("ロゼッタかわいいー");
         // 同一シーンを読込
-        SceneManager.LoadScene("StageSelect");
+        //SceneManager.LoadScene("StageSelect");
     }
 
     //オプション

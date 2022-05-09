@@ -14,7 +14,7 @@ public class CreateTriangle : MonoBehaviour
     // Quadの枚数
     static private int QuadNum = 2;
 
-    void Start()
+    void Awake()
     {
         // 紙の生成
         GameObject paper = CreateMesh();

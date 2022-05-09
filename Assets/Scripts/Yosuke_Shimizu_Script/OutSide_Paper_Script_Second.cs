@@ -16,7 +16,7 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
     OutLinePath outlinepath_script;
 
     //リストを保存するための変数
-    private List<Vector3> OutLinePaper = new List<Vector3>();
+    [SerializeField] private List<Vector3> OutLinePaper = new List<Vector3>();
 
     //最初の一回だけ外部から読み込めるようにする(tureで読み込めなくする)
     private bool g_bFirst_Load;
@@ -38,7 +38,7 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
     private Vector3 OutPaper_Pos;
 
     //一回だけクリックしたときにそこで止まるためのフラグ
-    private bool First_Flg;
+    [SerializeField] private bool First_Flg;
 
     //中央に行かないようにするための変数
     private Vector3 Old_Pos;
@@ -97,13 +97,13 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
             GameObject Cur = GameObject.Find("Cursor");
             CursorSystem Cur_SY = Cur.GetComponent<CursorSystem>();
             //破る状態になったときにカーソルをそこに移動させる関数を呼ぶ
-            if (Cur_SY.GetBreakFlg())
-            {
-                CursorBreak();
-                First_Flg = false;
-            }
-            else
-            {
+            //if (Cur_SY.GetBreakFlg())
+            //{
+            //    CursorBreak();
+            //    First_Flg = false;
+            //}
+            //else
+            //{
                 Old_Click_Pos = Input.mousePosition;
                 Old_Click_Pos.z = 10.0f;
 
@@ -135,7 +135,7 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
                     this.transform.position = Cross_Pos;
                 }
 
-            }
+            //}
 
 
             if (!(this.transform.position == new Vector3(0.0f, 0.0f, 0.0f)))
@@ -159,18 +159,18 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
     private Vector2 CalculationVector(Vector2 Mouse, Vector2 Center, List<Vector3> Square)
     {
         //コントローラーのやつ
-        GameObject CTRL = GameObject.Find("CTRLCur");
-
-        Vector3 ctrl = CTRL.GetComponent<CTRLCur>().GetCTRLPos();
-
-        Vector2 mmm;
-
-        mmm.x = ctrl.x;
-        mmm.y = ctrl.y;
-
-        Mouse = mmm;
-
-        Mouse *= 100;
+        //GameObject CTRL = GameObject.Find("CTRLCur");
+        //
+        //Vector3 ctrl = CTRL.GetComponent<CTRLCur>().GetCTRLPos();
+        //
+        //Vector2 mmm;
+        //
+        //mmm.x = ctrl.x;
+        //mmm.y = ctrl.y;
+        //
+        //Mouse = mmm;
+        //
+        //Mouse *= 100;
 
         //最後に返すときのための2次元ベクトル
         Vector2 CrossVector = new Vector2(0.0f, 0.0f);

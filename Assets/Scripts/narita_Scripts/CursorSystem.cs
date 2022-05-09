@@ -151,31 +151,35 @@ public class CursorSystem : MonoBehaviour
             GameObject obj = GameObject.Find("CTRLCur");
             GameObject camera = GameObject.Find("MainCamera");
 
-            //座標の保存用の変数
-            Vector3 SavePos = new Vector3(0.0f, 0.0f, 0.0f);
+            
 
-            //送るものの座標を変える
-            if (Cursor.GetComponent<OutSide_Paper_Script_Second>().GetFirstFlg())
-            {
-                SavePos = obj.transform.position;
-            }
-            else
-            {
-
-                SavePos = Cursor.transform.position;
-            }
+            
 
             // 座標保存
             if (Input.GetMouseButtonDown(0) || camera.GetComponent<InputTrigger>().GetOneTimeDown())
             {
+                //座標の保存用の変数
+                Vector3 SavePos = new Vector3(0.0f, 0.0f, 0.0f);
+                //送るものの座標を変える
+                if (Cursor.GetComponent<OutSide_Paper_Script_Second>().GetFirstFlg())
+                {
+                    SavePos = obj.transform.position;
+                    Debug.Log("2回目以降");
+                }
+                else
+                {
+                    /* 最初はこっちの座標を使いたい */
+                    SavePos = Cursor.transform.position;
+                    Debug.LogWarning("1回目");
+                }
 
                 cnt = 0;
 
                 // 座標リストに追加
-                //MousePoints.Add(SavePos);
-                MousePoints.Add(transform.position);
+                MousePoints.Add(SavePos);
+                //MousePoints.Add(transform.position);
+                Debug.LogWarning(SavePos);
 
-                Debug.LogWarning(transform.position);
 
                 if (MousePoints.Count >= 2)
                 {

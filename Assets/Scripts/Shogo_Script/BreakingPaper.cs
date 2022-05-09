@@ -14,6 +14,7 @@ public class BreakingPaper : MonoBehaviour
     public float valueChange;       // Shaderに渡す値
     public float valueAngle;        // 角度(左か右か)
     public float valueRadius;       // 固定値
+    public float valueStrength;     // 固定値
 
     private bool bStart = false;    // 動作フラグ
 
@@ -42,6 +43,7 @@ public class BreakingPaper : MonoBehaviour
             _mat.SetFloat("_BendPivot", valueChange);
             _mat.SetFloat("_BendAngle", valueAngle);
             _mat.SetFloat("_BendRadius", valueRadius);
+            _mat.SetFloat("_BendStrength", valueStrength);
             _mat = GetComponent<Renderer>().sharedMaterial;
         }
     }
@@ -54,6 +56,7 @@ public class BreakingPaper : MonoBehaviour
         valueChange = 47.0f;
         valueAngle = 220.0f;
         valueRadius = 0.01f;
+        valueStrength = 1.0f;
         Debug.Log("右だよ");
     }
 
@@ -65,6 +68,7 @@ public class BreakingPaper : MonoBehaviour
         valueChange = 37.0f;
         valueAngle = 140.0f;
         valueRadius = 0.01f;
+        valueStrength = 1.0f;
         Debug.Log("左だよ");
     }
 

@@ -766,7 +766,7 @@ public class DivideTriangle : MonoBehaviour
             // タグの変更（廃棄する紙）
             obj1.tag = "waste";
             // 数秒後にデリート
-            Destroy(obj1, 2.0f);
+            Destroy(obj1, 1.0f);
 
             // ステージの更新
             CollisionField.Instance.UpdateStage(checkCollisionPoints(obj1, CollisionField.Instance.cellPoints()));
@@ -787,7 +787,7 @@ public class DivideTriangle : MonoBehaviour
             for (int i = 0; i < obj1.transform.childCount; i++)
             {
                 var breakline = obj1.transform.GetChild(i).gameObject.AddComponent<BreakLine>();
-                var move2 = obj1.transform.GetChild(i).gameObject.AddComponent<PaperMove>();
+                //var move2 = obj1.transform.GetChild(i).gameObject.AddComponent<PaperMove>();
                 Material breaklineMat = (Material)Resources.Load("Effects/SecondBreakLine");
                 breakline.SetMaterial(breaklineMat);
                 // めくる方向を決める
@@ -816,7 +816,7 @@ public class DivideTriangle : MonoBehaviour
             // タグの変更（廃棄する紙）
             obj2.tag = "waste";
             // 数秒後にデリート
-            Destroy(obj2, 3.0f);
+            Destroy(obj2, 1.0f);
 
             // ステージの更新
             CollisionField.Instance.UpdateStage(checkCollisionPoints(obj2, CollisionField.Instance.cellPoints()));

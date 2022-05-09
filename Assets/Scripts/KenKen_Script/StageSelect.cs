@@ -10,7 +10,7 @@ public class StageSelect : MonoBehaviour
     // 他のスクリプトに出張する変数
     //================================================================================
     // 現在の進捗
-    public static int ProgressStages = 4;
+    public static int ProgressStages = 0;
 
     // セレクトに帰ってきた時用フラグ
     public static bool bBackSelect = false;

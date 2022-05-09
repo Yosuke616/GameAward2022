@@ -6509,7 +6509,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7898086195466316994, guid: b93880bc25e58c64a9eb21865387f5da, type: 3}
       propertyPath: name_BGM
-      value: 1-4
+      value: 1-2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b93880bc25e58c64a9eb21865387f5da, type: 3}

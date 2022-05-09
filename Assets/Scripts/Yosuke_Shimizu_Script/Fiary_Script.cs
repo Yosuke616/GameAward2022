@@ -197,7 +197,8 @@ public class Fiary_Script : MonoBehaviour
                     vPos.z = 10.0f;
 
                     //ワールド座標に変える
-                    Vector3 vWorldPos = Camera.main.ScreenToWorldPoint(vPos);
+                    Vector3 vWorldPos = Vector3.zero;
+                    if (Camera.main != null) vWorldPos = Camera.main.ScreenToWorldPoint(vPos);
 
                     //クリックされた場所をリストに保存する(前回の座標と違ったときにリストに追加する)
                     if (!(vWorldPos == Old_Mouse_Pos))

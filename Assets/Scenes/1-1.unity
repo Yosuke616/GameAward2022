@@ -1397,6 +1397,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ec8a956ca04e6e4382abf7a53f09b55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state: 0
   move: 0.01
 --- !u!54 &343564547
 Rigidbody:
@@ -2699,6 +2700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ec8a956ca04e6e4382abf7a53f09b55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state: 1
   move: 0.01
 --- !u!54 &714958026
 Rigidbody:

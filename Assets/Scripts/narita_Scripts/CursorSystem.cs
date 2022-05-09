@@ -148,29 +148,37 @@ public class CursorSystem : MonoBehaviour
 
             //カーソルの座標を送る
             GameObject Cursor = GameObject.Find("cursor");
+            var outsider = Cursor.GetComponent<OutSide_Paper_Script_Second>();
             GameObject obj = GameObject.Find("CTRLCur");
             GameObject camera = GameObject.Find("MainCamera");
 
-            
 
-            
+
+
 
             // 座標保存
             if (Input.GetMouseButtonDown(0) || camera.GetComponent<InputTrigger>().GetOneTimeDown())
             {
                 //座標の保存用の変数
-                Vector3 SavePos = new Vector3(0.0f, 0.0f, 0.0f);
+                Vector3 SavePos = Vector3.zero;
+
                 //送るものの座標を変える
-                if (Cursor.GetComponent<OutSide_Paper_Script_Second>().GetFirstFlg())
+                if (outsider.GetFirstFlg())
                 {
-                    SavePos = obj.transform.position;
                     Debug.Log("2回目以降");
+
+                    // マウス
+                    if (Input.GetMouseButtonDown(0)) SavePos = transform.position;
+                    // ゲームパッド
+                    else SavePos = obj.transform.position;
                 }
                 else
                 {
-                    /* 最初はこっちの座標を使いたい */
-                    SavePos = Cursor.transform.position;
                     Debug.LogWarning("1回目");
+                    // 破る処理スタート
+                    outsider.DivideStart();
+
+                    if (Input.GetMouseButtonDown(0)) SavePos = Cursor.transform.position;
                 }
 
                 cnt = 0;

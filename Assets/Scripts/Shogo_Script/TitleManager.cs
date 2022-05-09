@@ -11,7 +11,6 @@ public class TitleManager : MonoBehaviour
     // †‚Ì–‡”
     private int maxPaper = 2;
 
-    // Start is called before the first frame update
     void Start()
     {
         currentNumber = 1;

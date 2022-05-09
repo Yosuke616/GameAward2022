@@ -805,7 +805,10 @@ public class DivideTriangle : MonoBehaviour
 
             //obj1の方のアウトラインをセットする
             GameObject cursor = GameObject.Find("cursor");
-            cursor.GetComponent<OutSide_Paper_Script_Second>().SetMoveLine(objOutline2, pos2);
+            var outsider = cursor.GetComponent<OutSide_Paper_Script_Second>();
+            //outsider.SetMoveLine(objOutline2, pos2);
+            outsider.DivideEnd();
+
         }
         else
         {
@@ -852,7 +855,9 @@ public class DivideTriangle : MonoBehaviour
 
             //obj1の方のアウトラインをセットする
             GameObject cursor = GameObject.Find("cursor");
-            cursor.GetComponent<OutSide_Paper_Script_Second>().SetMoveLine(objOutline1,pos1);
+            var outsider = cursor.GetComponent<OutSide_Paper_Script_Second>();
+            //outsider.SetMoveLine(objOutline2, pos2);
+            outsider.DivideEnd();
 
             Partition.CreatePartition(obj1, objOutline1, GetComponent<DrawMesh>(), transform.position.z);
         }

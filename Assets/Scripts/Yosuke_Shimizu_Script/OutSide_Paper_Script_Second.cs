@@ -86,9 +86,6 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
 
         if (player.GetComponent<PlayerMove2>().GetFlg() && player.GetComponent<PlayerMove2>().GetGameOverFlg())
         {
-
-
-
             //マウス座標をここでゲットします
             Vector2 Mouse_Pos = Input.mousePosition;
 
@@ -139,6 +136,8 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
                 }
 
             }
+
+
             if (!(this.transform.position == new Vector3(0.0f, 0.0f, 0.0f)))
             {
                 Old_Pos = this.transform.position;

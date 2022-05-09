@@ -142,16 +142,7 @@ public class Fiary_Script : MonoBehaviour
             switch (g_FiaryMove)
             {
                 case FIARY_MOVE.FIARY_PLAYER_TRACKING:
-                    //プレイヤーに追従するモード
-
-                    ////親オブジェクトの座標を更新する
-                    //ParentObj = this.transform.parent.gameObject;
-
-                    ////親オブジェクトの座標を保存する
-                    //PlayerPos = ParentObj.transform.position;
-
-                    ////プレイヤーの少し横に移動させる
-                    //this.transform.position = new Vector3(PlayerPos.x + 1.0f, PlayerPos.y + 1.0f, PlayerPos.z);
+                    
 
                     //ここで破るフラグが立っていたら変える
                     if (CS_Script.GetBreakFlg())

@@ -5,9 +5,9 @@ using UnityEditor;
 
 public class Enemy : MonoBehaviour
 {
+    public int state = 0;      // 0:上下移動  0以外:左右移動
     public float move = 0.01f;
     private int counter = 0;
-    private int state = 0;      // 0:上下移動  0以外:左右移動
     private float diff = 0.0f;
     private Vector3 startPos;
 
@@ -70,7 +70,7 @@ public class Enemy : MonoBehaviour
         // 上下移動
         if (state == 0) p = new Vector3(0, enemyFunc.diff, 0);
         // 左右移動
-        else p = new Vector3(enemyFunc.diff, 0, 0);
+        else p = new Vector3(-enemyFunc.diff, 0, 0);
 
         transform.Translate(p);
     }

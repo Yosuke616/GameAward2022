@@ -116,7 +116,11 @@ public class Title_Scrupt : MonoBehaviour
 
     //オプション
     public void OnOption() {
-        Debug.Log("ロゼッタ愛してる");
+        Debug.Log("ロゼッタ様抱いてー！");
+
+        Titleflg = true;
+        GameObject obj = GameObject.Find("OptionTitle");
+        obj.GetComponent<TitleOption_Script>().SetTitleOption(false);
     }
 
     //終わる
@@ -126,7 +130,10 @@ public class Title_Scrupt : MonoBehaviour
 #else
     Application.Quit();
 #endif
-        Debug.Log("ロゼッタ様抱いてー！");
+    }
+
+    public void SetTitleFlg(bool TF) {
+        Titleflg = TF;
     }
 
 }

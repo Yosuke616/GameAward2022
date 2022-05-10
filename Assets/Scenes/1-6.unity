@@ -1144,7 +1144,7 @@ GameObject:
   - component: {fileID: 172987502}
   m_Layer: 0
   m_Name: SubCamera4
-  m_TagString: Untagged
+  m_TagString: SubCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3545,7 +3545,7 @@ GameObject:
   - component: {fileID: 624711154}
   m_Layer: 0
   m_Name: SubCamera2
-  m_TagString: Untagged
+  m_TagString: SubCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3781,6 +3781,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MousePoints: []
   cnt: 0
+  maxPaper: 3
   Select: 0
   papers: []
 --- !u!1 &658927560
@@ -4696,7 +4697,7 @@ GameObject:
   - component: {fileID: 779362037}
   m_Layer: 0
   m_Name: SubCamera1
-  m_TagString: Untagged
+  m_TagString: SubCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4819,7 +4820,7 @@ GameObject:
   - component: {fileID: 807338278}
   m_Layer: 0
   m_Name: SubCamera3
-  m_TagString: Untagged
+  m_TagString: SubCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -10042,6 +10042,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MousePoints: []
   cnt: 0
+  maxPaper: 3
   Select: 0
   papers: []
 --- !u!1001 &2062634737
@@ -10699,7 +10700,7 @@ GameObject:
   - component: {fileID: 2144038062}
   m_Layer: 0
   m_Name: SubCamera0
-  m_TagString: SubCamera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

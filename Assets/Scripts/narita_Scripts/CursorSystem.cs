@@ -8,6 +8,8 @@ public class CursorSystem : MonoBehaviour
 
     public int cnt = 0;
 
+    public int maxPaper = 2;
+
     private bool bDivide;
 
     // スクリーン座標
@@ -26,7 +28,7 @@ public class CursorSystem : MonoBehaviour
     }
     [SerializeField] static private GameState gameState;
     static public void SetGameState(GameState state){ gameState = state; }
-
+    static public GameState GetGameState() { return gameState; }
 
     // 初期化
     void Start()
@@ -76,26 +78,29 @@ public class CursorSystem : MonoBehaviour
             #region ---めくる処理
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown("joystick button 4"))
             {
-                UpdatePage();
-                var topPaper = papers[Select];
-                var turnShader = topPaper.GetComponent<Turn_Shader>();
-                // めくる
-                turnShader.SetPaperSta(1);
-                // めくった枚数をカウント
-                Select++;
-                // めくる枚数の上限
-                if (Select > 2) Select = 2;
-
-                //--- 紙の子オブジェクトのブレークラインも消す
-                for (int i = 0; i < topPaper.transform.childCount; i++)
+                if (Select < maxPaper)
                 {
-                    // 子オブジェクトの取得
-                    var childObject = topPaper.transform.GetChild(i).gameObject;
-                    // 仕切りの場合は何もしない
-                    if (childObject.tag == "partition") continue;
+                    UpdatePage();
+                    var topPaper = papers[Select];
+                    var turnShader = topPaper.GetComponent<Turn_Shader>();
+                    // めくる
+                    turnShader.SetPaperSta(1);
+                    // めくった枚数をカウント
+                    Select++;
+                    // めくる枚数の上限
+                    if (Select > maxPaper) Select = maxPaper;
 
-                    // アクティブを解除
-                    childObject.SetActive(false);
+                    //--- 紙の子オブジェクトのブレークラインも消す
+                    for (int i = 0; i < topPaper.transform.childCount; i++)
+                    {
+                        // 子オブジェクトの取得
+                        var childObject = topPaper.transform.GetChild(i).gameObject;
+                        // 仕切りの場合は何もしない
+                        if (childObject.tag == "partition") continue;
+
+                        // アクティブを解除
+                        childObject.SetActive(false);
+                    }
                 }
 
                 // めくるモードに変更
@@ -103,35 +108,40 @@ public class CursorSystem : MonoBehaviour
             }
             else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown("joystick button 5"))
             {
-                UpdatePage();
-                // めくった枚数をカウント
-                Select--;
-                // めくる枚数の下限
-                if (Select < 0) Select = 0;
-
-                // めくるのを戻す
-                var topPaper = papers[Select];
-                var turnShader = topPaper.GetComponent<Turn_Shader>();
-                // めくってある状態から戻す
-                turnShader.SetPaperSta(2);
-
-                //--- ブレークラインも戻す
-                for (int i = 0; i < topPaper.transform.childCount; i++)
+                // 1枚目の時は何もしない
+                if(Select != 0)
                 {
-                    // 子オブジェクトの取得
-                    var childObject = topPaper.transform.GetChild(i).gameObject;
-                    // 仕切りの場合は何もしない
-                    if (childObject.tag == "partition") continue;
+                    UpdatePage();
+                    // めくるのを戻す
+                    var topPaper = papers[Select - 1];
+                    var turnShader = topPaper.GetComponent<Turn_Shader>();
+                    // めくってある状態から戻す
+                    turnShader.SetPaperSta(2);
 
-                    // アクティブにする
-                    childObject.SetActive(true);
+                    // めくった枚数をカウント
+                    Select--;
+                    // めくる枚数の下限
+                    if (Select == 0)
+                    {
+                        //Select = 0;
+
+                        // めくるモード → アクションモード
+                        SetGameState(GameState.MODE_ACTION);
+                    }
+
+                    //--- ブレークラインも戻す
+                    for (int i = 0; i < topPaper.transform.childCount; i++)
+                    {
+                        // 子オブジェクトの取得
+                        var childObject = topPaper.transform.GetChild(i).gameObject;
+                        // 仕切りの場合は何もしない
+                        if (childObject.tag == "partition") continue;
+
+                        // アクティブにする
+                        childObject.SetActive(true);
+                    }
                 }
 
-                if(Select == 0)
-                {
-                    // めくるモード → アクションモード
-                    SetGameState(GameState.MODE_ACTION);
-                }
             }
             #endregion
 

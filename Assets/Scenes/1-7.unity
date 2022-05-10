@@ -1356,7 +1356,7 @@ Transform:
   - {fileID: 1122197425}
   - {fileID: 733055069}
   m_Father: {fileID: 1584665833}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &266859802
 MonoBehaviour:
@@ -1428,7 +1428,7 @@ GameObject:
   - component: {fileID: 267859070}
   m_Layer: 0
   m_Name: SubCamera3
-  m_TagString: Untagged
+  m_TagString: SubCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1927,7 +1927,7 @@ GameObject:
   - component: {fileID: 384613107}
   m_Layer: 0
   m_Name: SubCamera2
-  m_TagString: Untagged
+  m_TagString: SubCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3354,6 +3354,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MousePoints: []
   cnt: 0
+  maxPaper: 3
   Select: 0
   papers: []
 --- !u!1 &737427921
@@ -3788,7 +3789,7 @@ GameObject:
   - component: {fileID: 758588933}
   m_Layer: 0
   m_Name: SubCamera1
-  m_TagString: Untagged
+  m_TagString: SubCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3812,7 +3813,7 @@ Transform:
   - {fileID: 651644276}
   - {fileID: 231360143}
   m_Father: {fileID: 1584665833}
-  m_RootOrder: 1
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &758588933
 MonoBehaviour:
@@ -6785,7 +6786,7 @@ GameObject:
   - component: {fileID: 1296743595}
   m_Layer: 0
   m_Name: SubCamera4
-  m_TagString: Untagged
+  m_TagString: SubCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6926,7 +6927,7 @@ Transform:
   - {fileID: 936900615}
   - {fileID: 737427922}
   m_Father: {fileID: 1584665833}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1341039251
 GameObject:
@@ -8223,7 +8224,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1584665833}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1566802223
 MonoBehaviour:
@@ -8270,11 +8271,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 508514442}
-  - {fileID: 758588932}
   - {fileID: 266859801}
   - {fileID: 1566802222}
   - {fileID: 1301632295}
   - {fileID: 1846677837}
+  - {fileID: 758588932}
   - {fileID: 384613106}
   - {fileID: 267859069}
   - {fileID: 1296743594}
@@ -9220,7 +9221,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1584665833}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1846677838
 MonoBehaviour:

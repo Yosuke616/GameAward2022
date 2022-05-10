@@ -257,35 +257,43 @@ public class StageSelect : MonoBehaviour
             switch (Select)
             {
                 case 0:
-                    SceneManager.LoadScene("1-1");
+                    //SceneManager.LoadScene("1-1");
+                    FadeManager.Instance.FadeStart("1-1");
                     break;
 
                 case 1:
-                    SceneManager.LoadScene("1-2");
+                    //SceneManager.LoadScene("1-2");
+                    FadeManager.Instance.FadeStart("1-2");
                     break;
 
                 case 2:
-                    SceneManager.LoadScene("1-3");
+                    //SceneManager.LoadScene("1-3");
+                    FadeManager.Instance.FadeStart("1-3");
                     break;
 
                 case 3:
-                    SceneManager.LoadScene("1-4");
+                    //SceneManager.LoadScene("1-4");
+                    FadeManager.Instance.FadeStart("1-4");
                     break;
 
                 case 4:
-                    SceneManager.LoadScene("1-5");
+                    //SceneManager.LoadScene("1-5");
+                    FadeManager.Instance.FadeStart("1-5");
                     break;
 
                 case 5:
-                    SceneManager.LoadScene("1-6");
+                    //SceneManager.LoadScene("1-6");
+                    FadeManager.Instance.FadeStart("1-6");
                     break;
 
                 case 6:
-                    SceneManager.LoadScene("1-7");
+                    //SceneManager.LoadScene("1-7");
+                    FadeManager.Instance.FadeStart("1-7");
                     break;
 
                 case 7:
-                    SceneManager.LoadScene("1-8");
+                    //SceneManager.LoadScene("1-8");
+                    FadeManager.Instance.FadeStart("1-8");
                     break;
             }
         }

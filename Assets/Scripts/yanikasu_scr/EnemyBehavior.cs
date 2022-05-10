@@ -28,7 +28,7 @@ public class EnemyBehavior : MonoBehaviour
 		bLeft = StartMoveLeft;
 		StartPos = transform.position;
 		Debug.Log($"EnemyMode:{nEnemyMode}");
-		ObjPlayer = transform.parent.gameObject.transform.Find("Player").gameObject;	// Enemyの親オブジェクト(SubCameraX)の子オブジェクトの中からPlayerを検索
+		ObjPlayer = transform.parent.gameObject.transform.Find("d1").gameObject;	// Enemyの親オブジェクト(SubCameraX)の子オブジェクトの中からPlayerを検索
 	}
 
     void Update()

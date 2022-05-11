@@ -65,15 +65,6 @@ public class Fiary_Script : MonoBehaviour
         //列挙隊を初期化する(最初はプレイヤーの周りを追従する)
         g_FiaryMove = FIARY_MOVE.FIARY_PLAYER_TRACKING;
 
-        ////このオブジェクトの親の情報を取得する
-        //ParentObj = this.transform.parent.gameObject;
-
-        ////親オブジェクトの座標を保存する
-        //PlayerPos = ParentObj.transform.position;
-
-        ////プレイヤーの少し横に移動させる
-        //this.transform.position = new Vector3(PlayerPos.x + 1.0f, PlayerPos.y + 1.0f, PlayerPos.z);
-
         //最初は読み込めるようにする
         g_bFirst_Load = false;
 
@@ -127,7 +118,7 @@ public class Fiary_Script : MonoBehaviour
             //コントローラーを押せるようのオブジェクトをゲットする
             GameObject obj = GameObject.Find("MainCamera");
 
-            if (!CS_Script.GetBreakFlg())
+            if (!CS_Script.GetBreakFlg() || Input.GetKeyDown(KeyCode.T))
             //クリックしていなかった場合
             {
                 //中身が存在するのならばこの中に入る
@@ -141,8 +132,7 @@ public class Fiary_Script : MonoBehaviour
             //状態によって更新の内容を変える
             switch (g_FiaryMove)
             {
-                case FIARY_MOVE.FIARY_PLAYER_TRACKING:
-                    
+                case FIARY_MOVE.FIARY_PLAYER_TRACKING:                   
 
                     //ここで破るフラグが立っていたら変える
                     if (CS_Script.GetBreakFlg())
@@ -169,7 +159,7 @@ public class Fiary_Script : MonoBehaviour
                 case FIARY_MOVE.FIARY_BREAK_PAPER:
                     //一番最初の紙の破る場所に行くやつ
 
-                    //マウスのポジションに移動させる
+                    //外周の急のポジションに移動させる
                     this.transform.position = OutSide_Cursor.GetComponent<OutSide_Paper_Script_Second>().GetCursorPos();
 
                     //個々の中に入っているときにクリックすると中にゆっくり移動していくモードに変わる
@@ -209,6 +199,7 @@ public class Fiary_Script : MonoBehaviour
                             MousePos.Add(vWorldPos);
                             ////過去の座標と比べるために今の座標を保存しておく
                             Old_Mouse_Pos = vWorldPos;
+
                         }
                     }
 

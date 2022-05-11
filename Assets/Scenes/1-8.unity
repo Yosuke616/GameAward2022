@@ -10872,12 +10872,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6449358331490491808, guid: b93880bc25e58c64a9eb21865387f5da, type: 3}
       propertyPath: m_Name
-      value: 1-4BGM
+      value: 1-8BGM
       objectReference: {fileID: 0}
     - target: {fileID: 7898086195466316994, guid: b93880bc25e58c64a9eb21865387f5da, type: 3}
       propertyPath: name_BGM
-      value: 1-4
-      objectReference: {fileID: 0}
+      value: 
+      objectReference: {fileID: 8300000, guid: dd939691c362b714cb98704e63f9f047, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b93880bc25e58c64a9eb21865387f5da, type: 3}
 --- !u!1 &2106459373

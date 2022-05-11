@@ -40,8 +40,8 @@ public class FallLeaf : Looks
             // とりあえず落下させる
             looksObject.transform.position += new Vector3(0.0f, -0.2f, 0.0f); // Random.Range(0.5f,-1.5f)
 
-            // 画面下にいったら消す
-            if (transform.position.y < deletePosY)
+			// 画面下にいったら消す
+            if (looksObject.transform.position.y < deletePosY)
             {
                 looksObjects.Remove(looksObject);
                 Destroy(looksObject);
@@ -67,7 +67,7 @@ public class FallLeaf : Looks
             leaf.GetComponent<Renderer>().materials = mats;
             // x軸をカメラと合わせる
             leaf.transform.position = camera.transform.position;
-            
+
 
             leaf.transform.position += new Vector3(
                 rundumPosX,  // 画面内でランダム
@@ -77,6 +77,6 @@ public class FallLeaf : Looks
             // リストに追加
             AddLooksObject(leaf);
         }
-        
+
     }
 }

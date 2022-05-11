@@ -9,18 +9,20 @@ using UnityEngine;
 public class PlayBGM : MonoBehaviour
 {
     [SerializeField]
-    public string name_BGM;
+	//public string name_BGM;
+    public AudioClip name_BGM;
 
-    // Start is called before the first frame update
-    void Start()
+	// Start is called before the first frame update
+	void Start()
     {
-        SoundManager.Instance.PlayBgmByName(name_BGM);
+		//SoundManager.Instance.PlayBgmByName(name_BGM);
+		SoundManager.Instance.PlayBgmByName(name_BGM.name);
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

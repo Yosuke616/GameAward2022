@@ -8,12 +8,16 @@ public class Rabbit : MonoBehaviour
     public GameObject openingCamera;
 
     private bool onceFunc;
+	private ModelAnimation rabbitAnimation;
 
-    // Start is called before the first frame update
-    void Start()
+	// Start is called before the first frame update
+	void Start()
     {
         onceFunc = true;
-    }
+
+		// 子オブジェクトからコンポーネントを取得
+		rabbitAnimation = transform.Find("Usagi_Anim_Run").gameObject.GetComponent<ModelAnimation>();
+	}
 
     // Update is called once per frame
     void Update()
@@ -26,9 +30,11 @@ public class Rabbit : MonoBehaviour
         {
             onceFunc = false;
 
+			//rabbitAnimation.SetAnim("Take 001");
+
             openingCamera.GetComponent<ZoomOut>().ZoomStart();
             // オープニングカメラのズームアウト機能をONにする
             Debug.LogWarning("待機だよ");
-        }
+		}
     }
 }

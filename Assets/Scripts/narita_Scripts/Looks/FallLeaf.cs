@@ -41,11 +41,11 @@ public class FallLeaf : Looks
             looksObject.transform.position += new Vector3(0.0f, -0.2f, 0.0f); // Random.Range(0.5f,-1.5f)
 
 			// âÊñ â∫Ç…Ç¢Ç¡ÇΩÇÁè¡Ç∑
-            if (looksObject.transform.position.y < deletePosY)
-            {
-                looksObjects.Remove(looksObject);
-                Destroy(looksObject);
-            }
+            //if (looksObject.transform.position.y < deletePosY)
+            //{
+            //    looksObjects.Remove(looksObject);
+            //    Destroy(looksObject);
+            //}
         }
     }
 

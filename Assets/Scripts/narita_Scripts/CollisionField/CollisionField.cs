@@ -23,19 +23,14 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
     // ３枚の場合は2に設定
     // ４枚の場合は3に設定
     public int MaxLayerNum = 2;
-
-
     // 実際のあたり判定を行っているシーンのカメラ
     private string cameraName = "SubCamera0";
-
     // ステージ(紙)情報
     [SerializeField] private List<StageBlock>[] StageInfo;
     // メインカメラで見えている部分のあたり判定のリスト
     [SerializeField] private List<GameObject> CollisionGrid = new List<GameObject>();
     [SerializeField] private List<int> layerList = new List<int>();
     List<int> LayerList{ get { return this.layerList; } }
-    
-
     // グリッドの幅、高さ、数
     public GameObject MainGrid;
     private float gridSizeX;
@@ -45,8 +40,7 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
     // 描画開始位置
     private Vector2 StartPoint;
 
-    [SerializeField] private List<GameObject> storeObject = new List<GameObject>();
-
+    // 初期化
     void Start()
     {
         StageInfo = new List<StageBlock>[MaxLayerNum + 1];
@@ -66,14 +60,14 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
     }
 
 
-    // StageGrid.csのステージ（紙）情報を追加
+    // その紙のあたり判定を登録する
     public void AddStageInfo(int layer, List<StageBlock> stage)
     {
         StageInfo[layer] = stage;
     }
 
 
-    // StageGrid.csの情報を元にあたり判定を構築する
+    /***** 1枚目のあたり判定オブジェクトを生成 *****/
     public void SetStage(int layer)
     {
         // 引数の番号のステージ(紙)情報
@@ -102,18 +96,17 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                     continue;
                 }
 
-
                 //スクリプトでオブジェクトを追加する
                 GameObject mass = CreateCollisionObject(
-                    "Grid_No." + nNameCnt + ":" + x,    // 名前
-                    new Vector3(
-                        StartPoint.x + (gridSizeX * x), // 座標
-                        StartPoint.y - (gridSizeY * y),
-                        transform.position.z),
-                    Vector3.zero,
-                    _stageGrid[(y * gridNumX) + x].tag, // タグ
-                    Cameraobj                           // 親オブジェクト
-                    );
+                "Grid_No." + nNameCnt + ":" + x,    // 名前
+                new Vector3(
+                    StartPoint.x + (gridSizeX * x), // 座標
+                    StartPoint.y - (gridSizeY * y),
+                    transform.position.z),
+                Vector3.zero,
+                _stageGrid[(y * gridNumX) + x].tag, // タグ
+                Cameraobj                           // 親オブジェクト
+                );
 
                 mass.transform.localScale = new Vector3(gridSizeX, gridSizeY , 1.0f);
 
@@ -122,16 +115,21 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
 
                 if (CollisionGrid[(y * gridNumX) + x].tag == "enemy")
                 {
-                    Enemy.AddEnemyFunction(CollisionGrid[(y * gridNumX) + x],
-                       _stageGrid[(y * gridNumX) + x].sourceObject.GetComponent<Enemy>());
+                    // エネミー機能を追加
+                    _stageGrid[(y * gridNumX) + x].sourceObject.GetComponent<Enemy>().Synchronous(CollisionGrid[(y * gridNumX) + x]);
 
+                    // コリジョンをトリガーに変更
                     CollisionGrid[(y * gridNumX) + x].GetComponent<BoxCollider>().isTrigger = true;
+
+                    // 親を変える
+                    CollisionGrid[(y * gridNumX) + x].transform.SetParent(_stageGrid[(y * gridNumX) + x].sourceObject.transform);
+
+                    // エネミーだった場合は生成はするがStagelayerは空にしておく
+                    CollisionGrid[(y * gridNumX) + x] = null;
                 }
 
                 debugCnt++;
             }
-
-
         }
 
         // 最初は1枚目なのでlayerを0にしておく
@@ -140,7 +138,7 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
     }
 
 
-    // 破った後に合わせてあたり判定リストを更新する
+    /***** 破った後に合わせてあたり判定リストを更新する *****/
     public void UpdateStage(List<bool> changes)
     {
         if(CollisionGrid.Count != changes.Count) { Debug.LogWarning("サイズが違います" + "   CollisionGrid" + CollisionGrid.Count + "changes" + changes.Count); return; }
@@ -169,7 +167,6 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                     // ある
                     if(CollisionGrid[objCount])
                     {
-
                         if (StageInfo[layerList[objCount] + 1][objCount].tag != "none")
                         {
                             // 次もある
@@ -177,10 +174,14 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                             CollisionGrid[objCount].tag = StageInfo[layerList[objCount] + 1][objCount].tag;
                             if (CollisionGrid[objCount].tag == "enemy")
                             {
-                                Enemy.AddEnemyFunction(CollisionGrid[objCount],
-                                    StageInfo[layerList[objCount] + 1][objCount].sourceObject.GetComponent<Enemy>());
-                                //CollisionGrid[objCount].AddComponent<Enemy>();
+                                StageInfo[layerList[objCount] + 1][objCount].sourceObject.GetComponent<Enemy>().Synchronous(CollisionGrid[objCount]);
+
                                 CollisionGrid[objCount].GetComponent<BoxCollider>().isTrigger = true;
+
+                                // 親を変える
+                                CollisionGrid[objCount].transform.SetParent(StageInfo[layerList[objCount] + 1][objCount].sourceObject.transform);
+
+                                CollisionGrid[objCount] = null;
                             }
 
                             // 次のレイヤーに更新
@@ -223,9 +224,8 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
 
                             if (CollisionGrid[objCount].tag == "enemy")
                             {
-                                Enemy.AddEnemyFunction(CollisionGrid[objCount],
-                                    StageInfo[layerList[objCount] + 1][objCount].sourceObject.GetComponent<Enemy>());
-                                //CollisionGrid[objCount].AddComponent<Enemy>();
+                                StageInfo[layerList[objCount] + 1][objCount].sourceObject.GetComponent<Enemy>().Synchronous(CollisionGrid[objCount]);
+
                                 CollisionGrid[objCount].GetComponent<BoxCollider>().isTrigger = true;
                             }
 
@@ -301,14 +301,6 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
         mass.name = name;
         //タグを付ける
         mass.tag = tag;
-
-        //if(tag == "enemy")
-        //{
-        //    // 何処のカメラのエネミーなのか → layerが0ならSubCamera1, 1ならSubCamera2
-        //
-        //
-        //    mass.AddComponent<Enemy>();
-        //}
 
         return mass;
     }

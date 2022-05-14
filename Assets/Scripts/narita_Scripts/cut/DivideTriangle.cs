@@ -759,10 +759,8 @@ public class DivideTriangle : MonoBehaviour
 
         if (width1 * height1 < width2 * height2)
         {
-            // obj1を飛ばして消す
-            //var move = obj1.AddComponent<PaperMove>();
-            // 飛ばす方向
-            //move.SetDirection(pos1 - pos2);
+            // obj1を消す
+
             // タグの変更（廃棄する紙）
             obj1.tag = "waste";
             // 数秒後にデリート

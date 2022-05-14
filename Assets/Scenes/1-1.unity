@@ -4915,7 +4915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75e650abf3db45c4daa3c75ade2d6752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxLayerNum: 2
+  MaxLayerNum: 3
   CollisionGrid: []
   layerList: 
   MainGrid: {fileID: 0}

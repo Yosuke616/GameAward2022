@@ -119,7 +119,7 @@ public class TitleOption_Script : MonoBehaviour
                     TOFlg = true;
                     Debug.Log("ロゼッター");
                     GameObject obj = GameObject.Find("Main Camera");
-                    obj.GetComponent<Title_Scrupt>().SetTitleFlg(false);
+                    obj.GetComponent<Title_Button_Script>().SetTitleFlg(false);
                 }
             }
 
@@ -131,7 +131,7 @@ public class TitleOption_Script : MonoBehaviour
                 TOFlg = true;
                 Debug.Log("ロゼッター");
                 GameObject obj = GameObject.Find("Main Camera");
-                obj.GetComponent<Title_Scrupt>().SetTitleFlg(false);
+                obj.GetComponent<Title_Button_Script>().SetTitleFlg(false);
             }
         }
     }

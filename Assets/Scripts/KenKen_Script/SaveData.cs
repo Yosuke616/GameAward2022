@@ -1,9 +1,12 @@
 using System;
+using UnityEngine.UI;
+
 [Serializable]
 public class SaveData
 {
-    // セーブしたいもの
+    // セーブしたいもの---------------------------------------------------------------
     public int Progress;
-    public int[] Timer = new int[8];
+    public Text[] Timer = new Text[8];
     public int[] Star = new int[8];
+    //--------------------------------------------------------------------------------
 }

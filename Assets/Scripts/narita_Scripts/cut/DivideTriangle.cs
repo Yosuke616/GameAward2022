@@ -759,18 +759,17 @@ public class DivideTriangle : MonoBehaviour
 
         if (width1 * height1 < width2 * height2)
         {
-            // obj1を飛ばして消す
-            //var move = obj1.AddComponent<PaperMove>();
-            // 飛ばす方向
-            //move.SetDirection(pos1 - pos2);
+            // obj1を消す
+
             // タグの変更（廃棄する紙）
             obj1.tag = "waste";
             // 数秒後にデリート
             Destroy(obj1, 1.0f);
 
             // ステージの更新
-            CollisionField.Instance.UpdateStage(checkCollisionPoints(obj1, CollisionField.Instance.cellPoints()));
-
+            List<bool> chages = checkCollisionPoints(obj2, CollisionField.Instance.cellPoints());
+            CollisionField.Instance.UpdateMovingObjects(chages);
+            CollisionField.Instance.UpdateStage(chages);
 
             obj2.GetComponent<MeshRenderer>().materials = GetComponent<MeshRenderer>().materials;
 
@@ -822,7 +821,9 @@ public class DivideTriangle : MonoBehaviour
             Destroy(obj2, 1.0f);
 
             // ステージの更新
-            CollisionField.Instance.UpdateStage(checkCollisionPoints(obj2, CollisionField.Instance.cellPoints()));
+            List<bool> chages = checkCollisionPoints(obj2, CollisionField.Instance.cellPoints());
+            CollisionField.Instance.UpdateMovingObjects(chages);
+            CollisionField.Instance.UpdateStage(chages);
 
             var BreakPaper = obj2.AddComponent<BreakingPaper>();
             BreakPaper.SetMaterial(GameManager.Instance._mats[number - 1]);

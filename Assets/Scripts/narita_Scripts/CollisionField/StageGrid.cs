@@ -32,7 +32,7 @@ public class StageGrid : MonoBehaviour
     // 紙の番号
     public int layer = 0;
 
-    public float z = 0.0f;
+    //public float z = 0.0f;
 
     public GameObject MainGrid;
     //縦の数と横の数を設定する為の変数

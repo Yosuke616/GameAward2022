@@ -99,4 +99,15 @@ public class Enemy : MonoBehaviour
 
         enemyFunc.Synchronous(originalEnemy);
     }
+
+    // あたり判定オブジェクトと実際に見えているオブジェクトの座標を合わせる
+    public void Synchronous(GameObject gameObject)
+    {
+        Vector3 p;
+        if (state == 0) p = new Vector3(0, diff, 0);
+        // 左右移動
+        else p = new Vector3(-diff, 0, 0);
+
+        gameObject.transform.Translate(p);
+    }
 }

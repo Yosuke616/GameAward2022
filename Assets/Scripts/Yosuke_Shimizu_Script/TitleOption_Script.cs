@@ -24,6 +24,10 @@ public class TitleOption_Script : MonoBehaviour
 
     //このふらぐでこれが使えるかどうかを決める
     private bool TOFlg;
+    public GameObject Plate;
+
+    //フラグで見えるか見えないかを幡部ウする
+    public GameObject Option;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +48,8 @@ public class TitleOption_Script : MonoBehaviour
 
         TOFlg = true;
 
+        Option.SetActive(false);
+        Plate.SetActive(false);
     }
 
     // Update is called once per frame
@@ -79,9 +85,9 @@ public class TitleOption_Script : MonoBehaviour
             GameObject MasterText = GameObject.Find("MasterText");
             GameObject BGMText = GameObject.Find("BGMText");
             GameObject FEText = GameObject.Find("SEText");
-            MasterText.GetComponent<Text>().color = new Color(1f / 255f, 1f / 255f, 1f / 255f);
-            BGMText.GetComponent<Text>().color = new Color(1f / 255f, 1f / 255f, 1f / 255f);
-            FEText.GetComponent<Text>().color = new Color(1f / 255f, 1f / 255f, 1f / 255f);
+            MasterText.GetComponent<Text>().color = new Color(255f / 255f, 255f / 255f, 255f / 255f);
+            BGMText.GetComponent<Text>().color = new Color(255f / 255f, 255f / 255f, 255f / 255f);
+            FEText.GetComponent<Text>().color = new Color(255f / 255f, 255f / 255f, 255f / 255f);
             BackButton.GetComponentInChildren<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 
             //選ばれたら赤く変える
@@ -117,6 +123,8 @@ public class TitleOption_Script : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 1"))
                 {
                     TOFlg = true;
+                    Option.SetActive(false);
+                    Plate.SetActive(false);
                     Debug.Log("ロゼッター");
                     GameObject obj = GameObject.Find("Main Camera");
                     obj.GetComponent<Title_Button_Script>().SetTitleFlg(false);
@@ -208,6 +216,7 @@ public class TitleOption_Script : MonoBehaviour
     //タイトルのオプションフラグをセットするための関数
     public void SetTitleOption(bool TOflg) {
         TOFlg = TOflg;
+        
     }
 
 }

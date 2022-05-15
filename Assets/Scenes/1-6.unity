@@ -4404,7 +4404,7 @@ Transform:
   - {fileID: 1673335413}
   - {fileID: 1037887360}
   m_Father: {fileID: 1816303093}
-  m_RootOrder: 1
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &779362037
 MonoBehaviour:
@@ -4998,7 +4998,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1816303093}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &892677332
 MonoBehaviour:
@@ -5012,7 +5012,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75e650abf3db45c4daa3c75ade2d6752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxLayerNum: 2
+  MaxLayerNum: 3
   CollisionGrid: []
   layerList: 
   MainGrid: {fileID: 0}
@@ -5817,7 +5817,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1816303093}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1151191518
 MonoBehaviour:
@@ -6000,8 +6000,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   Grids: []
-  cameraName: SubCamera3
-  layer: 2
+  cameraName: SubCamera4
+  layer: 3
   z: 22
   MainGrid: {fileID: 0}
 --- !u!23 &1305051310
@@ -6385,7 +6385,7 @@ Transform:
   - {fileID: 348756516}
   - {fileID: 647348514}
   m_Father: {fileID: 1816303093}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1383243828
 MonoBehaviour:
@@ -6812,7 +6812,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4225847671156816718, guid: 716a4739cd0ed5744b1e6877fbbf7713, type: 3}
       propertyPath: _setScene.m_SceneName
-      value: SelectScene
+      value: StageSelect
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 716a4739cd0ed5744b1e6877fbbf7713, type: 3}
@@ -8618,7 +8618,7 @@ Transform:
   - {fileID: 1730328973}
   - {fileID: 774921323}
   m_Father: {fileID: 1816303093}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1784996353
 PrefabInstance:
@@ -8865,11 +8865,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 125752525}
-  - {fileID: 779362036}
   - {fileID: 1383243827}
   - {fileID: 892677331}
   - {fileID: 1741507867}
   - {fileID: 1151191517}
+  - {fileID: 779362036}
   - {fileID: 624711153}
   - {fileID: 807338277}
   - {fileID: 172987501}

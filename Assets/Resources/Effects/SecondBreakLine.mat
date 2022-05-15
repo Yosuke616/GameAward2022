@@ -19,6 +19,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: e92a00231b9747045939cf71dda31c9c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -33,8 +37,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - <noninit>: 0
-    - _BendAngle: 140
-    - _BendPivot: 75.49998
+    - _BendAngle: 220
+    - _BendPivot: 87.599915
     - _BendRadius: 0.01
     - _BendStrength: 1
     - _Offset: 0

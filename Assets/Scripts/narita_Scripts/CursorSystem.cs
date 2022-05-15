@@ -22,9 +22,9 @@ public class CursorSystem : MonoBehaviour
     // ゲームモード
     public enum GameState
     {
-        MODE_OPENING, // ウサギのシーン
-        MODE_ACTION, // 紙を破れるモード
-        MODE_TURN_PAGES, // めくるモード
+        MODE_OPENING,       // ウサギのシーン
+        MODE_ACTION,        // 紙を破れるモード
+        MODE_TURN_PAGES,    // めくるモード
     }
     [SerializeField] static private GameState gameState;
     static public void SetGameState(GameState state){ gameState = state; }
@@ -43,6 +43,7 @@ public class CursorSystem : MonoBehaviour
 
         // 最初はウサギのシーン
         gameState = GameState.MODE_OPENING;
+        gameState = GameState.MODE_ACTION;
 
         if(GameObject.Find("Rabbit") == null)
         {

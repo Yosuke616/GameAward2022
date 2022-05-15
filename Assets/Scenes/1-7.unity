@@ -6178,8 +6178,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   Grids: []
-  cameraName: SubCamera3
-  layer: 2
+  cameraName: SubCamera4
+  layer: 3
   z: 22
   MainGrid: {fileID: 0}
 --- !u!23 &1112608960
@@ -8289,7 +8289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75e650abf3db45c4daa3c75ade2d6752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxLayerNum: 2
+  MaxLayerNum: 3
   CollisionGrid: []
   layerList: 
   MainGrid: {fileID: 0}
@@ -9482,7 +9482,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4225847671156816718, guid: 716a4739cd0ed5744b1e6877fbbf7713, type: 3}
       propertyPath: _setScene.m_SceneName
-      value: SelectScene
+      value: StageSelect
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 716a4739cd0ed5744b1e6877fbbf7713, type: 3}

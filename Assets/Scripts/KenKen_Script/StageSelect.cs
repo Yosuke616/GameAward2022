@@ -6,25 +6,17 @@ using UnityEngine.SceneManagement;  // シーン遷移用
 
 public class StageSelect : MonoBehaviour
 {
-    //================================================================================
-    // 他のスクリプトに出張する変数
-    //================================================================================
-    // 現在の進捗
-    public static int ProgressStages = 7;
+    // 他のスクリプトに出張する変数---------------------------------------------------
+    public static int ProgressStages = 7;       // 現在の進捗
+    public static bool bBackSelect = false;     // セレクトに帰ってきた時用フラグ
+    public static bool bClearStage = false;     // クリアしてきたフラグ
+    //--------------------------------------------------------------------------------
 
-    // セレクトに帰ってきた時用フラグ
-    public static bool bBackSelect = false;
-
-    // クリアしてきたフラグ
-    public static bool bClearStage = false;
-    //================================================================================
-
-
-    //================================================================================
-    // パブリックでのパネル移動に関する設定
-    //================================================================================
-    // パネル移動時のスピード
-    public float Speed;
+    
+    // パブリックでのパネル移動に関する設定-------------------------------------------
+    public Camera MainCam;       // メインカメラ取得
+    public Vector3 TargetPos;    // カメラ移動位置
+    public float Speed;          // パネル移動時のスピード
 
     // パネル移動制御
     public float Range_X;
@@ -35,14 +27,11 @@ public class StageSelect : MonoBehaviour
     private float Move_X = 0;
     private float Move_Y = 0;
     private float Move_Z = 0;
-    //================================================================================
+    //--------------------------------------------------------------------------------
 
 
-    //================================================================================
-    // スクリプト内での変数
-    //================================================================================
-    // パネル状態
-    enum PANEL_STATE
+    // スクリプト内での変数-----------------------------------------------------------
+    enum PANEL_STATE    // パネル状態
     {
         LEFT,       // 左移動
         RIGHT,      // 右移動
@@ -50,30 +39,20 @@ public class StageSelect : MonoBehaviour
     }
     private PANEL_STATE PanelState = PANEL_STATE.NONE;
 
-    // 奥行調整用
-    private float Base_Z = 850;
+    private GameObject[] Stages;        // ステージパネル配列 
+    private GameObject InfoPanel;       // ステージ情報表示パネル
+    private Text StageNo;               // パネルのステージNo用
 
-    // 左パネル枚数
-    private float LeftPanel = 0;
+    private float Base_Z = 850;         // パネル奥行調整用    
+    private float LeftPanel = 0;        // 左パネル枚数
+    private float RightPanel = 7;       // 右パネル枚数
 
-    // 右パネル枚数
-    private float RightPanel = 7;
-   
-    // ステージパネル配列
-    private GameObject[] Stages;
+    private bool CamZoom = false;       // カメラ移動フラグ
+    private float zoomSpeed = 0.05f;    // カメラ移動速度   
 
-    // ステージ情報表示パネル
-    private GameObject InfoPanel;
-
-    // パネルのステージNo用
-    private Text StageNo;
-
-    // 現在選択
-    private int Select = 0;
-
-    // ループ用変数
-    private int i;
-    //================================================================================
+    private int Select = 0;             // 現在選択       
+    private int i;                      // ループ用変数    
+    //--------------------------------------------------------------------------------
 
 
     // Start is called before the first frame update
@@ -95,18 +74,17 @@ public class StageSelect : MonoBehaviour
         // ステージ情報パネル取得
         InfoPanel = GameObject.Find("StageInfoPanel");
         StageNo = GameObject.Find("Canvas").transform.Find("StageInfoPanel/StageNo").GetComponent<Text>(); ;
-        InfoPanel.SetActive(true);
     }
+
 
     // Update is called once per frame
     void Update()
     {
-        //================================================================================
-        // ステージからセレクトに戻ってきたときの画面調整
+        // ステージからセレクトに戻ってきたときの画面調整---------------------------------
         if (bBackSelect)
         {
-            // クリアしたステージ分のパネルを左側に移動させる
-            for (i = 0; i < ProgressStages; i++)
+            // 今クリアしたもの以外のパネルを右側に移動させる
+            for (i = 0; i < ProgressStages - 1; i++)
             {
                 Stages[i].transform.position = new Vector3(-Range_X,
                                                            Range_Y,
@@ -117,11 +95,11 @@ public class StageSelect : MonoBehaviour
                 Select++;
             }
 
-            // 次挑戦するクリアしていないステージを真ん中に
+            // クリアしたステージを真ん中に
             Stages[i].transform.position = new Vector3(0, 0, 450);
 
             // クリアしてきた時に演出を出す・・・？
-            if(bClearStage)
+            if (bClearStage)
             {
 
                 bClearStage = false;
@@ -129,15 +107,14 @@ public class StageSelect : MonoBehaviour
 
             bBackSelect = false;
         }
-        //================================================================================
+        //--------------------------------------------------------------------------------
 
 
-        //================================================================================
-        // ステージ選択
+        // ステージ選択-------------------------------------------------------------------
         if (PanelState == PANEL_STATE.NONE)
         {
             // ←画面移動
-            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") > 0) 
+            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") > 0)
             {
                 if (Select < ProgressStages)
                 {
@@ -156,11 +133,10 @@ public class StageSelect : MonoBehaviour
                 }
             }
         }
-        //================================================================================
+        //--------------------------------------------------------------------------------
 
 
-        //================================================================================
-        // パネル移動
+        // パネル移動---------------------------------------------------------------------
         switch (PanelState)
         {
             case PANEL_STATE.LEFT:
@@ -244,67 +220,91 @@ public class StageSelect : MonoBehaviour
                 StageNo.text = "Stage　" + Select.ToString();
                 break;
         }
-        //================================================================================
+        //--------------------------------------------------------------------------------
 
 
-        //================================================================================
-        // ステージ移行
+        // カメラ移動(ステージ移行)-------------------------------------------------------
         if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
         {
-            // セレクトに戻った時用のフラグON
-            bBackSelect = true;
+            // カメラ移動フラグON
+            CamZoom = true;
+        }
 
-            switch (Select)
+        // ステージ移動
+        if (CamZoom)
+        {
+            // 距離の差を計算
+            float diffX = TargetPos.x - MainCam.transform.position.x;
+            float diffY = TargetPos.y - MainCam.transform.position.y;
+            float diffZ = TargetPos.z - MainCam.transform.position.z;
+
+            // 移動量計算
+            Vector3 moveValue = new Vector3(diffX, diffY, diffZ) * zoomSpeed;
+
+            // 移動
+            MainCam.transform.Translate(moveValue);
+
+            // ズームが終了したら
+            if (diffX < 0.001f && diffY < 0.001f && diffZ < 0.001f)
             {
-                case 0:
-                    //SceneManager.LoadScene("1-1");
-                    FadeManager.Instance.FadeStart("1-1");
-                    break;
+                CamZoom = false;
 
-                case 1:
-                    //SceneManager.LoadScene("1-2");
-                    FadeManager.Instance.FadeStart("1-2");
-                    break;
+                // ステージ情報表示無し
+                InfoPanel.SetActive(false);
 
-                case 2:
-                    //SceneManager.LoadScene("1-3");
-                    FadeManager.Instance.FadeStart("1-3");
-                    break;
+                switch (Select)
+                {
+                    case 0:
+                        //SceneManager.LoadScene("1-1");
+                        FadeManager.Instance.FadeStart("1-1");
+                        break;
 
-                case 3:
-                    //SceneManager.LoadScene("1-4");
-                    FadeManager.Instance.FadeStart("1-4");
-                    break;
+                    case 1:
+                        //SceneManager.LoadScene("1-2");
+                        FadeManager.Instance.FadeStart("1-2");
+                        break;
 
-                case 4:
-                    //SceneManager.LoadScene("1-5");
-                    FadeManager.Instance.FadeStart("1-5");
-                    break;
+                    case 2:
+                        //SceneManager.LoadScene("1-3");
+                        FadeManager.Instance.FadeStart("1-3");
+                        break;
 
-                case 5:
-                    //SceneManager.LoadScene("1-6");
-                    FadeManager.Instance.FadeStart("1-6");
-                    break;
+                    case 3:
+                        //SceneManager.LoadScene("1-4");
+                        FadeManager.Instance.FadeStart("1-4");
+                        break;
 
-                case 6:
-                    //SceneManager.LoadScene("1-7");
-                    FadeManager.Instance.FadeStart("1-7");
-                    break;
+                    case 4:
+                        //SceneManager.LoadScene("1-5");
+                        FadeManager.Instance.FadeStart("1-5");
+                        break;
 
-                case 7:
-                    //SceneManager.LoadScene("1-8");
-                    FadeManager.Instance.FadeStart("1-8");
-                    break;
+                    case 5:
+                        //SceneManager.LoadScene("1-6");
+                        FadeManager.Instance.FadeStart("1-6");
+                        break;
+
+                    case 6:
+                        //SceneManager.LoadScene("1-7");
+                        FadeManager.Instance.FadeStart("1-7");
+                        break;
+
+                    case 7:
+                        //SceneManager.LoadScene("1-8");
+                        FadeManager.Instance.FadeStart("1-8");
+                        break;
+
+                }
             }
         }
-        //================================================================================
+        //--------------------------------------------------------------------------------
     }
 
 
-    //================================================================================
-    // ステージクリア時に進捗保存関数
+    // ステージクリア時に進捗保存関数-------------------------------------------------
     public static void UpdateProgress(string name)
     {
+        int OldProgress = ProgressStages;
         if (name == "1-1") 
         {
             if (ProgressStages <= 1)
@@ -353,13 +353,14 @@ public class StageSelect : MonoBehaviour
                 ProgressStages = 7;
         }
 
-        bClearStage = true;
+        // セレクトに戻った時用のフラグON
+        bBackSelect = true;
 
-        //if (name == "1-8")
-        //{
-        //    if (ProgressStages <= 8)
-        //        ProgressStages = 8;
-        //}
+        if (OldProgress != ProgressStages)
+        {
+            // クリアしたフラグON
+            bClearStage = true;
+        }
     }
-    //================================================================================
+    //--------------------------------------------------------------------------------
 }

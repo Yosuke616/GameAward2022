@@ -12,7 +12,7 @@ public class SaveLoad : MonoBehaviour
     private static string PATH;
 
     //セーブしたいクラス or 構造体　をインスタンス化
-    private static SaveData saveData = new SaveData();
+    public static SaveData saveData = new SaveData();
     //--------------------------------------------------------------------------------
 
 
@@ -20,7 +20,26 @@ public class SaveLoad : MonoBehaviour
     {
         // セーブする場所と名前
         PATH = Application.dataPath + "/SaveData/" + "hogehoge.json";
+
+        // テスト用
+        InitSaveData();
     }
+
+
+    // データ初期化関数---------------------------------------------------------------
+    public static void InitSaveData()
+    {
+        saveData.Progress = 0;
+        for (int i = 0; i < 8; i++)
+        {
+            saveData.Timer[i] = "9999";
+            saveData.Star[i] = 0;
+        }
+
+        // セーブ
+        SaveSystem.Save(saveData, PATH);
+    }
+    //--------------------------------------------------------------------------------
 
 
     // ステージ毎のセーブ関数---------------------------------------------------------
@@ -46,9 +65,9 @@ public class SaveLoad : MonoBehaviour
 
         // タイマー更新確認
         int newTime = Convert.ToInt32(time);                         // タイマーテキストを数字に変換
-        int bestTime = Convert.ToInt32(saveData.Timer[Select].text);
+        int bestTime = Convert.ToInt32(saveData.Timer[Select]);
         if (bestTime > newTime)
-            saveData.Timer[Select].text = time;
+            saveData.Timer[Select] = time;
 
         // 獲得★確認
         if (saveData.Star[Select] < star)
@@ -71,11 +90,11 @@ public class SaveLoad : MonoBehaviour
 
         for (int i = 0; i < 8; i++)
         {
-            int BestTime = Convert.ToInt32(saveData.Timer[i].text);
-            int NewTime = Convert.ToInt32(data.Timer[i].text);
+            int BestTime = Convert.ToInt32(saveData.Timer[i]);
+            int NewTime = Convert.ToInt32(data.Timer[i]);
             if(BestTime > NewTime)
             {
-                saveData.Timer[i].text = data.Timer[i].text;
+                saveData.Timer[i] = data.Timer[i];
             }
 
             if (saveData.Star[i] < data.Star[i])
@@ -89,11 +108,10 @@ public class SaveLoad : MonoBehaviour
 
     
     // データロード関数---------------------------------------------------------------
-    // SaveData型でデータを返す
-    public static SaveData LoadData()
+    public static void LoadData()
     {
         var Data = JsonUtility.FromJson<SaveData>(SaveSystem.Load(PATH));
-        return saveData;
+        saveData = Data;
     }
     //--------------------------------------------------------------------------------
 }

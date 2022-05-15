@@ -6,31 +6,17 @@ using UnityEngine.SceneManagement;  // シーン遷移用
 
 public class StageSelect : MonoBehaviour
 {
-    //================================================================================
-    // 他のスクリプトに出張する変数
-    //================================================================================
-    // 現在の進捗
-    public static int ProgressStages = 7;
+    // 他のスクリプトに出張する変数---------------------------------------------------
+    public static int ProgressStages = 7;       // 現在の進捗
+    public static bool bBackSelect = false;     // セレクトに帰ってきた時用フラグ
+    public static bool bClearStage = false;     // クリアしてきたフラグ
+    //--------------------------------------------------------------------------------
 
-    // セレクトに帰ってきた時用フラグ
-    public static bool bBackSelect = false;
-
-    // クリアしてきたフラグ
-    public static bool bClearStage = false;
-    //================================================================================
-
-
-    //================================================================================
-    // パブリックでのパネル移動に関する設定
-    //================================================================================
-    // メインカメラ取得
-    public Camera MainCam;
-
-    // カメラ移動位置
-    public Vector3 TargetPos;
-
-    // パネル移動時のスピード
-    public float Speed;
+    
+    // パブリックでのパネル移動に関する設定-------------------------------------------
+    public Camera MainCam;       // メインカメラ取得
+    public Vector3 TargetPos;    // カメラ移動位置
+    public float Speed;          // パネル移動時のスピード
 
     // パネル移動制御
     public float Range_X;
@@ -41,14 +27,11 @@ public class StageSelect : MonoBehaviour
     private float Move_X = 0;
     private float Move_Y = 0;
     private float Move_Z = 0;
-    //================================================================================
+    //--------------------------------------------------------------------------------
 
 
-    //================================================================================
-    // スクリプト内での変数
-    //================================================================================
-    // パネル状態
-    enum PANEL_STATE
+    // スクリプト内での変数-----------------------------------------------------------
+    enum PANEL_STATE    // パネル状態
     {
         LEFT,       // 左移動
         RIGHT,      // 右移動
@@ -56,36 +39,20 @@ public class StageSelect : MonoBehaviour
     }
     private PANEL_STATE PanelState = PANEL_STATE.NONE;
 
-    // 奥行調整用
-    private float Base_Z = 850;
+    private GameObject[] Stages;        // ステージパネル配列 
+    private GameObject InfoPanel;       // ステージ情報表示パネル
+    private Text StageNo;               // パネルのステージNo用
 
-    // 左パネル枚数
-    private float LeftPanel = 0;
+    private float Base_Z = 850;         // パネル奥行調整用    
+    private float LeftPanel = 0;        // 左パネル枚数
+    private float RightPanel = 7;       // 右パネル枚数
 
-    // 右パネル枚数
-    private float RightPanel = 7;
-   
-    // ステージパネル配列
-    private GameObject[] Stages;
+    private bool CamZoom = false;       // カメラ移動フラグ
+    private float zoomSpeed = 0.05f;    // カメラ移動速度   
 
-    // ステージ情報表示パネル
-    private GameObject InfoPanel;
-
-    // パネルのステージNo用
-    private Text StageNo;
-
-    // 現在選択
-    private int Select = 0;
-
-    // ループ用変数
-    private int i;
-
-    // カメラ移動フラグ
-    private bool CamZoom = false;
-
-    // カメラ移動速度
-    private float zoomSpeed = 0.05f;
-    //================================================================================
+    private int Select = 0;             // 現在選択       
+    private int i;                      // ループ用変数    
+    //--------------------------------------------------------------------------------
 
 
     // Start is called before the first frame update
@@ -107,18 +74,17 @@ public class StageSelect : MonoBehaviour
         // ステージ情報パネル取得
         InfoPanel = GameObject.Find("StageInfoPanel");
         StageNo = GameObject.Find("Canvas").transform.Find("StageInfoPanel/StageNo").GetComponent<Text>(); ;
-        //InfoPanel.SetActive(true);
     }
+
 
     // Update is called once per frame
     void Update()
     {
-        //================================================================================
-        // ステージからセレクトに戻ってきたときの画面調整
+        // ステージからセレクトに戻ってきたときの画面調整---------------------------------
         if (bBackSelect)
         {
-            // クリアしたステージ分のパネルを左側に移動させる
-            for (i = 0; i < ProgressStages; i++)
+            // 今クリアしたもの以外のパネルを右側に移動させる
+            for (i = 0; i < ProgressStages - 1; i++)
             {
                 Stages[i].transform.position = new Vector3(-Range_X,
                                                            Range_Y,
@@ -129,7 +95,7 @@ public class StageSelect : MonoBehaviour
                 Select++;
             }
 
-            // 次挑戦するクリアしていないステージを真ん中に
+            // クリアしたステージを真ん中に
             Stages[i].transform.position = new Vector3(0, 0, 450);
 
             // クリアしてきた時に演出を出す・・・？
@@ -141,11 +107,10 @@ public class StageSelect : MonoBehaviour
 
             bBackSelect = false;
         }
-        //================================================================================
+        //--------------------------------------------------------------------------------
 
 
-        //================================================================================
-        // ステージ選択
+        // ステージ選択-------------------------------------------------------------------
         if (PanelState == PANEL_STATE.NONE)
         {
             // ←画面移動
@@ -168,11 +133,10 @@ public class StageSelect : MonoBehaviour
                 }
             }
         }
-        //================================================================================
+        //--------------------------------------------------------------------------------
 
 
-        //================================================================================
-        // パネル移動
+        // パネル移動---------------------------------------------------------------------
         switch (PanelState)
         {
             case PANEL_STATE.LEFT:
@@ -256,19 +220,16 @@ public class StageSelect : MonoBehaviour
                 StageNo.text = "Stage　" + Select.ToString();
                 break;
         }
-        //================================================================================
+        //--------------------------------------------------------------------------------
 
 
-        //================================================================================
-        // カメラ移動
+        // カメラ移動(ステージ移行)-------------------------------------------------------
         if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
         {
             // カメラ移動フラグON
             CamZoom = true;
         }
-        //================================================================================
 
-        //================================================================================
         // ステージ移動
         if (CamZoom)
         {
@@ -336,11 +297,11 @@ public class StageSelect : MonoBehaviour
                 }
             }
         }
+        //--------------------------------------------------------------------------------
     }
 
 
-    //================================================================================
-    // ステージクリア時に進捗保存関数
+    // ステージクリア時に進捗保存関数-------------------------------------------------
     public static void UpdateProgress(string name)
     {
         int OldProgress = ProgressStages;
@@ -401,5 +362,5 @@ public class StageSelect : MonoBehaviour
             bClearStage = true;
         }
     }
-    //================================================================================
+    //--------------------------------------------------------------------------------
 }

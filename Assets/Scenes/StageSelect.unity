@@ -3415,7 +3415,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MainCam: {fileID: 1538329705}
   TargetPos: {x: 0, y: 0, z: 250}
-  Speed: 5
+  Speed: 3
   Range_X: 800
   Range_Y: 250
   Range_Z: 400

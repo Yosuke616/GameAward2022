@@ -99,9 +99,18 @@ public class StageSelect : MonoBehaviour
         if (bLoad == false)
         {
             SaveLoad.LoadData();
+            ProgressStages = SaveLoad.saveData.Progress;
             bLoad = true;
         }
         //--------------------------------------------------------------------------------
+
+
+        // テスト用
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            SaveLoad.TestSaveLoad();
+            ProgressStages = SaveLoad.saveData.Progress;
+        }
 
 
         // ステージからセレクトに戻ってきたときの画面調整---------------------------------
@@ -143,6 +152,11 @@ public class StageSelect : MonoBehaviour
                 if (Select < ProgressStages)
                 {
                     PanelState = PANEL_STATE.LEFT;
+
+                    // 妖精さん左
+                    FairyMoveSelect.MoveChange(FairyMoveSelect.FAIRY_STATE.LEFT);
+
+                    // ステージ情報見えないように
                     InfoPanel.SetActive(false);
                 }
             }
@@ -153,6 +167,11 @@ public class StageSelect : MonoBehaviour
                 if (Select > 0)
                 {
                     PanelState = PANEL_STATE.RIGHT;
+
+                    // 妖精さん右
+                    FairyMoveSelect.MoveChange(FairyMoveSelect.FAIRY_STATE.RIGHT);
+
+                    // ステージ情報見えないように
                     InfoPanel.SetActive(false);
                 }
             }
@@ -164,6 +183,7 @@ public class StageSelect : MonoBehaviour
         switch (PanelState)
         {
             case PANEL_STATE.LEFT:
+                // パネル左移動------------------------------------------------------------------
                 if (Move_X < Range_X)
                 {
                     Stages[Select].transform.position -= new Vector3(Speed, 0, 0);
@@ -199,8 +219,11 @@ public class StageSelect : MonoBehaviour
                     Select++;
                 }
                 break;
+                //--------------------------------------------------------------------------------
+
 
             case PANEL_STATE.RIGHT:
+                // パネル右移動-------------------------------------------------------------------
                 if (Move_X < Range_X)
                 {
                     Stages[Select].transform.position += new Vector3(Speed, 0, 0);
@@ -237,8 +260,15 @@ public class StageSelect : MonoBehaviour
                     Select--;
                 }
                 break;
+                //--------------------------------------------------------------------------------
+
 
             case PANEL_STATE.NONE:
+                // 通常時-------------------------------------------------------------------------
+                // 妖精さん落ち着き
+                if(!CamZoom)
+                FairyMoveSelect.MoveChange(FairyMoveSelect.FAIRY_STATE.NONE);
+
                 // 背景変更
                 ChangeBG.ChangeBg(Select);
 
@@ -256,6 +286,7 @@ public class StageSelect : MonoBehaviour
                     star[i].enabled = false;
                 }
                 break;
+                //--------------------------------------------------------------------------------
         }
         //--------------------------------------------------------------------------------
 

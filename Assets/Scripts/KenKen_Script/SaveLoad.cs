@@ -25,6 +25,24 @@ public class SaveLoad : MonoBehaviour
         InitSaveData();
     }
 
+    // テスト関数--------------------------------------------------------------------
+    public static void TestSaveLoad()
+    {
+        saveData.Progress = 7;
+        for (int i = 0; i < 8; i++)
+        {
+            saveData.Timer[i] = "1234";
+            saveData.Star[i] = 2;
+        }
+        // セーブ
+        SaveSystem.Save(saveData, PATH);
+
+        var Data = JsonUtility.FromJson<SaveData>(SaveSystem.Load(PATH));
+        saveData = Data;
+
+    }
+    //--------------------------------------------------------------------------------
+
 
     // データ初期化関数---------------------------------------------------------------
     public static void InitSaveData()

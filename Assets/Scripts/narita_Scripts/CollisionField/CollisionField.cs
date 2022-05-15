@@ -251,7 +251,52 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
         }
      }
 
-    
+    /***** 破った後に合わせて動いているオブジェクトのあたり判定を更新する *****/
+    public void UpdateMovingObjects(List<bool> changes)
+    {
+        // マスの横・縦の数
+        float gridSizeX = CreateGridScript.gridSizeX;
+        float gridSizeY = CreateGridScript.gridSizeY;
+        int gridNumX = CreateGridScript.horizon;
+        int gridNumY = CreateGridScript.virtical;
+        
+        Vector2 start;
+        // rayを飛ばす座標
+        start.x = -gridSizeX * gridNumX / 2.0f + (gridSizeX * 0.5f);
+        start.y = gridSizeY * gridNumY / 2.0f - (gridSizeY * 0.5f);
+        
+        
+        // カメラを見つける
+        GameObject cameraObj = GameObject.Find(cameraName);
+
+        int massCounter = 0;
+        for (int y = 0; y < gridNumY; y++)
+            for (int x = 0; x < gridNumX; x++)
+            {
+                // 紙の破れていないところにはレイを飛ばさない
+                if (changes[massCounter] == false)
+                {
+                    massCounter++;
+                    continue;
+                }
+
+                RaycastHit hit;
+                if (Physics.Raycast(cameraObj.transform.position, new Vector3(start.x + (gridSizeX * x), start.y - (gridSizeY * y), 22.0f), out hit))
+                {
+                    // 動いている敵だった場合
+                    if(hit.collider.gameObject.tag == "enemy")
+                    {
+                        // オブジェクトを消す
+                        Destroy(hit.collider.gameObject);
+
+                        //Debug.DrawRay(cameraObj.transform.position, new Vector3(start.x + (gridSizeX * x), start.y - (gridSizeY * y), 22.0f));
+                        //Debug.LogError("");
+                    }
+                }
+
+                massCounter++;
+            }
+    }
 
     // 紙のグリッドのすべてのマスの中心座標をリストにして返す
     // 順番は左上から右下

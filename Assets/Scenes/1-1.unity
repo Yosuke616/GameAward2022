@@ -1565,6 +1565,7 @@ GameObject:
   - component: {fileID: 343564548}
   - component: {fileID: 343564547}
   - component: {fileID: 343564546}
+  - component: {fileID: 343564552}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: enemy
@@ -1678,6 +1679,19 @@ Transform:
   m_Father: {fileID: 672618386}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &343564552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 343564545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4010afb6e27e1ff419274a9b1199f5ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lowerLimitNum: 15
 --- !u!1 &355971731
 GameObject:
   m_ObjectHideFlags: 0
@@ -1769,7 +1783,6 @@ MonoBehaviour:
   Grids: []
   cameraName: SubCamera3
   layer: 2
-  z: 0
   MainGrid: {fileID: 0}
 --- !u!23 &413881293
 MeshRenderer:
@@ -3000,6 +3013,7 @@ GameObject:
   - component: {fileID: 714958027}
   - component: {fileID: 714958026}
   - component: {fileID: 714958025}
+  - component: {fileID: 714958030}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: enemy
@@ -3113,6 +3127,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 714958023}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &714958030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 714958023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4010afb6e27e1ff419274a9b1199f5ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lowerLimitNum: 15
 --- !u!1 &716403517
 GameObject:
   m_ObjectHideFlags: 0
@@ -3991,7 +4018,6 @@ MonoBehaviour:
   Grids: []
   cameraName: SubCamera1
   layer: 0
-  z: 0
   MainGrid: {fileID: 0}
 --- !u!114 &876648682 stripped
 MonoBehaviour:
@@ -4919,7 +4945,6 @@ MonoBehaviour:
   CollisionGrid: []
   layerList: 
   MainGrid: {fileID: 0}
-  storeObject: []
 --- !u!1001 &1090121357
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7817,7 +7842,6 @@ MonoBehaviour:
   Grids: []
   cameraName: SubCamera2
   layer: 1
-  z: 0
   MainGrid: {fileID: 0}
 --- !u!23 &1601096172
 MeshRenderer:
@@ -9686,6 +9710,10 @@ PrefabInstance:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 157293216}
+    - target: {fileID: 8412117440360662281, guid: 741666eb38811274182813959f2fa9c1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8412117440709944361, guid: 741666eb38811274182813959f2fa9c1, type: 3}
       propertyPath: m_RootOrder
       value: 14

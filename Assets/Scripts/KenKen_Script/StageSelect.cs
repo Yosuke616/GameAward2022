@@ -48,7 +48,7 @@ public class StageSelect : MonoBehaviour
     private float RightPanel = 7;       // 右パネル枚数
 
     private bool CamZoom = false;       // カメラ移動フラグ
-    private float zoomSpeed = 0.05f;    // カメラ移動速度   
+    private float zoomSpeed = 0.025f;    // カメラ移動速度   
 
     private int Select = 0;             // 現在選択       
     private int i;                      // ループ用変数    
@@ -215,6 +215,9 @@ public class StageSelect : MonoBehaviour
                 break;
 
             case PANEL_STATE.NONE:
+                // 背景変更
+                ChangeBG.ChangeBg(Select);
+
                 // ステージ情報表示
                 InfoPanel.SetActive(true);
                 StageNo.text = "Stage　" + Select.ToString();
@@ -228,6 +231,9 @@ public class StageSelect : MonoBehaviour
         {
             // カメラ移動フラグON
             CamZoom = true;
+
+            // 妖精さん真ん中に
+            FairyMoveSelect.MoveChange(FairyMoveSelect.FAIRY_STATE.CENTER);
         }
 
         // ステージ移動

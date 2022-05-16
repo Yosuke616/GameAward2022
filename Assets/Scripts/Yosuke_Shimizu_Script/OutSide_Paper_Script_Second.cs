@@ -90,29 +90,30 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
             //Old_Click_Pos = Input.mousePosition;
             //Old_Click_Pos.z = 10.0f;
             //var Pos2 = Camera.main.ScreenToWorldPoint(Old_Click_Pos);
-            
+
             //一回クリックされたらそこでカーソルは止まる
             if (!First_Flg)
             {
                 // 接続されているコントローラの名前を調べる
                 var controllerNames = Input.GetJoystickNames();
                 // 一台もコントローラが接続されていなければマウスで
-                if (controllerNames[0] == "")
+                if (controllerNames.Length == 0)
+                //if (controllerNames[0] == "")
                 {
+                    Cross_Pos = calcCrossPos_Mouse(Mouse_Pos, Paper_Center, OutLinePaper);
                     // マウス
-                    Cross_Pos = calcCrossPos_GamePad(Mouse_Pos, Paper_Center, OutLinePaper);
                 }
                 else
                 {
                     // ゲームパッド
-                    Cross_Pos = calcCrossPos_Mouse(Mouse_Pos, Paper_Center, OutLinePaper);
+                    Cross_Pos = calcCrossPos_GamePad(Mouse_Pos, Paper_Center, OutLinePaper);
                 }
-            
+
                 //カーソルをセットした座標に移動させる
                 this.transform.position = Cross_Pos;
-            
+
                 OutPaper_Pos = Cross_Pos;
-            
+
             }
             else
             {
@@ -130,7 +131,8 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
             }
             #endregion
         }
-        else {
+        else
+        {
             this.gameObject.SetActive(false);
         }
     }
@@ -192,16 +194,16 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
     {
         //コントローラーのやつ
         GameObject CTRL = GameObject.Find("CTRLCur");
-        
+
         Vector3 ctrl = CTRL.GetComponent<CTRLCur>().GetCTRLPos();
-        
+
         Vector2 mmm;
-        
+
         mmm.x = ctrl.x;
         mmm.y = ctrl.y;
-        
+
         Mouse = mmm;
-        
+
         Mouse *= 100;
 
         //最後に返すときのための2次元ベクトル
@@ -260,7 +262,8 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
     }
 
     //中に入ったカーソルの場所を送るための関数
-    public Vector3 GetCursorPoss_IN() {
+    public Vector3 GetCursorPoss_IN()
+    {
         return this.transform.position;
     }
 
@@ -283,7 +286,8 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
     }
 
     //一回目かどうかのフラグを送るための関数
-    public bool GetFirstFlg() {
+    public bool GetFirstFlg()
+    {
         return First_Flg;
     }
 

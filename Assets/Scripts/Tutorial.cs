@@ -32,7 +32,7 @@ public class Tutorial : MonoBehaviour
 		BGobjects.Add(TutorialPanel.transform.Find("BackGround7").gameObject);
 
 		var color = new Color(0.0f, 0.0f, 0.0f, 128.0f / 255.0f);
-		for(int i = 0; i < BGobjects.Count; i++)
+		for (int i = 0; i < BGobjects.Count; i++)
 		{
 			// ヒエラルキービュー上では、便宜上透明度を0.0fに設定しているので、元に戻す処理
 			BGobjects[i].GetComponent<Image>().color = color;
@@ -60,32 +60,27 @@ public class Tutorial : MonoBehaviour
 		}
 
 		// 次のページへ
-		if (Input.GetMouseButtonDown(0) && bStartTutorial == true)
+		if (Input.GetMouseButtonDown(0) && bStartTutorial == true && bEndTutorial == false)
 		{
-			if (bEndTutorial == false)
-			{
-				Debug.LogWarning($"Tuto:false[{nCnt}], true[{nCnt + 1}], nCnt+1[{BGobjects[nCnt + 1]}]");
-				BGobjects[nCnt].SetActive(false);
+			// 現在のページを非表示化する
+			BGobjects[nCnt].SetActive(false);
 
-				if (BGobjects[nCnt + 1] != null)
-				{
-					Debug.LogWarning($"Clicked[{nCnt + 1}]");
-					BGobjects[nCnt + 1].SetActive(true);
-					nCnt++;
-				}
-				else    // 説明中ではない時、切断操作を有効にする
-				{
-					nCnt++;
-					Debug.LogWarning($"Tuto:end[{bEndTutorial}]");
-					bEndTutorial = true;
-					cursor.SetActive(true);
-				}
+
+			// 現在の要素数がリストの要素数より小さいとき（説明中）の処理
+			if (nCnt + 1 < BGobjects.Count)
+			{
+				BGobjects[nCnt + 1].SetActive(true);
+				nCnt++;
 			}
+
+			// 説明中ではない時、切断操作を有効にする
 			else
 			{
-
+				Debug.LogWarning($"Tuto:end[{bEndTutorial}]");
+				bEndTutorial = true;
+				cursor.SetActive(true);
 			}
-		}
 
+		}
 	}
 }

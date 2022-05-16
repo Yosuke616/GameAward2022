@@ -31,6 +31,10 @@ public class Title_Button_Script : MonoBehaviour
 
     private bool first_Flg;
 
+    //オプションをつかえるようにする
+    public GameObject Option;
+    public GameObject Plate;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -264,6 +268,8 @@ public class Title_Button_Script : MonoBehaviour
         Debug.Log("ロゼッタ様抱いてー！");
 
         Titleflg = true;
+        Option.SetActive(true);
+        Plate.SetActive(true);
         GameObject obj = GameObject.Find("OptionTitle");
         obj.GetComponent<TitleOption_Script>().SetTitleOption(false);
     }

@@ -11,13 +11,10 @@ public class Tutorial : MonoBehaviour
 	private GameObject TutorialPanel;
 	private GameObject cursor;
 	private List<GameObject> BGobjects = new List<GameObject>();
-	//private GameObject BGobject1;
-	//private GameObject BGobject2;
-	//private GameObject BGobject3;
 
-	private int nCnt;
-	private bool bStartTutorial;
-	private bool bEndTutorial;
+	public int nCnt;
+	public bool bStartTutorial;
+	public bool bEndTutorial;
 
 	// Start is called before the first frame update
 	void Start()
@@ -25,6 +22,7 @@ public class Tutorial : MonoBehaviour
 		// 変数定義
 		TutorialPanel = GameObject.Find("TutorialPanel");
 		cursor = GameObject.Find("Folder").gameObject.transform.Find("cursor").gameObject;
+		BGobjects.Add(TutorialPanel.transform.Find("BackGround0").gameObject);
 		BGobjects.Add(TutorialPanel.transform.Find("BackGround1").gameObject);
 		BGobjects.Add(TutorialPanel.transform.Find("BackGround2").gameObject);
 		BGobjects.Add(TutorialPanel.transform.Find("BackGround3").gameObject);
@@ -32,7 +30,6 @@ public class Tutorial : MonoBehaviour
 		BGobjects.Add(TutorialPanel.transform.Find("BackGround5").gameObject);
 		BGobjects.Add(TutorialPanel.transform.Find("BackGround6").gameObject);
 		BGobjects.Add(TutorialPanel.transform.Find("BackGround7").gameObject);
-		BGobjects.Add(TutorialPanel.transform.Find("BackGround8").gameObject);
 
 		var color = new Color(0.0f, 0.0f, 0.0f, 128.0f / 255.0f);
 		for(int i = 0; i < BGobjects.Count; i++)
@@ -63,49 +60,32 @@ public class Tutorial : MonoBehaviour
 		}
 
 		// 次のページへ
-		if (Input.GetMouseButtonDown(0) && bEndTutorial == false)
+		if (Input.GetMouseButtonDown(0) && bStartTutorial == true)
 		{
-			Debug.LogWarning($"Tuto:false[{nCnt}], true[{nCnt + 1}]");
-			BGobjects[nCnt].SetActive(false);
-
-			if (BGobjects[nCnt + 1] != null)
+			if (bEndTutorial == false)
 			{
-				BGobjects[nCnt + 1].SetActive(true);
-				nCnt++;
+				Debug.LogWarning($"Tuto:false[{nCnt}], true[{nCnt + 1}], nCnt+1[{BGobjects[nCnt + 1]}]");
+				BGobjects[nCnt].SetActive(false);
+
+				if (BGobjects[nCnt + 1] != null)
+				{
+					Debug.LogWarning($"Clicked[{nCnt + 1}]");
+					BGobjects[nCnt + 1].SetActive(true);
+					nCnt++;
+				}
+				else    // 説明中ではない時、切断操作を有効にする
+				{
+					nCnt++;
+					Debug.LogWarning($"Tuto:end[{bEndTutorial}]");
+					bEndTutorial = true;
+					cursor.SetActive(true);
+				}
 			}
-			else	// 説明中ではない時、切断操作を有効にする
+			else
 			{
-				nCnt++;
-				Debug.LogWarning($"Tuto:end[{bEndTutorial}]");
-				bEndTutorial = true;
-				cursor.SetActive(true);
+
 			}
-
-
-			//// 1枚目→2枚目
-			//if (BGobject1.activeSelf == true)
-			//{
-			//	BGobject1.SetActive(false);
-			//	BGobject2.SetActive(true);
-			//}
-
-			//// 2枚目→3枚目
-			//else if (BGobject2.activeSelf == true)
-			//{
-			//	BGobject2.SetActive(false);
-			//	BGobject3.SetActive(true);
-			//}
-
-			//// 3枚目→n枚目
-			//else if (BGobject3.activeSelf == true)
-			//{
-			//	BGobject3.SetActive(false);
-			//}
 		}
 
-		//if (cursor.activeSelf == false && bEndTutorial == true)
-		//{
-		//	cursor.SetActive(true);
-		//}
 	}
 }

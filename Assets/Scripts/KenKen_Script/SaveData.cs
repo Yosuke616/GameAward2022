@@ -6,7 +6,7 @@ public class SaveData
 {
     // ÉZÅ[ÉuÇµÇΩÇ¢Ç‡ÇÃ---------------------------------------------------------------
     public int Progress;
-    public Text[] Timer = new Text[8];
+    public string[] Timer = new string[8];
     public int[] Star = new int[8];
     //--------------------------------------------------------------------------------
 }

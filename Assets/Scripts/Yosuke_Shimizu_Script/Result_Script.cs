@@ -105,8 +105,6 @@ public class Result_Script : MonoBehaviour
 
                 if (Camera.transform.position == targetPos)
                 {
-                    // ステージ進捗保存
-                    StageSelect.UpdateProgress(SceneManager.GetActiveScene().name);
 
                     if (tex && timerTex) tex.text = "クリアタイム:" + timerTex.text;
 

@@ -31,6 +31,8 @@ public class StageSelect : MonoBehaviour
 
 
     // スクリプト内での変数-----------------------------------------------------------
+    //private SaveData saveData;          // ステージ毎の情報取得用
+
     enum PANEL_STATE    // パネル状態
     {
         LEFT,       // 左移動
@@ -41,7 +43,9 @@ public class StageSelect : MonoBehaviour
 
     private GameObject[] Stages;        // ステージパネル配列 
     private GameObject InfoPanel;       // ステージ情報表示パネル
+    private Text TimerData;             // クリアタイム
     private Text StageNo;               // パネルのステージNo用
+    private Image[] star;               // ★表示用
 
     private float Base_Z = 850;         // パネル奥行調整用    
     private float LeftPanel = 0;        // 左パネル枚数
@@ -52,6 +56,8 @@ public class StageSelect : MonoBehaviour
 
     private int Select = 0;             // 現在選択       
     private int i;                      // ループ用変数    
+
+    private bool bLoad = false;         // セーブデータロード用
     //--------------------------------------------------------------------------------
 
 
@@ -68,18 +74,45 @@ public class StageSelect : MonoBehaviour
         GameObject Stage7 = GameObject.Find("1-7");
         GameObject Stage8 = GameObject.Find("1-8");
 
+        // ★部分取得
+        Image Star1 = GameObject.Find("Canvas").transform.Find("StageInfoPanel/Star1").GetComponent<Image>();
+        Image Star2 = GameObject.Find("Canvas").transform.Find("StageInfoPanel/Star2").GetComponent<Image>();
+        Image Star3 = GameObject.Find("Canvas").transform.Find("StageInfoPanel/Star3").GetComponent<Image>();
+
         // パネルを配列に
         Stages = new GameObject[] { Stage1, Stage2, Stage3, Stage4, Stage5, Stage6, Stage7, Stage8 };
 
+        // ★部分を配列に
+        star = new Image[] { Star1, Star2, Star3 };
+
         // ステージ情報パネル取得
         InfoPanel = GameObject.Find("StageInfoPanel");
-        StageNo = GameObject.Find("Canvas").transform.Find("StageInfoPanel/StageNo").GetComponent<Text>(); ;
+        TimerData = GameObject.Find("Canvas").transform.Find("StageInfoPanel/Timer").GetComponent<Text>();
+        StageNo = GameObject.Find("Canvas").transform.Find("StageInfoPanel/StageNo").GetComponent<Text>();
     }
 
 
     // Update is called once per frame
     void Update()
     {
+        // セーブデータロード-------------------------------------------------------------
+        if (bLoad == false)
+        {
+            SaveLoad.LoadData();
+            ProgressStages = SaveLoad.saveData.Progress;
+            bLoad = true;
+        }
+        //--------------------------------------------------------------------------------
+
+
+        // テスト用
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            SaveLoad.TestSaveLoad();
+            ProgressStages = SaveLoad.saveData.Progress;
+        }
+
+
         // ステージからセレクトに戻ってきたときの画面調整---------------------------------
         if (bBackSelect)
         {
@@ -119,6 +152,11 @@ public class StageSelect : MonoBehaviour
                 if (Select < ProgressStages)
                 {
                     PanelState = PANEL_STATE.LEFT;
+
+                    // 妖精さん左
+                    FairyMoveSelect.MoveChange(FairyMoveSelect.FAIRY_STATE.LEFT);
+
+                    // ステージ情報見えないように
                     InfoPanel.SetActive(false);
                 }
             }
@@ -129,6 +167,11 @@ public class StageSelect : MonoBehaviour
                 if (Select > 0)
                 {
                     PanelState = PANEL_STATE.RIGHT;
+
+                    // 妖精さん右
+                    FairyMoveSelect.MoveChange(FairyMoveSelect.FAIRY_STATE.RIGHT);
+
+                    // ステージ情報見えないように
                     InfoPanel.SetActive(false);
                 }
             }
@@ -140,6 +183,7 @@ public class StageSelect : MonoBehaviour
         switch (PanelState)
         {
             case PANEL_STATE.LEFT:
+                // パネル左移動------------------------------------------------------------------
                 if (Move_X < Range_X)
                 {
                     Stages[Select].transform.position -= new Vector3(Speed, 0, 0);
@@ -175,8 +219,11 @@ public class StageSelect : MonoBehaviour
                     Select++;
                 }
                 break;
+                //--------------------------------------------------------------------------------
+
 
             case PANEL_STATE.RIGHT:
+                // パネル右移動-------------------------------------------------------------------
                 if (Move_X < Range_X)
                 {
                     Stages[Select].transform.position += new Vector3(Speed, 0, 0);
@@ -213,15 +260,33 @@ public class StageSelect : MonoBehaviour
                     Select--;
                 }
                 break;
+                //--------------------------------------------------------------------------------
+
 
             case PANEL_STATE.NONE:
+                // 通常時-------------------------------------------------------------------------
+                // 妖精さん落ち着き
+                if(!CamZoom)
+                FairyMoveSelect.MoveChange(FairyMoveSelect.FAIRY_STATE.NONE);
+
                 // 背景変更
                 ChangeBG.ChangeBg(Select);
 
                 // ステージ情報表示
                 InfoPanel.SetActive(true);
-                StageNo.text = "Stage　" + Select.ToString();
+                TimerData.text = SaveLoad.saveData.Timer[Select];       // タイマー部分表示
+                StageNo.text = "Stage　" + Select.ToString();           // ステージ名表示
+
+                for (i = 0; i < SaveLoad.saveData.Star[Select]; i++)    // ★部分表示
+                {
+                    star[i].enabled = true;
+                }
+                for (; i < 3; i++)
+                {
+                    star[i].enabled = false;
+                }
                 break;
+                //--------------------------------------------------------------------------------
         }
         //--------------------------------------------------------------------------------
 
@@ -305,68 +370,4 @@ public class StageSelect : MonoBehaviour
         }
         //--------------------------------------------------------------------------------
     }
-
-
-    // ステージクリア時に進捗保存関数-------------------------------------------------
-    public static void UpdateProgress(string name)
-    {
-        int OldProgress = ProgressStages;
-        if (name == "1-1") 
-        {
-            if (ProgressStages <= 1)
-                ProgressStages = 1;
-        }
-
-        if (name == "1-2")
-        {
-            if (ProgressStages <= 2)
-                ProgressStages = 2;
-        }
-
-        if (name == "1-3")
-        {
-            if (ProgressStages <= 3)
-                ProgressStages = 3;
-        }
-
-        if (name == "1-4")
-        {
-            if (ProgressStages <= 4)
-                ProgressStages = 4;
-        }
-
-        if (name == "1-5")
-        {
-            if (ProgressStages <= 5)
-                ProgressStages = 5;
-        }
-
-        if (name == "1-6")
-        {
-            if (ProgressStages <= 6)
-                ProgressStages = 6;
-        }
-
-        if (name == "1-6")
-        {
-            if (ProgressStages <= 6)
-                ProgressStages = 6;
-        }
-
-        if (name == "1-7")
-        {
-            if (ProgressStages <= 7)
-                ProgressStages = 7;
-        }
-
-        // セレクトに戻った時用のフラグON
-        bBackSelect = true;
-
-        if (OldProgress != ProgressStages)
-        {
-            // クリアしたフラグON
-            bClearStage = true;
-        }
-    }
-    //--------------------------------------------------------------------------------
 }

@@ -34,7 +34,7 @@ public class Rabbit : MonoBehaviour
 
             openingCamera.GetComponent<ZoomOut>().ZoomStart();
             // オープニングカメラのズームアウト機能をONにする
-            Debug.LogWarning("待機だよ");
+           // Debug.LogWarning("待機だよ");
 		}
     }
 }

@@ -743,8 +743,6 @@ public class DivideTriangle : MonoBehaviour
         // 現在のオブジェクトを消す
         Destroy(gameObject);
 
-
-
         //--- 原点から中心へのベクトルで飛ばす
         Vector3 pos1 = obj1.GetComponent<Renderer>().bounds.center;
         Vector3 pos2 = obj2.GetComponent<Renderer>().bounds.center;
@@ -757,78 +755,30 @@ public class DivideTriangle : MonoBehaviour
         var width2 = bounds2.max.x - bounds2.min.x;
         var height2 = bounds2.max.y - bounds2.min.y;
 
-        if (width1 * height1 < width2 * height2)
+
+        // 最初はobj1の方を消す処理を進めていく
+        // もし、消す紙にアリスが存在していることがわかったらobj2を消すようにする
+
+        // obj1のグリッドを特定
+        List<bool> chages = checkCollisionPoints(obj1, CollisionField.Instance.cellPoints());
+        // アリスがいるか探す
+        if(CollisionField.Instance.CheckAliceExists(chages))
         {
-            // obj1を消す
+            // obj2を消す
 
-            // タグの変更（廃棄する紙）
-            obj1.tag = "waste";
-            // 数秒後にデリート
-            Destroy(obj1, 1.0f);
-
-            // ステージの更新
-            List<bool> chages = checkCollisionPoints(obj2, CollisionField.Instance.cellPoints());
-            CollisionField.Instance.UpdateMovingObjects(chages);
-            CollisionField.Instance.UpdateStage(chages);
-
-            obj2.GetComponent<MeshRenderer>().materials = GetComponent<MeshRenderer>().materials;
-
-            var BreakPaper = obj1.AddComponent<BreakingPaper>();
-            //alpha.SetMaterial(GetComponent<MeshRenderer>().material);
-            BreakPaper.SetMaterial(GameManager.Instance._mats[number - 1]);
-            // めくる方向を決める
-            if (pos1.x >= 0.0f)
-                BreakPaper.SetRight();
-            else if (pos1.x < 0.0f)
-                BreakPaper.SetLeft();
-
-            // 紙の破れにもAlphaを適用させる
-            for (int i = 0; i < obj1.transform.childCount; i++)
-            {
-                var breakline = obj1.transform.GetChild(i).gameObject.AddComponent<BreakLine>();
-                //var move2 = obj1.transform.GetChild(i).gameObject.AddComponent<PaperMove>();
-                Material breaklineMat = (Material)Resources.Load("Effects/SecondBreakLine");
-                breakline.SetMaterial(breaklineMat);
-                // めくる方向を決める
-                if (pos1.x >= 0.0f)
-                {
-                    breakline.SetRightLine();
-                    //move2.SetDirection(pos1 - pos2);
-                }
-                else if (pos1.x < 0.0f)
-                {
-                    breakline.SetLeftLine();
-                    //move2.SetDirection(pos1 - pos2);
-                }
-            }
-
-            //obj1の方のアウトラインをセットする
-            GameObject cursor = GameObject.Find("cursor");
-            var outsider = cursor.GetComponent<OutSide_Paper_Script_Second>();
-            //outsider.SetMoveLine(objOutline2, pos2);
-            outsider.DivideEnd();
-
-        }
-        else
-        {
-            // obj2の方が遠い位置にある
-            //var move = obj2.AddComponent<PaperMove>();
-            // 飛ばす方向
-            //move.SetDirection(pos2 - pos1);
             // タグの変更（廃棄する紙）
             obj2.tag = "waste";
             // 数秒後にデリート
             Destroy(obj2, 1.0f);
 
             // ステージの更新
-            List<bool> chages = checkCollisionPoints(obj2, CollisionField.Instance.cellPoints());
+            chages = checkCollisionPoints(obj2, CollisionField.Instance.cellPoints());
             CollisionField.Instance.UpdateMovingObjects(chages);
             CollisionField.Instance.UpdateStage(chages);
 
+            // めくる方向を決める
             var BreakPaper = obj2.AddComponent<BreakingPaper>();
             BreakPaper.SetMaterial(GameManager.Instance._mats[number - 1]);
-            //alpha.SetMaterial(GetComponent<MeshRenderer>().material);
-            // めくる方向を決める
             if (pos2.x >= 0.0f)
                 BreakPaper.SetRight();
             else if (pos2.x < 0.0f)
@@ -855,17 +805,160 @@ public class DivideTriangle : MonoBehaviour
             }
 
             //obj1の方のアウトラインをセットする
-            GameObject cursor = GameObject.Find("cursor");
-            var outsider = cursor.GetComponent<OutSide_Paper_Script_Second>();
-            //outsider.SetMoveLine(objOutline2, pos2);
+            var outsider = GameObject.Find("cursor").GetComponent<OutSide_Paper_Script_Second>();
             outsider.DivideEnd();
-
-            Partition.CreatePartition(obj1, objOutline1, GetComponent<DrawMesh>(), transform.position.z);
         }
+        else
+        {
+            // obj1を消す
+
+            // タグの変更（廃棄する紙）
+            obj1.tag = "waste";
+            // 数秒後にデリート
+            Destroy(obj1, 1.0f);
+
+            // ステージの更新
+            chages = checkCollisionPoints(obj1, CollisionField.Instance.cellPoints());
+            CollisionField.Instance.UpdateMovingObjects(chages);
+            CollisionField.Instance.UpdateStage(chages);
+
+            obj2.GetComponent<MeshRenderer>().materials = GetComponent<MeshRenderer>().materials;
+
+            // めくる方向を決める
+            var BreakPaper = obj1.AddComponent<BreakingPaper>();
+            BreakPaper.SetMaterial(GameManager.Instance._mats[number - 1]);
+            if (pos1.x >= 0.0f)
+                BreakPaper.SetRight();
+            else if (pos1.x < 0.0f)
+                BreakPaper.SetLeft();
+
+            // 紙の破れにもAlphaを適用させる
+            for (int i = 0; i < obj1.transform.childCount; i++)
+            {
+                var breakline = obj1.transform.GetChild(i).gameObject.AddComponent<BreakLine>();
+                //var move2 = obj1.transform.GetChild(i).gameObject.AddComponent<PaperMove>();
+                Material breaklineMat = (Material)Resources.Load("Effects/SecondBreakLine");
+                breakline.SetMaterial(breaklineMat);
+                // めくる方向を決める
+                if (pos1.x >= 0.0f)
+                {
+                    breakline.SetRightLine();
+                    //move2.SetDirection(pos1 - pos2);
+                }
+                else if (pos1.x < 0.0f)
+                {
+                    breakline.SetLeftLine();
+                    //move2.SetDirection(pos1 - pos2);
+                }
+            }
+
+            //obj1の方のアウトラインをセットする
+            var outsider = GameObject.Find("cursor").GetComponent<OutSide_Paper_Script_Second>();
+            outsider.DivideEnd();
+        }
+
+        //if (width1 * height1 < width2 * height2)
+        //{
+        //    // obj1を消す
+        //
+        //    // タグの変更（廃棄する紙）
+        //    obj1.tag = "waste";
+        //    // 数秒後にデリート
+        //    Destroy(obj1, 1.0f);
+        //
+        //    //// ステージの更新
+        //    //List<bool> chages = checkCollisionPoints(obj2, CollisionField.Instance.cellPoints());
+        //    //CollisionField.Instance.UpdateMovingObjects(chages);
+        //    //CollisionField.Instance.UpdateStage(chages);
+        //
+        //    obj2.GetComponent<MeshRenderer>().materials = GetComponent<MeshRenderer>().materials;
+        //
+        //    // めくる方向を決める
+        //    var BreakPaper = obj1.AddComponent<BreakingPaper>();
+        //    BreakPaper.SetMaterial(GameManager.Instance._mats[number - 1]);
+        //    if (pos1.x >= 0.0f)
+        //        BreakPaper.SetRight();
+        //    else if (pos1.x < 0.0f)
+        //        BreakPaper.SetLeft();
+        //
+        //    // 紙の破れにもAlphaを適用させる
+        //    for (int i = 0; i < obj1.transform.childCount; i++)
+        //    {
+        //        var breakline = obj1.transform.GetChild(i).gameObject.AddComponent<BreakLine>();
+        //        //var move2 = obj1.transform.GetChild(i).gameObject.AddComponent<PaperMove>();
+        //        Material breaklineMat = (Material)Resources.Load("Effects/SecondBreakLine");
+        //        breakline.SetMaterial(breaklineMat);
+        //        // めくる方向を決める
+        //        if (pos1.x >= 0.0f)
+        //        {
+        //            breakline.SetRightLine();
+        //            //move2.SetDirection(pos1 - pos2);
+        //        }
+        //        else if (pos1.x < 0.0f)
+        //        {
+        //            breakline.SetLeftLine();
+        //            //move2.SetDirection(pos1 - pos2);
+        //        }
+        //    }
+        //
+        //    //obj1の方のアウトラインをセットする
+        //    var outsider = GameObject.Find("cursor").GetComponent<OutSide_Paper_Script_Second>();
+        //    outsider.DivideEnd();
+        //
+        //}
+        //else
+        //{
+        //    // obj2を消す
+        //
+        //    // タグの変更（廃棄する紙）
+        //    obj2.tag = "waste";
+        //    // 数秒後にデリート
+        //    Destroy(obj2, 1.0f);
+        //
+        //    // ステージの更新
+        //    //List<bool> chages = checkCollisionPoints(obj2, CollisionField.Instance.cellPoints());
+        //    //CollisionField.Instance.UpdateMovingObjects(chages);
+        //    //CollisionField.Instance.UpdateStage(chages);
+        //
+        //    // めくる方向を決める
+        //    var BreakPaper = obj2.AddComponent<BreakingPaper>();
+        //    BreakPaper.SetMaterial(GameManager.Instance._mats[number - 1]);
+        //    if (pos2.x >= 0.0f)
+        //        BreakPaper.SetRight();
+        //    else if (pos2.x < 0.0f)
+        //        BreakPaper.SetLeft();
+        //
+        //    // 紙の破れにもAlphaを適用させる
+        //    for (int i = 0; i < obj2.transform.childCount; i++)
+        //    {
+        //        //Vector3 line = new Vector3(400.0f, 100.0f, 0.0f);
+        //        var breakline = obj2.transform.GetChild(i).gameObject.AddComponent<BreakLine>();
+        //        Material breaklineMat = (Material)Resources.Load("Effects/SecondBreakLine");
+        //        breakline.SetMaterial(breaklineMat);
+        //        if (pos2.x >= 0.0f)
+        //        {
+        //            breakline.SetRightLine();
+        //            //move.SetDirection(pos2 - pos1 + line);
+        //        }
+        //        else if (pos2.x < 0.0f)
+        //        {
+        //            breakline.SetLeftLine();
+        //            //move.SetDirection(pos1 - pos2 + line);
+        //        }
+        //        //breakline.SetAlpha();
+        //    }
+        //
+        //    //obj1の方のアウトラインをセットする
+        //    var outsider = GameObject.Find("cursor").GetComponent<OutSide_Paper_Script_Second>();
+        //    outsider.DivideEnd();
+        //
+        //    // 仕切り作成
+        //    //Partition.CreatePartition(obj1, objOutline1, GetComponent<DrawMesh>(), transform.position.z);
+        //}
+
 
         // 破れるSE
         SoundManager.Instance.PlaySeByName("RipUpPaper07");
-
     }
 
     // 現在の破るラインが切断パスと被った場合

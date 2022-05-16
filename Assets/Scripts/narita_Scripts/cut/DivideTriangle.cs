@@ -4,10 +4,34 @@ using UnityEngine;
 
 public class DivideTriangle : MonoBehaviour
 {
+    private enum ResultOfDividing
+    {
+        NONE = 0,           // 破いていない状態
+        MIDDLE_OF_BREAKING, // 破り途中
+        END_OF_BREAKING     // 破り終えた
+    }
+
     // メッシュ
     MeshFilter attachedMeshFilter;
     Mesh attachedMesh;
-    
+
+    // 破り中かどうか
+    [SerializeField] private bool dividing;
+    public bool Dividing { get { return this.dividing; } }
+    // 紙が一つでも破かれている状態の場合ture、破る処理がされていなければfalse
+    public static bool AllDividing()
+    {
+        List<GameObject> papers = new List<GameObject>();
+        papers.AddRange(GameObject.FindGameObjectsWithTag("paper"));
+        foreach (var paper in papers)
+        {
+            // 1枚でも破る処理が行われていたらtrue
+            if (paper.GetComponent<DivideTriangle>().Dividing == true) return true;
+        }
+
+        return false;
+    }
+
     // ペーパーナンバー
     [SerializeField] private int number = 0;
     // 切断パス
@@ -22,6 +46,8 @@ public class DivideTriangle : MonoBehaviour
     // 初期化
     void Start()
     {
+        dividing = false;
+
         // メッシュ
         attachedMeshFilter = GetComponent<MeshFilter>();
         attachedMesh = attachedMeshFilter.mesh;
@@ -36,9 +62,11 @@ public class DivideTriangle : MonoBehaviour
     /* 破る処理
      * 戻り値:メッシュを一度でも三角形分割していたらtrue
      */
-    public bool Divide(ref List<Vector3> MousePoints)
+    public int Divide(ref List<Vector3> MousePoints, int currentDividedNumber)
     {
-        if (MousePoints.Count <= 1) return false;
+        int resultState = (int)ResultOfDividing.NONE;
+
+        if (MousePoints.Count <= 1) return resultState;
         // 線分の始点・終点
         Vector3 Start, End;
         Start = MousePoints[MousePoints.Count - 2];
@@ -133,7 +161,7 @@ public class DivideTriangle : MonoBehaviour
                         if (Start.Equals(cross2)) IsCrossing[cnt] = false;
 
                         // tempCrossesとcross2がかぶっていない場合、頂点リストに追加
-                        if(tempCrosses.Contains(cross2))
+                        if (tempCrosses.Contains(cross2))
                         {
                             // かぶっていた場合、元からある頂点の番号に設定する
                             c2 = crossVertexNumbers[tempCrosses.IndexOf(cross2)];
@@ -166,7 +194,7 @@ public class DivideTriangle : MonoBehaviour
                             if (!first)
                             {
                                 // 切断パスと被っているはずなので
-                                if(cuttingPath.Contains(cross1))
+                                if (cuttingPath.Contains(cross1))
                                 {
                                     tempCrosses.Add(cross1);
                                     crossVertexNumbers.Add(cuttingVertexNumbers[cuttingPath.IndexOf(cross1)]);
@@ -175,7 +203,7 @@ public class DivideTriangle : MonoBehaviour
                         }
 
                         // 頂点情報がかぶっていない場合、頂点リストに追加
-                        if(tempCrosses.Contains(cross1))
+                        if (tempCrosses.Contains(cross1))
                         {
                             // かぶっていた場合、元からある頂点の番号に設定する
                             c1 = crossVertexNumbers[tempCrosses.IndexOf(cross1)];
@@ -206,9 +234,11 @@ public class DivideTriangle : MonoBehaviour
 
                 // 破るフラグON
                 bDivide = true;
+                dividing = true;
+                resultState = (int)ResultOfDividing.MIDDLE_OF_BREAKING;
 
                 // 終点を頂点として追加する
-                if(tempCrosses.Contains(End))
+                if (tempCrosses.Contains(End))
                 {
                     // かぶっていた場合、元からある頂点の番号に設定する
                     e = crossVertexNumbers[tempCrosses.IndexOf(End)];
@@ -224,7 +254,8 @@ public class DivideTriangle : MonoBehaviour
             }
             #endregion
 
-            if(first)
+            // インデックスのつなぎ方
+            if (first)
             {
                 //=== 初回の破る処理のみ
                 if (bInside)
@@ -358,22 +389,23 @@ public class DivideTriangle : MonoBehaviour
         UpdateBreakLine(bDivide, bCut);
 
         // 切断パスが切断パスと交差した場合
-        if(MakeHole(Start, End))
+        if (MakeHole(Start, End))
         {
+            //-------------------------------------------------------------ゲームオーバー
             // 切断パスをクリア
-            cuttingPath.Clear();
+            //cuttingPath.Clear();
 
             // マウス座標リストをクリア
-            MousePoints.Clear();
+            //MousePoints.Clear();
 
-            return true;
+            return (int)ResultOfDividing.NONE;
         }
 
         // カット
         if (bCut)
         {
             // 始点がある場合
-            if(exsitStartPoint)
+            if (exsitStartPoint)
             {
                 // オブジェクトを真っ二つに
                 Cut();
@@ -383,11 +415,15 @@ public class DivideTriangle : MonoBehaviour
 
             cuttingPath.Clear();
 
+
+            dividing = true;
+            return (int)ResultOfDividing.END_OF_BREAKING;
+
             // マウス座標リストをクリア
             MousePoints.Clear();
         }
 
-        return bDivide;
+        return resultState;
     }
 
     // オブジェクトを二つに分ける
@@ -468,7 +504,7 @@ public class DivideTriangle : MonoBehaviour
 
                     // 次の座標へ
                     i++;
-                    if (i >= Outlines.Count) { Debug.LogError("外周の頂点情報がおかしい");  break; }
+                    if (i >= Outlines.Count) { Debug.LogError("外周の頂点情報がおかしい"); break; }
                 }
                 // 二つ目のアウトラインに追加しておく
                 objOutline2.Add(Outlines[i]);
@@ -497,7 +533,7 @@ public class DivideTriangle : MonoBehaviour
         #endregion
 
 
-        
+
 
         // エラー対応
         //if (objOutline1.Count < 3) { Debug.LogError("エラー objOutline1.Count"); return; }
@@ -619,7 +655,7 @@ public class DivideTriangle : MonoBehaviour
                 // 平行
                 if (defEdge.normalized.Equals(obj1Edge.normalized))
                 {
-                    if(Has(defaultOutline[(j + 1) % defaultOutline.Count], defaultOutline[j], objOutline1[i]))
+                    if (Has(defaultOutline[(j + 1) % defaultOutline.Count], defaultOutline[j], objOutline1[i]))
                     {
                         ret = false;
                         break;
@@ -660,7 +696,7 @@ public class DivideTriangle : MonoBehaviour
             // 退避
             oldFlag = boolList1[i];
         }
-        if(oldFlag)
+        if (oldFlag)
         {
             // ブレークライン生成
             var line1 = PaperBreakLineManager.Instance.CreateBreakLine(breakLine1, obj1);
@@ -685,7 +721,7 @@ public class DivideTriangle : MonoBehaviour
                 if (defEdge.normalized.Equals(obj2Edge.normalized))
                 {
                     // かつ、直線状に存在するかどうか
-                    if(Has(defaultOutline[(j + 1) % defaultOutline.Count], defaultOutline[j], objOutline2[i]))
+                    if (Has(defaultOutline[(j + 1) % defaultOutline.Count], defaultOutline[j], objOutline2[i]))
                     {
                         ret = false;
                         break;
@@ -726,7 +762,7 @@ public class DivideTriangle : MonoBehaviour
             // 退避
             oldFlag2 = boolList2[i];
         }
-        if(oldFlag2)
+        if (oldFlag2)
         {
             // ブレークライン生成
             var line2 = PaperBreakLineManager.Instance.CreateBreakLine(breakLine2, obj2);
@@ -735,7 +771,7 @@ public class DivideTriangle : MonoBehaviour
         }
         #endregion
 
-        
+
 
         // 切断パスをクリア
         cuttingPath.Clear();
@@ -743,92 +779,33 @@ public class DivideTriangle : MonoBehaviour
         // 現在のオブジェクトを消す
         Destroy(gameObject);
 
-
-
         //--- 原点から中心へのベクトルで飛ばす
         Vector3 pos1 = obj1.GetComponent<Renderer>().bounds.center;
         Vector3 pos2 = obj2.GetComponent<Renderer>().bounds.center;
 
-        //--- 面積が小さい方を飛ばす
-        Bounds bounds1 = obj1.GetComponent<MeshFilter>().mesh.bounds;
-        Bounds bounds2 = obj2.GetComponent<MeshFilter>().mesh.bounds;
-        var width1 = bounds1.max.x - bounds1.min.x;
-        var height1 = bounds1.max.y - bounds1.min.y;
-        var width2 = bounds2.max.x - bounds2.min.x;
-        var height2 = bounds2.max.y - bounds2.min.y;
+        // 最初はobj1の方を消す処理を進めていく
+        // もし、消す紙にアリスが存在していることがわかったらobj2を消すようにする
 
-        if (width1 * height1 < width2 * height2)
+        // obj1のグリッドを特定
+        List<bool> chages = checkCollisionPoints(obj1, CollisionField.Instance.cellPoints());
+        // アリスがいるか探す
+        if (CollisionField.Instance.CheckAliceExists(chages))
         {
-            // obj1を消す
+            // obj2を消す
 
-            // タグの変更（廃棄する紙）
-            obj1.tag = "waste";
-            // 数秒後にデリート
-            Destroy(obj1, 1.0f);
-
-            // ステージの更新
-            List<bool> chages = checkCollisionPoints(obj2, CollisionField.Instance.cellPoints());
-            CollisionField.Instance.UpdateMovingObjects(chages);
-            CollisionField.Instance.UpdateStage(chages);
-
-            obj2.GetComponent<MeshRenderer>().materials = GetComponent<MeshRenderer>().materials;
-
-            var BreakPaper = obj1.AddComponent<BreakingPaper>();
-            //alpha.SetMaterial(GetComponent<MeshRenderer>().material);
-            BreakPaper.SetMaterial(GameManager.Instance._mats[number - 1]);
-            // めくる方向を決める
-            if (pos1.x >= 0.0f)
-                BreakPaper.SetRight();
-            else if (pos1.x < 0.0f)
-                BreakPaper.SetLeft();
-
-            // 紙の破れにもAlphaを適用させる
-            for (int i = 0; i < obj1.transform.childCount; i++)
-            {
-                var breakline = obj1.transform.GetChild(i).gameObject.AddComponent<BreakLine>();
-                //var move2 = obj1.transform.GetChild(i).gameObject.AddComponent<PaperMove>();
-                Material breaklineMat = (Material)Resources.Load("Effects/SecondBreakLine");
-                breakline.SetMaterial(breaklineMat);
-                // めくる方向を決める
-                if (pos1.x >= 0.0f)
-                {
-                    breakline.SetRightLine();
-                    //move2.SetDirection(pos1 - pos2);
-                }
-                else if (pos1.x < 0.0f)
-                {
-                    breakline.SetLeftLine();
-                    //move2.SetDirection(pos1 - pos2);
-                }
-            }
-
-            //obj1の方のアウトラインをセットする
-            GameObject cursor = GameObject.Find("cursor");
-            var outsider = cursor.GetComponent<OutSide_Paper_Script_Second>();
-            //outsider.SetMoveLine(objOutline2, pos2);
-            outsider.DivideEnd();
-
-        }
-        else
-        {
-            // obj2の方が遠い位置にある
-            //var move = obj2.AddComponent<PaperMove>();
-            // 飛ばす方向
-            //move.SetDirection(pos2 - pos1);
             // タグの変更（廃棄する紙）
             obj2.tag = "waste";
             // 数秒後にデリート
             Destroy(obj2, 1.0f);
 
             // ステージの更新
-            List<bool> chages = checkCollisionPoints(obj2, CollisionField.Instance.cellPoints());
+            chages = checkCollisionPoints(obj2, CollisionField.Instance.cellPoints());
             CollisionField.Instance.UpdateMovingObjects(chages);
             CollisionField.Instance.UpdateStage(chages);
 
+            // めくる方向を決める
             var BreakPaper = obj2.AddComponent<BreakingPaper>();
             BreakPaper.SetMaterial(GameManager.Instance._mats[number - 1]);
-            //alpha.SetMaterial(GetComponent<MeshRenderer>().material);
-            // めくる方向を決める
             if (pos2.x >= 0.0f)
                 BreakPaper.SetRight();
             else if (pos2.x < 0.0f)
@@ -855,17 +832,61 @@ public class DivideTriangle : MonoBehaviour
             }
 
             //obj1の方のアウトラインをセットする
-            GameObject cursor = GameObject.Find("cursor");
-            var outsider = cursor.GetComponent<OutSide_Paper_Script_Second>();
-            //outsider.SetMoveLine(objOutline2, pos2);
+            var outsider = GameObject.Find("cursor").GetComponent<OutSide_Paper_Script_Second>();
             outsider.DivideEnd();
-
-            Partition.CreatePartition(obj1, objOutline1, GetComponent<DrawMesh>(), transform.position.z);
         }
+        else
+        {
+            // obj1を消す
+
+            // タグの変更（廃棄する紙）
+            obj1.tag = "waste";
+            // 数秒後にデリート
+            Destroy(obj1, 1.0f);
+
+            // ステージの更新
+            chages = checkCollisionPoints(obj1, CollisionField.Instance.cellPoints());
+            CollisionField.Instance.UpdateMovingObjects(chages);
+            CollisionField.Instance.UpdateStage(chages);
+
+            obj2.GetComponent<MeshRenderer>().materials = GetComponent<MeshRenderer>().materials;
+
+            // めくる方向を決める
+            var BreakPaper = obj1.AddComponent<BreakingPaper>();
+            BreakPaper.SetMaterial(GameManager.Instance._mats[number - 1]);
+            if (pos1.x >= 0.0f)
+                BreakPaper.SetRight();
+            else if (pos1.x < 0.0f)
+                BreakPaper.SetLeft();
+
+            // 紙の破れにもAlphaを適用させる
+            for (int i = 0; i < obj1.transform.childCount; i++)
+            {
+                var breakline = obj1.transform.GetChild(i).gameObject.AddComponent<BreakLine>();
+                //var move2 = obj1.transform.GetChild(i).gameObject.AddComponent<PaperMove>();
+                Material breaklineMat = (Material)Resources.Load("Effects/SecondBreakLine");
+                breakline.SetMaterial(breaklineMat);
+                // めくる方向を決める
+                if (pos1.x >= 0.0f)
+                {
+                    breakline.SetRightLine();
+                    //move2.SetDirection(pos1 - pos2);
+                }
+                else if (pos1.x < 0.0f)
+                {
+                    breakline.SetLeftLine();
+                    //move2.SetDirection(pos1 - pos2);
+                }
+            }
+
+            //obj1の方のアウトラインをセットする
+            var outsider = GameObject.Find("cursor").GetComponent<OutSide_Paper_Script_Second>();
+            outsider.DivideEnd();
+        }
+
 
         // 破れるSE
         SoundManager.Instance.PlaySeByName("RipUpPaper07");
-
     }
 
     // 現在の破るラインが切断パスと被った場合
@@ -884,7 +905,7 @@ public class DivideTriangle : MonoBehaviour
             // 切断パス
             Vector3 cuttingEdge = cuttingPath[(edgeIndex + 1) % cuttingPath.Count] - cuttingPath[edgeIndex];
 
-            if(CalcCrossVertex(Start, cuttingPath[edgeIndex], currentLine, cuttingEdge, out f1, out f2))
+            if (CalcCrossVertex(Start, cuttingPath[edgeIndex], currentLine, cuttingEdge, out f1, out f2))
             {
                 Vector3 cross = Start + (currentLine * f1);
                 Vector2 uv, uv1, uv2;
@@ -1168,7 +1189,7 @@ public class DivideTriangle : MonoBehaviour
         var outlinePath = GetComponent<OutLinePath>();
         var outline = outlinePath.OutLineVertices;
 
-        
+
         for (int i = 0; i < outline.Count; i++)     // オブジェクトの外周の頂点の数
         {
             // 外周の辺のベクトル
@@ -1428,7 +1449,7 @@ public class DivideTriangle : MonoBehaviour
         // p3-p1の辺1が交差していた場合
         else if (IsCrossing[2]) num = 2;
         else Debug.LogError("エラー発生");
-        
+
 
         // １個目の三角形
         triangles.Add(center); triangles.Add(triangle[Percent3(num + 0)]); triangles.Add(cross);
@@ -1451,7 +1472,7 @@ public class DivideTriangle : MonoBehaviour
         if (IsCrossing[0] && IsCrossing[1])
         {
             //Debug.Log("辺p1-p2と辺p2-p3で交わっている");
-        
+
             // １個目の三角形
             triangles.Add(cross2); triangles.Add(cross1); triangles.Add(triangle[1]);
             // ２個目の三角形
@@ -1463,7 +1484,7 @@ public class DivideTriangle : MonoBehaviour
         else if (IsCrossing[1] && IsCrossing[2])
         {
             //Debug.Log("辺p2-p3と辺p3-p1で交わっている");
-        
+
             // １個目の三角形
             triangles.Add(cross2); triangles.Add(cross1); triangles.Add(triangle[2]);
             // ２個目の三角形
@@ -1565,7 +1586,7 @@ public class DivideTriangle : MonoBehaviour
             // 一度でも内側判定があればtrueが入る
             result.Add(bInside);
         }
-        
+
 
         return result;
     }

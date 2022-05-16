@@ -15,6 +15,7 @@ public class ChangeBG : MonoBehaviour
     public Texture stage8_BG;
     //--------------------------------------------------------------------------------
 
+
     // •ÏX—p-------------------------------------------------------------------------
     private Texture[] Stage_BG;         // ”wŒi‚ğ”z—ñ‚É
     private static int SelectBG = 0;    // Œ»İ‚Ì”wŒi

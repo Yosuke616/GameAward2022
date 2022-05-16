@@ -6,16 +6,16 @@ public class CursorSystem : MonoBehaviour
 {
     [SerializeField] private List<Vector3> MousePoints;
 
-    public int cnt = 0;
+    [SerializeField] private int currentDividedPaper = 0;
 
-    public int maxPaper = 2;
+    private int maxPaper = 2;
 
     private bool bDivide;
 
     // スクリーン座標
     Vector3 screenPoint;
 
-    [SerializeField] private int Select;
+    [SerializeField] private int selectPaper;
 
     [SerializeField] private List<GameObject> papers;
 
@@ -27,7 +27,7 @@ public class CursorSystem : MonoBehaviour
         MODE_TURN_PAGES,    // めくるモード
     }
     [SerializeField] static private GameState gameState;
-    static public void SetGameState(GameState state){ gameState = state; }
+    static public void SetGameState(GameState state) { gameState = state; }
     static public GameState GetGameState() { return gameState; }
 
     // 初期化
@@ -38,14 +38,18 @@ public class CursorSystem : MonoBehaviour
         // 紙の束
         papers = new List<GameObject>();
         papers.AddRange(GameObject.FindGameObjectsWithTag("paper"));
+        // 紙の枚数を保存(0からカウントしてるので-1する)
+        maxPaper = papers.Count - 1;
+        // 紙の番号、昇順
+        papers.Sort((a, b) => a.GetComponent<DivideTriangle>().GetNumber() - b.GetComponent<DivideTriangle>().GetNumber());
 
-        Select = 0;
+        selectPaper = 0;
 
         // 最初はウサギのシーン
         gameState = GameState.MODE_OPENING;
-        gameState = GameState.MODE_ACTION;
+        gameState = GameState.MODE_ACTION;  // debug
 
-        if(GameObject.Find("Rabbit") == null)
+        if (GameObject.Find("Rabbit") == null)
         {
             Debug.LogWarning("ウサギいないよ    MODE_ACTIONから始めるよ");
             gameState = GameState.MODE_ACTION;
@@ -79,17 +83,17 @@ public class CursorSystem : MonoBehaviour
             #region ---めくる処理
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown("joystick button 4"))
             {
-                if (Select < maxPaper)
+                if (selectPaper < maxPaper)
                 {
                     UpdatePage();
-                    var topPaper = papers[Select];
+                    var topPaper = papers[selectPaper];
                     var turnShader = topPaper.GetComponent<Turn_Shader>();
                     // めくる
                     turnShader.SetPaperSta(1);
                     // めくった枚数をカウント
-                    Select++;
+                    selectPaper++;
                     // めくる枚数の上限
-                    if (Select > maxPaper) Select = maxPaper;
+                    if (selectPaper > maxPaper) selectPaper = maxPaper;
 
                     //--- 紙の子オブジェクトのブレークラインも消す
                     for (int i = 0; i < topPaper.transform.childCount; i++)
@@ -110,21 +114,21 @@ public class CursorSystem : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown("joystick button 5"))
             {
                 // 1枚目の時は何もしない
-                if(Select != 0)
+                if (selectPaper != 0)
                 {
                     UpdatePage();
                     // めくるのを戻す
-                    var topPaper = papers[Select - 1];
+                    var topPaper = papers[selectPaper - 1];
                     var turnShader = topPaper.GetComponent<Turn_Shader>();
                     // めくってある状態から戻す
                     turnShader.SetPaperSta(2);
 
                     // めくった枚数をカウント
-                    Select--;
+                    selectPaper--;
                     // めくる枚数の下限
-                    if (Select == 0)
+                    if (selectPaper == 0)
                     {
-                        //Select = 0;
+                        //selectPaper = 0;
 
                         // めくるモード → アクションモード
                         SetGameState(GameState.MODE_ACTION);
@@ -160,7 +164,7 @@ public class CursorSystem : MonoBehaviour
             //カーソルの座標を送る
             GameObject Cursor = GameObject.Find("cursor");
             var outsider = Cursor.GetComponent<OutSide_Paper_Script_Second>();
-            GameObject obj = GameObject.Find("CTRLCur");
+            GameObject Padobj = GameObject.Find("CTRLCur");
             GameObject camera = GameObject.Find("MainCamera");
 
 
@@ -181,7 +185,7 @@ public class CursorSystem : MonoBehaviour
                     // マウス
                     if (Input.GetMouseButtonDown(0)) SavePos = transform.position;
                     // ゲームパッド
-                    else SavePos = obj.transform.position;
+                    else SavePos = Padobj.transform.position;
                 }
                 else
                 {
@@ -189,22 +193,17 @@ public class CursorSystem : MonoBehaviour
                     // 破る処理スタート
                     outsider.DivideStart();
 
-                    if (Input.GetMouseButtonDown(0)) SavePos = Cursor.transform.position;
+                    SavePos = Cursor.transform.position;
                 }
-
-                cnt = 0;
 
                 // 座標リストに追加
                 MousePoints.Add(SavePos);
-                //MousePoints.Add(transform.position);
-                Debug.LogWarning(SavePos);
 
 
                 if (MousePoints.Count >= 2)
                 {
                     papers.Clear();
                     // 紙のリストを作る
-                    //List<GameObject> objects = new List<GameObject>();
                     papers.AddRange(GameObject.FindGameObjectsWithTag("paper"));
 
                     if (papers != null)
@@ -216,20 +215,49 @@ public class CursorSystem : MonoBehaviour
                             papers.Sort((a, b) => a.GetComponent<DivideTriangle>().GetNumber() - b.GetComponent<DivideTriangle>().GetNumber());
                         }
 
-
-                        bDivide = false;
-
-                        for (int i = 0; i < papers.Count; i++)
+                        int breakingState = 0;
+                        for (int paperNum = 0; paperNum < papers.Count; paperNum++)
                         {
-                            var divideTriangle = papers[i].GetComponent<DivideTriangle>();
-                            if (divideTriangle)
-                            {
-                                // 破る
-                                bDivide = divideTriangle.Divide(ref MousePoints);
-                                cnt++;
+                            // 破る処理
+                            // 2枚目破き状態のときは1枚目を破けるように
+                            // 3枚目破き状態のときは1枚目、2枚目を破けるように
+                            // 4枚目破き状態のときは1枚目、2枚目、3枚目を破けるように
+                            var divideTriangle = papers[paperNum].GetComponent<DivideTriangle>();
 
-                                // 一度破ったら、奥の紙は切らない
-                                if (bDivide) break;
+                            breakingState = divideTriangle.Divide(ref MousePoints, currentDividedPaper);
+
+
+                            switch (breakingState)
+                            {
+                                case 0: // 破いてない状態
+                                    continue;
+
+                                case 1: // 破り途中
+                                    // 次の紙がすでに破る処理が行われているかチェック
+                                    if (paperNum != papers.Count - 1 && papers[paperNum + 1].GetComponent<DivideTriangle>().Dividing == true)
+                                    {
+                                        // 次の紙も破る
+                                        continue;
+                                    }
+                                    return;
+                                case 2: // 破り終えた
+                                    // 手前の紙を破ったら奥の紙は破らない
+                                    // ※すでに破る処理を開始している奥の紙は破る
+
+                                    // 次の紙がすでに破る処理が行われているかチェック
+                                    if (paperNum != papers.Count - 1 && papers[paperNum + 1].GetComponent<DivideTriangle>().Dividing == true)
+                                    {
+                                        // 次の紙も破る
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        // ポジションリストをクリア
+                                        MousePoints.Clear();
+                                        return;
+                                    }
+
+                                default: break;
                             }
                         }
                     }
@@ -242,14 +270,16 @@ public class CursorSystem : MonoBehaviour
             }
             #endregion
         }
-        else {
+        else
+        {
             this.gameObject.SetActive(false);
         }
 
     }
 
     //切っているかどうかのフラグをゲットするための関数
-    public bool GetBreakFlg() {
+    public bool GetBreakFlg()
+    {
         return bDivide;
     }
 

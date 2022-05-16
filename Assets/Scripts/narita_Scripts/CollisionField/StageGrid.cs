@@ -190,7 +190,7 @@ public class StageGrid : MonoBehaviour
 
             // 衝突処理の種類をセットする
             collisionGrid[i].tag = Grids[i].tag;
-            Debug.Log(collisionGrid[i].tag);
+            //Debug.Log(collisionGrid[i].tag);
 
             // 回転角もセットする
             collisionGrid[i].rotate = Grids[i].transform.localEulerAngles;

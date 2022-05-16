@@ -54,27 +54,6 @@ public class Enemy : MonoBehaviour
         return counter;
     }
 
-    // シンクにてぃんくる
-    public void Synchronous(Enemy enemyFunc)
-    {
-        counter = enemyFunc.counter;
-        move = enemyFunc.move;
-        state = enemyFunc.state;
-
-        // カウンターをもとに移動量を計算
-        //float moveValue = Mathf.Abs(move) * counter;
-        //float moveValue = Mathf.Abs(move) * counter;
-
-
-        Vector3 p;
-        // 上下移動
-        if (state == 0) p = new Vector3(0, enemyFunc.diff, 0);
-        // 左右移動
-        else p = new Vector3(-enemyFunc.diff, 0, 0);
-
-        transform.Translate(p);
-    }
-
     // 左右移動の状態にする
     void HorizontalMovement()
     {
@@ -85,19 +64,6 @@ public class Enemy : MonoBehaviour
     void VerticalMovement()
     {
         state = 0;
-    }
-
-
-    // エネミーの機能を与える
-    // 第一引数:エネミー機能をつける対象
-    // 第二引数:カメラに写っているオリジナルの動き
-    static public void AddEnemyFunction(GameObject obj, Enemy originalEnemy)
-    {
-        if (obj == null || originalEnemy == null) return;
-
-        var enemyFunc = obj.AddComponent<Enemy>();
-
-        enemyFunc.Synchronous(originalEnemy);
     }
 
     // あたり判定オブジェクトと実際に見えているオブジェクトの座標を合わせる

@@ -35,7 +35,7 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
     //中央に行かないようにするための変数
     private Vector3 Old_Pos;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         //紙の中心座標をセットする
@@ -71,63 +71,53 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
             //最初の一回だけ読み込めるようにする
             g_bFirst_Load = true;
         }
+
         //これで問題ないはず
         if (Camera.main == null) { return; }
 
+        // コリジョンカメラに映っているプレイヤーを取得
         GameObject player = GameObject.Find("ParentPlayer");
 
-        if (player.GetComponent<PlayerMove2>().GetFlg() && player.GetComponent<PlayerMove2>().GetGameOverFlg())
+        if (player.GetComponent<PlayerMove2>().GetFlg() && // プレイヤーが動ける状態の場合
+            player.GetComponent<PlayerMove2>().GetGameOverFlg())
         {
             //マウス座標をここでゲットします
             Vector2 Mouse_Pos = Input.mousePosition;
-
             //画面の半分の大きさをマイナスすることにより整合性を図るぜ
             Mouse_Pos.x -= Screen.width / 2;
             Mouse_Pos.y -= Screen.height / 2;
 
-            //破るためのスクリプトを用意する
-            GameObject Cur = GameObject.Find("Cursor");
-            CursorSystem Cur_SY = Cur.GetComponent<CursorSystem>();
-            //破る状態になったときにカーソルをそこに移動させる関数を呼ぶ
-            //if (Cur_SY.GetBreakFlg())
-            //{
-            //    CursorBreak();
-            //    First_Flg = false;
-            //}
-            //else
-            //{
-            Old_Click_Pos = Input.mousePosition;
-            Old_Click_Pos.z = 10.0f;
-            
-            
-            var Pos2 = Camera.main.ScreenToWorldPoint(Old_Click_Pos);
+            //Old_Click_Pos = Input.mousePosition;
+            //Old_Click_Pos.z = 10.0f;
+            //var Pos2 = Camera.main.ScreenToWorldPoint(Old_Click_Pos);
             
             //一回クリックされたらそこでカーソルは止まる
-            if ((!First_Flg))
+            if (!First_Flg)
             {
-                //マウスと中心とそれぞれどの辺かを考える(関数を作って) 
-                Cross_Pos = calcCrossPos_Mouse(Mouse_Pos, Paper_Center, OutLinePaper);
+                // 接続されているコントローラの名前を調べる
+                var controllerNames = Input.GetJoystickNames();
+                // 一台もコントローラが接続されていなければマウスで
+                if (controllerNames[0] == "")
+                {
+                    // マウス
+                    Cross_Pos = calcCrossPos_GamePad(Mouse_Pos, Paper_Center, OutLinePaper);
+                }
+                else
+                {
+                    // ゲームパッド
+                    Cross_Pos = calcCrossPos_Mouse(Mouse_Pos, Paper_Center, OutLinePaper);
+                }
             
                 //カーソルをセットした座標に移動させる
                 this.transform.position = Cross_Pos;
             
                 OutPaper_Pos = Cross_Pos;
             
-                //コントローラーを押せるようのオブジェクトをゲットする
-                //GameObject obj = GameObject.Find("MainCamera");
-            
-                //if (Input.GetMouseButtonDown(0) || obj.GetComponent<InputTrigger>().GetOneTimeDown())
-                //{
-                //    First_Flg = true;
-                //}
-            
             }
             else
             {
                 this.transform.position = Cross_Pos;
             }
-
-            //}
 
             #region --- 中央に行かないようにする処理
             if (!(this.transform.position == new Vector3(0.0f, 0.0f, 0.0f)))
@@ -275,14 +265,14 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
     }
 
     //アウトラインのリストを更新する為の関数
-    public void SetMoveLine(List<Vector3> Line, Vector3 Center)
-    {
-        //リストの更新をする
-        OutLinePaper = Line;
-
-        //中心座標を更新する
-        Paper_Center = Center;
-    }
+    //public void SetMoveLine(List<Vector3> Line, Vector3 Center)
+    //{
+    //    //リストの更新をする
+    //    OutLinePaper = Line;
+    //
+    //    //中心座標を更新する
+    //    Paper_Center = Center;
+    //}
 
     //破る時にカーソルをそこに移動させる
     private void CursorBreak()

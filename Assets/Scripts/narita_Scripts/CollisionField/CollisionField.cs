@@ -298,6 +298,58 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
             }
     }
 
+
+
+    // *** 破った紙にアリスが存在するかどうかを返す
+    public bool CheckAliceExists(List<bool> changes)
+    {
+        bool result = false;
+
+        // マスの横・縦の数
+        float gridSizeX = CreateGridScript.gridSizeX;
+        float gridSizeY = CreateGridScript.gridSizeY;
+        int gridNumX = CreateGridScript.horizon;
+        int gridNumY = CreateGridScript.virtical;
+
+        // rayを飛ばす座標
+        Vector2 start;
+        start.x = -gridSizeX * gridNumX / 2.0f + (gridSizeX * 0.5f);
+        start.y = gridSizeY * gridNumY / 2.0f - (gridSizeY * 0.5f);
+
+        // カメラを見つける
+        GameObject cameraObj = GameObject.Find(cameraName);
+
+        int massCounter = 0;
+        for (int y = 0; y < gridNumY; y++)
+            for (int x = 0; x < gridNumX; x++)
+            {
+                // 紙の破れていないところにはレイを飛ばさない
+                if (changes[massCounter] == false)
+                {
+                    massCounter++;
+                    continue;
+                }
+
+                RaycastHit hit;
+                if (Physics.Raycast(cameraObj.transform.position, new Vector3(start.x + (gridSizeX * x), start.y - (gridSizeY * y), 22.0f), out hit))
+                {
+                    // 動いている敵だった場合
+                    if (hit.collider.gameObject.tag == "Player")
+                    {
+                        result = true;
+
+                        //Debug.DrawRay(cameraObj.transform.position, new Vector3(start.x + (gridSizeX * x), start.y - (gridSizeY * y), 22.0f));
+                        //Debug.LogError("");
+                    }
+                }
+
+                massCounter++;
+            }
+
+        return result;
+    }
+
+
     // 紙のグリッドのすべてのマスの中心座標をリストにして返す
     // 順番は左上から右下
     public List<Vector2> cellPoints()

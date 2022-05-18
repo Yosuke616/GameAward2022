@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Draw mesh by clicked points.
@@ -18,6 +19,8 @@ public class DrawMesh : MonoBehaviour
     private int _curIndex;
     private int _nextIndex;
     private int _prevIndex;
+
+    private GameObject T_Obj;
 
     private Vector3 CurrentPoint
     {
@@ -61,6 +64,10 @@ public class DrawMesh : MonoBehaviour
     /// </summary>
     public GameObject CreateMesh(List<Vector3> vertices)
     {
+        if (SceneManager.GetActiveScene().name == "Title") {
+            T_Obj = GameObject.Find("Main Camera");
+        }
+
         Initialize(vertices);
 
         while (true)
@@ -88,6 +95,10 @@ public class DrawMesh : MonoBehaviour
         Mesh mesh = new Mesh();
         mesh.vertices = _vertices.ToArray();
 
+        
+
+        //ここでリストを送ってもらう        
+        mesh.uv = T_Obj.GetComponent<Title_Button_Script>().GetUV(); ;
         mesh.triangles = _triangles.ToArray();
         mesh.RecalculateNormals();
 
@@ -95,6 +106,11 @@ public class DrawMesh : MonoBehaviour
 
         MeshFilter filter = go.GetComponent<MeshFilter>();
         filter.mesh = mesh;
+
+        //シーンがタイトルだったらテクスチャを貼り付ける
+        if (SceneManager.GetActiveScene().name == "Title") {
+            T_Obj.GetComponent<Title_Button_Script>().SettingTexture(go);
+        }
 
         return go;
     }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;  // ƒV[ƒ“‘JˆÚ—p
+using System;
+
 
 public class StageSelect : MonoBehaviour
 {

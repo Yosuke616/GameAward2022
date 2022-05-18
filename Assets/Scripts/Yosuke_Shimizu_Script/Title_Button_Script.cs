@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class Title_Button_Script : MonoBehaviour
 {
@@ -35,6 +36,15 @@ public class Title_Button_Script : MonoBehaviour
     public GameObject Option;
     public GameObject Plate;
 
+    //1枚目か2枚目かを判別するフラグ
+    private bool bFirdt;
+
+    //破るときに必要なマテリアルをあらかじめセットしておく
+    public Material[] _Mats = new Material[4];
+
+    //UVを設定して保存するための変数
+    private Vector2[] _Vector2 = new Vector2[3];
+
     // Start is called before the first frame update
     void Start()
     {
@@ -58,6 +68,10 @@ public class Title_Button_Script : MonoBehaviour
         End_B.Add(new Vector3(8.25f,-1.75f, -0.2f));
 
         first_Flg = false;
+
+
+        //1枚目かどうかのフラグをオフにする
+        bFirdt = false;
     }
 
     // Update is called once per frame
@@ -250,7 +264,7 @@ public class Title_Button_Script : MonoBehaviour
     public void OnFirst()
     {
         Debug.Log("ロゼッター");
-        BreakPaper();
+        Cre_Mesh();
         // 同一シーンを読込
         //SceneManager.LoadScene("StageSelect");
     }
@@ -259,7 +273,7 @@ public class Title_Button_Script : MonoBehaviour
     public void OnCountinue()
     {
         Debug.Log("ロゼッタかわいいー");
-        BreakPaper();
+        Cre_Mesh();
         // 同一シーンを読込
         //SceneManager.LoadScene("StageSelect");
     }
@@ -268,7 +282,7 @@ public class Title_Button_Script : MonoBehaviour
     public void OnOption()
     {
         Debug.Log("ロゼッタ様抱いてー！");
-        BreakPaper();
+        Cre_Mesh();
 
         Titleflg = true;
         Option.SetActive(true);
@@ -280,7 +294,7 @@ public class Title_Button_Script : MonoBehaviour
     //終わる
     public void OnEnd()
     {
-        BreakPaper();
+        Cre_Mesh();
 
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
@@ -294,7 +308,7 @@ public class Title_Button_Script : MonoBehaviour
         Titleflg = TF;
     }
 
-    private void BreakPaper() {
+    private void Cre_Mesh() {
         //演出
         GameObject obj = GameObject.Find("CreatebreakManager");
 
@@ -307,9 +321,14 @@ public class Title_Button_Script : MonoBehaviour
                 List<Vector3> Start = new List<Vector3>();
                
                 //左側
+                Start.Add(new Vector3(-8.0f,-2.25f,-0.1f));
                 Start.Add(new Vector3(-8.0f,-1.75f,-0.1f));
                 Start.Add(new Vector3(-5.0f,-1.75f,-0.1f));
-                Start.Add(new Vector3(-8.0f,-2.25f,-0.1f));
+
+                //UVの設定
+                _Vector2[0] = new Vector2(0.0f,0.0f);
+                _Vector2[1] = new Vector2(0.0f,1.0f);
+                _Vector2[2] = new Vector2(1.0f,1.0f);
 
                 //メッシュを作る
                 obj.GetComponent<DrawMesh>().CreateMesh(Start);
@@ -318,9 +337,14 @@ public class Title_Button_Script : MonoBehaviour
                 Start.Clear();
 
                 //右側を作る
+                Start.Add(new Vector3(-8.0f, -2.25f, -0.1f));
                 Start.Add(new Vector3(-5.0f, -1.75f, -0.1f));
                 Start.Add(new Vector3(-5.0f, -2.25f, -0.1f));
-                Start.Add(new Vector3(-8.0f, -2.25f, -0.1f));
+
+                //UVの設定
+                _Vector2[0] = new Vector2(0.0f, 0.0f);
+                _Vector2[1] = new Vector2(1.0f, 1.0f);
+                _Vector2[2] = new Vector2(1.0f, 0.0f);
 
                 //メッシュを作る
                 obj.GetComponent<DrawMesh>().CreateMesh(Start);
@@ -407,4 +431,68 @@ public class Title_Button_Script : MonoBehaviour
         }
        
     }
+
+    //どのボタンが選択されているかを送る関数
+    public int GetSelectBUtton() {
+        return nSelectButton;
+    }
+
+    //テクスチャを貼る為の関数
+    public void SettingTexture(GameObject obj) {
+        switch (nSelectButton)
+        {
+            case 0:
+                if (!bFirdt)
+                {
+                    obj.GetComponent<MeshRenderer>().material = _Mats[0];
+                    bFirdt = true;
+                }
+                else
+                {
+                    obj.GetComponent<MeshRenderer>().material = _Mats[0];
+                }
+                break;
+            case 1:
+                if (!bFirdt)
+                {
+                    obj.GetComponent<MeshRenderer>().material = _Mats[1];
+                    bFirdt = true;
+                }
+                else
+                {
+                    obj.GetComponent<MeshRenderer>().material = _Mats[1];
+                }
+                break;
+            case 2:
+                if (!bFirdt)
+                {
+                    obj.GetComponent<MeshRenderer>().material = _Mats[2];
+                    bFirdt = true;
+                }
+                else
+                {
+                    obj.GetComponent<MeshRenderer>().material = _Mats[2];
+                }
+                break;
+            case 3:
+                if (!bFirdt)
+                {
+                    obj.GetComponent<MeshRenderer>().material = _Mats[3];
+                    bFirdt = true;
+                }
+                else
+                {
+                    obj.GetComponent<MeshRenderer>().material = _Mats[3];
+                }
+                break;
+        }
+
+    }
+
+    //UV情報を送る
+    public Vector2[] GetUV()
+    {
+        return _Vector2;
+    }
+
 }

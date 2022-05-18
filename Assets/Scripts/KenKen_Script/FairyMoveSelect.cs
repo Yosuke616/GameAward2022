@@ -33,7 +33,7 @@ public class FairyMoveSelect : MonoBehaviour
     private float TargetPos_Y;          // 
     private float TargetPos_Z;          // 
 
-    private float Frame = 0;            // 何フレームに一回挙動を変えるか用
+    private bool  Change = false;       // 何フレームに一回挙動を変えるか用
     private float Swing = 0;            // 振幅用
     private float MoveSpeed = 1.0f;     // 移動速度
     //--------------------------------------------------------------------------------
@@ -124,15 +124,26 @@ public class FairyMoveSelect : MonoBehaviour
                 // ふわふわする動き-----------------------------------------------------------------
                 // 位相を計算します。
                 phase = Time.time * MoveSpeed / 2 * Mathf.PI;
-                TargetPos_Y = Mathf.Sin(phase) * Y_Range;
 
                 // 振幅変化
-                Frame--;
-                if (Frame < 0)
+               if(Change == false)
                 {
-                    Swing = Random.Range(0, 30);
-                    Frame = 500;
+                    Swing += Random.Range(0, 0.1f);
+                    if (Swing > 20)
+                    {
+                        Change = true;
+                    }
                 }
+               else
+                {
+                    Swing -= Random.Range(0, 0.1f); ;
+                    if (Swing < 0)
+                    {
+                        Change = false;
+                    }
+                }
+
+                TargetPos_Y = Mathf.Sin(phase) * 20 - 20;
 
                 // 距離の差を計算
                 diffX = 90 - Mathf.Cos(phase) * Swing - Fairy.transform.position.x;

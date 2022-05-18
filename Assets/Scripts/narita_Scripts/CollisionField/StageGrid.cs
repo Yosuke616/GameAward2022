@@ -32,7 +32,7 @@ public class StageGrid : MonoBehaviour
     // 紙の番号
     public int layer = 0;
 
-    public float z = 0.0f;
+    //public float z = 0.0f;
 
     public GameObject MainGrid;
     //縦の数と横の数を設定する為の変数
@@ -190,7 +190,7 @@ public class StageGrid : MonoBehaviour
 
             // 衝突処理の種類をセットする
             collisionGrid[i].tag = Grids[i].tag;
-            Debug.Log(collisionGrid[i].tag);
+            //Debug.Log(collisionGrid[i].tag);
 
             // 回転角もセットする
             collisionGrid[i].rotate = Grids[i].transform.localEulerAngles;

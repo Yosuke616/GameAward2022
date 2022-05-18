@@ -22,9 +22,9 @@ public class CreateTriangle : MonoBehaviour
         GameObject paper = CreateMesh();
 
         // 仕切りの生成
-        if (partition) {
-            CreatePartition(paper);
-        }
+        //if (partition) {
+        //    CreatePartition(paper);
+        //}
     }
 
     // 紙の生成

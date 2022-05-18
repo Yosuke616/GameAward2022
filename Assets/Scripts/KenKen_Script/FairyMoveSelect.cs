@@ -33,6 +33,7 @@ public class FairyMoveSelect : MonoBehaviour
     private float TargetPos_Y;          // 
     private float TargetPos_Z;          // 
 
+    public static bool LeftRight = false;
     private bool  Change = false;       // 何フレームに一回挙動を変えるか用
     private float Swing = 0;            // 振幅用
     private float MoveSpeed = 1.0f;     // 移動速度
@@ -53,16 +54,44 @@ public class FairyMoveSelect : MonoBehaviour
         {
             case FAIRY_STATE.LEFT:
                 // 画面左待機---------------------------------------------------------------------
-                // 距離の差を計算
-                diffX = -80 - Fairy.transform.position.x;
-                diffY = 0 - Fairy.transform.position.y;
-                diffZ = 100 - Fairy.transform.position.z;
+                // 位相を計算します。
+                phase = Time.time * MoveSpeed * Mathf.PI;
 
-                // 移動量計算
-                diffX *= MoveSpeed / 35;
-                diffY *= MoveSpeed / 35;
-                diffZ *= MoveSpeed / 35;
+                if (LeftRight == false)
+                {
+                    // 距離の差を計算
+                    diffX = -80 - Fairy.transform.position.x;
+                    diffY = 0 - Fairy.transform.position.y;
+                    diffZ = 100 - Fairy.transform.position.z;
 
+                    // 移動量計算
+                    diffX *= MoveSpeed / 20;
+                    diffY *= MoveSpeed / 20;
+                    diffZ *= MoveSpeed / 20;
+
+                    // 左まで北
+                    if (Fairy.transform.position.x < -75)
+                    {
+                        LeftRight = true;
+                    }
+                }
+                else
+                {
+                    // 円移動用の計算
+                    TargetPos_X = Mathf.Cos(phase) * 10;
+                    TargetPos_Y = Mathf.Sin(phase) * 10;
+
+                    // 距離の差を計算
+                    diffX = -80 - TargetPos_X - Fairy.transform.position.x;
+                    diffY = 0 - TargetPos_Y - Fairy.transform.position.y;
+                    diffZ = 100 - Fairy.transform.position.z;
+
+                    // 移動量計算
+                    diffX *= MoveSpeed / 35;
+                    diffY *= MoveSpeed / 35;
+                    diffZ *= MoveSpeed / 35;
+                }
+                
                 // 位置変更
                 Fairy.transform.position += new Vector3(diffX, diffY, diffZ);
                 break;
@@ -71,15 +100,43 @@ public class FairyMoveSelect : MonoBehaviour
 
             case FAIRY_STATE.RIGHT:
                 // 画面右待機---------------------------------------------------------------------
-                // 距離の差を計算
-                diffX = 80 - Fairy.transform.position.x;
-                diffY = 0 - Fairy.transform.position.y;
-                diffZ = 100 - Fairy.transform.position.z;
+                // 位相を計算します。
+                phase = Time.time * MoveSpeed * Mathf.PI;
 
-                // 移動量計算
-                diffX *= MoveSpeed / 35;
-                diffY *= MoveSpeed / 35;
-                diffZ *= MoveSpeed / 35;
+                if (LeftRight == false)
+                {
+                    // 距離の差を計算
+                    diffX = 80 - Fairy.transform.position.x;
+                    diffY = 0 - Fairy.transform.position.y;
+                    diffZ = 100 - Fairy.transform.position.z;
+
+                    // 移動量計算
+                    diffX *= MoveSpeed / 20;
+                    diffY *= MoveSpeed / 20;
+                    diffZ *= MoveSpeed / 20;
+
+                    // 左まで北
+                    if (Fairy.transform.position.x > 75 && Fairy.transform.position.x < 85)
+                    {
+                        LeftRight = true;
+                    }
+                }
+                else
+                {
+                    // 円移動用の計算
+                    TargetPos_X = Mathf.Cos(phase) * 10;
+                    TargetPos_Y = Mathf.Sin(phase) * 10;
+
+                    // 距離の差を計算
+                    diffX = 80 - TargetPos_X - Fairy.transform.position.x;
+                    diffY = 0 - TargetPos_Y - Fairy.transform.position.y;
+                    diffZ = 100 - Fairy.transform.position.z;
+
+                    // 移動量計算
+                    diffX *= MoveSpeed / 35;
+                    diffY *= MoveSpeed / 35;
+                    diffZ *= MoveSpeed / 35;
+                }
 
                 // 位置変更
                 Fairy.transform.position += new Vector3(diffX, diffY, diffZ);
@@ -122,6 +179,9 @@ public class FairyMoveSelect : MonoBehaviour
 
             case FAIRY_STATE.NONE:
                 // ふわふわする動き-----------------------------------------------------------------
+                // 何もしてない
+                LeftRight = false;
+
                 // 位相を計算します。
                 phase = Time.time * MoveSpeed / 2 * Mathf.PI;
 

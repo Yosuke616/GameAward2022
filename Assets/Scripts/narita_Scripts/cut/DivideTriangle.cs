@@ -62,7 +62,7 @@ public class DivideTriangle : MonoBehaviour
     /* 破る処理
      * 戻り値:メッシュを一度でも三角形分割していたらtrue
      */
-    public int Divide(ref List<Vector3> MousePoints, int currentDividedNumber)
+    public int Divide(ref List<Vector3> MousePoints)
     {
         int resultState = (int)ResultOfDividing.NONE;
 
@@ -830,10 +830,6 @@ public class DivideTriangle : MonoBehaviour
                 }
                 //breakline.SetAlpha();
             }
-
-            //obj1の方のアウトラインをセットする
-            var outsider = GameObject.Find("cursor").GetComponent<OutSide_Paper_Script_Second>();
-            outsider.DivideEnd();
         }
         else
         {
@@ -878,10 +874,6 @@ public class DivideTriangle : MonoBehaviour
                     //move2.SetDirection(pos1 - pos2);
                 }
             }
-
-            //obj1の方のアウトラインをセットする
-            var outsider = GameObject.Find("cursor").GetComponent<OutSide_Paper_Script_Second>();
-            outsider.DivideEnd();
         }
 
 

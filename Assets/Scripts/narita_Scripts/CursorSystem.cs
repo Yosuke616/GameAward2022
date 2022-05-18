@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class CursorSystem : MonoBehaviour
 {
+    // カーソルの座標リスト
     [SerializeField] private List<Vector3> MousePoints;
-
-    [SerializeField] private int currentDividedPaper = 0;
-
+    // 紙の枚数
     private int maxPaper = 2;
+    // 破る処理をしているかどうか
+    [SerializeField] private bool startDividing = false;
 
     private bool bDivide;
 
@@ -33,6 +34,8 @@ public class CursorSystem : MonoBehaviour
     // 初期化
     void Start()
     {
+        startDividing = false;
+
         MousePoints = new List<Vector3>();
 
         // 紙の束
@@ -178,22 +181,23 @@ public class CursorSystem : MonoBehaviour
                 Vector3 SavePos = Vector3.zero;
 
                 //送るものの座標を変える
-                if (outsider.GetFirstFlg())
-                {
-                    Debug.Log("2回目以降");
-
-                    // マウス
-                    if (Input.GetMouseButtonDown(0)) SavePos = transform.position;
-                    // ゲームパッド
-                    else SavePos = Padobj.transform.position;
-                }
-                else
+                if (startDividing == false)
                 {
                     Debug.LogWarning("1回目");
+                    startDividing = true;
                     // 破る処理スタート
                     outsider.DivideStart();
 
                     SavePos = Cursor.transform.position;
+                }
+                else
+                {
+                    Debug.Log("2回目以降");
+
+                    //--- マウス
+                    if (Input.GetMouseButtonDown(0)) SavePos = transform.position;
+                    //--- ゲームパッド
+                    else SavePos = Padobj.transform.position;
                 }
 
                 // 座標リストに追加
@@ -224,7 +228,7 @@ public class CursorSystem : MonoBehaviour
                             // 4枚目破き状態のときは1枚目、2枚目、3枚目を破けるように
                             var divideTriangle = papers[paperNum].GetComponent<DivideTriangle>();
 
-                            breakingState = divideTriangle.Divide(ref MousePoints, currentDividedPaper);
+                            breakingState = divideTriangle.Divide(ref MousePoints);
 
 
                             switch (breakingState)
@@ -233,8 +237,10 @@ public class CursorSystem : MonoBehaviour
                                     continue;
 
                                 case 1: // 破り途中
+                                    
                                     // 次の紙がすでに破る処理が行われているかチェック
-                                    if (paperNum != papers.Count - 1 && papers[paperNum + 1].GetComponent<DivideTriangle>().Dividing == true)
+                                    //if (paperNum != papers.Count - 1 && papers[paperNum + 1].GetComponent<DivideTriangle>().Dividing == true)
+                                    if (CheckMextPaperDividing(paperNum))
                                     {
                                         // 次の紙も破る
                                         continue;
@@ -245,13 +251,17 @@ public class CursorSystem : MonoBehaviour
                                     // ※すでに破る処理を開始している奥の紙は破る
 
                                     // 次の紙がすでに破る処理が行われているかチェック
-                                    if (paperNum != papers.Count - 1 && papers[paperNum + 1].GetComponent<DivideTriangle>().Dividing == true)
+                                    //if (paperNum != papers.Count - 1 && papers[paperNum + 1].GetComponent<DivideTriangle>().Dividing == true)
+                                    if (CheckMextPaperDividing(paperNum))
                                     {
                                         // 次の紙も破る
                                         continue;
                                     }
                                     else
                                     {
+                                        startDividing = false;
+                                        //obj1の方のアウトラインをセットする
+                                        outsider.DivideEnd();
                                         // ポジションリストをクリア
                                         MousePoints.Clear();
                                         return;
@@ -292,5 +302,19 @@ public class CursorSystem : MonoBehaviour
 
         // 紙の番号、昇順
         papers.Sort((a, b) => a.GetComponent<DivideTriangle>().GetNumber() - b.GetComponent<DivideTriangle>().GetNumber());
+    }
+
+
+    // 奥の紙が破り途中かどうか
+    // 破り途中のtrue
+    private bool CheckMextPaperDividing(int crrentPaperNum)
+    {
+        for (int paperNum = crrentPaperNum + 1; paperNum < maxPaper; paperNum++)
+        {
+            // 1枚でも破り途中ならtrue
+            if (papers[paperNum].GetComponent<DivideTriangle>().Dividing) return true;
+        }
+
+        return false;
     }
 }

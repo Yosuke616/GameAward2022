@@ -1164,7 +1164,6 @@ MonoBehaviour:
   Grids: []
   cameraName: SubCamera2
   layer: 1
-  z: 0
   MainGrid: {fileID: 0}
 --- !u!23 &335924716
 MeshRenderer:
@@ -3017,6 +3016,10 @@ PrefabInstance:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 191261352}
+    - target: {fileID: 8412117440360662281, guid: 741666eb38811274182813959f2fa9c1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8412117440709944361, guid: 741666eb38811274182813959f2fa9c1, type: 3}
       propertyPath: m_RootOrder
       value: 14
@@ -3123,7 +3126,6 @@ MonoBehaviour:
   Grids: []
   cameraName: SubCamera1
   layer: 0
-  z: 0
   MainGrid: {fileID: 0}
 --- !u!23 &851585156
 MeshRenderer:
@@ -3246,7 +3248,6 @@ MonoBehaviour:
   Grids: []
   cameraName: SubCamera3
   layer: 2
-  z: 0
   MainGrid: {fileID: 0}
 --- !u!23 &880086035
 MeshRenderer:
@@ -7928,7 +7929,6 @@ MonoBehaviour:
   CollisionGrid: []
   layerList: 
   MainGrid: {fileID: 0}
-  storeObject: []
 --- !u!4 &2032288587
 Transform:
   m_ObjectHideFlags: 0
@@ -8611,9 +8611,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MousePoints: []
-  cnt: 0
-  maxPaper: 2
-  Select: 0
+  startDividing: 0
+  selectPaper: 0
   papers: []
 --- !u!1 &2137070222
 GameObject:

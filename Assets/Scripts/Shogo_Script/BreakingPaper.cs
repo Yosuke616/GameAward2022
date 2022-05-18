@@ -57,7 +57,6 @@ public class BreakingPaper : MonoBehaviour
         valueAngle = 220.0f;
         valueRadius = 0.01f;
         valueStrength = 1.0f;
-        Debug.Log("右だよ");
     }
 
     // 左側にめくる
@@ -69,7 +68,6 @@ public class BreakingPaper : MonoBehaviour
         valueAngle = 140.0f;
         valueRadius = 0.01f;
         valueStrength = 1.0f;
-        Debug.Log("左だよ");
     }
 
     // マテリアルの設定

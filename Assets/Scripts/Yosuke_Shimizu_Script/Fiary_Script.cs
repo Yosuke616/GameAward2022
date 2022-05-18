@@ -153,7 +153,7 @@ public class Fiary_Script : MonoBehaviour
                         }
                     }
 
-                    Debug.Log("FIARY_PLAYER_TRACKING");
+                    //Debug.Log("FIARY_PLAYER_TRACKING");
 
                     break;
                 case FIARY_MOVE.FIARY_BREAK_PAPER:
@@ -172,7 +172,7 @@ public class Fiary_Script : MonoBehaviour
                     //外周用に保存しておく
                     Paper_Out = OutSide_Cursor.GetComponent<OutSide_Paper_Script_Second>().GetCursorPos();
 
-                    Debug.Log("FIARY_BREAK_PAPER");
+                    //Debug.Log("FIARY_BREAK_PAPER");
 
                     break;
                 case FIARY_MOVE.FIARY_PAPER_IN:
@@ -211,7 +211,7 @@ public class Fiary_Script : MonoBehaviour
                         }
                     }
 
-                    Debug.Log("FIARY_PAPER_IN");
+                    //Debug.Log("FIARY_PAPER_IN");
                     break;
 
                 case FIARY_MOVE.FIARY_BREAK_MOVE:
@@ -222,7 +222,7 @@ public class Fiary_Script : MonoBehaviour
                     //最後にカーソルのあった場所まで移動する
 
                     //このままだと一瞬で終わるのでこの中のリストのなかみが全て消えたらプレイヤー追従モードにする
-                    Debug.Log(this.transform.position);
+                    //Debug.Log(this.transform.position);
 
                     //===============================================================================================
                     //妖精の元の場所との差分を出して妖精を移動させる(仮でできた後で必ず手直しする)
@@ -251,16 +251,16 @@ public class Fiary_Script : MonoBehaviour
                         g_FiaryMove = FIARY_MOVE.FIARY_PLAYER_TRACKING;
                         gFirst_Flg = true;
                         Paper_Out = new Vector3(0.0f, 0.0f, 0.0f);
-                        Debug.Log("いい感じ");
+                        //Debug.Log("いい感じ");
                     }
 
                     if (Input.GetKey(KeyCode.Space))
                     {
-                        Debug.Log(MousePos[0]);
-                        Debug.Log(this.transform.position);
+                        //Debug.Log(MousePos[0]);
+                        //Debug.Log(this.transform.position);
                     }
 
-                    Debug.Log("FIARY_BREAK_MOVE");
+                    //Debug.Log("FIARY_BREAK_MOVE");
 
                     break;
 

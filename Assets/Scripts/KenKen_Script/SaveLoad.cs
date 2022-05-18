@@ -34,6 +34,7 @@ public class SaveLoad : MonoBehaviour
             saveData.Timer[i] = "1234";
             saveData.Star[i] = 2;
         }
+
         // セーブ
         SaveSystem.Save(saveData, PATH);
 
@@ -61,10 +62,11 @@ public class SaveLoad : MonoBehaviour
 
 
     // ステージ毎のセーブ関数---------------------------------------------------------
-    public static void SaveStageData(string time, int star)
+    public static void SaveStageData(string time)
     {
         // どのステージか
         int Select = new int();
+        int i = new int();
 
         // 現在のステージ名取得
         string name = SceneManager.GetActiveScene().name;
@@ -88,8 +90,14 @@ public class SaveLoad : MonoBehaviour
             saveData.Timer[Select] = time;
 
         // 獲得★確認
-        if (saveData.Star[Select] < star)
-            saveData.Star[Select] = star;
+        int StarTime = Convert.ToInt32(saveData.Timer[Select]);
+        for (i = 0; i < 3; i++)
+        {
+            if(StarTime <= saveData.ClearTime[Select,i])
+            {
+                saveData.Star[Select] = 3 - i;
+            }
+        }
 
         // セーブ
         SaveSystem.Save(saveData, PATH);

@@ -2865,7 +2865,7 @@ Transform:
   m_GameObject: {fileID: 566690143}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -17, y: -4, z: 22}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 508514442}
   m_RootOrder: 2
@@ -3546,9 +3546,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MousePoints: []
-  cnt: 0
-  maxPaper: 3
-  Select: 0
+  currentDividedPaper: 0
+  selectPaper: 0
   papers: []
 --- !u!1 &737427921
 GameObject:
@@ -4256,7 +4255,6 @@ MonoBehaviour:
   Grids: []
   cameraName: SubCamera1
   layer: 0
-  z: 22
   MainGrid: {fileID: 0}
 --- !u!23 &788774688
 MeshRenderer:
@@ -5382,7 +5380,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4225847671156816718, guid: 716a4739cd0ed5744b1e6877fbbf7713, type: 3}
       propertyPath: _setScene.m_SceneName
-      value: 1-4
+      value: 1-7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 716a4739cd0ed5744b1e6877fbbf7713, type: 3}
@@ -5566,7 +5564,6 @@ MonoBehaviour:
   Grids: []
   cameraName: SubCamera3
   layer: 2
-  z: 22
   MainGrid: {fileID: 0}
 --- !u!23 &988715305
 MeshRenderer:
@@ -6180,7 +6177,6 @@ MonoBehaviour:
   Grids: []
   cameraName: SubCamera4
   layer: 3
-  z: 22
   MainGrid: {fileID: 0}
 --- !u!23 &1112608960
 MeshRenderer:
@@ -7890,7 +7886,6 @@ MonoBehaviour:
   Grids: []
   cameraName: SubCamera2
   layer: 1
-  z: 22
   MainGrid: {fileID: 0}
 --- !u!23 &1489184050
 MeshRenderer:
@@ -8293,7 +8288,6 @@ MonoBehaviour:
   CollisionGrid: []
   layerList: 
   MainGrid: {fileID: 0}
-  storeObject: []
 --- !u!1 &1584665832
 GameObject:
   m_ObjectHideFlags: 0

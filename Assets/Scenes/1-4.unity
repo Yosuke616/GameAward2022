@@ -943,7 +943,6 @@ MonoBehaviour:
   CollisionGrid: []
   layerList: 
   MainGrid: {fileID: 0}
-  storeObject: []
 --- !u!4 &167048427
 Transform:
   m_ObjectHideFlags: 0
@@ -2545,7 +2544,7 @@ Transform:
   m_GameObject: {fileID: 593208744}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -20, y: -4, z: 22}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 2144038060}
   m_RootOrder: 2
@@ -3760,7 +3759,6 @@ MonoBehaviour:
   Grids: []
   cameraName: SubCamera2
   layer: 1
-  z: 22
   MainGrid: {fileID: 0}
 --- !u!23 &919811627
 MeshRenderer:
@@ -3962,7 +3960,6 @@ MonoBehaviour:
   Grids: []
   cameraName: SubCamera1
   layer: 0
-  z: 22
   MainGrid: {fileID: 0}
 --- !u!23 &962113055
 MeshRenderer:
@@ -4208,7 +4205,6 @@ MonoBehaviour:
   Grids: []
   cameraName: SubCamera3
   layer: 2
-  z: 22
   MainGrid: {fileID: 0}
 --- !u!23 &998854107
 MeshRenderer:
@@ -7477,9 +7473,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MousePoints: []
-  cnt: 0
-  maxPaper: 2
-  Select: 0
+  currentDividedPaper: 0
+  selectPaper: 0
   papers: []
 --- !u!1 &2088492577
 GameObject:

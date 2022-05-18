@@ -8,10 +8,10 @@ public class CreateTriangle : MonoBehaviour
     public int number = 1;
     public bool partition = true;
 
-    static public float paperSizeX = 9.0f;
-    static public float paperSizeY = 5.0f;
-    //static public float paperSizeX = 10.25f;
-    //static public float paperSizeY = 5.75f;
+    //static public float paperSizeX = 9.0f;
+    //static public float paperSizeY = 5.0f;
+    static public float paperSizeX = 10.3f;
+    static public float paperSizeY = 5.78f;
 
     // Quadの枚数
     static private int QuadNum = 2;

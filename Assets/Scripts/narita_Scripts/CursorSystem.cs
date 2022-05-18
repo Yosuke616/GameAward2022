@@ -6,7 +6,7 @@ public class CursorSystem : MonoBehaviour
 {
     [SerializeField] private List<Vector3> MousePoints;
 
-    [SerializeField] private int currentDividedPaper = 0;
+    [SerializeField] private bool startDivide;
 
     private int maxPaper = 2;
 
@@ -25,6 +25,7 @@ public class CursorSystem : MonoBehaviour
         MODE_OPENING,       // ウサギのシーン
         MODE_ACTION,        // 紙を破れるモード
         MODE_TURN_PAGES,    // めくるモード
+        MODE_CROSSING,      // 破れ線がクロスしてしまった場合
     }
     [SerializeField] static private GameState gameState;
     static public void SetGameState(GameState state) { gameState = state; }
@@ -33,6 +34,7 @@ public class CursorSystem : MonoBehaviour
     // 初期化
     void Start()
     {
+        startDivide = false;
         MousePoints = new List<Vector3>();
 
         // 紙の束
@@ -163,13 +165,11 @@ public class CursorSystem : MonoBehaviour
 
             //カーソルの座標を送る
             GameObject Cursor = GameObject.Find("cursor");
-            var outsider = Cursor.GetComponent<OutSide_Paper_Script_Second>();
             GameObject Padobj = GameObject.Find("CTRLCur");
             GameObject camera = GameObject.Find("MainCamera");
 
-
-
-
+            // 外周を動くオブジェクトのスクリプト
+            var outsider = Cursor.GetComponent<OutSide_Paper_Script_Second>();
 
             // 座標保存
             if (Input.GetMouseButtonDown(0) || camera.GetComponent<InputTrigger>().GetOneTimeDown())
@@ -178,7 +178,16 @@ public class CursorSystem : MonoBehaviour
                 Vector3 SavePos = Vector3.zero;
 
                 //送るものの座標を変える
-                if (outsider.GetFirstFlg())
+                if (startDivide == false)
+                {
+                    Debug.LogWarning("1回目");
+                    // 破る処理スタート
+                    startDivide = true;
+                    outsider.DivideStart();
+
+                    SavePos = Cursor.transform.position;
+                }
+                else
                 {
                     Debug.Log("2回目以降");
 
@@ -186,14 +195,6 @@ public class CursorSystem : MonoBehaviour
                     if (Input.GetMouseButtonDown(0)) SavePos = transform.position;
                     // ゲームパッド
                     else SavePos = Padobj.transform.position;
-                }
-                else
-                {
-                    Debug.LogWarning("1回目");
-                    // 破る処理スタート
-                    outsider.DivideStart();
-
-                    SavePos = Cursor.transform.position;
                 }
 
                 // 座標リストに追加
@@ -224,7 +225,7 @@ public class CursorSystem : MonoBehaviour
                             // 4枚目破き状態のときは1枚目、2枚目、3枚目を破けるように
                             var divideTriangle = papers[paperNum].GetComponent<DivideTriangle>();
 
-                            breakingState = divideTriangle.Divide(ref MousePoints, currentDividedPaper);
+                            breakingState = divideTriangle.Divide(MousePoints);
 
 
                             switch (breakingState)
@@ -234,7 +235,8 @@ public class CursorSystem : MonoBehaviour
 
                                 case 1: // 破り途中
                                     // 次の紙がすでに破る処理が行われているかチェック
-                                    if (paperNum != papers.Count - 1 && papers[paperNum + 1].GetComponent<DivideTriangle>().Dividing == true)
+                                    //if (paperNum != papers.Count - 1 && papers[paperNum + 1].GetComponent<DivideTriangle>().Dividing == true)
+                                    if (CheckNextPaperDividing(paperNum))
                                     {
                                         // 次の紙も破る
                                         continue;
@@ -245,13 +247,14 @@ public class CursorSystem : MonoBehaviour
                                     // ※すでに破る処理を開始している奥の紙は破る
 
                                     // 次の紙がすでに破る処理が行われているかチェック
-                                    if (paperNum != papers.Count - 1 && papers[paperNum + 1].GetComponent<DivideTriangle>().Dividing == true)
+                                    if (CheckNextPaperDividing(paperNum))
                                     {
                                         // 次の紙も破る
                                         continue;
                                     }
                                     else
                                     {
+                                        startDivide = false;
                                         // ポジションリストをクリア
                                         MousePoints.Clear();
                                         return;
@@ -292,5 +295,17 @@ public class CursorSystem : MonoBehaviour
 
         // 紙の番号、昇順
         papers.Sort((a, b) => a.GetComponent<DivideTriangle>().GetNumber() - b.GetComponent<DivideTriangle>().GetNumber());
+    }
+
+
+    // 奥の紙が破り中かどうか
+    private bool CheckNextPaperDividing(int currentPaperNum)
+    {
+        for (int paperNum = currentPaperNum + 1; paperNum < maxPaper; paperNum++)
+        {
+            // 奥の紙が1枚でも破り途中ならtrue
+            if (papers[paperNum].GetComponent<DivideTriangle>().Dividing == true) return true;
+        }
+        return false;
     }
 }

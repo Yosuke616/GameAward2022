@@ -95,10 +95,12 @@ public class DrawMesh : MonoBehaviour
         Mesh mesh = new Mesh();
         mesh.vertices = _vertices.ToArray();
 
-        
 
-        //ここでリストを送ってもらう        
-        mesh.uv = T_Obj.GetComponent<Title_Button_Script>().GetUV(); ;
+        if (SceneManager.GetActiveScene().name == "Title")
+        {
+            //ここでリストを送ってもらう        
+            mesh.uv = T_Obj.GetComponent<Title_Button_Script>().GetUV(); ;
+        }
         mesh.triangles = _triangles.ToArray();
         mesh.RecalculateNormals();
 

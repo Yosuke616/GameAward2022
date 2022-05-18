@@ -25,6 +25,7 @@ public class CursorSystem : MonoBehaviour
         MODE_OPENING,       // ウサギのシーン
         MODE_ACTION,        // 紙を破れるモード
         MODE_TURN_PAGES,    // めくるモード
+        MODE_CROSSING,      // 破れ線がクロスしてしまった場合
     }
     [SerializeField] static private GameState gameState;
     static public void SetGameState(GameState state) { gameState = state; }
@@ -164,13 +165,11 @@ public class CursorSystem : MonoBehaviour
 
             //カーソルの座標を送る
             GameObject Cursor = GameObject.Find("cursor");
-            var outsider = Cursor.GetComponent<OutSide_Paper_Script_Second>();
             GameObject Padobj = GameObject.Find("CTRLCur");
             GameObject camera = GameObject.Find("MainCamera");
 
-
-
-
+            // 外周を動くオブジェクトのスクリプト
+            var outsider = Cursor.GetComponent<OutSide_Paper_Script_Second>();
 
             // 座標保存
             if (Input.GetMouseButtonDown(0) || camera.GetComponent<InputTrigger>().GetOneTimeDown())

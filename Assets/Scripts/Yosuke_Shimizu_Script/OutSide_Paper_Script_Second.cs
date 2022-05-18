@@ -98,10 +98,9 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
                 var controllerNames = Input.GetJoystickNames();
                 // 一台もコントローラが接続されていなければマウスで
                 if (controllerNames.Length == 0)
-                //if (controllerNames[0] == "")
                 {
-                    Cross_Pos = calcCrossPos_Mouse(Mouse_Pos, Paper_Center, OutLinePaper);
                     // マウス
+                    Cross_Pos = calcCrossPos_Mouse(Mouse_Pos, Paper_Center, OutLinePaper);
                 }
                 else
                 {

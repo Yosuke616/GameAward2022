@@ -184,6 +184,13 @@ public class StageSelect : MonoBehaviour
         {
             case PANEL_STATE.LEFT:
                 // パネル左移動------------------------------------------------------------------
+                // 妖精さんが左まできたら
+                if (FairyMoveSelect.LeftRight == false)
+                {
+                    break;
+                }
+
+
                 if (Move_X < Range_X)
                 {
                     Stages[Select].transform.position -= new Vector3(Speed, 0, 0);
@@ -224,6 +231,12 @@ public class StageSelect : MonoBehaviour
 
             case PANEL_STATE.RIGHT:
                 // パネル右移動-------------------------------------------------------------------
+                // 妖精さんが右まできたら
+                if (FairyMoveSelect.LeftRight == false)
+                {
+                    break;
+                }
+
                 if (Move_X < Range_X)
                 {
                     Stages[Select].transform.position += new Vector3(Speed, 0, 0);

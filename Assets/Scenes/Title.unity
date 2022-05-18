@@ -2530,6 +2530,11 @@ MonoBehaviour:
   EndButton: {fileID: 499155030}
   Option: {fileID: 37794802}
   Plate: {fileID: 194804958}
+  _Mats:
+  - {fileID: 2100000, guid: 9c7551577c88c334a8f3a4038a8f9dab, type: 2}
+  - {fileID: 2100000, guid: d740e8056d2943a469dbcbc07bd38b85, type: 2}
+  - {fileID: 2100000, guid: 995bc4d10b08a7d41bd1a5f7583cd369, type: 2}
+  - {fileID: 2100000, guid: b971c6c14f8d04240a87b70698758f6b, type: 2}
 --- !u!1 &1358657966
 GameObject:
   m_ObjectHideFlags: 0

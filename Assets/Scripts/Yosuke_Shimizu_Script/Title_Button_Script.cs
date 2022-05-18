@@ -250,6 +250,7 @@ public class Title_Button_Script : MonoBehaviour
     public void OnFirst()
     {
         Debug.Log("ロゼッター");
+        BreakPaper();
         // 同一シーンを読込
         //SceneManager.LoadScene("StageSelect");
     }
@@ -258,6 +259,7 @@ public class Title_Button_Script : MonoBehaviour
     public void OnCountinue()
     {
         Debug.Log("ロゼッタかわいいー");
+        BreakPaper();
         // 同一シーンを読込
         //SceneManager.LoadScene("StageSelect");
     }
@@ -266,6 +268,7 @@ public class Title_Button_Script : MonoBehaviour
     public void OnOption()
     {
         Debug.Log("ロゼッタ様抱いてー！");
+        BreakPaper();
 
         Titleflg = true;
         Option.SetActive(true);
@@ -277,6 +280,8 @@ public class Title_Button_Script : MonoBehaviour
     //終わる
     public void OnEnd()
     {
+        BreakPaper();
+
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
@@ -287,5 +292,119 @@ public class Title_Button_Script : MonoBehaviour
     public void SetTitleFlg(bool TF)
     {
         Titleflg = TF;
+    }
+
+    private void BreakPaper() {
+        //演出
+        GameObject obj = GameObject.Find("CreatebreakManager");
+
+        switch (nSelectButton) {
+            //スタートボタン
+            case 0:
+                //スタートボタンを消す
+                StartButton.SetActive(false);
+
+                List<Vector3> Start = new List<Vector3>();
+               
+                //左側
+                Start.Add(new Vector3(-8.0f,-1.75f,-0.1f));
+                Start.Add(new Vector3(-5.0f,-1.75f,-0.1f));
+                Start.Add(new Vector3(-8.0f,-2.25f,-0.1f));
+
+                //メッシュを作る
+                obj.GetComponent<DrawMesh>().CreateMesh(Start);
+
+                //リストの中身を削除する
+                Start.Clear();
+
+                //右側を作る
+                Start.Add(new Vector3(-5.0f, -1.75f, -0.1f));
+                Start.Add(new Vector3(-5.0f, -2.25f, -0.1f));
+                Start.Add(new Vector3(-8.0f, -2.25f, -0.1f));
+
+                //メッシュを作る
+                obj.GetComponent<DrawMesh>().CreateMesh(Start);
+
+                break;
+            //続きから
+            case 1:
+                //続きからを消す
+                ContinueButton.SetActive(false);
+
+                List<Vector3> Continue = new List<Vector3>();
+
+                //左側
+                Continue.Add(new Vector3(-5.0f,-3.4f,-0.1f));
+                Continue.Add(new Vector3(-1.3f,-3.4f,-0.1f));
+                Continue.Add(new Vector3(-5.0f,-3.9f,-0.1f));
+
+                //メッシュを作る
+                obj.GetComponent<DrawMesh>().CreateMesh(Continue);
+
+                //リストの中身を削除する
+                Continue.Clear();
+
+                //右側
+                Continue.Add(new Vector3(-1.3f, -3.4f, -0.1f));
+                Continue.Add(new Vector3(-1.3f, -3.9f, -0.1f));
+                Continue.Add(new Vector3(-5.0f, -3.9f, -0.1f));
+
+                //メッシュを作る
+                obj.GetComponent<DrawMesh>().CreateMesh(Continue);
+
+                break;
+            case 2:
+                //オプションを消す
+                OptionButton.SetActive(false);
+
+                List<Vector3> Option = new List<Vector3>();
+
+                //左側
+                Option.Add(new Vector3(1.25f, -3.9f, -0.1f));
+                Option.Add(new Vector3(1.25f, -3.4f, -0.1f));
+                Option.Add(new Vector3(4.95f, -3.4f, -0.1f));
+
+                //メッシュを作る
+                obj.GetComponent<DrawMesh>().CreateMesh(Option);
+
+                //リストの中身を削除する
+                Option.Clear();
+
+                //右側
+                Option.Add(new Vector3(4.95f, -3.4f, -0.1f));
+                Option.Add(new Vector3(4.95f, -3.9f, -0.1f));
+                Option.Add(new Vector3(1.25f, -3.9f, -0.1f));
+
+                //メッシュを作る
+                obj.GetComponent<DrawMesh>().CreateMesh(Option);
+
+                break;
+            case 3:
+                //終わるを消す
+                EndButton.SetActive(false);
+
+                List<Vector3> End = new List<Vector3>();
+
+                //左側
+                End.Add(new Vector3(4.95f, -2.25f, -0.1f));
+                End.Add(new Vector3(4.95f, -1.75f, -0.1f));
+                End.Add(new Vector3(8.25f, -1.75f, -0.1f));
+
+                //メッシュを作る
+                obj.GetComponent<DrawMesh>().CreateMesh(End);
+
+                //リストの中身を削除する
+                End.Clear();
+
+                //右側
+                End.Add(new Vector3(8.25f, -1.75f, -0.1f));
+                End.Add(new Vector3(8.25f, -2.25f, -0.1f));
+                End.Add(new Vector3(4.95f, -2.25f, -0.1f));
+
+                //メッシュを作る
+                obj.GetComponent<DrawMesh>().CreateMesh(End);
+                break;
+        }
+       
     }
 }

@@ -28,8 +28,8 @@ public class SaveLoad : MonoBehaviour
     // テスト関数--------------------------------------------------------------------
     public static void TestSaveLoad()
     {
-        saveData.Progress = 7;
-        for (int i = 0; i < 8; i++)
+        saveData.Progress = 8;
+        for (int i = 0; i < 9; i++)
         {
             saveData.Timer[i] = "1234";
             saveData.Star[i] = 2;
@@ -49,7 +49,7 @@ public class SaveLoad : MonoBehaviour
     public static void InitSaveData()
     {
         saveData.Progress = 0;
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < 9; i++)
         {
             saveData.Timer[i] = "9999";
             saveData.Star[i] = 0;
@@ -70,14 +70,15 @@ public class SaveLoad : MonoBehaviour
 
         // 現在のステージ名取得
         string name = SceneManager.GetActiveScene().name;
-        if (name == "1-1") Select = 0;
-        if (name == "1-2") Select = 1;
-        if (name == "1-3") Select = 2;
-        if (name == "1-4") Select = 3;
-        if (name == "1-5") Select = 4;
-        if (name == "1-6") Select = 5;
-        if (name == "1-7") Select = 6;
-        if (name == "1-8") Select = 7;
+        Select = 0;
+        if (name == "1-1") Select = 1;
+        if (name == "1-2") Select = 2;
+        if (name == "1-3") Select = 3;
+        if (name == "1-4") Select = 4;
+        if (name == "1-5") Select = 5;
+        if (name == "1-6") Select = 6;
+        if (name == "1-7") Select = 7;
+        if (name == "1-8") Select = 8;
 
         // 進捗度確認
         if (saveData.Progress < Select)
@@ -96,6 +97,7 @@ public class SaveLoad : MonoBehaviour
             if(StarTime <= saveData.ClearTime[Select,i])
             {
                 saveData.Star[Select] = 3 - i;
+                break;
             }
         }
 
@@ -114,7 +116,7 @@ public class SaveLoad : MonoBehaviour
             saveData.Progress = data.Progress;
         }
 
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < 9; i++)
         {
             int BestTime = Convert.ToInt32(saveData.Timer[i]);
             int NewTime = Convert.ToInt32(data.Timer[i]);

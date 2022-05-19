@@ -5,6 +5,7 @@ using UnityEngine;
 public class ChangeBG : MonoBehaviour
 {
     // 背景テクスチャ-----------------------------------------------------------------
+    public Texture stage0_BG;
     public Texture stage1_BG;
     public Texture stage2_BG;
     public Texture stage3_BG;
@@ -26,7 +27,7 @@ public class ChangeBG : MonoBehaviour
     void Start()
     {
         // テクスチャを配列に突っ込む
-        Stage_BG = new Texture[] { stage1_BG, stage2_BG, stage3_BG, stage4_BG, stage5_BG, stage6_BG, stage7_BG, stage8_BG};
+        Stage_BG = new Texture[] { stage0_BG, stage1_BG, stage2_BG, stage3_BG, stage4_BG, stage5_BG, stage6_BG, stage7_BG, stage8_BG};
     }
 
 

@@ -72,6 +72,7 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
             // ‰æ–Ê‚ªˆÃ‚­‚È‚Á‚½‚ç
             if (valueSpeed >= 1.0f)
             {
+                valueSpeed = 1.0f;
                 SoundManager.Instance.StopBgm();
                 SoundManager.Instance.StopSe();
                 _loadDisplay.SetActive(true);
@@ -110,6 +111,7 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
             // ‰æ–Ê‚ª–¾‚é‚­‚È‚Á‚½‚ç
             if (valueSpeed <= currentSpeed)
             {
+                valueSpeed = currentSpeed;
                 _backGround.gameObject.SetActive(false);
                 _isFadeIn = false;
             }

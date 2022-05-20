@@ -23,6 +23,7 @@ public class ChangeBG : MonoBehaviour
     private Texture[] Stage_BG;         // 背景を配列に
     private static int SelectBG = 0;    // 現在の背景
 
+    // フェード用
     public enum FADE_TYPE
     {
         FADE_NONE,

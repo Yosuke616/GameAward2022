@@ -8,13 +8,6 @@ using System;
 
 public class StageSelect : MonoBehaviour
 {
-    // 他のスクリプトに出張する変数---------------------------------------------------
-    public static int ProgressStages = 8;       // 現在の進捗
-    public static bool bBackSelect = false;     // セレクトに帰ってきた時用フラグ
-    public static bool bClearStage = false;     // クリアしてきたフラグ
-    //--------------------------------------------------------------------------------
-
-    
     // パブリックでのパネル移動に関する設定-------------------------------------------
     public Camera MainCam;       // メインカメラ取得
     public Vector3 TargetPos;    // カメラ移動位置
@@ -33,8 +26,10 @@ public class StageSelect : MonoBehaviour
 
 
     // スクリプト内での変数-----------------------------------------------------------
-    //private SaveData saveData;          // ステージ毎の情報取得用
+    private int ProgressStages = 0;       // 現在の進捗
+    private bool bBackSelect = false;     // セレクトに帰ってきた時用フラグ
 
+    // パネル状態
     enum PANEL_STATE    // パネル状態
     {
         LEFT,       // 左移動
@@ -117,7 +112,7 @@ public class StageSelect : MonoBehaviour
 
 
         // ステージからセレクトに戻ってきたときの画面調整---------------------------------
-        if (bBackSelect)
+        if (bBackSelect == false)
         {
             // 今クリアしたもの以外のパネルを右側に移動させる
             for (i = 0; i < ProgressStages - 1; i++)
@@ -134,14 +129,8 @@ public class StageSelect : MonoBehaviour
             // クリアしたステージを真ん中に
             Stages[i].transform.position = new Vector3(0, 0, 450);
 
-            // クリアしてきた時に演出を出す・・・？
-            if (bClearStage)
-            {
-
-                bClearStage = false;
-            }
-
-            bBackSelect = false;
+            // フラグON
+            bBackSelect = true;
         }
         //--------------------------------------------------------------------------------
 
@@ -159,18 +148,6 @@ public class StageSelect : MonoBehaviour
                     // 妖精さん左
                     FairyMoveSelect.MoveChange(FairyMoveSelect.FAIRY_STATE.LEFT);
 
-
-
-                    // 左にあるパネルのやつ後ろに
-                    //for (i = 0; i < LeftPanel; i++)
-                    //{
-                    //    Stages[i].transform.position += new Vector3(0, 0, 10);
-                    //    if (Stages[i].transform.position.z > 860)
-                    //    {
-                    //        Stages[i].transform.position = new Vector3(Stages[i].transform.position.x, Stages[i].transform.position.y, 855);
-                    //    }
-                    //}
-
                     // ステージ情報見えないように
                     InfoPanel.SetActive(false);
                 }
@@ -185,16 +162,6 @@ public class StageSelect : MonoBehaviour
 
                     // 妖精さん右
                     FairyMoveSelect.MoveChange(FairyMoveSelect.FAIRY_STATE.RIGHT);
-
-                    // 左にあるパネルのやつ後ろに
-                    //for (i = 0; i < RightPanel; i++)
-                    //{
-                    //    Stages[Select + i].transform.position += new Vector3(0, 0, 10);
-                    //    if (Stages[Select + i].transform.position.z > 860)
-                    //    {
-                    //        Stages[Select + i].transform.position = new Vector3(Stages[Select + i].transform.position.x, Stages[Select + i].transform.position.y, 855);
-                    //    }
-                    //}
 
                     // ステージ情報見えないように
                     InfoPanel.SetActive(false);

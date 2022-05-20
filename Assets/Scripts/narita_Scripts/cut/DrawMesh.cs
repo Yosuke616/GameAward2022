@@ -99,7 +99,7 @@ public class DrawMesh : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "Title")
         {
             //ここでリストを送ってもらう        
-            mesh.uv = T_Obj.GetComponent<Title_Button_Script>().GetUV(); ;
+            mesh.uv = T_Obj.GetComponent<Title_Button_Script>().GetUV();
         }
         mesh.triangles = _triangles.ToArray();
         mesh.RecalculateNormals();
@@ -111,7 +111,7 @@ public class DrawMesh : MonoBehaviour
 
         //シーンがタイトルだったらテクスチャを貼り付ける
         if (SceneManager.GetActiveScene().name == "Title") {
-            T_Obj.GetComponent<Title_Button_Script>().SettingTexture(go);
+            T_Obj.GetComponent<Title_Button_Script>().SettingTexture(go);            
         }
 
         return go;

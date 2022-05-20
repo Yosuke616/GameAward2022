@@ -564,6 +564,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fealy_Anim_Idle
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7f6a7c1006e3e5845baffc21b32e146a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f6a7c1006e3e5845baffc21b32e146a, type: 3}
 --- !u!1 &238825285
@@ -2531,10 +2535,10 @@ MonoBehaviour:
   Option: {fileID: 37794802}
   Plate: {fileID: 194804958}
   _Mats:
-  - {fileID: 2100000, guid: 9c7551577c88c334a8f3a4038a8f9dab, type: 2}
-  - {fileID: 2100000, guid: d740e8056d2943a469dbcbc07bd38b85, type: 2}
-  - {fileID: 2100000, guid: 995bc4d10b08a7d41bd1a5f7583cd369, type: 2}
-  - {fileID: 2100000, guid: b971c6c14f8d04240a87b70698758f6b, type: 2}
+  - {fileID: 2100000, guid: 98efec2a25091714fa2b23574b55bc9e, type: 2}
+  - {fileID: 2100000, guid: 89d48462f981094438311e7eefe1ef4b, type: 2}
+  - {fileID: 2100000, guid: 50a837e9801f04b458a44740a04728d6, type: 2}
+  - {fileID: 2100000, guid: 60fbe3313364c7e438ac6ac1784b9178, type: 2}
 --- !u!1 &1358657966
 GameObject:
   m_ObjectHideFlags: 0

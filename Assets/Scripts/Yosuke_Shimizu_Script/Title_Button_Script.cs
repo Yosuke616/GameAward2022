@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 public class Title_Button_Script : MonoBehaviour
 {
@@ -45,6 +46,16 @@ public class Title_Button_Script : MonoBehaviour
     //UVを設定して保存するための変数
     private Vector2[] _Vector2 = new Vector2[3];
 
+    //1枚2枚を分ける演出を作る
+    private GameObject Left_Paper;
+    private GameObject Right_Paper;
+
+    //演出用のフラグ
+    private bool bNextStage;
+
+    //シーン遷移用
+    private bool FirstSceneMove;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -72,11 +83,23 @@ public class Title_Button_Script : MonoBehaviour
 
         //1枚目かどうかのフラグをオフにする
         bFirdt = false;
+
+        //ネクステは最初はオフ
+        bNextStage = false;
+
+        FirstSceneMove = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        //ネクステの状況によって全ては変わる
+        if (bNextStage) {
+            SetNextScene();
+            return;
+        }
+
         if (!Titleflg)
         {
             nCnt--;
@@ -296,11 +319,11 @@ public class Title_Button_Script : MonoBehaviour
     {
         Cre_Mesh();
 
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-    Application.Quit();
-#endif
+//#if UNITY_EDITOR
+//        UnityEditor.EditorApplication.isPlaying = false;
+//#else
+//    Application.Quit();
+//#endif
     }
 
     public void SetTitleFlg(bool TF)
@@ -319,6 +342,7 @@ public class Title_Button_Script : MonoBehaviour
                 StartButton.SetActive(false);
 
                 List<Vector3> Start = new List<Vector3>();
+                List<Vector3> Start_Break = new List<Vector3>();
                
                 //左側
                 Start.Add(new Vector3(-8.0f,-2.25f,-0.1f));
@@ -358,9 +382,14 @@ public class Title_Button_Script : MonoBehaviour
                 List<Vector3> Continue = new List<Vector3>();
 
                 //左側
+                Continue.Add(new Vector3(-5.0f,-3.9f,-0.1f));
                 Continue.Add(new Vector3(-5.0f,-3.4f,-0.1f));
                 Continue.Add(new Vector3(-1.3f,-3.4f,-0.1f));
-                Continue.Add(new Vector3(-5.0f,-3.9f,-0.1f));
+
+                //UVの設定
+                _Vector2[0] = new Vector2(0.0f, 0.0f);
+                _Vector2[1] = new Vector2(0.0f, 1.0f);
+                _Vector2[2] = new Vector2(1.0f, 1.0f);
 
                 //メッシュを作る
                 obj.GetComponent<DrawMesh>().CreateMesh(Continue);
@@ -369,38 +398,53 @@ public class Title_Button_Script : MonoBehaviour
                 Continue.Clear();
 
                 //右側
+                Continue.Add(new Vector3(-5.0f, -3.9f, -0.1f));
                 Continue.Add(new Vector3(-1.3f, -3.4f, -0.1f));
                 Continue.Add(new Vector3(-1.3f, -3.9f, -0.1f));
-                Continue.Add(new Vector3(-5.0f, -3.9f, -0.1f));
+
+                //UVの設定
+                _Vector2[0] = new Vector2(0.0f, 0.0f);
+                _Vector2[1] = new Vector2(1.0f, 1.0f);
+                _Vector2[2] = new Vector2(1.0f, 0.0f);
 
                 //メッシュを作る
                 obj.GetComponent<DrawMesh>().CreateMesh(Continue);
 
                 break;
             case 2:
-                //オプションを消す
-                OptionButton.SetActive(false);
+                ////オプションを消す
+                //OptionButton.SetActive(false);
 
-                List<Vector3> Option = new List<Vector3>();
+                //List<Vector3> Option = new List<Vector3>();
 
-                //左側
-                Option.Add(new Vector3(1.25f, -3.9f, -0.1f));
-                Option.Add(new Vector3(1.25f, -3.4f, -0.1f));
-                Option.Add(new Vector3(4.95f, -3.4f, -0.1f));
+                ////左側
+                //Option.Add(new Vector3(1.25f, -3.9f, -0.1f));
+                //Option.Add(new Vector3(1.25f, -3.4f, -0.1f));
+                //Option.Add(new Vector3(4.95f, -3.4f, -0.1f));
 
-                //メッシュを作る
-                obj.GetComponent<DrawMesh>().CreateMesh(Option);
+                ////UVの設定
+                //_Vector2[0] = new Vector2(0.0f, 0.0f);
+                //_Vector2[1] = new Vector2(0.0f, 1.0f);
+                //_Vector2[2] = new Vector2(1.0f, 1.0f);
 
-                //リストの中身を削除する
-                Option.Clear();
+                ////メッシュを作る
+                //obj.GetComponent<DrawMesh>().CreateMesh(Option);
 
-                //右側
-                Option.Add(new Vector3(4.95f, -3.4f, -0.1f));
-                Option.Add(new Vector3(4.95f, -3.9f, -0.1f));
-                Option.Add(new Vector3(1.25f, -3.9f, -0.1f));
+                ////リストの中身を削除する
+                //Option.Clear();
 
-                //メッシュを作る
-                obj.GetComponent<DrawMesh>().CreateMesh(Option);
+                ////右側
+                //Option.Add(new Vector3(4.95f, -3.9f, -0.1f));
+                //Option.Add(new Vector3(4.95f, -3.4f, -0.1f));
+                //Option.Add(new Vector3(1.25f, -3.9f, -0.1f));
+
+                ////UVの設定
+                //_Vector2[0] = new Vector2(0.0f, 0.0f);
+                //_Vector2[1] = new Vector2(1.0f, 1.0f);
+                //_Vector2[2] = new Vector2(1.0f, 0.0f);
+
+                ////メッシュを作る
+                //obj.GetComponent<DrawMesh>().CreateMesh(Option);
 
                 break;
             case 3:
@@ -414,6 +458,11 @@ public class Title_Button_Script : MonoBehaviour
                 End.Add(new Vector3(4.95f, -1.75f, -0.1f));
                 End.Add(new Vector3(8.25f, -1.75f, -0.1f));
 
+                //UVの設定
+                _Vector2[0] = new Vector2(0.0f, 0.0f);
+                _Vector2[1] = new Vector2(0.0f, 1.0f);
+                _Vector2[2] = new Vector2(1.0f, 1.0f);
+
                 //メッシュを作る
                 obj.GetComponent<DrawMesh>().CreateMesh(End);
 
@@ -421,9 +470,14 @@ public class Title_Button_Script : MonoBehaviour
                 End.Clear();
 
                 //右側
+                End.Add(new Vector3(4.95f, -2.25f, -0.1f));
                 End.Add(new Vector3(8.25f, -1.75f, -0.1f));
                 End.Add(new Vector3(8.25f, -2.25f, -0.1f));
-                End.Add(new Vector3(4.95f, -2.25f, -0.1f));
+
+                //UVの設定
+                _Vector2[0] = new Vector2(0.0f, 0.0f);
+                _Vector2[1] = new Vector2(1.0f, 1.0f);
+                _Vector2[2] = new Vector2(1.0f, 0.0f);
 
                 //メッシュを作る
                 obj.GetComponent<DrawMesh>().CreateMesh(End);
@@ -445,46 +499,82 @@ public class Title_Button_Script : MonoBehaviour
                 if (!bFirdt)
                 {
                     obj.GetComponent<MeshRenderer>().material = _Mats[0];
-                    bFirdt = true;
+                    obj.transform.localScale = new Vector3(1.75f, 6.7f);
+                    obj.transform.position = new Vector3(5.0f, 11.4f);         
+
+                   
                 }
                 else
                 {
                     obj.GetComponent<MeshRenderer>().material = _Mats[0];
+                    obj.transform.localScale = new Vector3(1.75f, 6.7f);
+                    obj.transform.position = new Vector3(5.0f, 11.4f);
                 }
                 break;
             case 1:
                 if (!bFirdt)
                 {
                     obj.GetComponent<MeshRenderer>().material = _Mats[1];
-                    bFirdt = true;
+                    obj.transform.localScale = new Vector3(1.45f, 6.7f);
+                    obj.transform.position = new Vector3(2.4f, 20.85f);
                 }
                 else
                 {
                     obj.GetComponent<MeshRenderer>().material = _Mats[1];
+                    obj.transform.localScale = new Vector3(1.45f, 6.7f);
+                    obj.transform.position = new Vector3(1.4f, 20.85f);
                 }
                 break;
             case 2:
                 if (!bFirdt)
                 {
-                    obj.GetComponent<MeshRenderer>().material = _Mats[2];
-                    bFirdt = true;
+                    //obj.GetComponent<MeshRenderer>().material = _Mats[2];
+                    //obj.transform.localScale = new Vector3(1.75f, 6.7f);
+                    //obj.transform.position = new Vector3(5.0f, 11.4f);
                 }
                 else
                 {
-                    obj.GetComponent<MeshRenderer>().material = _Mats[2];
+                    //obj.GetComponent<MeshRenderer>().material = _Mats[2];
+                    //obj.transform.localScale = new Vector3(1.75f, 6.7f);
+                    //obj.transform.position = new Vector3(5.0f, 11.4f);
                 }
                 break;
             case 3:
                 if (!bFirdt)
                 {
                     obj.GetComponent<MeshRenderer>().material = _Mats[3];
-                    bFirdt = true;
+                    obj.transform.localScale = new Vector3(1.65f, 6.7f);
+                    obj.transform.position = new Vector3(-4.3f, 11.3f);
                 }
                 else
                 {
                     obj.GetComponent<MeshRenderer>().material = _Mats[3];
+                    obj.transform.localScale = new Vector3(1.65f, 6.7f);
+                    obj.transform.position = new Vector3(-4.3f, 11.3f);
                 }
                 break;
+        }
+
+        if (!bFirdt)
+        {
+            //左側の紙を移動させるため
+            Left_Paper = obj;
+
+            List<Vector3> Continue_Break = new List<Vector3>();
+
+            //破り目を作る(左側)
+            Continue_Break.Add(new Vector3(-5.0f, -3.9f, -0.1f));
+            Continue_Break.Add(new Vector3(-1.3f, -3.4f, -0.1f));
+            GameObject breakline = PaperBreakLineManager.Instance.CreateBreakLine(Continue_Break, obj);
+
+            Debug.LogError(breakline);
+            bFirdt = true;
+        }
+        else {
+            //右側の紙を移動させるため
+            Right_Paper = obj;
+            bNextStage = true;
+           
         }
 
     }
@@ -494,5 +584,36 @@ public class Title_Button_Script : MonoBehaviour
     {
         return _Vector2;
     }
+
+    //演出を作る
+    public void SetNextScene() {
+
+        //左上に移動する
+        Left_Paper.transform.position += new Vector3(-0.01f,0.005f,0.0f) * 0.5f;
+
+        //右下に移動させる
+        Right_Paper.transform.position += new Vector3(0.01f, -0.005f, 0.0f) * 0.5f;
+
+        if (!FirstSceneMove) {
+            //フェードアウトsaseru 
+            switch (nSelectButton) {
+                case 0:
+                    FadeManager.Instance.FadeStart("StageSelect");
+                    break;
+                case 1:
+                    //FadeManager.Instance.FadeStart("StageSelect");
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+
+            }
+
+            FirstSceneMove = true;
+            Titleflg = true;
+        }
+    }
+
 
 }

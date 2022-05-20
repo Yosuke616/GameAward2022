@@ -14,12 +14,22 @@ public class ChangeBG : MonoBehaviour
     public Texture stage6_BG;
     public Texture stage7_BG;
     public Texture stage8_BG;
+
+    public SpriteRenderer BackFade;     // フェード用
     //--------------------------------------------------------------------------------
 
 
     // 変更用-------------------------------------------------------------------------
     private Texture[] Stage_BG;         // 背景を配列に
     private static int SelectBG = 0;    // 現在の背景
+
+    public enum FADE_TYPE
+    {
+        FADE_NONE,
+        FADE_OUT,
+        FADE_IN,
+    }
+    public static FADE_TYPE fade_type = FADE_TYPE.FADE_NONE;
     //--------------------------------------------------------------------------------
 
 
@@ -28,14 +38,43 @@ public class ChangeBG : MonoBehaviour
     {
         // テクスチャを配列に突っ込む
         Stage_BG = new Texture[] { stage0_BG, stage1_BG, stage2_BG, stage3_BG, stage4_BG, stage5_BG, stage6_BG, stage7_BG, stage8_BG};
+
+        // スプライト取得;
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        // テクスチャ変更
-        GetComponent<Renderer>().material.mainTexture = Stage_BG[SelectBG];
+        // 背景状態
+        switch(fade_type)
+        {
+            case FADE_TYPE.FADE_OUT:
+                BackFade.color += new Color(0, 0, 0, 0.01f);
+                if (BackFade.color.a >= 1)
+                {
+                    BackFade.color = new Color(0, 0, 0, 1);
+                    fade_type = FADE_TYPE.FADE_IN;
+
+                    // テクスチャ変更
+                    GetComponent<Renderer>().material.mainTexture = Stage_BG[SelectBG];
+                }
+                break;
+
+
+            case FADE_TYPE.FADE_IN:
+                BackFade.color -= new Color(0, 0, 0, 0.01f);
+                if (BackFade.color.a <= 0)
+                {
+                    BackFade.color = new Color(0, 0, 0, 0);
+                    fade_type = FADE_TYPE.FADE_NONE;
+                }
+                break;
+
+
+            case FADE_TYPE.FADE_NONE:
+                break;
+        }
     }
 
 
@@ -43,6 +82,7 @@ public class ChangeBG : MonoBehaviour
     public static void ChangeBg(int Select)
     {
         SelectBG = Select;
+        fade_type = FADE_TYPE.FADE_OUT;
     }
     //--------------------------------------------------------------------------------
 }

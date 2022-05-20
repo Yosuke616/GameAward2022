@@ -17,11 +17,17 @@ public class Tutorial : MonoBehaviour
 
 	[SerializeField] private List<GameObject> BGobjects = new List<GameObject>();
 
-	[SerializeField] private GameObject txt0;
+	[SerializeField] private GameObject txt_ComeOn;
+	[SerializeField] private GameObject txt_CutStart;
+	[SerializeField] private GameObject txt_SonoChoshi;
+	[SerializeField] private GameObject txt_Koko;
 
 	[SerializeField] private int nCnt;
 	[SerializeField] private bool bStartTutorial;
 	[SerializeField] private bool bEndTutorial;
+
+	[SerializeField] private float WeitTime = 2.0f;
+	[SerializeField] private float elapsedTime;
 
 	// Start is called before the first frame update
 	void Start()
@@ -42,12 +48,15 @@ public class Tutorial : MonoBehaviour
 		BGobjects.Add(TutorialPanel.transform.Find("BackGround1").gameObject);
 		BGobjects.Add(TutorialPanel.transform.Find("BackGround2").gameObject);
 		BGobjects.Add(TutorialPanel.transform.Find("BackGround3").gameObject);
-		BGobjects.Add(TutorialPanel.transform.Find("BackGround4").gameObject);
-		BGobjects.Add(TutorialPanel.transform.Find("BackGround5").gameObject);
-		BGobjects.Add(TutorialPanel.transform.Find("BackGround6").gameObject);
-		BGobjects.Add(TutorialPanel.transform.Find("BackGround7").gameObject);
+		//BGobjects.Add(TutorialPanel.transform.Find("BackGround4").gameObject);
+		//BGobjects.Add(TutorialPanel.transform.Find("BackGround5").gameObject);
+		//BGobjects.Add(TutorialPanel.transform.Find("BackGround6").gameObject);
+		//BGobjects.Add(TutorialPanel.transform.Find("BackGround7").gameObject);
 
-		txt0 = GameObject.Find("txt_tutorial_5");
+		txt_ComeOn = GameObject.Find("txt_ComeOn");
+		txt_CutStart = GameObject.Find("txt_CutStart");
+		txt_SonoChoshi = GameObject.Find("txt_SonoChoshi");
+		txt_Koko = GameObject.Find("txt_KokomadeKireteruyo");
 
 
 		var color = new Color(0.0f, 0.0f, 0.0f, 128.0f / 255.0f);
@@ -60,11 +69,15 @@ public class Tutorial : MonoBehaviour
 			BGobjects[i].SetActive(false);
 		}
 
-		txt0.SetActive(false);
+		txt_ComeOn.SetActive(false);
+		txt_CutStart.SetActive(false);
+		txt_SonoChoshi.SetActive(false);
+		txt_Koko.SetActive(false);
 
 		nCnt = 0;
 		bStartTutorial = false;
 		bEndTutorial = false;
+		elapsedTime = 0.0f;
 	}
 
 	// Update is called once per frame
@@ -79,7 +92,7 @@ public class Tutorial : MonoBehaviour
 			turnPaper.SetActive(false);     // ê‡ñæíÜÇÕéÜÇﬂÇ≠ÇËÇñ≥å¯Ç…Ç∑ÇÈ
 			bStartTutorial = true;
 			Debug.LogWarning("Tuto:èââÒëÄçÏ");
-			txt0.SetActive(true);
+			txt_ComeOn.SetActive(true);
 		}
 
 		if (bStartTutorial == true && bEndTutorial == false)
@@ -91,7 +104,6 @@ public class Tutorial : MonoBehaviour
 			Yousei2.GetComponent<Fiary_Move>().enabled = false;
 			if (bStop == false)
 			{
-
 				// éüÇÃÉyÅ[ÉWÇ÷
 				if (Input.GetMouseButtonDown(0))
 				{
@@ -120,11 +132,28 @@ public class Tutorial : MonoBehaviour
 
 					switch (nCnt)
 					{
+						// 0~1
 						case 1:
 							bStop = true;
-							turnPaper.SetActive(false);
-
+							turnPaper.SetActive(true);
+							BGobjects[nCnt].SetActive(false);
 							break;
+
+						// 2~3
+						case 3:
+							bStop = true;
+							turnPaper.SetActive(true);
+							BGobjects[nCnt].SetActive(false);
+							break;
+
+						case 4:
+							txt_SonoChoshi.SetActive(true);
+							break;
+
+						case 5:
+							txt_Koko.SetActive(true);
+							break;
+
 						default:
 							break;
 					}
@@ -136,10 +165,35 @@ public class Tutorial : MonoBehaviour
 			{
 				if (nCnt == 1)
 				{
-					if (Input.GetKeyDown(KeyCode.UpArrow))
+					Debug.LogWarning($"time[{Time.time}], elTime[{elapsedTime}]");
+					if (elapsedTime != 0 && Time.time - elapsedTime >= WeitTime)
 					{
 						bStop = false;
 						turnPaper.SetActive(false);
+						BGobjects[nCnt].SetActive(true);
+						elapsedTime = 0;
+					}
+
+					if (Input.GetKeyDown(KeyCode.UpArrow))
+					{
+						elapsedTime = Time.time;
+					}
+				}
+				if (nCnt == 3)
+				{
+					Debug.LogWarning($"time[{Time.time}], elTime[{elapsedTime}]");
+					if (elapsedTime != 0 && Time.time - elapsedTime >= WeitTime)
+					{
+						bStop = false;
+						turnPaper.SetActive(false);
+						BGobjects[nCnt].SetActive(true);
+						elapsedTime = 0;
+						txt_CutStart.SetActive(true);
+					}
+
+					if (Input.GetKeyDown(KeyCode.DownArrow))
+					{
+						elapsedTime = Time.time;
 					}
 				}
 			}

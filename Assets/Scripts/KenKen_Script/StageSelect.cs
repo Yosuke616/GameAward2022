@@ -8,13 +8,6 @@ using System;
 
 public class StageSelect : MonoBehaviour
 {
-    // 他のスクリプトに出張する変数---------------------------------------------------
-    public static int ProgressStages = 8;       // 現在の進捗
-    public static bool bBackSelect = false;     // セレクトに帰ってきた時用フラグ
-    public static bool bClearStage = false;     // クリアしてきたフラグ
-    //--------------------------------------------------------------------------------
-
-    
     // パブリックでのパネル移動に関する設定-------------------------------------------
     public Camera MainCam;       // メインカメラ取得
     public Vector3 TargetPos;    // カメラ移動位置
@@ -33,8 +26,10 @@ public class StageSelect : MonoBehaviour
 
 
     // スクリプト内での変数-----------------------------------------------------------
-    //private SaveData saveData;          // ステージ毎の情報取得用
+    private int ProgressStages = 0;       // 現在の進捗
+    private bool bBackSelect = false;     // セレクトに帰ってきた時用フラグ
 
+    // パネル状態
     enum PANEL_STATE    // パネル状態
     {
         LEFT,       // 左移動
@@ -117,7 +112,7 @@ public class StageSelect : MonoBehaviour
 
 
         // ステージからセレクトに戻ってきたときの画面調整---------------------------------
-        if (bBackSelect)
+        if (bBackSelect == false)
         {
             // 今クリアしたもの以外のパネルを右側に移動させる
             for (i = 0; i < ProgressStages - 1; i++)
@@ -134,14 +129,8 @@ public class StageSelect : MonoBehaviour
             // クリアしたステージを真ん中に
             Stages[i].transform.position = new Vector3(0, 0, 450);
 
-            // クリアしてきた時に演出を出す・・・？
-            if (bClearStage)
-            {
-
-                bClearStage = false;
-            }
-
-            bBackSelect = false;
+            // フラグON
+            bBackSelect = true;
         }
         //--------------------------------------------------------------------------------
 
@@ -227,6 +216,9 @@ public class StageSelect : MonoBehaviour
                     LeftPanel++;
                     RightPanel--;
                     Select++;
+
+                    // 背景変更
+                    ChangeBG.ChangeBg(Select);
                 }
                 break;
                 //--------------------------------------------------------------------------------
@@ -274,6 +266,9 @@ public class StageSelect : MonoBehaviour
                     LeftPanel--;
                     RightPanel++;
                     Select--;
+
+                    // 背景変更
+                    ChangeBG.ChangeBg(Select);
                 }
                 break;
                 //--------------------------------------------------------------------------------
@@ -285,13 +280,11 @@ public class StageSelect : MonoBehaviour
                 if(!CamZoom)
                 FairyMoveSelect.MoveChange(FairyMoveSelect.FAIRY_STATE.NONE);
 
-                // 背景変更
-                ChangeBG.ChangeBg(Select);
-
                 // ステージ情報表示
                 InfoPanel.SetActive(true);
                 TimerData.text = SaveLoad.saveData.Timer[Select];       // タイマー部分表示
                 StageNo.text = "Stage　" + Select.ToString();           // ステージ名表示
+
 
                 for (i = 0; i < SaveLoad.saveData.Star[Select]; i++)    // ★部分表示
                 {

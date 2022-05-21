@@ -140,7 +140,7 @@ public class PlayerMove2 : MonoBehaviour
         }
 
         // 敵に触れたとき
-        else if (collision.gameObject.gameObject.tag == "enemy")
+        else if (collision.gameObject.gameObject.tag == "enemy" || collision.gameObject.gameObject.tag == "CardSoldier")
         {
             GameObject enemy = GameObject.Find("MainCamera");
             enemy.GetComponent<GameOverScript>().SetGameOver_Flg(true);
@@ -165,7 +165,7 @@ public class PlayerMove2 : MonoBehaviour
         }
 
         // 敵に触れたとき
-        else if (other.gameObject.gameObject.tag == "enemy")
+        else if (other.gameObject.gameObject.tag == "enemy" || other.gameObject.gameObject.tag == "CardSoldier")
         {
             GameObject enemy = GameObject.Find("MainCamera");
             enemy.GetComponent<GameOverScript>().SetGameOver_Flg(true);

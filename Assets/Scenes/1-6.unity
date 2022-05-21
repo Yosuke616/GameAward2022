@@ -1256,7 +1256,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 194540399}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -4316,7 +4316,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5217716810398037723, guid: 3d0240b44996d3347aa29a8d59a9ace0, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5217716810398037723, guid: 3d0240b44996d3347aa29a8d59a9ace0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5021,13 +5021,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 624711153}
     m_Modifications:
+    - target: {fileID: 406978430977510416, guid: 3d0240b44996d3347aa29a8d59a9ace0, type: 3}
+      propertyPath: _lowerLimitNum
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 5217716810398037720, guid: 3d0240b44996d3347aa29a8d59a9ace0, type: 3}
       propertyPath: m_Name
       value: EnemyTrump (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5217716810398037720, guid: 3d0240b44996d3347aa29a8d59a9ace0, type: 3}
+      propertyPath: m_TagString
+      value: CardSoldier
+      objectReference: {fileID: 0}
     - target: {fileID: 5217716810398037723, guid: 3d0240b44996d3347aa29a8d59a9ace0, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5217716810398037723, guid: 3d0240b44996d3347aa29a8d59a9ace0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6549,13 +6557,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 624711153}
     m_Modifications:
+    - target: {fileID: 406978430977510416, guid: 3d0240b44996d3347aa29a8d59a9ace0, type: 3}
+      propertyPath: _lowerLimitNum
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 5217716810398037720, guid: 3d0240b44996d3347aa29a8d59a9ace0, type: 3}
       propertyPath: m_Name
       value: EnemyTrump
       objectReference: {fileID: 0}
+    - target: {fileID: 5217716810398037720, guid: 3d0240b44996d3347aa29a8d59a9ace0, type: 3}
+      propertyPath: m_TagString
+      value: CardSoldier
+      objectReference: {fileID: 0}
     - target: {fileID: 5217716810398037723, guid: 3d0240b44996d3347aa29a8d59a9ace0, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5217716810398037723, guid: 3d0240b44996d3347aa29a8d59a9ace0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7431,6 +7447,10 @@ PrefabInstance:
       propertyPath: HomingTarget
       value: 
       objectReference: {fileID: 716269100}
+    - target: {fileID: 4377243744891895311, guid: ac6d0316fe7e4bf48b838f7c8409ed56, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac6d0316fe7e4bf48b838f7c8409ed56, type: 3}
 --- !u!4 &1583275282 stripped

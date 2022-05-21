@@ -15,10 +15,10 @@ TagManager:
   - enemy
   - Paper_OutSide_Cursor
   - SubCamera
-  - partition
   - Enemy
   - Fiary
   - PlayerSub
+  - CardSoldier
   layers:
   - Default
   - TransparentFX

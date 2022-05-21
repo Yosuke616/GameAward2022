@@ -4,46 +4,20 @@ using UnityEngine;
 
 public class collsion_test : MonoBehaviour
 {
-    [SerializeField] private bool exist = true;
+    // カメラに映っているあたり判定のもととなるオブジェクト
     private GameObject originalObject = null;
 
-    //GameObject obj;
-
-    // Start is called before the first frame update
     void Start()
     {
-        exist = true;
-
-        //obj = new GameObject();
+        
     }
 
-    // Update is called once per frame
     void Update()
     {
         
     }
 
-
-    //void OnCollisionStay(Collision collision)
-    //{
-    //    //Debug.Log(collision.gameObject.tag);
-    //    //if (collision.gameObject.tag == "Ground")
-    //    //{
-    //    //    exist = false;
-    //    //    // 地面タグ
-    //    //    this.tag = "Ground";
-    //    //}
-    //
-    //    if(collision.gameObject.tag == "waste") { Debug.LogWarning("ある"); }
-    //
-    //    if (collision.gameObject.tag != "none")
-    //    {
-    //        exist = false;
-    //        // 地面タグ
-    //        this.tag = collision.gameObject.tag;
-    //    }
-    //}
-
+    
     void OnTriggerEnter(Collider collider)
     {
         if (collider.gameObject.tag == "paper")
@@ -53,37 +27,32 @@ public class collsion_test : MonoBehaviour
 
         if (collider.gameObject.tag != "none")
         {
-            //Debug.Log(collider.gameObject.tag);
-
-            // タグを設定
+            //--- カメラに映っているオブジェクトをあたり判定フィールドに反映させるため情報を抜き取る
+            // タグ
             this.tag = collider.gameObject.tag;
-
+            // 傾き
             transform.Rotate(collider.gameObject.transform.localEulerAngles);
-
+            // カメラに映っているオブジェクト
             originalObject = collider.gameObject;
-            //obj = collider.gameObject;
 
-            // 蛇だったら
+            //エネミーの場合はエネミーの機能を追加する
             if (collider.gameObject.tag == "enemy")
             {
                 if(collider.gameObject.GetComponent<Enemy>() == null)
                     collider.gameObject.AddComponent<Enemy>();
             }
+            else if (collider.gameObject.tag == "CardSoldier")
+            {
+                if (collider.gameObject.GetComponent<EnemyBehavior>() == null)
+                    collider.gameObject.AddComponent<EnemyBehavior>();
+            }
         }
     }
 
+    // カメラに映っているあたり判定のもととなるオブジェクト
     public GameObject getOriginalObject()
     {
         return originalObject;
     }
 
-    //public GameObject Get()
-    //{
-    //    return obj;
-    //}
-
-    public bool IsExisted()
-    {
-        return exist;
-    }
 }

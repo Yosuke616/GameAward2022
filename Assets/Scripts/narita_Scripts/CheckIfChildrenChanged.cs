@@ -5,7 +5,7 @@ using UnityEngine;
 public class CheckIfChildrenChanged : MonoBehaviour
 {
 
-    private int _childCount = 0;
+    [SerializeField]private int _childCount = 0;
     public int _lowerLimitNum = 15;
 
     private void Update()

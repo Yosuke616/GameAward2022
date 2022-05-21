@@ -17,14 +17,15 @@ public class EnemyBehavior : MonoBehaviour
 	public bool StartMoveLeft = true;
 
 
-	private ENEMY_MODE nEnemyMode;
+	[SerializeField] private ENEMY_MODE nEnemyMode;
 	private bool bLeft;
 	private Vector3 StartPos;
 	private GameObject ObjPlayer;
 
 	void Start()
 	{
-		nEnemyMode = ENEMY_MODE.ENEMY_MOVE;
+		//nEnemyMode = ENEMY_MODE.ENEMY_MOVE;
+		nEnemyMode = ENEMY_MODE.ENEMY_NONE;
 		bLeft = StartMoveLeft;
 		StartPos = transform.position;
 		Debug.Log($"EnemyMode:{nEnemyMode}");
@@ -69,4 +70,19 @@ public class EnemyBehavior : MonoBehaviour
 				break;
 		}
 	}
+
+
+    // あたり判定オブジェクトと実際に見えているオブジェクトの座標を合わせる
+    public void Synchronous(GameObject gameObject)
+    {
+        Vector3 distance;
+        distance = transform.position - StartPos;
+
+        gameObject.transform.Translate(distance);
+    }
+
+    public void Active()
+    {
+        nEnemyMode = ENEMY_MODE.ENEMY_MOVE;
+    }
 }

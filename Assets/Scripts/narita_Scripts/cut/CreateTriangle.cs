@@ -100,7 +100,7 @@ public class CreateTriangle : MonoBehaviour
         GameObject obj = new GameObject("paper",
             typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider),
             typeof(DivideTriangle), typeof(OutLinePath), typeof(DrawMesh),
-            typeof(Turn_Shader));
+            typeof(PSMove));
         var mesh = new Mesh();
         mesh.vertices = vertices1.ToArray();    // 頂点情報
         mesh.triangles = triangles1.ToArray();  // 頂点の数

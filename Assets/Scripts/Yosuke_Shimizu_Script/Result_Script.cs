@@ -88,7 +88,7 @@ public class Result_Script : MonoBehaviour
                 //ŠÔ‚ğæ“¾‚µ‚Ä‚ ‚é’ö“x‘‚©‚Á‚½‚ç¯‚Ì‰æ‘œ‚ğo‚·
                 GameObject Time = GameObject.Find("Timer");
 
-                Timer = Time.GetComponent<TimerScript>().GetTime();
+                //Timer = Time.GetComponent<TimerScript>().GetTime();
             }
 
             if (g_bGoal)

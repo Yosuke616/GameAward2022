@@ -51,8 +51,8 @@ public class Tutorial : MonoBehaviour
 		BGobjects.Add(TutorialPanel.transform.Find("BackGround3").gameObject);
 		BGobjects.Add(TutorialPanel.transform.Find("BackGround4").gameObject);
 		BGobjects.Add(TutorialPanel.transform.Find("BackGround5").gameObject);
-		BGobjects.Add(TutorialPanel.transform.Find("BackGround6").gameObject);
-		BGobjects.Add(TutorialPanel.transform.Find("BackGround7").gameObject);
+		BGobjects.Add(TutorialPanel.transform.Find("BackGround5").gameObject);
+		BGobjects.Add(TutorialPanel.transform.Find("BackGround5").gameObject);
 		BGobjects.Add(TutorialPanel.transform.Find("BackGround8").gameObject);
 
 		txt_ComeOn = GameObject.Find("txt_ComeOn");
@@ -61,9 +61,9 @@ public class Tutorial : MonoBehaviour
 		txt_Koko = GameObject.Find("txt_KokomadeKireteruyo");
 
 
-		var color = new Color(0.0f, 0.0f, 0.0f, 128.0f / 255.0f);
-		// ヒエラルキービュー上では、便宜上透明度を0.0fに設定しているので、元に戻す処理
-		BGobjects[0].GetComponent<Image>().color = color;
+		//var color = new Color(0.0f, 0.0f, 0.0f, 128.0f / 255.0f);
+		//// ヒエラルキービュー上では、便宜上透明度を0.0fに設定しているので、元に戻す処理
+		//BGobjects[0].GetComponent<Image>().color = color;
 
 		for (int i = 0; i < BGobjects.Count; i++)
 		{
@@ -120,7 +120,7 @@ public class Tutorial : MonoBehaviour
 
 					// 説明中ではない時、切断操作を有効にする
 					//else
-					if (nCnt + 1 >= 3)
+					if (nCnt + 1 >= 3 && nCnt + 1 != 7)
 					{
 						cursor.SetActive(true);
 						turnPaper.SetActive(true);
@@ -128,7 +128,6 @@ public class Tutorial : MonoBehaviour
 						Yousei1.GetComponent<Fiary_Move>().enabled = true;
 						Yousei2.GetComponent<Fiary_Script>().enabled = true;
 						Yousei2.GetComponent<Fiary_Move>().enabled = true;
-						Debug.LogWarning($"Tuto:end[{bEndTutorial}]");
 					}
 					nCnt++;
 

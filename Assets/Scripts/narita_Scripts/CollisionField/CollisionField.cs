@@ -67,6 +67,7 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
     }
 
 
+
     /***** 1枚目のあたり判定オブジェクトを生成 *****/
     public void SetStage(int layer)
     {
@@ -75,8 +76,6 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
 
         //名前を変えるためにカウントを作る
         int nNameCnt = 0;
-
-        int debugCnt = 0;
 
         //ｶﾒﾗをヒエラルキーから引っ張り出してくる
         GameObject Cameraobj = GameObject.Find(cameraName);
@@ -97,38 +96,51 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                 }
 
                 //スクリプトでオブジェクトを追加する
-                GameObject mass = CreateCollisionObject(
-                "Grid_No." + nNameCnt + ":" + x,    // 名前
-                new Vector3(
-                    StartPoint.x + (gridSizeX * x), // 座標
-                    StartPoint.y - (gridSizeY * y),
-                    transform.position.z),
-                Vector3.zero,
+                GameObject mass = CreateCollisionObject("Grid_No." + nNameCnt + ":" + x,    // 名前
+                new Vector3(StartPoint.x + (gridSizeX * x), StartPoint.y - (gridSizeY * y), transform.position.z), // 座標
+                Vector3.zero, // 回転
                 _stageGrid[(y * gridNumX) + x].tag, // タグ
                 Cameraobj                           // 親オブジェクト
                 );
 
+                // あたり判定の大きさをグリッドの1マスサイズににする
                 mass.transform.localScale = new Vector3(gridSizeX, gridSizeY , 1.0f);
 
                 // あたり判定リストに登録
                 CollisionGrid[(y * gridNumX) + x] = mass;
 
+
+                //--- エネミー
+
                 if (CollisionGrid[(y * gridNumX) + x].tag == "enemy")
                 {
-                    // エネミー機能を追加
-                    _stageGrid[(y * gridNumX) + x].sourceObject.GetComponent<Enemy>().Synchronous(CollisionGrid[(y * gridNumX) + x]);
+                    // もととなるオブジェクト
+                    GameObject original = _stageGrid[(y * gridNumX) + x].sourceObject;
 
+
+                    // 座標を合わせる
+                    original.GetComponent<Enemy>().Synchronous(CollisionGrid[(y * gridNumX) + x]);
+                    // 親を変える
+                    CollisionGrid[(y * gridNumX) + x].transform.SetParent(original.transform);
                     // コリジョンをトリガーに変更
                     CollisionGrid[(y * gridNumX) + x].GetComponent<BoxCollider>().isTrigger = true;
-
-                    // 親を変える
-                    CollisionGrid[(y * gridNumX) + x].transform.SetParent(_stageGrid[(y * gridNumX) + x].sourceObject.transform);
-
                     // エネミーだった場合は生成はするがStagelayerは空にしておく
                     CollisionGrid[(y * gridNumX) + x] = null;
                 }
+                else if(CollisionGrid[(y * gridNumX) + x].tag == "CardSoldier")
+                {
+                    // もととなるオブジェクト
+                    GameObject original = _stageGrid[(y * gridNumX) + x].sourceObject;
 
-                debugCnt++;
+                    // 座標を合わせる
+                    original.GetComponent<EnemyBehavior>().Synchronous(CollisionGrid[(y * gridNumX) + x]);
+                    // 親を変える
+                    CollisionGrid[(y * gridNumX) + x].transform.SetParent(original.transform);
+                    // コリジョンをトリガーに変更
+                    CollisionGrid[(y * gridNumX) + x].GetComponent<BoxCollider>().isTrigger = true;
+                    // エネミーだった場合は生成はするがStagelayerは空にしておく
+                    CollisionGrid[(y * gridNumX) + x] = null;
+                }
             }
         }
 
@@ -172,15 +184,36 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                             // 次もある
                             // タグの変更
                             CollisionGrid[objCount].tag = StageInfo[layerList[objCount] + 1][objCount].tag;
+
+                            //--- エネミー
+
                             if (CollisionGrid[objCount].tag == "enemy")
                             {
-                                StageInfo[layerList[objCount] + 1][objCount].sourceObject.GetComponent<Enemy>().Synchronous(CollisionGrid[objCount]);
+                                // もととなるオブジェクト
+                                GameObject original = StageInfo[layerList[objCount] + 1][objCount].sourceObject;
 
-                                CollisionGrid[objCount].GetComponent<BoxCollider>().isTrigger = true;
-
+                                // 座標を合わせる
+                                original.GetComponent<Enemy>().Synchronous(CollisionGrid[objCount]);
                                 // 親を変える
-                                CollisionGrid[objCount].transform.SetParent(StageInfo[layerList[objCount] + 1][objCount].sourceObject.transform);
+                                CollisionGrid[objCount].transform.SetParent(original.transform);
+                                // コリジョンをトリガーに変更
+                                CollisionGrid[objCount].GetComponent<BoxCollider>().isTrigger = true;
+                                // エネミーだった場合は生成はするがStagelayerは空にしておく
+                                CollisionGrid[objCount] = null;
+                            }
+                            else if (CollisionGrid[(y * gridNumX) + x].tag == "CardSoldier")
+                            {
+                                // もととなるオブジェクト
+                                GameObject original = StageInfo[layerList[objCount] + 1][objCount].sourceObject;
 
+                                // 座標を合わせる
+                                original.GetComponent<EnemyBehavior>().Synchronous(CollisionGrid[(y * gridNumX) + x]);
+                                original.GetComponent<EnemyBehavior>().Active();
+                                // 親を変える
+                                CollisionGrid[objCount].transform.SetParent(original.transform);
+                                // コリジョンをトリガーに変更
+                                CollisionGrid[objCount].GetComponent<BoxCollider>().isTrigger = true;
+                                // エネミーだった場合は生成はするがStagelayerは空にしておく
                                 CollisionGrid[objCount] = null;
                             }
 
@@ -208,26 +241,42 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                         if (StageInfo[layerList[objCount] + 1][objCount].tag != "none")
                         {
                             // 次はある
-                            CollisionGrid[objCount] = CreateCollisionObject(
-                                "chage_mass" + objCount,    // 名前
-                                new Vector3(
-                                    StartPoint.x + (gridSizeX * x), // 座標
-                                    StartPoint.y - (gridSizeY * y),
-                                    transform.position.z),
-                                StageInfo[layerList[objCount] + 1][objCount].rotate,
+                            CollisionGrid[objCount] = CreateCollisionObject("chage_mass" + objCount,    // 名前
+                                new Vector3(StartPoint.x + (gridSizeX * x),StartPoint.y - (gridSizeY * y),transform.position.z), // 座標
+                                StageInfo[layerList[objCount] + 1][objCount].rotate,// 回転
                                 StageInfo[layerList[objCount] + 1][objCount].tag,   // タグ
                                 gameObject                                          // 親オブジェクト
                                 );
 
-                            float rate = gridSizeX * Mathf.Tan(gridSizeY / gridSizeX);
+                            // あたり判定の大きさをグリッドの1マスサイズににする
                             CollisionGrid[objCount].transform.localScale = new Vector3(gridSizeX, gridSizeY, 1);
 
+                            //--- エネミー
                             if (CollisionGrid[objCount].tag == "enemy")
                             {
+                                // 座標を合わせる
                                 StageInfo[layerList[objCount] + 1][objCount].sourceObject.GetComponent<Enemy>().Synchronous(CollisionGrid[objCount]);
-
+                                // コライダーをトリガーに
                                 CollisionGrid[objCount].GetComponent<BoxCollider>().isTrigger = true;
+                                // エネミーだった場合は生成はするがStagelayerは空にしておく
+                                CollisionGrid[objCount] = null;
                             }
+                            if (CollisionGrid[objCount].tag == "CardSoldier")
+                            {
+                                // もととなるオブジェクト
+                                GameObject original = StageInfo[layerList[objCount] + 1][objCount].sourceObject;
+
+                                // 親を変える
+                                CollisionGrid[objCount].transform.SetParent(original.transform);
+                                // 座標を合わせる
+                                original.GetComponent<EnemyBehavior>().Synchronous(CollisionGrid[objCount]);
+                                original.GetComponent<EnemyBehavior>().Active();
+                                // コライダーをトリガーに
+                                CollisionGrid[objCount].GetComponent<BoxCollider>().isTrigger = true;
+                                // エネミーだった場合は生成はするがStagelayerは空にしておく
+                                CollisionGrid[objCount] = null;
+                            }
+                            
 
                             // 次のレイヤーに更新
                             layerList[objCount]++;
@@ -284,13 +333,13 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                 if (Physics.Raycast(cameraObj.transform.position, new Vector3(start.x + (gridSizeX * x), start.y - (gridSizeY * y), 22.0f), out hit))
                 {
                     // 動いている敵だった場合
-                    if(hit.collider.gameObject.tag == "enemy")
+                    if(hit.collider.gameObject.tag == "enemy" || hit.collider.gameObject.tag == "CardSoldier")
                     {
                         // オブジェクトを消す
                         Destroy(hit.collider.gameObject);
 
-                        //Debug.DrawRay(cameraObj.transform.position, new Vector3(start.x + (gridSizeX * x), start.y - (gridSizeY * y), 22.0f));
-                        //Debug.LogError("");
+                        Debug.DrawRay(cameraObj.transform.position, new Vector3(start.x + (gridSizeX * x), start.y - (gridSizeY * y), 22.0f));
+                        Debug.LogError("");
                     }
                 }
 

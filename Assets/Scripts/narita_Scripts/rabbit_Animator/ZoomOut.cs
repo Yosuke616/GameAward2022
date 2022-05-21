@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ZoomOut : MonoBehaviour
 {
-    public Camera openingCamera;
-    public Camera mainCamera;
+    //public Camera openingCamera;
+    //public Camera mainCamera;
 
     private Vector3 targetPos;  // 目的位置
 
@@ -39,9 +39,13 @@ public class ZoomOut : MonoBehaviour
                 active = false;
                 Debug.LogWarning("一致したよ");
 
+                // 白フェードを入れる
+                var paperChange = GameObject.Find("PaperChange").GetComponent<PaperChange>();
+                paperChange.FadeStart();
+
                 // オープニングカメラからゲームカメラに切り替える
-                openingCamera.enabled = false;
-                mainCamera.enabled = true;
+                //openingCamera.enabled = false;
+                //mainCamera.enabled = true;
 
                 // オープニングモードからアクションモードに切り替える
                 CursorSystem.SetGameState(CursorSystem.GameState.MODE_ACTION);

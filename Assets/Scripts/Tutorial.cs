@@ -45,7 +45,7 @@ public class Tutorial : MonoBehaviour
 			transform.Find("d1").gameObject.
 			transform.Find("Yousei1").gameObject;
 		BGobjects.Add(TutorialPanel.transform.Find("BackGround0").gameObject);
-		BGobjects.Add(TutorialPanel.transform.Find("BackGround1").gameObject);
+		//BGobjects.Add(TutorialPanel.transform.Find("BackGround1").gameObject);
 		BGobjects.Add(TutorialPanel.transform.Find("BackGround2").gameObject);
 		BGobjects.Add(TutorialPanel.transform.Find("BackGround3").gameObject);
 		BGobjects.Add(TutorialPanel.transform.Find("BackGround4").gameObject);
@@ -119,7 +119,7 @@ public class Tutorial : MonoBehaviour
 
 					// à–¾’†‚Å‚Í‚È‚¢ŽžAØ’f‘€ì‚ð—LŒø‚É‚·‚é
 					//else
-					if (nCnt + 1 >= 4)
+					if (nCnt + 1 >= 3)
 					{
 						cursor.SetActive(true);
 						turnPaper.SetActive(true);
@@ -145,14 +145,14 @@ public class Tutorial : MonoBehaviour
 							break;
 
 						case 2:
-							break;
-
-						// 2~3
-						case 3:
 							Debug.LogWarning($"{nCnt}");
 							bStop = true;
 							turnPaper.SetActive(true);
 							BGobjects[nCnt].SetActive(false);
+							break;
+
+						// 2~3
+						case 3:
 							break;
 
 						case 4:
@@ -188,7 +188,7 @@ public class Tutorial : MonoBehaviour
 			{
 				if (nCnt == 1)
 				{
-					Debug.LogWarning($"time[{Time.time}], elTime[{elapsedTime}]");
+					//Debug.LogWarning($"time[{Time.time}], elTime[{elapsedTime}]");
 					if (elapsedTime != 0 && Time.time - elapsedTime >= WeitTime)
 					{
 						bStop = false;
@@ -202,9 +202,9 @@ public class Tutorial : MonoBehaviour
 						elapsedTime = Time.time;
 					}
 				}
-				if (nCnt == 3)
+				if (nCnt == 2)
 				{
-					Debug.LogWarning($"time[{Time.time}], elTime[{elapsedTime}]");
+					//Debug.LogWarning($"time[{Time.time}], elTime[{elapsedTime}]");
 					if (elapsedTime != 0 && Time.time - elapsedTime >= WeitTime)
 					{
 						bStop = false;

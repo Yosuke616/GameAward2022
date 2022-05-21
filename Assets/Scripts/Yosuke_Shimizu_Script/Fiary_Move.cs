@@ -13,6 +13,12 @@ public class Fiary_Move : MonoBehaviour
 
     bool qqq;
 
+    //右向きか左向きか
+    //trueで右向き
+    private bool RightorLeft;
+
+    private float RotateCnt;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,19 +32,25 @@ public class Fiary_Move : MonoBehaviour
         this.transform.position = new Vector3(PlayerPos_Move.x + 1.0f, PlayerPos_Move.y + 1.0f, PlayerPos_Move.z);
 
         qqq = false;
+
+        //初期は右向き
+        RightorLeft = true;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!qqq) {
-           　qqq = true;
+        if (!qqq)
+        {
+            qqq = true;
             return;
         }
 
         GameObject ParentObj = transform.parent.gameObject;
 
-        if (this.GetComponent<Fiary_Script>().GetMove()) {
+        if (this.GetComponent<Fiary_Script>().GetMove())
+        {
             //親オブジェクトの座標を更新する
             ParentObj_Move = this.transform.parent.gameObject;
 
@@ -47,6 +59,35 @@ public class Fiary_Move : MonoBehaviour
 
             //プレイヤーの少し横に移動させる
             this.transform.position = new Vector3(PlayerPos_Move.x + 1.0f, PlayerPos_Move.y + 1.0f, PlayerPos_Move.z);
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            RightorLeft = true;
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            RightorLeft = false;
+        }
+
+        if (RightorLeft)
+        {
+
+            if ( this.transform.localEulerAngles.y > 355 || this.transform.localEulerAngles.y <= 90.0f)
+            {
+                this.transform.Rotate(0, -5, 0);
+            }
+        }
+        else
+        {
+            if (this.transform.localEulerAngles.y >= -5)
+            {
+                if (this.transform.localEulerAngles.y < 80 || this.transform.localEulerAngles.y >= 350)
+                {
+                    this.transform.Rotate(0, 5, 0);
+                }
+            }
         }
     }
 }

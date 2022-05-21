@@ -11,7 +11,13 @@ public class TitleOption_Script : MonoBehaviour
     public Slider MasterSlider;
     public Slider BGMSlider;
     public Slider SESlider;
-    public Button BackButton;
+    public GameObject BackButton;
+    public GameObject BackButtonback;
+
+    public GameObject Fill1;
+    public GameObject Fill2;
+    public GameObject Fill3;
+
 
     // ↑の数
     private int MaxButton = 3;
@@ -23,8 +29,8 @@ public class TitleOption_Script : MonoBehaviour
     private int Cnt = 0;
 
     //このふらぐでこれが使えるかどうかを決める
-    private bool TOFlg;
-    public GameObject Plate;
+   // private bool TOFlg;
+    //public GameObject Plate;
 
     //フラグで見えるか見えないかを幡部ウする
     public GameObject Option;
@@ -46,18 +52,18 @@ public class TitleOption_Script : MonoBehaviour
         //MasterSlider.value = Valume.MasterVal;
         SESlider.value = Valume.SEVal;
 
-        TOFlg = true;
+        //TOFlg = true;
 
-        Option.SetActive(false);
-        Plate.SetActive(false);
+        //Option.SetActive(false);
+        //Plate.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if (!TOFlg)
-        {
+       // if (!TOFlg)
+        //{
             Cnt--;
             if (Cnt < 0)
             {
@@ -85,36 +91,37 @@ public class TitleOption_Script : MonoBehaviour
             GameObject MasterText = GameObject.Find("MasterText");
             GameObject BGMText = GameObject.Find("BGMText");
             GameObject FEText = GameObject.Find("SEText");
-            MasterText.GetComponent<Text>().color = new Color(255f / 255f, 255f / 255f, 255f / 255f);
-            BGMText.GetComponent<Text>().color = new Color(255f / 255f, 255f / 255f, 255f / 255f);
-            FEText.GetComponent<Text>().color = new Color(255f / 255f, 255f / 255f, 255f / 255f);
-            BackButton.GetComponentInChildren<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            Fill1.GetComponent<Image>().color = new Color32(255,255,255,255);
+            Fill2.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+            Fill3.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+            BackButton.SetActive(false);
+            BackButtonback.SetActive(true);
 
             //選ばれたら赤く変える
             switch (SelectButton)
             {
                 case 0:
                     MasterSlider.Select();
-                    MasterText.GetComponent<Text>().color = new Color(255f / 255f, 1f / 255f, 1f / 255f);
+                    Fill1.GetComponent<Image>().color = new Color32(255,0, 0, 255);
                     Debug.Log("マスター");
                     break;
 
                 case 1:
                     BGMSlider.Select();
-                    BGMText.GetComponent<Text>().color = new Color(255f / 255f, 1f / 255f, 1f / 255f);
+                    Fill2.GetComponent<Image>().color = new Color32(255, 0, 0, 255);
                     Debug.Log("BGMすらーだいー");
                     break;
 
                 case 2:
                     SESlider.Select();
-                    FEText.GetComponent<Text>().color = new Color(255f / 255f, 1f / 255f, 1f / 255f);
+                    Fill3.GetComponent<Image>().color = new Color32(255, 0, 0, 255);
                     Debug.Log("効果音");
                     break;
 
                 case 3:
-                    BackButton.Select();
-                    BackButton.GetComponentInChildren<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
-                    Debug.Log("タイトルへ戻す");
+                BackButton.SetActive(true);
+                BackButtonback.SetActive(false);
+                Debug.Log("タイトルへ戻す");
 
                     break;
             }
@@ -122,26 +129,29 @@ public class TitleOption_Script : MonoBehaviour
             if (SelectButton == 3) {
                 if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 1"))
                 {
-                    TOFlg = true;
-                    Option.SetActive(false);
-                    Plate.SetActive(false);
+       //             TOFlg = true;
+       //             Option.SetActive(false);
+       //             Plate.SetActive(false);
                     Debug.Log("ロゼッター");
-                    GameObject obj = GameObject.Find("Main Camera");
-                    obj.GetComponent<Title_Button_Script>().SetTitleFlg(false);
-                }
+                   // GameObject obj = GameObject.Find("Main Camera");
+                //             obj.GetComponent<Title_Button_Script>().SetTitleFlg(false);
+
+                FadeManager.Instance.FadeStart("Title");
+
             }
+        }
 
             //左右でスライダーの値を変える
             SetSlider();
 
             if (Input.GetKeyDown("joystick button 0"))
             {
-                TOFlg = true;
+       //         TOFlg = true;
                 Debug.Log("ロゼッター");
                 GameObject obj = GameObject.Find("Main Camera");
                 obj.GetComponent<Title_Button_Script>().SetTitleFlg(false);
             }
-        }
+       // }
     }
 
     //スライダーを移動させる関数
@@ -214,9 +224,9 @@ public class TitleOption_Script : MonoBehaviour
     }
 
     //タイトルのオプションフラグをセットするための関数
-    public void SetTitleOption(bool TOflg) {
-        TOFlg = TOflg;
+    //public void SetTitleOption(bool TOflg) {
+    //    TOFlg = TOflg;
         
-    }
+    //}
 
 }

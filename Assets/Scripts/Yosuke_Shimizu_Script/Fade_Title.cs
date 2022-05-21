@@ -59,10 +59,10 @@ public class Fade_Title : MonoBehaviour
             if (nTitleCnt >= 60 && nButtonCnt < 255)
             {
                 nButtonCnt++;
-                St_Button.GetComponent<SpriteRenderer>().color = new Color32(nButtonCnt, nButtonCnt, nButtonCnt, nButtonCnt);
-                Ct_Button.GetComponent<SpriteRenderer>().color = new Color32(nButtonCnt, nButtonCnt, nButtonCnt, nButtonCnt);
-                Op_Button.GetComponent<SpriteRenderer>().color = new Color32(nButtonCnt, nButtonCnt, nButtonCnt, nButtonCnt);
-                En_Button.GetComponent<SpriteRenderer>().color = new Color32(nButtonCnt, nButtonCnt, nButtonCnt, nButtonCnt);
+                St_Button.GetComponent<SpriteRenderer>().color = new Color32(255,255,255, nButtonCnt);
+                Ct_Button.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, nButtonCnt);
+                Op_Button.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, nButtonCnt);
+                En_Button.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, nButtonCnt);
             }
 
             if (nButtonCnt == 255)

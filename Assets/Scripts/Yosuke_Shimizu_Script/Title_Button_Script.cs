@@ -319,11 +319,11 @@ public class Title_Button_Script : MonoBehaviour
         Debug.Log("ロゼッタ様抱いてー！");
         Cre_Mesh();
 
-        Titleflg = true;
-        Option.SetActive(true);
-        Plate.SetActive(true);
-        GameObject obj = GameObject.Find("OptionTitle");
-        obj.GetComponent<TitleOption_Script>().SetTitleOption(false);
+        //Titleflg = true;
+        //Option.SetActive(true);
+        //Plate.SetActive(true);
+        //GameObject obj = GameObject.Find("OptionTitle");
+        //obj.GetComponent<TitleOption_Script>().SetTitleOption(false);
     }
 
     //終わる
@@ -331,11 +331,11 @@ public class Title_Button_Script : MonoBehaviour
     {
         Cre_Mesh();
 
-//#if UNITY_EDITOR
-//        UnityEditor.EditorApplication.isPlaying = false;
-//#else
-//    Application.Quit();
-//#endif
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+    Application.Quit();
+#endif
     }
 
     public void SetTitleFlg(bool TF)
@@ -424,39 +424,39 @@ public class Title_Button_Script : MonoBehaviour
 
                 break;
             case 2:
-                ////オプションを消す
-                //OptionButton.SetActive(false);
+                //オプションを消す
+                OptionButton.SetActive(false);
 
-                //List<Vector3> Option = new List<Vector3>();
+                List<Vector3> Option = new List<Vector3>();
 
-                ////左側
-                //Option.Add(new Vector3(1.25f, -3.9f, -0.1f));
-                //Option.Add(new Vector3(1.25f, -3.4f, -0.1f));
-                //Option.Add(new Vector3(4.95f, -3.4f, -0.1f));
+                //左側
+                Option.Add(new Vector3(1.25f, -3.9f, -0.1f));
+                Option.Add(new Vector3(1.25f, -3.4f, -0.1f));
+                Option.Add(new Vector3(4.95f, -3.4f, -0.1f));
 
-                ////UVの設定
-                //_Vector2[0] = new Vector2(0.0f, 0.0f);
-                //_Vector2[1] = new Vector2(0.0f, 1.0f);
-                //_Vector2[2] = new Vector2(1.0f, 1.0f);
+                //UVの設定
+                _Vector2[0] = new Vector2(0.0f, 0.0f);
+                _Vector2[1] = new Vector2(0.0f, 1.0f);
+                _Vector2[2] = new Vector2(1.0f, 1.0f);
 
-                ////メッシュを作る
-                //obj.GetComponent<DrawMesh>().CreateMesh(Option);
+                //メッシュを作る
+                obj.GetComponent<DrawMesh>().CreateMesh(Option);
 
-                ////リストの中身を削除する
-                //Option.Clear();
+                //リストの中身を削除する
+                Option.Clear();
 
-                ////右側
-                //Option.Add(new Vector3(4.95f, -3.9f, -0.1f));
-                //Option.Add(new Vector3(4.95f, -3.4f, -0.1f));
-                //Option.Add(new Vector3(1.25f, -3.9f, -0.1f));
+                //右側
+                Option.Add(new Vector3(1.25f, -3.9f, -0.1f));
+                Option.Add(new Vector3(4.95f, -3.4f, -0.1f));
+                Option.Add(new Vector3(4.95f, -3.9f, -0.1f));
 
-                ////UVの設定
-                //_Vector2[0] = new Vector2(0.0f, 0.0f);
-                //_Vector2[1] = new Vector2(1.0f, 1.0f);
-                //_Vector2[2] = new Vector2(1.0f, 0.0f);
+                //UVの設定
+                _Vector2[0] = new Vector2(0.0f, 0.0f);
+                _Vector2[1] = new Vector2(1.0f, 1.0f);
+                _Vector2[2] = new Vector2(1.0f, 0.0f);
 
-                ////メッシュを作る
-                //obj.GetComponent<DrawMesh>().CreateMesh(Option);
+                //メッシュを作る
+                obj.GetComponent<DrawMesh>().CreateMesh(Option);
 
                 break;
             case 3:
@@ -517,10 +517,10 @@ public class Title_Button_Script : MonoBehaviour
                     obj.transform.localScale = new Vector3(1.45f, 6.7f);
                     obj.transform.position = new Vector3(1.4f, 20.85f);
                 break;
-            case 2:                
-                    //obj.GetComponent<MeshRenderer>().material = _Mats[2];
-                    //obj.transform.localScale = new Vector3(1.75f, 6.7f);
-                    //obj.transform.position = new Vector3(5.0f, 11.4f);                
+            case 2:
+                    obj.GetComponent<MeshRenderer>().material = _Mats[2];
+                    obj.transform.localScale = new Vector3(1.75f, 6.7f);
+                    obj.transform.position = new Vector3(-2.5f, 20.75f);
                 break;
             case 3:
                     obj.GetComponent<MeshRenderer>().material = _Mats[3];
@@ -601,12 +601,13 @@ public class Title_Button_Script : MonoBehaviour
             //フェードアウトsaseru 
             switch (nSelectButton) {
                 case 0:
-                    //FadeManager.Instance.FadeStart("StageSelect");
+                    FadeManager.Instance.FadeStart("StageSelect");
                     break;
                 case 1:
-                    //FadeManager.Instance.FadeStart("StageSelect");
+                    FadeManager.Instance.FadeStart("StageSelect");
                     break;
                 case 2:
+                    FadeManager.Instance.FadeStart("Title_Option");
                     break;
                 case 3:
                     break;

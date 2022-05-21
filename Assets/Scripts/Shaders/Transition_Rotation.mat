@@ -41,5 +41,6 @@ Material:
     - _Div: 16
     - _Rotation: 45
     - _Size: 0.6
+    - _Value: -0.00033283303
     m_Colors: []
   m_BuildTextureStacks: []

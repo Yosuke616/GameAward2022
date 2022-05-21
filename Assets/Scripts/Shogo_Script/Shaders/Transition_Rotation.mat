@@ -41,6 +41,10 @@ Material:
     - _Div: 16
     - _Rotation: 45
     - _Size: 0.6
+<<<<<<< HEAD:Assets/Scripts/Shaders/Transition_Rotation.mat
+    - _Value: -0.00033283303
+=======
     - _Value: -0.014381724
+>>>>>>> 9795fa7c6d60ff7e22b64d13a36fb4cf9d902302:Assets/Scripts/Shogo_Script/Shaders/Transition_Rotation.mat
     m_Colors: []
   m_BuildTextureStacks: []

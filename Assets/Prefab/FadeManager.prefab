@@ -389,7 +389,7 @@ MonoBehaviour:
   _loadDisplay: {fileID: 3858745474157090463}
   _percentage: {fileID: 3858745473753840368}
   _progressbar: {fileID: 3858745474217164029}
-  FADESPEED: 0.4
+  FADESPEED: 0.85
   valueSpeed: 0
 --- !u!1 &3858745473910382559
 GameObject:

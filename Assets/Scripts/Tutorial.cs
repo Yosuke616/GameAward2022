@@ -1,3 +1,4 @@
+// Tutorialシーン専用スクリプト
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

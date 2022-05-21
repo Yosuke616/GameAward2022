@@ -24,6 +24,9 @@ public class PaperChange : MonoBehaviour
         _isFadeOut = false;
         _isFadeIn = false;
         valueSpeed = 0.0f;
+
+        openingCamera.enabled = true;
+        mainCamera.enabled = false;
     }
 
     // Update is called once per frame

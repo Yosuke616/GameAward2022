@@ -31,7 +31,7 @@ public class SaveLoad : MonoBehaviour
         saveData.Progress = 8;
         for (int i = 0; i < 9; i++)
         {
-            saveData.Timer[i] = "1234";
+            saveData.Timer[i] = "12:34";
             saveData.Star[i] = 2;
         }
 
@@ -51,7 +51,7 @@ public class SaveLoad : MonoBehaviour
         saveData.Progress = 0;
         for (int i = 0; i < 9; i++)
         {
-            saveData.Timer[i] = "9999";
+            saveData.Timer[i] = "99:99";
             saveData.Star[i] = 0;
         }
 
@@ -94,7 +94,7 @@ public class SaveLoad : MonoBehaviour
         int StarTime = Convert.ToInt32(saveData.Timer[Select]);
         for (i = 0; i < 3; i++)
         {
-            if(StarTime <= saveData.ClearTime[Select,i])
+            if(StarTime <= Convert.ToInt32(saveData.ClearTime[Select,i]))
             {
                 saveData.Star[Select] = 3 - i;
                 break;

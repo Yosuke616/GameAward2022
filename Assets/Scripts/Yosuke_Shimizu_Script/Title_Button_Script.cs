@@ -56,6 +56,9 @@ public class Title_Button_Script : MonoBehaviour
     //シーン遷移用
     private bool FirstSceneMove;
 
+    //動かせるようにするフラグ
+    private bool StartFlg;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -88,198 +91,207 @@ public class Title_Button_Script : MonoBehaviour
         bNextStage = false;
 
         FirstSceneMove = false;
+
+        StartFlg = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        //ネクステの状況によって全ては変わる
-        if (bNextStage) {
-            SetNextScene();
-            return;
-        }
-
-        if (!Titleflg)
+        if (StartFlg)
         {
-            nCnt--;
-
-            if (nCnt < 0)
+            //ネクステの状況によって全ては変わる
+            if (bNextStage)
             {
-                if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") < 0)
-                {
-                    //GameObject delete = GameObject.Find("breaking paper line");
-
-                    //スイッチ文で子オブジェクトを消す
-                    switch (nSelectButton) {
-                        case 0:
-                            int nChildCnt = StartButton.transform.childCount;
-                            if (nChildCnt < 0) {
-                                break;
-                            }
-                            for (int x = 0;x < nChildCnt; x++) {
-                                Destroy(StartButton.transform.GetChild(x).gameObject);
-                            }
-                            break;
-                        case 1:
-                            int nChildCnt2 = ContinueButton.transform.childCount;
-                            if (nChildCnt2 < 0)
-                            {
-                                break;
-                            }
-                            for (int x = 0; x < nChildCnt2; x++)
-                            {
-                                Destroy(ContinueButton.transform.GetChild(x).gameObject);
-                            }
-                            break;
-                        case 2:
-                            int nChildCnt3 = OptionButton.transform.childCount;
-                            if (nChildCnt3 < 0)
-                            {
-                                break;
-                            }
-                            for (int x = 0; x < nChildCnt3; x++)
-                            {
-                                Destroy(OptionButton.transform.GetChild(x).gameObject);
-                            }
-                            break;
-                        case 3:
-                            int nChildCnt4 = EndButton.transform.childCount;
-                            if (nChildCnt4 < 0)
-                            {
-                                break;
-                            }
-                            for (int x = 0; x < nChildCnt4; x++)
-                            {
-                                Destroy(EndButton.transform.GetChild(x).gameObject);
-                            }
-                            break;
-                    }
-
-                    first_Flg = false;
-                    nCnt = 45;
-                    nSelectButton--;
-                    if (nSelectButton < 0)
-                    {
-                        nSelectButton = nMaxButton;
-                    }
-                }
-                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") > 0)
-                {
-                    //スイッチ文で子オブジェクトを消す
-                    switch (nSelectButton)
-                    {
-                        case 0:
-                            int nChildCnt = StartButton.transform.childCount;
-                            if (nChildCnt < 0)
-                            {
-                                break;
-                            }
-                            for (int x = 0; x < nChildCnt; x++)
-                            {
-                                Destroy(StartButton.transform.GetChild(x).gameObject);
-                            }
-                            break;
-                        case 1:
-                            int nChildCnt2 = ContinueButton.transform.childCount;
-                            if (nChildCnt2 < 0)
-                            {
-                                break;
-                            }
-                            for (int x = 0; x < nChildCnt2; x++)
-                            {
-                                Destroy(ContinueButton.transform.GetChild(x).gameObject);
-                            }
-                            break;
-                        case 2:
-                            int nChildCnt3 = OptionButton.transform.childCount;
-                            if (nChildCnt3 < 0)
-                            {
-                                break;
-                            }
-                            for (int x = 0; x < nChildCnt3; x++)
-                            {
-                                Destroy(OptionButton.transform.GetChild(x).gameObject);
-                            }
-                            break;
-                        case 3:
-                            int nChildCnt4 = EndButton.transform.childCount;
-                            if (nChildCnt4 < 0)
-                            {
-                                break;
-                            }
-                            for (int x = 0; x < nChildCnt4; x++)
-                            {
-                                Destroy(EndButton.transform.GetChild(x).gameObject);
-                            }
-                            break;
-                    }
-
-                    first_Flg = false;
-                    nCnt = 45;
-                    nSelectButton++;
-                    if (nSelectButton > nMaxButton)
-                    {
-                        nSelectButton = 0;
-                    }
-                }
+                SetNextScene();
+                return;
             }
 
-            //常に白に変えていく
-            StartButton.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            ContinueButton.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            OptionButton.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            EndButton.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-
-            switch (nSelectButton)
+            if (!Titleflg)
             {
-                case 0:
-                    if (!first_Flg) {
-                        button.GetComponent<PaperBreakLineManager>().CreateBreakLine(Start_B, StartButton);
-                        first_Flg = true;
-                    }
-                    StartButton.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
-                    break;
-                case 1:
-                    if (!first_Flg)
-                    {
-                        button.GetComponent<PaperBreakLineManager>().CreateBreakLine(Continue_B, ContinueButton);
-                        first_Flg = true;
-                    }
-                    ContinueButton.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
-                    break;
-                case 2:
-                    if (!first_Flg)
-                    {
-                        button.GetComponent<PaperBreakLineManager>().CreateBreakLine(Option_B, OptionButton);
-                        first_Flg = true;
-                    }
-                    OptionButton.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
-                    break;
-                case 3:
-                    if (!first_Flg)
-                    {
-                        button.GetComponent<PaperBreakLineManager>().CreateBreakLine(End_B, EndButton);
-                        first_Flg = true;
-                    }
-                    EndButton.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
-                    break;
-                default: break;
-            }
+                nCnt--;
 
-            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 1"))
-            {
+                if (nCnt < 0)
+                {
+                    if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") < 0)
+                    {
+                        //GameObject delete = GameObject.Find("breaking paper line");
+
+                        //スイッチ文で子オブジェクトを消す
+                        switch (nSelectButton)
+                        {
+                            case 0:
+                                int nChildCnt = StartButton.transform.childCount;
+                                if (nChildCnt < 0)
+                                {
+                                    break;
+                                }
+                                for (int x = 0; x < nChildCnt; x++)
+                                {
+                                    Destroy(StartButton.transform.GetChild(x).gameObject);
+                                }
+                                break;
+                            case 1:
+                                int nChildCnt2 = ContinueButton.transform.childCount;
+                                if (nChildCnt2 < 0)
+                                {
+                                    break;
+                                }
+                                for (int x = 0; x < nChildCnt2; x++)
+                                {
+                                    Destroy(ContinueButton.transform.GetChild(x).gameObject);
+                                }
+                                break;
+                            case 2:
+                                int nChildCnt3 = OptionButton.transform.childCount;
+                                if (nChildCnt3 < 0)
+                                {
+                                    break;
+                                }
+                                for (int x = 0; x < nChildCnt3; x++)
+                                {
+                                    Destroy(OptionButton.transform.GetChild(x).gameObject);
+                                }
+                                break;
+                            case 3:
+                                int nChildCnt4 = EndButton.transform.childCount;
+                                if (nChildCnt4 < 0)
+                                {
+                                    break;
+                                }
+                                for (int x = 0; x < nChildCnt4; x++)
+                                {
+                                    Destroy(EndButton.transform.GetChild(x).gameObject);
+                                }
+                                break;
+                        }
+
+                        first_Flg = false;
+                        nCnt = 45;
+                        nSelectButton--;
+                        if (nSelectButton < 0)
+                        {
+                            nSelectButton = nMaxButton;
+                        }
+                    }
+                    if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") > 0)
+                    {
+                        //スイッチ文で子オブジェクトを消す
+                        switch (nSelectButton)
+                        {
+                            case 0:
+                                int nChildCnt = StartButton.transform.childCount;
+                                if (nChildCnt < 0)
+                                {
+                                    break;
+                                }
+                                for (int x = 0; x < nChildCnt; x++)
+                                {
+                                    Destroy(StartButton.transform.GetChild(x).gameObject);
+                                }
+                                break;
+                            case 1:
+                                int nChildCnt2 = ContinueButton.transform.childCount;
+                                if (nChildCnt2 < 0)
+                                {
+                                    break;
+                                }
+                                for (int x = 0; x < nChildCnt2; x++)
+                                {
+                                    Destroy(ContinueButton.transform.GetChild(x).gameObject);
+                                }
+                                break;
+                            case 2:
+                                int nChildCnt3 = OptionButton.transform.childCount;
+                                if (nChildCnt3 < 0)
+                                {
+                                    break;
+                                }
+                                for (int x = 0; x < nChildCnt3; x++)
+                                {
+                                    Destroy(OptionButton.transform.GetChild(x).gameObject);
+                                }
+                                break;
+                            case 3:
+                                int nChildCnt4 = EndButton.transform.childCount;
+                                if (nChildCnt4 < 0)
+                                {
+                                    break;
+                                }
+                                for (int x = 0; x < nChildCnt4; x++)
+                                {
+                                    Destroy(EndButton.transform.GetChild(x).gameObject);
+                                }
+                                break;
+                        }
+
+                        first_Flg = false;
+                        nCnt = 45;
+                        nSelectButton++;
+                        if (nSelectButton > nMaxButton)
+                        {
+                            nSelectButton = 0;
+                        }
+                    }
+                }
+
+                //常に白に変えていく
+                StartButton.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                ContinueButton.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                OptionButton.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                EndButton.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+
                 switch (nSelectButton)
                 {
-                    case 0: OnFirst(); break;
-                    case 1: OnCountinue(); break;
-                    case 2: OnOption(); break;
-                    case 3: OnEnd(); break;
-
+                    case 0:
+                        if (!first_Flg)
+                        {
+                            button.GetComponent<PaperBreakLineManager>().CreateBreakLine(Start_B, StartButton);
+                            first_Flg = true;
+                        }
+                        StartButton.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                        break;
+                    case 1:
+                        if (!first_Flg)
+                        {
+                            button.GetComponent<PaperBreakLineManager>().CreateBreakLine(Continue_B, ContinueButton);
+                            first_Flg = true;
+                        }
+                        ContinueButton.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                        break;
+                    case 2:
+                        if (!first_Flg)
+                        {
+                            button.GetComponent<PaperBreakLineManager>().CreateBreakLine(Option_B, OptionButton);
+                            first_Flg = true;
+                        }
+                        OptionButton.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                        break;
+                    case 3:
+                        if (!first_Flg)
+                        {
+                            button.GetComponent<PaperBreakLineManager>().CreateBreakLine(End_B, EndButton);
+                            first_Flg = true;
+                        }
+                        EndButton.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                        break;
                     default: break;
                 }
-            }
 
+                if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 1"))
+                {
+                    switch (nSelectButton)
+                    {
+                        case 0: OnFirst(); break;
+                        case 1: OnCountinue(); break;
+                        case 2: OnOption(); break;
+                        case 3: OnEnd(); break;
+
+                        default: break;
+                    }
+                }
+
+            }
         }
     }
 
@@ -495,63 +507,25 @@ public class Title_Button_Script : MonoBehaviour
     public void SettingTexture(GameObject obj) {
         switch (nSelectButton)
         {
-            case 0:
-                if (!bFirdt)
-                {
+            case 0:               
                     obj.GetComponent<MeshRenderer>().material = _Mats[0];
                     obj.transform.localScale = new Vector3(1.75f, 6.7f);
-                    obj.transform.position = new Vector3(5.0f, 11.4f);         
-
-                   
-                }
-                else
-                {
-                    obj.GetComponent<MeshRenderer>().material = _Mats[0];
-                    obj.transform.localScale = new Vector3(1.75f, 6.7f);
-                    obj.transform.position = new Vector3(5.0f, 11.4f);
-                }
+                    obj.transform.position = new Vector3(5.0f, 11.4f);               
                 break;
             case 1:
-                if (!bFirdt)
-                {
-                    obj.GetComponent<MeshRenderer>().material = _Mats[1];
-                    obj.transform.localScale = new Vector3(1.45f, 6.7f);
-                    obj.transform.position = new Vector3(2.4f, 20.85f);
-                }
-                else
-                {
                     obj.GetComponent<MeshRenderer>().material = _Mats[1];
                     obj.transform.localScale = new Vector3(1.45f, 6.7f);
                     obj.transform.position = new Vector3(1.4f, 20.85f);
-                }
                 break;
-            case 2:
-                if (!bFirdt)
-                {
+            case 2:                
                     //obj.GetComponent<MeshRenderer>().material = _Mats[2];
                     //obj.transform.localScale = new Vector3(1.75f, 6.7f);
-                    //obj.transform.position = new Vector3(5.0f, 11.4f);
-                }
-                else
-                {
-                    //obj.GetComponent<MeshRenderer>().material = _Mats[2];
-                    //obj.transform.localScale = new Vector3(1.75f, 6.7f);
-                    //obj.transform.position = new Vector3(5.0f, 11.4f);
-                }
+                    //obj.transform.position = new Vector3(5.0f, 11.4f);                
                 break;
             case 3:
-                if (!bFirdt)
-                {
                     obj.GetComponent<MeshRenderer>().material = _Mats[3];
                     obj.transform.localScale = new Vector3(1.65f, 6.7f);
                     obj.transform.position = new Vector3(-4.3f, 11.3f);
-                }
-                else
-                {
-                    obj.GetComponent<MeshRenderer>().material = _Mats[3];
-                    obj.transform.localScale = new Vector3(1.65f, 6.7f);
-                    obj.transform.position = new Vector3(-4.3f, 11.3f);
-                }
                 break;
         }
 
@@ -560,14 +534,43 @@ public class Title_Button_Script : MonoBehaviour
             //左側の紙を移動させるため
             Left_Paper = obj;
 
-            List<Vector3> Continue_Break = new List<Vector3>();
+            switch(nSelectButton)
+            {
+                case 0:
+                    List<Vector3> Start_Break = new List<Vector3>();
+                    //破り目を作る(左側)
+                    Start_Break.Add(new Vector3(-6.0f, -2.0f, -0.5f));
+                    Start_Break.Add(new Vector3(-5.5f, -1.5f, -0.5f));
+                    GameObject breaklineSt = PaperBreakLineManager.Instance.CreateBreakLine(Start_Break, obj);
+                    Debug.Log(0, breaklineSt);
+                    break;
+                case 1:
+                    List<Vector3> Continue_Break = new List<Vector3>();
+                    //破り目を作る(左側)
+                    Continue_Break.Add(new Vector3(-5.0f, -3.9f, -0.5f));
+                    Continue_Break.Add(new Vector3(-1.3f, -3.4f, -0.5f));
+                    GameObject breaklineCo = PaperBreakLineManager.Instance.CreateBreakLine(Continue_Break, obj);
+                    Debug.Log(1, breaklineCo);
+                    break;
+                case 2:
+                    List<Vector3> Option_Break = new List<Vector3>();
+                    //破り目を作る(左側)
+                    Option_Break.Add(new Vector3(1.25f, -3.9f, -0.2f));
+                    Option_Break.Add(new Vector3(4.95f, -3.4f, -0.2f));
+                    GameObject breaklineOp = PaperBreakLineManager.Instance.CreateBreakLine(Option_Break, obj);
+                    Debug.Log(2, breaklineOp);
+                    break;
+                case 3:
+                    List<Vector3> End_Break = new List<Vector3>();
+                    //破り目を作る(左側)
+                    End_Break.Add(new Vector3(4.95f, -2.25f, -0.1f));
+                    End_Break.Add(new Vector3(8.25f, -1.75f, -0.1f));
+                    GameObject breaklineEn = PaperBreakLineManager.Instance.CreateBreakLine(End_Break, obj);
+                    Debug.Log(3, breaklineEn);
+                    break;
 
-            //破り目を作る(左側)
-            Continue_Break.Add(new Vector3(-5.0f, -3.9f, -0.1f));
-            Continue_Break.Add(new Vector3(-1.3f, -3.4f, -0.1f));
-            GameObject breakline = PaperBreakLineManager.Instance.CreateBreakLine(Continue_Break, obj);
+            }
 
-            Debug.LogError(breakline);
             bFirdt = true;
         }
         else {
@@ -598,7 +601,7 @@ public class Title_Button_Script : MonoBehaviour
             //フェードアウトsaseru 
             switch (nSelectButton) {
                 case 0:
-                    FadeManager.Instance.FadeStart("StageSelect");
+                    //FadeManager.Instance.FadeStart("StageSelect");
                     break;
                 case 1:
                     //FadeManager.Instance.FadeStart("StageSelect");
@@ -615,5 +618,8 @@ public class Title_Button_Script : MonoBehaviour
         }
     }
 
-
+    //タイトルを動かせるようにする
+    public void SetStartFlg(bool bStart) {
+        StartFlg = bStart;
+    }
 }

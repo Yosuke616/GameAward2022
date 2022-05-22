@@ -61,6 +61,9 @@ public class StageSelect : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // 60FPS設定
+        Application.targetFrameRate = 60;
+
         // ステージ選択パネル検索
         GameObject Stage0 = GameObject.Find("Tutorial");
         GameObject Stage1 = GameObject.Find("1-1");

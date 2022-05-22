@@ -45,7 +45,7 @@ public class SaveLoad : MonoBehaviour
     // ƒf[ƒ^‰Šú‰»ŠÖ”---------------------------------------------------------------
     public static void InitSaveData()
     {
-        saveData.Progress = 0;
+        saveData.Progress = 1;
         for (int i = 0; i < 9; i++)
         {
             saveData.Timer[i] = "99:99";

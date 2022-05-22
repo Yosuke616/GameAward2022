@@ -50,28 +50,16 @@ public class OutSide_Paper_Script_Second : MonoBehaviour
         //最初のフラグはfalseになっている(trueで一回目は終了)
         First_Flg = false;
 
+        OutLinePaper.Add(new Vector3(-CreateTriangle.paperSizeX - 0.05f, CreateTriangle.paperSizeY + 0.05f, 0.0f));  // 左上
+        OutLinePaper.Add(new Vector3(CreateTriangle.paperSizeX + 0.05f, CreateTriangle.paperSizeY + 0.05f, 0.0f));  // 右上
+        OutLinePaper.Add(new Vector3(CreateTriangle.paperSizeX + 0.05f, -CreateTriangle.paperSizeY - 0.05f, 0.0f));  // 右下
+        OutLinePaper.Add(new Vector3(-CreateTriangle.paperSizeX - 0.05f, -CreateTriangle.paperSizeY - 0.05f, 0.0f));  // 左下
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        //一回だけ読み込めるようにするやつ
-        if (!g_bFirst_Load)
-        {
-            //アウトラインの情報を持つオブジェクトを探してきてリストの情報を貰う
-            //出来なかったらこっちでやろう
-            //紙のオブジェクトを見つけてくる
-            GameObject PaperObject = GameObject.Find("paper");
-            //スクリプトをゲットする
-            OutLinePath outlinepath_script = PaperObject.GetComponent<OutLinePath>();
-
-            //リストを代入する
-            OutLinePaper = outlinepath_script.OutLineVertices;
-
-            //最初の一回だけ読み込めるようにする
-            g_bFirst_Load = true;
-        }
-
         //これで問題ないはず
         if (Camera.main == null) { return; }
 

@@ -6,10 +6,8 @@ using UnityEngine;
 
 public class OutLinePath : MonoBehaviour
 {
-    [SerializeField]
-    public List<Vector3> OutLineVertices = new List<Vector3>();
-    [SerializeField]
-    List<int> Numbers = new List<int>();            // 頂点番号
+    [SerializeField] public List<Vector3> OutLineVertices = new List<Vector3>();
+    [SerializeField] public List<Vector2> OutLineUVs = new List<Vector2>();
 
     [SerializeField]
     Vector3 CurrentPoint, StartPoint, DownPoint;
@@ -21,10 +19,17 @@ public class OutLinePath : MonoBehaviour
     // 一番最初しか使わない
     public void SetOutLineVertecies()
     {
-        OutLineVertices.Add(new Vector3(-CreateTriangle.paperSizeX,  CreateTriangle.paperSizeY, 0.0f));
-        OutLineVertices.Add(new Vector3( CreateTriangle.paperSizeX,  CreateTriangle.paperSizeY, 0.0f));
-        OutLineVertices.Add(new Vector3( CreateTriangle.paperSizeX, -CreateTriangle.paperSizeY, 0.0f));
+        OutLineVertices.Add(new Vector3(-CreateTriangle.paperSizeX, CreateTriangle.paperSizeY, 0.0f));
+        OutLineVertices.Add(new Vector3(CreateTriangle.paperSizeX, CreateTriangle.paperSizeY, 0.0f));
+        OutLineVertices.Add(new Vector3(CreateTriangle.paperSizeX, -CreateTriangle.paperSizeY, 0.0f));
         OutLineVertices.Add(new Vector3(-CreateTriangle.paperSizeX, -CreateTriangle.paperSizeY, 0.0f));
+
+
+        // uv
+        OutLineUVs.Add(new Vector2(0, 1));
+        OutLineUVs.Add(new Vector2(1, 1));
+        OutLineUVs.Add(new Vector2(1, 0));
+        OutLineUVs.Add(new Vector2(0, 0));
 
         //OutLineVertices.Clear();
         //Numbers.Clear();
@@ -354,12 +359,46 @@ public class OutLinePath : MonoBehaviour
     // 
     public void UpdateOutLine(List<Vector3> outline)
     {
+        // 外周上の頂点を更新
         OutLineVertices = outline;
-        Numbers.Clear();
+
+        OutLineUVs.Clear();
+
+        // 外周上の頂点のuv座標を更新する
+        Mesh mesh = GetComponent<MeshFilter>().mesh;
+
+        for (int outlineIndex = 0; outlineIndex < OutLineVertices.Count; outlineIndex++)
+        {
+            for (int uvIndex = 0; uvIndex < mesh.vertices.Length; uvIndex++)
+            {
+                // 座標が等しかったら
+                if (mesh.vertices[uvIndex].Equals(OutLineVertices[outlineIndex]))
+                {
+                    // uvゲット
+                    OutLineUVs.Add(mesh.uv[uvIndex]);
+                    continue;
+                }
+            }
+        }
+
+        //if(OutLineVertices.Count == OutLineUVs.Count)
+        //{
+        //    Debug.LogWarning("よい");
+        //}
+        //else
+        //{
+        //    Debug.LogWarning("だめ");
+        //}
     }
 
-    public void InsertPoint(Vector3 cross, int index)
+    public void InsertPoint(int index, Vector3 cross, Vector2 uv)
     {
         OutLineVertices.Insert(index, cross);
+        OutLineUVs.Insert(index, uv);
+    }
+
+    public List<Vector2> Getuvs()
+    {
+        return OutLineUVs;
     }
 }

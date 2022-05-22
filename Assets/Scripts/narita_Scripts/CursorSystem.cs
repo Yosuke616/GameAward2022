@@ -88,29 +88,20 @@ public class CursorSystem : MonoBehaviour
                 {
                     UpdatePage();
                     var topPaper = papers[selectPaper];
-                    var turnShader = topPaper.GetComponent<Turn_Shader>();
-                    // めくる
-                    turnShader.SetPaperSta(1);
-                    // めくった枚数をカウント
-                    selectPaper++;
-                    // めくる枚数の上限
-                    if (selectPaper > maxPaper) selectPaper = maxPaper;
-
-                    //--- 紙の子オブジェクトのブレークラインも消す
-                    for (int i = 0; i < topPaper.transform.childCount; i++)
+                    var movePaper = topPaper.GetComponent<PSMove>();
+                    
+                    // 紙を動かす処理
+                    if (movePaper.StartLeft())
                     {
-                        // 子オブジェクトの取得
-                        var childObject = topPaper.transform.GetChild(i).gameObject;
-                        // 仕切りの場合は何もしない
-                        if (childObject.tag == "partition") continue;
-
-                        // アクティブを解除
-                        childObject.SetActive(false);
+                        // めくった枚数をカウント
+                        selectPaper++;
+                        // めくる枚数の上限
+                        if (selectPaper > maxPaper) selectPaper = maxPaper;
                     }
-                }
 
-                // めくるモードに変更
-                SetGameState(GameState.MODE_TURN_PAGES);
+                    // めくるモードに変更
+                    SetGameState(GameState.MODE_TURN_PAGES);
+                }
             }
             else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown("joystick button 5"))
             {
@@ -120,31 +111,21 @@ public class CursorSystem : MonoBehaviour
                     UpdatePage();
                     // めくるのを戻す
                     var topPaper = papers[selectPaper - 1];
-                    var turnShader = topPaper.GetComponent<Turn_Shader>();
-                    // めくってある状態から戻す
-                    turnShader.SetPaperSta(2);
-
-                    // めくった枚数をカウント
-                    selectPaper--;
-                    // めくる枚数の下限
-                    if (selectPaper == 0)
+                    var movePaper = topPaper.GetComponent<PSMove>();
+                    
+                    // 紙を戻す処理
+                    if (movePaper.StartRight())
                     {
-                        //selectPaper = 0;
+                        // めくった枚数をカウント
+                        selectPaper--;
+                        // めくる枚数の下限
+                        if (selectPaper == 0)
+                        {
+                            //selectPaper = 0;
 
-                        // めくるモード → アクションモード
-                        SetGameState(GameState.MODE_ACTION);
-                    }
-
-                    //--- ブレークラインも戻す
-                    for (int i = 0; i < topPaper.transform.childCount; i++)
-                    {
-                        // 子オブジェクトの取得
-                        var childObject = topPaper.transform.GetChild(i).gameObject;
-                        // 仕切りの場合は何もしない
-                        if (childObject.tag == "partition") continue;
-
-                        // アクティブにする
-                        childObject.SetActive(true);
+                            // めくるモード → アクションモード
+                            SetGameState(GameState.MODE_ACTION);
+                        }
                     }
                 }
 

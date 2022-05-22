@@ -454,7 +454,8 @@ public class DivideTriangle : MonoBehaviour
         var collider1 = obj1.AddComponent<MeshCollider>();
         var outline1 = obj1.AddComponent<OutLinePath>();
         var meshFilter1 = obj1.GetComponent<MeshFilter>();
-        var trun = obj1.AddComponent<Turn_Shader>();
+        //var trun = obj1.AddComponent<Turn_Shader>();
+        var psMove = obj1.AddComponent<PSMove>();
         // ---Settings
         // uv
         meshFilter1.mesh.uv = uvs1.ToArray();
@@ -483,7 +484,8 @@ public class DivideTriangle : MonoBehaviour
         var collider2 = obj2.AddComponent<MeshCollider>();
         var outline2 = obj2.AddComponent<OutLinePath>();
         var meshFilter2 = obj2.GetComponent<MeshFilter>();
-        var trun2 = obj2.AddComponent<Turn_Shader>();
+        //var trun2 = obj2.AddComponent<Turn_Shader>();
+        var psMove2 = obj2.AddComponent<PSMove>();
         // ---Settings
         // uv
         meshFilter2.mesh.uv = uvs2.ToArray();

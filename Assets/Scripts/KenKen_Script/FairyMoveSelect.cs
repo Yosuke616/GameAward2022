@@ -67,9 +67,9 @@ public class FairyMoveSelect : MonoBehaviour
                     diffZ = 100 - Fairy.transform.position.z;
 
                     // à⁄ìÆó åvéZ
-                    diffX *= MoveSpeed / 120;
-                    diffY *= MoveSpeed / 120;
-                    diffZ *= MoveSpeed / 120;
+                    diffX *= MoveSpeed / 20;
+                    diffY *= MoveSpeed / 20;
+                    diffZ *= MoveSpeed / 20;
 
                     // ç∂Ç‹Ç≈ñk
                     if (Fairy.transform.position.x < -75)
@@ -94,9 +94,9 @@ public class FairyMoveSelect : MonoBehaviour
                     diffZ = 100 - Fairy.transform.position.z;
 
                     // à⁄ìÆó åvéZ
-                    diffX *= MoveSpeed / 35;
-                    diffY *= MoveSpeed / 35;
-                    diffZ *= MoveSpeed / 35;
+                    diffX *= MoveSpeed / 10;
+                    diffY *= MoveSpeed / 10;
+                    diffZ *= MoveSpeed / 10;
                 }
                 
                 // à íuïœçX
@@ -118,9 +118,9 @@ public class FairyMoveSelect : MonoBehaviour
                     diffZ = 100 - Fairy.transform.position.z;
 
                     // à⁄ìÆó åvéZ
-                    diffX *= MoveSpeed / 120;
-                    diffY *= MoveSpeed / 120;
-                    diffZ *= MoveSpeed / 120;
+                    diffX *= MoveSpeed / 20;
+                    diffY *= MoveSpeed / 20;
+                    diffZ *= MoveSpeed / 20;
 
                     // ç∂Ç‹Ç≈ñk
                     if (Fairy.transform.position.x > 75 && Fairy.transform.position.x < 85)
@@ -145,9 +145,9 @@ public class FairyMoveSelect : MonoBehaviour
                     diffZ = 100 - Fairy.transform.position.z;
 
                     // à⁄ìÆó åvéZ
-                    diffX *= MoveSpeed / 35;
-                    diffY *= MoveSpeed / 35;
-                    diffZ *= MoveSpeed / 35;
+                    diffX *= MoveSpeed / 10;
+                    diffY *= MoveSpeed / 10;
+                    diffZ *= MoveSpeed / 10;
                 }
 
                 // à íuïœçX
@@ -232,9 +232,9 @@ public class FairyMoveSelect : MonoBehaviour
                 }
 
                 // à⁄ìÆó åvéZ
-                diffX *= MoveSpeed / 150;
-                diffY *= MoveSpeed / 150;
-                diffZ *= MoveSpeed / 150;
+                diffX *= MoveSpeed / 50;
+                diffY *= MoveSpeed / 50;
+                diffZ *= MoveSpeed / 50;
 
                 // à íuïœçX
                 Fairy.transform.position += new Vector3(diffX, diffY, diffZ);

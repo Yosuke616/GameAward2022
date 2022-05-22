@@ -51,7 +51,7 @@ public class ChangeBG : MonoBehaviour
         switch(fade_type)
         {
             case FADE_TYPE.FADE_OUT:
-                BackFade.color += new Color(0, 0, 0, 0.01f);
+                BackFade.color += new Color(0, 0, 0, 0.03f);
                 if (BackFade.color.a >= 1)
                 {
                     BackFade.color = new Color(0, 0, 0, 1);
@@ -64,7 +64,7 @@ public class ChangeBG : MonoBehaviour
 
 
             case FADE_TYPE.FADE_IN:
-                BackFade.color -= new Color(0, 0, 0, 0.01f);
+                BackFade.color -= new Color(0, 0, 0, 0.03f);
                 if (BackFade.color.a <= 0)
                 {
                     BackFade.color = new Color(0, 0, 0, 0);

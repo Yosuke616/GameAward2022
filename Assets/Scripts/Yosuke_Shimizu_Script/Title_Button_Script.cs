@@ -299,7 +299,14 @@ public class Title_Button_Script : MonoBehaviour
     public void OnFirst()
     {
         Debug.Log("ロゼッター");
+
+        // データ初期化
+        SaveLoad.InitSaveData();
+
         Cre_Mesh();
+
+        
+
         // 同一シーンを読込
         //SceneManager.LoadScene("StageSelect");
     }
@@ -308,7 +315,13 @@ public class Title_Button_Script : MonoBehaviour
     public void OnCountinue()
     {
         Debug.Log("ロゼッタかわいいー");
+
+        // データ読込
+        SaveLoad.LoadData();
+
         Cre_Mesh();
+
+
         // 同一シーンを読込
         //SceneManager.LoadScene("StageSelect");
     }

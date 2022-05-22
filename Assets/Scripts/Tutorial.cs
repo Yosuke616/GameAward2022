@@ -115,11 +115,13 @@ public class Tutorial : MonoBehaviour
 					// 現在のページを非表示化する
 					BGobjects[nCnt].SetActive(false);
 
-					// 現在の要素数がリストの要素数より小さいとき（説明中）の処理
-					//if (CuttingCheck.ch)
-					{
-						BGobjects[nCnt + 1].SetActive(true);
-					}
+					// 切断中のとき
+					//var b = CuttingCheck.CheckNextPaperDividing(0);
+					//if (b)
+					//{
+					//	Debug.LogWarning($"b:{b}");
+					//	BGobjects[nCnt + 1].SetActive(true);
+					//}
 
 					// 説明中ではない時、切断操作を有効にする
 					//else

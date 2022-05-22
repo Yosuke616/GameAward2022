@@ -47,41 +47,59 @@ public class Fade_Title : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Jun)
+        if (Valume.First_Title == false)
         {
-            if (nTitleCnt < 255)
+            if (Jun)
             {
-                nTitleCnt++;
-                Title_Log.GetComponent<SpriteRenderer>().color = new Color32(nTitleCnt, nTitleCnt, nTitleCnt, nTitleCnt);
-            }
+                if (nTitleCnt < 255)
+                {
+                    nTitleCnt++;
+                    Title_Log.GetComponent<SpriteRenderer>().color = new Color32(nTitleCnt, nTitleCnt, nTitleCnt, nTitleCnt);
+                }
 
-            //ボタンをフェードする
-            if (nTitleCnt >= 60 && nButtonCnt < 255)
-            {
-                nButtonCnt++;
-                St_Button.GetComponent<SpriteRenderer>().color = new Color32(255,255,255, nButtonCnt);
-                Ct_Button.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, nButtonCnt);
-                Op_Button.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, nButtonCnt);
-                En_Button.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, nButtonCnt);
-            }
+                //ボタンをフェードする
+                if (nTitleCnt >= 60 && nButtonCnt < 255)
+                {
+                    nButtonCnt++;
+                    St_Button.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, nButtonCnt);
+                    Ct_Button.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, nButtonCnt);
+                    Op_Button.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, nButtonCnt);
+                    En_Button.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, nButtonCnt);
+                }
 
-            if (nButtonCnt == 255)
-            {
-                Debug.Log("ロゼッタ様");
-                GameObject camera = GameObject.Find("Main Camera");
-                camera.GetComponent<Title_Button_Script>().SetStartFlg(true);
-            }
-        }
-        //タイトルをフェード指せる
-        else {
-            if (nBlackCnt >= 0) {
-                nBlackCnt--;
-                black.GetComponent<SpriteRenderer>().material.color = new Color32(0, 0, 0, nBlackCnt);
-
-                if (nBlackCnt == 0) {
-                    Jun = true;
+                if (nButtonCnt == 255)
+                {
+                    Debug.Log("ロゼッタ様");
+                    GameObject camera = GameObject.Find("Main Camera");
+                    camera.GetComponent<Title_Button_Script>().SetStartFlg(true);
+                    Valume.First_Title = true;
                 }
             }
+            //タイトルをフェード指せる
+            else
+            {
+                if (nBlackCnt >= 0)
+                {
+                    nBlackCnt--;
+                    black.GetComponent<SpriteRenderer>().material.color = new Color32(0, 0, 0, nBlackCnt);
+
+                    if (nBlackCnt == 0)
+                    {
+                        Jun = true;
+                    }
+                }
+            }
+        }
+        else {
+            black.GetComponent<SpriteRenderer>().material.color = new Color32(0, 0, 0, 0);
+            St_Button.GetComponent<SpriteRenderer>().color = new Color32(255,255,255,255);
+            Ct_Button.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+            Op_Button.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+            En_Button.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+            Title_Log.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+            GameObject camera = GameObject.Find("Main Camera");
+            camera.GetComponent<Title_Button_Script>().SetStartFlg(true);
+
         }
     }
 }

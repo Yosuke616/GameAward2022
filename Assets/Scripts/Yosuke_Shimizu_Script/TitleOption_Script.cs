@@ -48,8 +48,8 @@ public class TitleOption_Script : MonoBehaviour
         SESlider.minValue = 0.0f;
 
         //スライダー自体の初期の音の設定
-        BGMSlider.value = Valume.BGMVal;
         //MasterSlider.value = Valume.MasterVal;
+        BGMSlider.value = Valume.BGMVal;
         SESlider.value = Valume.SEVal;
 
         //TOFlg = true;

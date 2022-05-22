@@ -76,7 +76,7 @@ public class Result_Script : MonoBehaviour
         Optionflg = false;
 
         // î•ñŒÄ‚Ño‚µ(ˆê‰)
-        SaveLoad.LoadData();
+        //SaveLoad.LoadData();
 
         nCnt = 0;
 

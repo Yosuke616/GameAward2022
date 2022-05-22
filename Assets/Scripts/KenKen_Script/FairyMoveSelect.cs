@@ -77,6 +77,9 @@ public class FairyMoveSelect : MonoBehaviour
                         LeftRight = true;
                         Left = true;
                         Right = false;
+
+                        // SEçƒê∂
+                        SoundManager.Instance.PlaySeByName("paper01");
                     }
                 }
                 else
@@ -125,6 +128,9 @@ public class FairyMoveSelect : MonoBehaviour
                         LeftRight = true;
                         Left = false;
                         Right = true;
+
+                        // SEçƒê∂
+                        SoundManager.Instance.PlaySeByName("paper01");
                     }
                 }
                 else

@@ -9,7 +9,13 @@ public class Option : MonoBehaviour
     public Slider MasterSlider;
     public Slider BGMSlider;
     public Slider SESlider;
-    public Button BackButton;
+    public GameObject BackButton;
+    public GameObject BackButtonback;
+
+    //Fillを変えるためのモノ
+    public GameObject Fill1;
+    public GameObject Fill2;
+    public GameObject Fill3;
 
     // ↑の数
     private int MaxButton = 3;
@@ -75,35 +81,37 @@ public class Option : MonoBehaviour
         GameObject MasterText = GameObject.Find("MasterText");
         GameObject BGMText = GameObject.Find("BGMText");
         GameObject FEText = GameObject.Find("SEText");
-        MasterText.GetComponent<Text>().color = new Color(1f / 255f, 1f / 255f, 1f / 255f);
-        BGMText.GetComponent<Text>().color = new Color(1f / 255f, 1f / 255f, 1f / 255f);
-        FEText.GetComponent<Text>().color = new Color(1f / 255f, 1f / 255f, 1f / 255f);
-        BackButton.GetComponentInChildren<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        Fill1.GetComponent<Image>().color = new Color32(255,255,255,255);
+        Fill2.GetComponent<Image>().color = new Color32(255,255,255,255);
+        Fill3.GetComponent<Image>().color = new Color32(255,255,255,255);
+        BackButton.SetActive(false);
+        BackButtonback.SetActive(true);
 
         //選ばれたら赤く変える
         switch (SelectButton)
         {
             case 0:
                 MasterSlider.Select();
-                MasterText.GetComponent<Text>().color = new Color(255f / 255f, 1f / 255f, 1f / 255f);
+                Fill1.GetComponent<Image>().color = new Color32(255, 0, 0, 255);
                 Debug.Log("マスター");
                 break;
 
             case 1:
                 BGMSlider.Select();
-                BGMText.GetComponent<Text>().color = new Color(255f / 255f, 1f / 255f, 1f / 255f);
+                Fill2.GetComponent<Image>().color = new Color32(255, 0, 0, 255);
                 Debug.Log("BGMすらーだいー");
                 break;
 
             case 2:
                 SESlider.Select();
-                FEText.GetComponent<Text>().color = new Color(255f / 255f, 1f / 255f, 1f / 255f);
+                Fill3.GetComponent<Image>().color = new Color32(255, 0, 0, 255);
                 Debug.Log("効果音");
                 break;
 
             case 3:
-                BackButton.Select();
-                BackButton.GetComponentInChildren<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                // BackButton.Select();
+                BackButton.SetActive(true);
+                BackButtonback.SetActive(false);
                 Debug.Log("再開");
 
                 if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 1")) {

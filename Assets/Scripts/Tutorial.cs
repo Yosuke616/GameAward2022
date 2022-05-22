@@ -23,6 +23,8 @@ public class Tutorial : MonoBehaviour
 	[SerializeField] private GameObject txt_SonoChoshi;
 	[SerializeField] private GameObject txt_Koko;
 
+	[SerializeField] private CursorSystem CuttingCheck;
+
 	[SerializeField] private int nCnt;
 	[SerializeField] private bool bStartTutorial;
 	[SerializeField] private bool bEndTutorial;
@@ -60,6 +62,7 @@ public class Tutorial : MonoBehaviour
 		txt_SonoChoshi = GameObject.Find("txt_SonoChoshi");
 		txt_Koko = GameObject.Find("txt_KokomadeKireteruyo");
 
+		CuttingCheck = turnPaper.GetComponent<CursorSystem>();
 
 		//var color = new Color(0.0f, 0.0f, 0.0f, 128.0f / 255.0f);
 		//// ヒエラルキービュー上では、便宜上透明度を0.0fに設定しているので、元に戻す処理
@@ -113,7 +116,7 @@ public class Tutorial : MonoBehaviour
 					BGobjects[nCnt].SetActive(false);
 
 					// 現在の要素数がリストの要素数より小さいとき（説明中）の処理
-					//if (nCnt + 1 < 4)
+					//if (CuttingCheck.ch)
 					{
 						BGobjects[nCnt + 1].SetActive(true);
 					}

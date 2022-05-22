@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/SelectScene.unity
     guid: 65a577ebf8a4cfb43b879894eccb11da
   - enabled: 1
+    path: Assets/Scenes/Tutorial.unity
+    guid: e129932c319ce8c44bd06801981aec92
+  - enabled: 1
     path: Assets/Scenes/1-1.unity
     guid: 80f4991feb82bab438eab01532f12185
   - enabled: 1
@@ -31,7 +34,7 @@ EditorBuildSettings:
     guid: f1bc1607d83de654d93765a1aee2c0d8
   - enabled: 0
     path: 
-    guid: 3ea5475d4fae1304b92170a4b046424a
+    guid: 00000000000000000000000000000000
   - enabled: 0
     path: Assets/Scenes/PlayerMove.unity
     guid: 71b67469c1969ab4798af8fbe1c4e964

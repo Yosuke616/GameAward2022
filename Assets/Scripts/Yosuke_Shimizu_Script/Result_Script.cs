@@ -33,6 +33,8 @@ public class Result_Script : MonoBehaviour
     public Image Star_1;
     public Image Star_2;
     public Image Star_3;
+    private Image[] Stars;
+    private int i;
 
     //タイムを記録する人
     private float Timer;
@@ -62,13 +64,19 @@ public class Result_Script : MonoBehaviour
         //アクティブにしない
         _resultBG.gameObject.SetActive(false);
 
+        // 星を配列に
+        Stars = new Image[] { Star_1, Star_2, Star_3 };
+
         //星はデフォルトではアクティブにしない
-        Star_1.gameObject.SetActive(false);
-        Star_2.gameObject.SetActive(false);
-        Star_3.gameObject.SetActive(false);
+        Stars[0].gameObject.SetActive(false);
+        Stars[1].gameObject.SetActive(false);
+        Stars[2].gameObject.SetActive(false);
 
         //初めは何にも動かせない
         Optionflg = false;
+
+        // 情報呼び出し(一応)
+        SaveLoad.LoadData();
 
         nCnt = 0;
 
@@ -106,17 +114,25 @@ public class Result_Script : MonoBehaviour
                 if (Camera.transform.position == targetPos)
                 {
 
-                    if (tex && timerTex) tex.text = "クリアタイム:" + timerTex.text;
+                    //if (tex && timerTex) tex.text = "クリアタイム:" + timerTex.text;
+
+                    if (tex && timerTex) tex.text = timerTex.text;
 
                     SoundManager.Instance.StopBgm();
                     SoundManager.Instance.PlaySeByName("clear");
 
                     _resultBG.gameObject.SetActive(true);
 
-                    if (Timer < 30.0f)
+                    if (Optionflg == false)
                     {
-                        Star_1.gameObject.SetActive(true);
-                        Star_2.gameObject.SetActive(true);
+                        // クリア情報保存-----------------------------------------------------------------
+                        // 00:00の形で送る
+                        int n = SaveLoad.GetClearStar(tex.text);
+                        for (i = 0; i < n; i++)
+                        {
+                            Stars[i].gameObject.SetActive(true);
+                        }
+                        //--------------------------------------------------------------------------------
                     }
 
                     Optionflg = true;

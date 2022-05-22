@@ -49,7 +49,7 @@ public class StageSelect : MonoBehaviour
     private float RightPanel = 8;       // 右パネル枚数
 
     private bool CamZoom = false;       // カメラ移動フラグ
-    private float zoomSpeed = 0.025f;    // カメラ移動速度   
+    private float zoomSpeed = 0.075f;    // カメラ移動速度   
 
     private int Select = 0;             // 現在選択       
     private int i;                      // ループ用変数    

@@ -15,8 +15,8 @@ public class CTRLCur : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        limit.x = CreateTriangle.paperSizeX;
-        limit.y = CreateTriangle.paperSizeY;
+        limit.x = CreateTriangle.paperSizeX + 0.05f;
+        limit.y = CreateTriangle.paperSizeY + 0.05f;
 
         //初期化でオブジェクトの場所を決める
         pos = this.transform.position = new Vector3(0.0f,0.5f,0.0f);

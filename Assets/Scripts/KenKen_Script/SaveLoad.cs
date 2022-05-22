@@ -20,9 +20,6 @@ public class SaveLoad : MonoBehaviour
     {
         // セーブする場所と名前
         PATH = Application.dataPath + "/SaveData/" + "hogehoge.json";
-
-        // テスト用
-        InitSaveData();
     }
 
     // テスト関数--------------------------------------------------------------------

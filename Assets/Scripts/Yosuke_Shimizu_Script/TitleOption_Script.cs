@@ -157,9 +157,9 @@ public class TitleOption_Script : MonoBehaviour
     //スライダーを移動させる関数
     private void SetSlider()
     {
-        MasterSlider.value = Valume.MasterVal;
-        BGMSlider.value = Valume.BGMVal;
-        SESlider.value = Valume.SEVal;
+        //MasterSlider.value = Valume.MasterVal;
+        //BGMSlider.value = Valume.BGMVal;
+        //SESlider.value = Valume.SEVal;
 
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal2") > 0)
         {
@@ -171,7 +171,7 @@ public class TitleOption_Script : MonoBehaviour
                     {
                         Valume.MasterVal = 0.0f;
                     }
-                    MasterSlider.value = Valume.MasterVal;
+                    //MasterSlider.value = Valume.MasterVal;
                     break;
                 case 1:
                     Valume.BGMVal -= 0.05f;
@@ -179,7 +179,7 @@ public class TitleOption_Script : MonoBehaviour
                     {
                         Valume.BGMVal = 0.0f;
                     }
-                    BGMSlider.value = Valume.BGMVal;
+                    //BGMSlider.value = Valume.BGMVal;
                     break;
                 case 2:
                     Valume.SEVal -= 0.05f;
@@ -187,7 +187,7 @@ public class TitleOption_Script : MonoBehaviour
                     {
                         Valume.SEVal = 0.0f;
                     }
-                    SESlider.value = Valume.SEVal;
+                    //SESlider.value = Valume.SEVal;
                     break;
             }
         }

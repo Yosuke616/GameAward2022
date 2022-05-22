@@ -108,4 +108,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b8fbec1e6f9b1044836d40b2c97d630, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OutLinePaper: []
+  First_Flg: 0
   Cross_Pos: {x: 0, y: 0}

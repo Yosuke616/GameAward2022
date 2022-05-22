@@ -34,6 +34,8 @@ public class FairyMoveSelect : MonoBehaviour
     private float TargetPos_Z;          // 
 
     public static bool LeftRight = false;
+    private bool Left = false;
+    private bool Right = true;
     private bool  Change = false;       // 何フレームに一回挙動を変えるか用
     private float Swing = 0;            // 振幅用
     private float MoveSpeed = 1.0f;     // 移動速度
@@ -65,14 +67,16 @@ public class FairyMoveSelect : MonoBehaviour
                     diffZ = 100 - Fairy.transform.position.z;
 
                     // 移動量計算
-                    diffX *= MoveSpeed / 20;
-                    diffY *= MoveSpeed / 20;
-                    diffZ *= MoveSpeed / 20;
+                    diffX *= MoveSpeed / 120;
+                    diffY *= MoveSpeed / 120;
+                    diffZ *= MoveSpeed / 120;
 
                     // 左まで北
                     if (Fairy.transform.position.x < -75)
                     {
                         LeftRight = true;
+                        Left = true;
+                        Right = false;
                     }
                 }
                 else
@@ -111,14 +115,16 @@ public class FairyMoveSelect : MonoBehaviour
                     diffZ = 100 - Fairy.transform.position.z;
 
                     // 移動量計算
-                    diffX *= MoveSpeed / 20;
-                    diffY *= MoveSpeed / 20;
-                    diffZ *= MoveSpeed / 20;
+                    diffX *= MoveSpeed / 120;
+                    diffY *= MoveSpeed / 120;
+                    diffZ *= MoveSpeed / 120;
 
                     // 左まで北
                     if (Fairy.transform.position.x > 75 && Fairy.transform.position.x < 85)
                     {
                         LeftRight = true;
+                        Left = false;
+                        Right = true;
                     }
                 }
                 else
@@ -206,14 +212,23 @@ public class FairyMoveSelect : MonoBehaviour
                 TargetPos_Y = Mathf.Sin(phase) * 20 - 20;
 
                 // 距離の差を計算
-                diffX = 90 - Mathf.Cos(phase) * Swing - Fairy.transform.position.x;
-                diffY = TargetPos_Y - Fairy.transform.position.y;
-                diffZ = 100 - Fairy.transform.position.z;
+                if (Left == true)
+                {
+                    diffX = -90 - Mathf.Cos(phase) * Swing - Fairy.transform.position.x;
+                    diffY = TargetPos_Y - Fairy.transform.position.y;
+                    diffZ = 100 - Fairy.transform.position.z;
+                }
+                if(Right == true)
+                {
+                    diffX = 90 - Mathf.Cos(phase) * Swing - Fairy.transform.position.x;
+                    diffY = TargetPos_Y - Fairy.transform.position.y;
+                    diffZ = 100 - Fairy.transform.position.z;
+                }
 
                 // 移動量計算
-                diffX *= MoveSpeed / 35;
-                diffY *= MoveSpeed / 35;
-                diffZ *= MoveSpeed / 35;
+                diffX *= MoveSpeed / 150;
+                diffY *= MoveSpeed / 150;
+                diffZ *= MoveSpeed / 150;
 
                 // 位置変更
                 Fairy.transform.position += new Vector3(diffX, diffY, diffZ);

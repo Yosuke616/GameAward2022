@@ -91,7 +91,7 @@ public class SaveLoad : MonoBehaviour
         int StarTime = Convert.ToInt32(saveData.Timer[Select]);
         for (i = 0; i < 3; i++)
         {
-            if(StarTime <= Convert.ToInt32(saveData.ClearTime[Select,i]))
+            if (StarTime <= Convert.ToInt32(saveData.ClearTime[Select, i]))
             {
                 saveData.Star[Select] = 3 - i;
                 break;
@@ -102,6 +102,61 @@ public class SaveLoad : MonoBehaviour
         SaveSystem.Save(saveData, PATH);
     }
     //--------------------------------------------------------------------------------
+
+
+    // ステージ毎のセーブ関数---------------------------------------------------------
+    public static int GetClearStar(string time)
+    {
+        // どのステージか
+        int Select = new int();
+        int i = new int();
+
+        // 現在のステージ名取得
+        string name = SceneManager.GetActiveScene().name;
+        Select = 0;
+        if (name == "1-1") Select = 1;
+        if (name == "1-2") Select = 2;
+        if (name == "1-3") Select = 3;
+        if (name == "1-4") Select = 4;
+        if (name == "1-5") Select = 5;
+        if (name == "1-6") Select = 6;
+        if (name == "1-7") Select = 7;
+        if (name == "1-8") Select = 8;
+
+        // 進捗度確認
+        if (saveData.Progress < Select)
+            saveData.Progress = Select;
+
+        // タイマー更新確認
+        // :以外にする
+        string NewNum = time.Substring(0, 2) + time.Substring(3, 2);
+        string BestNum = saveData.Timer[Select].Substring(0, 2) + saveData.Timer[Select].Substring(3, 2);
+
+        // タイマーテキストを数字に変換
+        int newTime = Convert.ToInt32(NewNum);
+        int bestTime = Convert.ToInt32(BestNum);
+        if (bestTime > newTime)
+            saveData.Timer[Select] = time;
+
+        // 獲得★確認
+        string NowNum = saveData.Timer[Select].Substring(0, 2) + saveData.Timer[Select].Substring(3, 2);
+        int StarTime = Convert.ToInt32(NowNum);
+        for (i = 0; i < 3; i++)
+        {
+            if (StarTime <= Convert.ToInt32(saveData.ClearTime[Select, i]))
+            {
+                saveData.Star[Select] = 3 - i;
+                break;
+            }
+        }
+
+        // セーブ
+        SaveSystem.Save(saveData, PATH);
+
+        return saveData.Star[Select];
+    }
+    //--------------------------------------------------------------------------------
+
 
 
 
@@ -117,7 +172,7 @@ public class SaveLoad : MonoBehaviour
         {
             int BestTime = Convert.ToInt32(saveData.Timer[i]);
             int NewTime = Convert.ToInt32(data.Timer[i]);
-            if(BestTime > NewTime)
+            if (BestTime > NewTime)
             {
                 saveData.Timer[i] = data.Timer[i];
             }
@@ -131,7 +186,7 @@ public class SaveLoad : MonoBehaviour
     }
     //--------------------------------------------------------------------------------
 
-    
+
     // データロード関数---------------------------------------------------------------
     public static void LoadData()
     {

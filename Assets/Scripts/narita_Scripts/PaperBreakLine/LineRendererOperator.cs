@@ -105,7 +105,7 @@ public class LineRendererOperator : MonoBehaviour
         
         //Material[] mats[0] = 
         lineRenderer.material = (Material)Resources.Load("Effects/PaperLine");
-        lineRenderer.startWidth = 1.0f;
-        lineRenderer.endWidth = 1.0f;
+        lineRenderer.startWidth = 0.5f;
+        lineRenderer.endWidth = 0.5f;
     }
 }

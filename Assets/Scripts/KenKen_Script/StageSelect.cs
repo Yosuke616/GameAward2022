@@ -109,6 +109,12 @@ public class StageSelect : MonoBehaviour
             SaveLoad.TestSaveLoad();
             ProgressStages = SaveLoad.saveData.Progress;
         }
+        if(Input.GetKeyDown(KeyCode.O))
+        {
+            string BestNum = SaveLoad.saveData.Timer[Select].Substring(0, 2) + SaveLoad.saveData.Timer[Select].Substring(3, 2);
+            int n = Convert.ToInt32(BestNum);
+            Debug.Log(n);
+        }
 
 
         // ステージからセレクトに戻ってきたときの画面調整---------------------------------

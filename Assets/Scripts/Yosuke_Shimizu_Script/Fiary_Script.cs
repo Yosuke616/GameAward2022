@@ -128,6 +128,7 @@ public class Fiary_Script : MonoBehaviour
                 }
             }
 
+            Debug.Log(obj.GetComponent<InputTrigger>().GetOneTimeDown());
 
             //ó‘Ô‚É‚æ‚Á‚ÄXV‚Ì“à—e‚ğ•Ï‚¦‚é
             switch (g_FiaryMove)

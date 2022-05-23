@@ -51,16 +51,6 @@ public class PSMove : MonoBehaviour
 
             if (pos.x < 0.0f)
                 pos.x *= -1.0f;
-            //if(pos.x >= 17.8f)
-            //{
-            //    pos.x -= moveSpeed / 8.0f;
-            //}
-            //else
-            //{
-            //    pos.x -= moveSpeed * 3.0f;
-            //}
-            //minusNum += 0.5f;
-            //pos.x -= moveSpeed / 3.3f;
             if (pos.x >= 11.0f)
             {
                 pos.x -= 0.17f;
@@ -84,9 +74,6 @@ public class PSMove : MonoBehaviour
                 pos = new Vector3(0.0f, tmp.y, tmp.z); ;
                 minusNum = 0.0f;
                 moveRight = false;
-
-                // めくるモード → アクションモード
-                //CursorSystem.SetGameState(CursorSystem.GameState.MODE_ACTION);
             }
         }
     }

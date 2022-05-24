@@ -314,6 +314,15 @@ public class DivideTriangle : MonoBehaviour
             divide.m_cuttingPath.Clear();
             // 切断パスのUV座標のリセット
             divide.m_uvs.Clear();
+
+            // 点線も消す
+            for (int i = 0; i < paper.transform.childCount; i++)
+            {
+                if (paper.transform.GetChild(i).name == "breaking paper line")
+                {
+                    Destroy(paper.transform.GetChild(i).gameObject);
+                }
+            }
         }
     }
 

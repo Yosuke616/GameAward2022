@@ -32,10 +32,17 @@ public class PSMove : MonoBehaviour
     {
         if (moveLeft)
         {
-            Debug.Log("左");
+            // オープニング中は移動させない
+            if (CursorSystem.GetGameState() == CursorSystem.GameState.MODE_OPENING)
+            {
+                moveLeft = false;
+                return;
+            }
 
+            // 紙の移動量
             pos.x += moveSpeed;
 
+            // 紙の座標移動
             transform.Translate(Vector3.left * pos.x * Time.deltaTime);
             if (transform.position.x <= targetPos.x)
             {
@@ -47,8 +54,14 @@ public class PSMove : MonoBehaviour
         }
         if (moveRight)
         {
-            Debug.Log("右");
+            // オープニング中は移動させない
+            if (CursorSystem.GetGameState() == CursorSystem.GameState.MODE_OPENING)
+            {
+                moveRight = false;
+                return;
+            }
 
+            // 紙の移動量
             if (pos.x < 0.0f)
                 pos.x *= -1.0f;
             if (pos.x >= 11.0f)
@@ -63,10 +76,8 @@ public class PSMove : MonoBehaviour
             {
                 pos.x -= 1.0f;
             }
-            //pos.x -= 0.186f;
 
-            Debug.Log(pos.x);
-
+            // 紙の移動
             transform.Translate(Vector3.right * pos.x * Time.deltaTime);
             if (transform.position.x >= tmp.x)
             {

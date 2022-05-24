@@ -49,7 +49,6 @@ public class CursorSystem : MonoBehaviour
 
         // 最初はウサギのシーン
         gameState = GameState.MODE_OPENING;
-        gameState = GameState.MODE_ACTION;  // debug
 
         if (GameObject.Find("Rabbit") == null)
         {

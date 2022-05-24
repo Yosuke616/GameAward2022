@@ -7,14 +7,13 @@ using System.Linq;
 
 public class Tutorial : MonoBehaviour
 {
-	public GameObject StartTutorial;
+	public GameObject StartTutorial;					// チュートリアルスタート用
 	public bool bStop;
 
-	[SerializeField] private GameObject TutorialPanel;
-	[SerializeField] private GameObject cursor;
-	[SerializeField] private GameObject turnPaper;
-	[SerializeField] private GameObject Yousei1;
-	[SerializeField] private GameObject Yousei2;
+	[SerializeField] private GameObject cursor;			//
+	[SerializeField] private GameObject turnPaper;		//
+	[SerializeField] private GameObject Yousei1;		// １枚目妖精
+	[SerializeField] private GameObject Yousei2;        // ２枚目妖精
 
 	[SerializeField] private List<GameObject> BGobjects = new List<GameObject>();
 
@@ -26,37 +25,32 @@ public class Tutorial : MonoBehaviour
 	[SerializeField] private CursorSystem CuttingCheck;
 
 	[SerializeField] private int nCnt;
-	[SerializeField] private bool bStartTutorial;
-	[SerializeField] private bool bEndTutorial;
+	[SerializeField] private bool bStartZoomout;		// チュートリアル開始フラグ
+	[SerializeField] private bool bStartTutorial;       // チュートリアル開始フラグ
+	[SerializeField] private bool bCutting;
+	[SerializeField] private bool bEndTutorial;         // チュートリアル終了フラグ
 
-	[SerializeField] private float WeitTime = 2.0f;
+	[SerializeField] private float WeitTime = 2.0f;		// 待機時間
 	[SerializeField] private float elapsedTime;
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		// 変数定義
-		TutorialPanel = GameObject.Find("TutorialPanel");
-		cursor = GameObject.Find("Folder").gameObject.transform.Find("cursor 2").gameObject;
+		cursor = GameObject.Find("Folder").gameObject.transform.Find("cursor").gameObject;
 		turnPaper = GameObject.Find("Folder").gameObject.transform.Find("System").gameObject.transform.Find("Cursor").gameObject;
-		Yousei1 = GameObject.Find("Folder").gameObject.
-			transform.Find("SubCamera1").gameObject.
-			transform.Find("d1").gameObject.
-			transform.Find("Yousei1").gameObject;
-		Yousei2 = GameObject.Find("Folder").gameObject.
-			transform.Find("SubCamera2").gameObject.
-			transform.Find("d1").gameObject.
-			transform.Find("Yousei1").gameObject;
+		Yousei1 = GameObject.Find("Folder").gameObject.transform.Find("SubCamera1").gameObject.transform.Find("d1").gameObject.transform.Find("Yousei1").gameObject;
+		Yousei2 = GameObject.Find("Folder").gameObject.transform.Find("SubCamera2").gameObject.transform.Find("d1").gameObject.transform.Find("Yousei1").gameObject;
 
-		BGobjects.Add(TutorialPanel.transform.Find("BackGround0").gameObject);
-		//BGobjects.Add(TutorialPanel.transform.Find("BackGround1").gameObject);
-		BGobjects.Add(TutorialPanel.transform.Find("BackGround2").gameObject);
-		BGobjects.Add(TutorialPanel.transform.Find("BackGround3").gameObject);
-		BGobjects.Add(TutorialPanel.transform.Find("BackGround4").gameObject);
-		BGobjects.Add(TutorialPanel.transform.Find("BackGround5").gameObject);
-		BGobjects.Add(TutorialPanel.transform.Find("BackGround5").gameObject);
-		BGobjects.Add(TutorialPanel.transform.Find("BackGround5").gameObject);
-		BGobjects.Add(TutorialPanel.transform.Find("BackGround8").gameObject);
+		BGobjects.Add(transform.Find("BackGround0").gameObject);
+		//BGobjects.Add(transform.Find("BackGround1").gameObject);
+		BGobjects.Add(transform.Find("BackGround1").gameObject);
+		BGobjects.Add(transform.Find("BackGround2").gameObject);
+		BGobjects.Add(transform.Find("BackGround3").gameObject);
+		BGobjects.Add(transform.Find("BackGround4").gameObject);		// クリック箇所
+		//BGobjects.Add(transform.Find("BackGround4").gameObject);
+		//BGobjects.Add(transform.Find("BackGround4").gameObject);
+		BGobjects.Add(transform.Find("BackGround5").gameObject);		// 右へ進め
 
 		txt_ComeOn = GameObject.Find("txt_ComeOn");
 		txt_CutStart = GameObject.Find("txt_CutStart");
@@ -78,6 +72,7 @@ public class Tutorial : MonoBehaviour
 
 		nCnt = 0;
 		bStartTutorial = false;
+		bCutting = false;
 		bEndTutorial = false;
 		elapsedTime = 0.0f;
 	}
@@ -86,8 +81,11 @@ public class Tutorial : MonoBehaviour
 	void Update()
 	{
 		// 初回操作
-		if (StartTutorial.activeSelf == true &&
-			bStartTutorial == false)
+		if (StartTutorial.GetComponent<ZoomOut>().GetZoomStart() == true)
+		{
+			bStartZoomout = true;
+		}
+		else if (bStartZoomout == true && bStartTutorial == false)
 		{
 			BGobjects[0].SetActive(true);
 			cursor.SetActive(false);        // 説明中は切断操作を無効にする
@@ -104,25 +102,20 @@ public class Tutorial : MonoBehaviour
 			Yousei1.GetComponent<Fiary_Move>().enabled = false;
 			Yousei2.GetComponent<Fiary_Script>().enabled = false;
 			Yousei2.GetComponent<Fiary_Move>().enabled = false;
-			if (bStop == false)
+
+			// めくり中でないとき
+			if (!bStop)
 			{
-				// 次のページへ
-				if (Input.GetMouseButtonDown(0))
+				// 切断中でないとき次のページへ
+				if (Input.GetMouseButtonDown(0) && !bCutting)
 				{
 					// 現在のページを非表示化する
 					BGobjects[nCnt].SetActive(false);
-
-					// 切断中のとき
-					//var b = CuttingCheck.CheckNextPaperDividing(0);
-					//if (b)
-					//{
-					//	Debug.LogWarning($"b:{b}");
-					//	BGobjects[nCnt + 1].SetActive(true);
-					//}
+					nCnt++;
+					Debug.LogWarning($"{nCnt}");
 
 					// 説明中ではない時、切断操作を有効にする
-					//else
-					if (nCnt + 1 >= 3)
+					if (nCnt >= 3)
 					{
 						cursor.SetActive(true);
 						turnPaper.SetActive(true);
@@ -130,8 +123,9 @@ public class Tutorial : MonoBehaviour
 						Yousei1.GetComponent<Fiary_Move>().enabled = true;
 						Yousei2.GetComponent<Fiary_Script>().enabled = true;
 						Yousei2.GetComponent<Fiary_Move>().enabled = true;
+						bCutting = true;
+						Debug.LogWarning($"cut:true");
 					}
-					nCnt++;
 
 					switch (nCnt)
 					{
@@ -140,14 +134,12 @@ public class Tutorial : MonoBehaviour
 
 						// 0~1
 						case 1:
-							Debug.LogWarning($"{nCnt}");
 							bStop = true;
 							turnPaper.SetActive(true);
 							BGobjects[nCnt].SetActive(false);
 							break;
 
 						case 2:
-							Debug.LogWarning($"{nCnt}");
 							bStop = true;
 							turnPaper.SetActive(true);
 							BGobjects[nCnt].SetActive(false);
@@ -155,17 +147,9 @@ public class Tutorial : MonoBehaviour
 
 						// 2~3
 						case 3:
-							Debug.LogWarning($"{nCnt}");
-							//cursor.SetActive(true);
-							//turnPaper.SetActive(true);
-							//Yousei1.GetComponent<Fiary_Script>().enabled = true;
-							//Yousei1.GetComponent<Fiary_Move>().enabled = true;
-							//Yousei2.GetComponent<Fiary_Script>().enabled = true;
-							//Yousei2.GetComponent<Fiary_Move>().enabled = true;
 							break;
 
 						case 4:
-							Debug.LogWarning($"{nCnt}");
 							txt_CutStart.SetActive(false);
 							break;
 
@@ -174,85 +158,48 @@ public class Tutorial : MonoBehaviour
 							break;
 
 						default:
-							switch (nCnt % 2)
-							{
-								case 0:
-									Debug.LogWarning($"{nCnt}");
-									txt_SonoChoshi.SetActive(true);
-									txt_Koko.SetActive(false);
-									break;
-								case 1:
-									Debug.LogWarning($"{nCnt}");
-									txt_SonoChoshi.SetActive(false);
-									txt_Koko.SetActive(true);
-									break;
-							}
+							//switch (nCnt % 2)
+							//{
+							//	case 0:
+							//		txt_SonoChoshi.SetActive(true);
+							//		txt_Koko.SetActive(false);
+							//		break;
+							//	case 1:
+							//		txt_SonoChoshi.SetActive(false);
+							//		txt_Koko.SetActive(true);
+							//		break;
+							//}
 							break;
 					}
-
 				}
-
 			}
+
+			// めくり中処理
 			else
 			{
-				if (nCnt == 1)
-				{
-					//Debug.LogWarning($"time[{Time.time}], elTime[{elapsedTime}]");
-					if (elapsedTime != 0 && Time.time - elapsedTime >= WeitTime)
-					{
-						bStop = false;
-						turnPaper.SetActive(false);
-						BGobjects[nCnt].SetActive(true);
-						elapsedTime = 0;
-					}
+				// 初回処理
+				if (elapsedTime == 0 && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)))
+					elapsedTime = Time.time;
 
-					if (Input.GetKeyDown(KeyCode.UpArrow))
-					{
-						elapsedTime = Time.time;
-					}
-				}
-				if (nCnt == 2)
+				// めくり終了時処理
+				if (elapsedTime != 0 && Time.time - elapsedTime >= WeitTime)
 				{
-					//Debug.LogWarning($"time[{Time.time}], elTime[{elapsedTime}]");
-					if (elapsedTime != 0 && Time.time - elapsedTime >= WeitTime)
-					{
-						bStop = false;
-						turnPaper.SetActive(false);
-						BGobjects[nCnt].SetActive(true);
-						elapsedTime = 0;
+					bStop = false;
+					turnPaper.SetActive(false);
+					BGobjects[nCnt].SetActive(true);
+					elapsedTime = 0;
+					if (nCnt == 2)
 						txt_CutStart.SetActive(true);
-					}
-
-					if (Input.GetKeyDown(KeyCode.DownArrow))
-					{
-						elapsedTime = Time.time;
-					}
 				}
 			}
 
-		}
+			if (bCutting)
+			{
+				if(Dividing())
+				{
 
-		//if (bStartTutorial == true && bEndTutorial == true)
-		//{
-		//	// 次のページへ
-		//	if (Input.GetMouseButtonDown(0))
-		//	{
-		//		txt_CutStart.SetActive(false);
-		//		nCnt++;
-		//		switch (nCnt % 2)
-		//		{
-		//			case 0:
-		//				Debug.LogWarning($"{nCnt}");
-		//				txt_SonoChoshi.SetActive(true);
-		//				txt_Koko.SetActive(false);
-		//				break;
-		//			case 1:
-		//				Debug.LogWarning($"{nCnt}");
-		//				txt_SonoChoshi.SetActive(false);
-		//				txt_Koko.SetActive(true);
-		//				break;
-		//		}
-		//	}
-		//}
+				}
+			}
+		}
 	}
 }

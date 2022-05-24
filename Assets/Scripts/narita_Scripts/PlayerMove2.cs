@@ -45,6 +45,7 @@ public class PlayerMove2 : MonoBehaviour
 
     void Start()
     {
+        AnimState = 0;
         // リジット
         rb = GetComponent<Rigidbody>();
         

@@ -78,8 +78,8 @@ public class SaveLoad : MonoBehaviour
         if (name == "1-8") Select = 8;
 
         // 進捗度確認
-        if (saveData.Progress < Select)
-            saveData.Progress = Select;
+        if (saveData.Progress < Select + 1)
+            saveData.Progress = Select + 1;
 
         // タイマー更新確認
         int newTime = Convert.ToInt32(time);                         // タイマーテキストを数字に変換
@@ -124,8 +124,8 @@ public class SaveLoad : MonoBehaviour
         if (name == "1-8") Select = 8;
 
         // 進捗度確認
-        if (saveData.Progress < Select)
-            saveData.Progress = Select;
+        if (saveData.Progress < Select + 1)
+            saveData.Progress = Select + 1;
 
         // タイマー更新確認
         // :以外にする

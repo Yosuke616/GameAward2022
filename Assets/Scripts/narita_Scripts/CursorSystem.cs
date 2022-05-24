@@ -89,7 +89,7 @@ public class CursorSystem : MonoBehaviour
                     UpdatePage();
                     var topPaper = papers[selectPaper];
                     var movePaper = topPaper.GetComponent<PSMove>();
-                    
+
                     // 紙を動かす処理
                     if (movePaper.StartLeft())
                     {
@@ -112,7 +112,7 @@ public class CursorSystem : MonoBehaviour
                     // めくるのを戻す
                     var topPaper = papers[selectPaper - 1];
                     var movePaper = topPaper.GetComponent<PSMove>();
-                    
+
                     // 紙を戻す処理
                     if (movePaper.StartRight())
                     {
@@ -304,7 +304,7 @@ public class CursorSystem : MonoBehaviour
 
 
     // 奥の紙が破り中かどうか
-    private bool CheckNextPaperDividing(int currentPaperNum)
+    public bool CheckNextPaperDividing(int currentPaperNum)
     {
         for (int paperNum = currentPaperNum + 1; paperNum <= maxPaper; paperNum++)
         {

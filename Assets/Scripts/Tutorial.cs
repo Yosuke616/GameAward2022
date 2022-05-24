@@ -7,7 +7,7 @@ using System.Linq;
 
 public class Tutorial : MonoBehaviour
 {
-	public Camera openingCamera;
+	public GameObject StartTutorial;
 	public bool bStop;
 
 	[SerializeField] private GameObject TutorialPanel;
@@ -37,7 +37,7 @@ public class Tutorial : MonoBehaviour
 	{
 		// 変数定義
 		TutorialPanel = GameObject.Find("TutorialPanel");
-		cursor = GameObject.Find("Folder").gameObject.transform.Find("cursor").gameObject;
+		cursor = GameObject.Find("Folder").gameObject.transform.Find("cursor 2").gameObject;
 		turnPaper = GameObject.Find("Folder").gameObject.transform.Find("System").gameObject.transform.Find("Cursor").gameObject;
 		Yousei1 = GameObject.Find("Folder").gameObject.
 			transform.Find("SubCamera1").gameObject.
@@ -47,6 +47,7 @@ public class Tutorial : MonoBehaviour
 			transform.Find("SubCamera2").gameObject.
 			transform.Find("d1").gameObject.
 			transform.Find("Yousei1").gameObject;
+
 		BGobjects.Add(TutorialPanel.transform.Find("BackGround0").gameObject);
 		//BGobjects.Add(TutorialPanel.transform.Find("BackGround1").gameObject);
 		BGobjects.Add(TutorialPanel.transform.Find("BackGround2").gameObject);
@@ -63,10 +64,6 @@ public class Tutorial : MonoBehaviour
 		txt_Koko = GameObject.Find("txt_KokomadeKireteruyo");
 
 		CuttingCheck = turnPaper.GetComponent<CursorSystem>();
-
-		//var color = new Color(0.0f, 0.0f, 0.0f, 128.0f / 255.0f);
-		//// ヒエラルキービュー上では、便宜上透明度を0.0fに設定しているので、元に戻す処理
-		//BGobjects[0].GetComponent<Image>().color = color;
 
 		for (int i = 0; i < BGobjects.Count; i++)
 		{
@@ -89,7 +86,7 @@ public class Tutorial : MonoBehaviour
 	void Update()
 	{
 		// 初回操作
-		if (openingCamera.enabled == false &&
+		if (StartTutorial.activeSelf == true &&
 			bStartTutorial == false)
 		{
 			BGobjects[0].SetActive(true);
@@ -115,15 +112,17 @@ public class Tutorial : MonoBehaviour
 					// 現在のページを非表示化する
 					BGobjects[nCnt].SetActive(false);
 
-					// 現在の要素数がリストの要素数より小さいとき（説明中）の処理
-					//if (CuttingCheck.ch)
-					{
-						BGobjects[nCnt + 1].SetActive(true);
-					}
+					// 切断中のとき
+					//var b = CuttingCheck.CheckNextPaperDividing(0);
+					//if (b)
+					//{
+					//	Debug.LogWarning($"b:{b}");
+					//	BGobjects[nCnt + 1].SetActive(true);
+					//}
 
 					// 説明中ではない時、切断操作を有効にする
 					//else
-					if (nCnt + 1 >= 3 && nCnt + 1 != 7)
+					if (nCnt + 1 >= 3)
 					{
 						cursor.SetActive(true);
 						turnPaper.SetActive(true);
@@ -156,6 +155,13 @@ public class Tutorial : MonoBehaviour
 
 						// 2~3
 						case 3:
+							Debug.LogWarning($"{nCnt}");
+							//cursor.SetActive(true);
+							//turnPaper.SetActive(true);
+							//Yousei1.GetComponent<Fiary_Script>().enabled = true;
+							//Yousei1.GetComponent<Fiary_Move>().enabled = true;
+							//Yousei2.GetComponent<Fiary_Script>().enabled = true;
+							//Yousei2.GetComponent<Fiary_Move>().enabled = true;
 							break;
 
 						case 4:

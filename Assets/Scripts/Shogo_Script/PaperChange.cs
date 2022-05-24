@@ -94,6 +94,9 @@ public class PaperChange : MonoBehaviour
             // ウサギアニメーション終了
             openingCamera.enabled = false;
             mainCamera.enabled = true;
+
+            // オープニングモードからアクションモードに切り替える
+            CursorSystem.SetGameState(CursorSystem.GameState.MODE_ACTION);
         }
     }
 

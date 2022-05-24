@@ -13,7 +13,7 @@ public class EnemyBehavior : MonoBehaviour
 	}
 	public float MaxMovePos = 10.0f;
 	public float EnemyViewLength = 5.0f;
-	public float MoveSpeed = 0.1f;
+	public float MoveSpeed = 0.05f;
 	public bool StartMoveLeft = true;
 
 

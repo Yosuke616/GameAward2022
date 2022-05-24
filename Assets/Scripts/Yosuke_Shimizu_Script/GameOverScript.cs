@@ -25,7 +25,7 @@ public class GameOverScript : MonoBehaviour
     //“_–Å‚³‚¹‚é‚½‚ß‚Ì•Ï”
     private float alpha_Num;
 
-    private bool Iine;
+    private bool Iine = true;
 
     int nCnt;
 

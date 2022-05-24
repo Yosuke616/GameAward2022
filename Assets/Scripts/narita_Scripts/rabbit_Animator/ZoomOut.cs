@@ -57,4 +57,9 @@ public class ZoomOut : MonoBehaviour
     {
         active = true;
     }
+
+	public bool GetZoomStart()
+	{
+		return active;
+	}
 }

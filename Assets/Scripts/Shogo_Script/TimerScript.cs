@@ -9,6 +9,11 @@ public class TimerScript : MonoBehaviour
     private int minute;
     [SerializeField]
     private float seconds;
+
+    // 後ろの紙
+    [SerializeField]
+    private Image BackImage;
+
     //　前のUpdateの時の秒数
     private float oldSeconds;
     //　タイマー表示用テキスト
@@ -27,6 +32,9 @@ public class TimerScript : MonoBehaviour
         timerText = GetComponentInChildren<Text>();
         bStart = false;
         gameObject.GetComponent<Text>().enabled = bStart;
+
+        // 後ろ紙死亡
+        BackImage.gameObject.SetActive(false);
     }
 
     void Update()
@@ -69,5 +77,8 @@ public class TimerScript : MonoBehaviour
         // タイマー開始
         bStart = true;
         gameObject.GetComponent<Text>().enabled = bStart;
+
+        // 後ろの紙アクティブ
+        BackImage.gameObject.SetActive(true);
     }
 }

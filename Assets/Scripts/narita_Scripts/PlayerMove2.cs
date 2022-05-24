@@ -80,32 +80,23 @@ public class PlayerMove2 : MonoBehaviour
                     AnimState = 0;
                     break;
                 case PLAYER_STATE.STATE_LEFT_MOVE:
+
                     transform.position += -transform.right * speed;
-                    m_rotDestModel = -45.0f;
+
                     // 歩きモーション
-                    if(AnimState < 2)
+                    if (AnimState < 2)
                     AnimState = 1;
                     break;
                 case PLAYER_STATE.STATE_RIGHT_MOVE:
-                    m_rotDestModel = 45.0f;
                     transform.position += transform.right * speed;
+
                     // 歩きモーション
-                    if(AnimState < 2)
+                    if (AnimState < 2)
                     AnimState = 1;
                     break;
                 default: break;
             }
         }
-
-        //// 目的の角度までの差分
-        //float m_fDiifRotY = m_rotDestModel - this.transform.rotation.y;
-        //if (m_fDiifRotY >= 180.0f) m_fDiifRotY -= 360.0f;
-        //if (m_fDiifRotY < -180.0f) m_fDiifRotY += 360.0f;
-        //// 目的の角度まで慣性をかける
-        //this.transform.Rotate(0.0f, m_fDiifRotY * RATE_ROTATE_MODEL, 0.0f);
-        //m_pPlayer->Rotate.y += m_fDiifRotY * RATE_ROTATE_MODEL;
-        //if (m_pPlayer->Rotate.y > 360.0f) m_pPlayer->Rotate.y -= 360.0f;
-        //if (m_pPlayer->Rotate.y < 0.0f) m_pPlayer->Rotate.y += 360.0f;
 
         // 画面外に出たらゲームオーバー
         if (transform.position.y < offScrren)
@@ -123,17 +114,13 @@ public class PlayerMove2 : MonoBehaviour
     // 衝突処理
     void OnCollisionEnter(Collision collision)
     {
-        //if (collision.gameObject.tag == "Ground")
-        //{
-        //    bGround = true;
-        //}
-
         // ゴールに触れたとき
         if (collision.gameObject.gameObject.tag == "goal")
         {
             GameObject camera = GameObject.Find("MainCamera");
             camera.GetComponent<Result_Script>().SetGoalFlg(true);
 
+            // クリアモーション
             AnimState = 2;
 
             flg = false;
@@ -146,6 +133,7 @@ public class PlayerMove2 : MonoBehaviour
             enemy.GetComponent<GameOverScript>().SetGameOver_Flg(true);
             GameOver_Flg_Enemy = false;
 
+            // 失敗モーション
             AnimState = 3;
 
         }

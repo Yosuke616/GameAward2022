@@ -37,7 +37,6 @@ public class ZoomOut : MonoBehaviour
             if(diffX < 0.001f && diffY < 0.001f && diffZ < 0.001f)
             {
                 active = false;
-                Debug.LogWarning("一致したよ");
 
                 // 白フェードを入れる
                 var paperChange = GameObject.Find("PaperChange").GetComponent<PaperChange>();
@@ -48,7 +47,7 @@ public class ZoomOut : MonoBehaviour
                 //mainCamera.enabled = true;
 
                 // オープニングモードからアクションモードに切り替える
-                CursorSystem.SetGameState(CursorSystem.GameState.MODE_ACTION);
+                //CursorSystem.SetGameState(CursorSystem.GameState.MODE_ACTION);
             }
         }
     }

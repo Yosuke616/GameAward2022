@@ -38,8 +38,8 @@ public class collsion_test : MonoBehaviour
             //エネミーの場合はエネミーの機能を追加する
             if (collider.gameObject.tag == "enemy")
             {
-                if(collider.gameObject.GetComponent<Enemy>() == null)
-                    collider.gameObject.AddComponent<Enemy>();
+                //if(collider.gameObject.GetComponent<Enemy>() == null)
+                //    collider.gameObject.AddComponent<Enemy>();
             }
             else if (collider.gameObject.tag == "CardSoldier")
             {

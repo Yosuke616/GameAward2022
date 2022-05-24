@@ -262,6 +262,21 @@ public class CursorSystem : MonoBehaviour
             }
 
             #endregion
+
+            //　破りキャンセル
+            if(Input.GetKeyDown("joystick button 0"))
+            {
+                // 破り中フラグのリセット
+                DivideTriangle.AllReset();
+                startDivide = false;
+                // ポジションリストをクリア
+                MousePoints.Clear();
+
+                outsider.DivideEnd();
+
+                //(仮SE)
+                SoundManager.Instance.PlaySeByName("SE_MenuOperation");
+            }
         }
         else
         {

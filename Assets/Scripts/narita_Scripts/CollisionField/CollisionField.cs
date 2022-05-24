@@ -114,12 +114,16 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
 
                 if (CollisionGrid[(y * gridNumX) + x].tag == "enemy")
                 {
+                    // 決められたレイヤーでしか存在できない
+                    var checkLayer = CollisionGrid[(y * gridNumX) + x].AddComponent<CheckSameLayer>();
+                    checkLayer.SetLayer(layer + 1);
+
                     // もととなるオブジェクト
                     GameObject original = _stageGrid[(y * gridNumX) + x].sourceObject;
 
-
+                    CollisionGrid[(y * gridNumX) + x].AddComponent<CheckSameLayer>();
                     // 座標を合わせる
-                    original.GetComponent<Enemy>().Synchronous(CollisionGrid[(y * gridNumX) + x]);
+                    //original.GetComponent<Enemy>().Synchronous(CollisionGrid[(y * gridNumX) + x]);
                     // 親を変える
                     CollisionGrid[(y * gridNumX) + x].transform.SetParent(original.transform);
                     // コリジョンをトリガーに変更
@@ -129,6 +133,10 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                 }
                 else if(CollisionGrid[(y * gridNumX) + x].tag == "CardSoldier")
                 {
+                    // 決められたレイヤーでしか存在できない
+                    var checkLayer = CollisionGrid[(y * gridNumX) + x].AddComponent<CheckSameLayer>();
+                    checkLayer.SetLayer(layer + 1);
+
                     // もととなるオブジェクト
                     GameObject original = _stageGrid[(y * gridNumX) + x].sourceObject;
 
@@ -189,9 +197,12 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
 
                             if (CollisionGrid[objCount].tag == "enemy")
                             {
+                                // 決められたレイヤーでしか存在できない
+                                var checkLayer = CollisionGrid[objCount].AddComponent<CheckSameLayer>();
+                                checkLayer.SetLayer(layerList[objCount] + 2);
+
                                 // もととなるオブジェクト
                                 GameObject original = StageInfo[layerList[objCount] + 1][objCount].sourceObject;
-
                                 // 座標を合わせる
                                 original.GetComponent<Enemy>().Synchronous(CollisionGrid[objCount]);
                                 // 親を変える
@@ -203,6 +214,10 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                             }
                             else if (CollisionGrid[(y * gridNumX) + x].tag == "CardSoldier")
                             {
+                                // 決められたレイヤーでしか存在できない
+                                var checkLayer = CollisionGrid[objCount].AddComponent<CheckSameLayer>();
+                                checkLayer.SetLayer(layerList[objCount] + 2);
+
                                 // もととなるオブジェクト
                                 GameObject original = StageInfo[layerList[objCount] + 1][objCount].sourceObject;
 
@@ -254,6 +269,10 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                             //--- エネミー
                             if (CollisionGrid[objCount].tag == "enemy")
                             {
+                                // 決められたレイヤーでしか存在できない
+                                var checkLayer = CollisionGrid[objCount].AddComponent<CheckSameLayer>();
+                                checkLayer.SetLayer(layerList[objCount] + 2);
+
                                 // 座標を合わせる
                                 StageInfo[layerList[objCount] + 1][objCount].sourceObject.GetComponent<Enemy>().Synchronous(CollisionGrid[objCount]);
                                 // コライダーをトリガーに
@@ -263,6 +282,10 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                             }
                             if (CollisionGrid[objCount].tag == "CardSoldier")
                             {
+                                // 決められたレイヤーでしか存在できない
+                                var checkLayer = CollisionGrid[objCount].AddComponent<CheckSameLayer>();
+                                checkLayer.SetLayer(layerList[objCount] + 2);
+
                                 // もととなるオブジェクト
                                 GameObject original = StageInfo[layerList[objCount] + 1][objCount].sourceObject;
 
@@ -338,8 +361,8 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                         // オブジェクトを消す
                         Destroy(hit.collider.gameObject);
 
-                        Debug.DrawRay(cameraObj.transform.position, new Vector3(start.x + (gridSizeX * x), start.y - (gridSizeY * y), 22.0f));
-                        Debug.LogError("");
+                        //Debug.DrawRay(cameraObj.transform.position, new Vector3(start.x + (gridSizeX * x), start.y - (gridSizeY * y), 22.0f));
+                        //Debug.LogError("");
                     }
                 }
 
@@ -349,7 +372,8 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
 
 
 
-    // *** 破った紙にアリスが存在するかどうかを返す
+    //*** 破った紙にアリスが存在するかどうかを返す
+    //あたり判定グリッドにレイを飛ばしている 
     public bool CheckAliceExists(List<bool> changes)
     {
         bool result = false;
@@ -382,7 +406,7 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                 RaycastHit hit;
                 if (Physics.Raycast(cameraObj.transform.position, new Vector3(start.x + (gridSizeX * x), start.y - (gridSizeY * y), 22.0f), out hit))
                 {
-                    // 動いている敵だった場合
+                    // プレイヤーだった場合
                     if (hit.collider.gameObject.tag == "Player")
                     {
                         result = true;

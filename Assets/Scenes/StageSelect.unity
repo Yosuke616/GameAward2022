@@ -1723,13 +1723,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stage0_BG: {fileID: 2800000, guid: 8a5f23fb09aff84488d03415a338354e, type: 3}
   stage1_BG: {fileID: 2800000, guid: 8a5f23fb09aff84488d03415a338354e, type: 3}
-  stage2_BG: {fileID: 2800000, guid: 8a5f23fb09aff84488d03415a338354e, type: 3}
+  stage2_BG: {fileID: 2800000, guid: b131ba1037fdd26428d2902331896e4f, type: 3}
   stage3_BG: {fileID: 2800000, guid: 5892a4281c319e84fb2fd23339f9792f, type: 3}
   stage4_BG: {fileID: 2800000, guid: 61683c01eb5b7c040b95dd626e3109be, type: 3}
   stage5_BG: {fileID: 2800000, guid: e7982dad026d954488fd02778b1ae9e5, type: 3}
   stage6_BG: {fileID: 2800000, guid: 36cf350ab986b4149888d885a1c8d941, type: 3}
-  stage7_BG: {fileID: 2800000, guid: 8a5f23fb09aff84488d03415a338354e, type: 3}
-  stage8_BG: {fileID: 2800000, guid: 8a5f23fb09aff84488d03415a338354e, type: 3}
+  stage7_BG: {fileID: 2800000, guid: 95f48ad5d44c6a94fa783d0057f34e6f, type: 3}
+  stage8_BG: {fileID: 2800000, guid: 7ad2a36fb68a4de4484b197d1f8ee142, type: 3}
   BackFade: {fileID: 1259397646}
 --- !u!1001 &676054418
 PrefabInstance:

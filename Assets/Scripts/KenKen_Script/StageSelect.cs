@@ -292,7 +292,8 @@ public class StageSelect : MonoBehaviour
                 // ステージ情報表示
                 InfoPanel.SetActive(true);
                 TimerData.text = SaveLoad.saveData.Timer[Select];       // タイマー部分表示
-                StageNo.text = Select.ToString();           // ステージ名表示
+                StageNo.text = Select.ToString();                       // ステージナンバー表示
+                StageNameChange.ChangeStageName(Select);                // ステージ名変更
 
 
                 for (i = 0; i < SaveLoad.saveData.Star[Select]; i++)    // ★部分表示

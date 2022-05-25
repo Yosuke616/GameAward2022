@@ -193,13 +193,13 @@ public class Tutorial : MonoBehaviour
 				}
 			}
 
-			if (bCutting)
-			{
-				if(Dividing())
-				{
+			//if (bCutting)
+			//{
+			//	if(Dividing())
+			//	{
 
-				}
-			}
+			//	}
+			//}
 		}
 	}
 }

@@ -62,8 +62,8 @@ public class PSMove : MonoBehaviour
             }
 
             // Ž†‚ÌˆÚ“®—Ê
-            if (pos.x < 0.0f)
-                pos.x *= -1.0f;
+            //if (pos.x < 0.0f)
+            //    pos.x *= -1.0f;
             if (pos.x >= 11.0f)
             {
                 pos.x -= 0.17f;
@@ -76,6 +76,8 @@ public class PSMove : MonoBehaviour
             {
                 pos.x -= 1.0f;
             }
+            if (pos.x < 0.0f)
+                pos.x *= -1.0f;
 
             // Ž†‚ÌˆÚ“®
             transform.Translate(Vector3.right * pos.x * Time.deltaTime);

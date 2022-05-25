@@ -108,7 +108,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -130,8 +130,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a73dd1f5dfe4b54fb5f26f8b0902b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingCamera: {fileID: 8412117440360662284}
-  mainCamera: {fileID: 0}
 --- !u!1 &8412117440709944404
 GameObject:
   m_ObjectHideFlags: 0

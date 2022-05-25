@@ -64,17 +64,17 @@ public class PSMove : MonoBehaviour
             // Ž†‚ÌˆÚ“®—Ê
             //if (pos.x < 0.0f)
             //    pos.x *= -1.0f;
-            if (pos.x >= 18.0f)
+            if (pos.x >= 20.0f)
             {
                 pos.x -= 0.1f;
             }
-            else if (pos.x >= 15.5f)
+            else if (pos.x >= 12.0f)
             {
-                pos.x -= 0.7f;
+                pos.x -= 0.2f;
             }
             else
             {
-                pos.x -= 0.9f;
+                pos.x -= 0.4f;
             }
             if (pos.x < 0.0f)
                 pos.x *= -1.0f;

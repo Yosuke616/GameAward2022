@@ -94,7 +94,7 @@ public class Pause : MonoBehaviour
         Debug.Log(OptionFlg);
         if (Camera.GetComponent<PauseContorol>().GetPauseFlf() && OptionFlg == false) {
             Debug.Log("ロゼッタ様ー");
-            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 1"))
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
             {
                 Debug.Log("入ったよー");
                 switch (SelectButton) {

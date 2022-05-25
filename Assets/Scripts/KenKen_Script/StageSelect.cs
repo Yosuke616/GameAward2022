@@ -151,7 +151,7 @@ public class StageSelect : MonoBehaviour
             if (CamZoom == false)
             {
                 // ©‰æ–ÊˆÚ“®
-                if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") > 0)
+                if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown("joystick button 5"))
                 {
                     if (Select < ProgressStages)
                     {
@@ -166,7 +166,7 @@ public class StageSelect : MonoBehaviour
                 }
 
                 // ¨‰æ–ÊˆÚ“®
-                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") < 0)
+                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown("joystick button 4"))
                 {
                     if (Select > 0)
                     {

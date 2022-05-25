@@ -709,7 +709,7 @@ public class Title_Button_Script : MonoBehaviour
                     FadeManager.Instance.FadeStart("StageSelect");
                     break;
                 case 1:
-                    //FadeManager.Instance.FadeStart("StageSelect");
+                    FadeManager.Instance.FadeStart("StageSelect");
                     break;
                 case 2:
                     //FadeManager.Instance.FadeStart("Title_Option");

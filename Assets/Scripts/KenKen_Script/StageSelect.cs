@@ -147,33 +147,37 @@ public class StageSelect : MonoBehaviour
         // ステージ選択-------------------------------------------------------------------
         if (PanelState == PANEL_STATE.NONE)
         {
-            // ←画面移動
-            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") > 0)
+            // カメラのズームしていない時のみ実行
+            if (CamZoom == false)
             {
-                if (Select < ProgressStages)
+                // ←画面移動
+                if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown("joystick button 5"))
                 {
-                    PanelState = PANEL_STATE.LEFT;
+                    if (Select < ProgressStages)
+                    {
+                        PanelState = PANEL_STATE.LEFT;
 
-                    // 妖精さん左
-                    FairyMoveSelect.MoveChange(FairyMoveSelect.FAIRY_STATE.LEFT);
+                        // 妖精さん左
+                        FairyMoveSelect.MoveChange(FairyMoveSelect.FAIRY_STATE.LEFT);
 
-                    // ステージ情報見えないように
-                    InfoPanel.SetActive(false);
+                        // ステージ情報見えないように
+                        InfoPanel.SetActive(false);
+                    }
                 }
-            }
 
-            // →画面移動
-            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") < 0)
-            {
-                if (Select > 0)
+                // →画面移動
+                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown("joystick button 4"))
                 {
-                    PanelState = PANEL_STATE.RIGHT;
+                    if (Select > 0)
+                    {
+                        PanelState = PANEL_STATE.RIGHT;
 
-                    // 妖精さん右
-                    FairyMoveSelect.MoveChange(FairyMoveSelect.FAIRY_STATE.RIGHT);
+                        // 妖精さん右
+                        FairyMoveSelect.MoveChange(FairyMoveSelect.FAIRY_STATE.RIGHT);
 
-                    // ステージ情報見えないように
-                    InfoPanel.SetActive(false);
+                        // ステージ情報見えないように
+                        InfoPanel.SetActive(false);
+                    }
                 }
             }
         }

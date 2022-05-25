@@ -10,12 +10,12 @@ public class Tutorial : MonoBehaviour
 	public GameObject StartTutorial;					// ƒ`ƒ…[ƒgƒŠƒAƒ‹ƒXƒ^[ƒg—p
 	public bool bStop;
 
-	[SerializeField] private GameObject cursor;			//
-	[SerializeField] private GameObject turnPaper;		//
-	[SerializeField] private GameObject Yousei1;		// ‚P–‡–Ú—d¸
-	[SerializeField] private GameObject Yousei2;        // ‚Q–‡–Ú—d¸
+	private GameObject cursor;			//
+	private GameObject turnPaper;		//
+	private GameObject Yousei1;		// ‚P–‡–Ú—d¸
+	private GameObject Yousei2;        // ‚Q–‡–Ú—d¸
 
-	[SerializeField] private List<GameObject> BGobjects = new List<GameObject>();
+	private List<GameObject> BGobjects = new List<GameObject>();
 
 	[SerializeField] private GameObject txt_ComeOn;
 	[SerializeField] private GameObject txt_CutStart;
@@ -33,7 +33,6 @@ public class Tutorial : MonoBehaviour
 
 	[SerializeField] private float WeitTime = 2.0f;		// ‘Ò‹@ŠÔ
 	[SerializeField] private float elapsedTime;
-	[SerializeField] private GameObject[] papers;
 
 	// Start is called before the first frame update
 	void Start()
@@ -74,7 +73,6 @@ public class Tutorial : MonoBehaviour
 		//bCutting = cursor.GetComponent<OutSide_Paper_Script_Second>().GetFirstFlg();
 		bEndTutorial = false;
 		elapsedTime = 0.0f;
-		papers = null;
 	}
 
 	// Update is called once per frame
@@ -87,7 +85,6 @@ public class Tutorial : MonoBehaviour
 		}
 		else if (bStartZoomout == true && bStartTutorial == false)
 		{
-			papers = GameObject.FindGameObjectsWithTag("paper");
 			BGobjects[0].SetActive(true);
 			cursor.SetActive(false);        // à–¾’†‚ÍØ’f‘€ì‚ğ–³Œø‚É‚·‚é
 			turnPaper.SetActive(false);     // à–¾’†‚Í†‚ß‚­‚è‚ğ–³Œø‚É‚·‚é
@@ -180,7 +177,6 @@ public class Tutorial : MonoBehaviour
 						bCutting = false;
 						nCnt++;
 						BGobjects[nCnt - 1].SetActive(false);
-						BGobjects[nCnt].SetActive(true);
 						cursor.SetActive(false);
 						turnPaper.SetActive(false);
 						Yousei1.GetComponent<Fiary_Script>().enabled = false;
@@ -201,19 +197,36 @@ public class Tutorial : MonoBehaviour
 			// ‚ß‚­‚è’†ˆ—
 			else
 			{
-				// ‰‰ñˆ—
-				if (elapsedTime == 0 && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)))
-					elapsedTime = Time.time;
-
-				// ‚ß‚­‚èI—¹ˆ—
-				if (elapsedTime != 0 && Time.time - elapsedTime >= WeitTime)
+				if (nCnt == 5)
 				{
-					bStop = false;
-					turnPaper.SetActive(false);
-					BGobjects[nCnt].SetActive(true);
-					elapsedTime = 0;
-					if (nCnt == 2)
-						txt_CutStart.SetActive(true);
+					if (elapsedTime == 0)
+						elapsedTime = Time.time;
+
+					if (elapsedTime != 0 && Time.time - elapsedTime >= WeitTime)
+					{
+						bStop = false;
+						turnPaper.SetActive(false);
+						BGobjects[nCnt].SetActive(true);
+						elapsedTime = 0;
+					}
+
+				}
+				else
+				{
+					// ‰‰ñˆ—
+					if (elapsedTime == 0 && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)))
+						elapsedTime = Time.time;
+
+					// ‚ß‚­‚èI—¹ˆ—
+					if (elapsedTime != 0 && Time.time - elapsedTime >= WeitTime)
+					{
+						bStop = false;
+						turnPaper.SetActive(false);
+						BGobjects[nCnt].SetActive(true);
+						elapsedTime = 0;
+						if (nCnt == 2)
+							txt_CutStart.SetActive(true);
+					}
 				}
 			}
 		}

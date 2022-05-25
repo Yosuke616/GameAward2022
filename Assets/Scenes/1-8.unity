@@ -5797,6 +5797,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rabbit
       objectReference: {fileID: 0}
+    - target: {fileID: 8412117440709944405, guid: 741666eb38811274182813959f2fa9c1, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: de83f26337f21f4409525f634578271c, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741666eb38811274182813959f2fa9c1, type: 3}
 --- !u!20 &1033978655 stripped

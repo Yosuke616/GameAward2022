@@ -28,10 +28,12 @@ public class Tutorial : MonoBehaviour
 	[SerializeField] private bool bStartZoomout;		// チュートリアル開始フラグ
 	[SerializeField] private bool bStartTutorial;       // チュートリアル開始フラグ
 	[SerializeField] private bool bCutting;
+	[SerializeField] private bool bStartCut;
 	[SerializeField] private bool bEndTutorial;         // チュートリアル終了フラグ
 
 	[SerializeField] private float WeitTime = 2.0f;		// 待機時間
 	[SerializeField] private float elapsedTime;
+	[SerializeField] private GameObject[] papers;
 
 	// Start is called before the first frame update
 	void Start()
@@ -42,15 +44,12 @@ public class Tutorial : MonoBehaviour
 		Yousei1 = GameObject.Find("Folder").gameObject.transform.Find("SubCamera1").gameObject.transform.Find("d1").gameObject.transform.Find("Yousei1").gameObject;
 		Yousei2 = GameObject.Find("Folder").gameObject.transform.Find("SubCamera2").gameObject.transform.Find("d1").gameObject.transform.Find("Yousei1").gameObject;
 
-		BGobjects.Add(transform.Find("BackGround0").gameObject);
-		//BGobjects.Add(transform.Find("BackGround1").gameObject);
-		BGobjects.Add(transform.Find("BackGround1").gameObject);
-		BGobjects.Add(transform.Find("BackGround2").gameObject);
-		BGobjects.Add(transform.Find("BackGround3").gameObject);
-		BGobjects.Add(transform.Find("BackGround4").gameObject);		// クリック箇所
-		//BGobjects.Add(transform.Find("BackGround4").gameObject);
-		//BGobjects.Add(transform.Find("BackGround4").gameObject);
-		BGobjects.Add(transform.Find("BackGround5").gameObject);		// 右へ進め
+		BGobjects.Add(transform.Find("BackGround0").gameObject);		// ２枚目誘導
+		BGobjects.Add(transform.Find("BackGround1").gameObject);		// １枚目戻り
+		BGobjects.Add(transform.Find("BackGround2").gameObject);        // クリック開始説明
+		BGobjects.Add(transform.Find("BackGround3").gameObject);        // クリック箇所
+		BGobjects.Add(transform.Find("BackGround3").gameObject);        // クリック箇所
+		BGobjects.Add(transform.Find("BackGround4").gameObject);		// 右へ進め
 
 		txt_ComeOn = GameObject.Find("txt_ComeOn");
 		txt_CutStart = GameObject.Find("txt_CutStart");
@@ -59,11 +58,9 @@ public class Tutorial : MonoBehaviour
 
 		CuttingCheck = turnPaper.GetComponent<CursorSystem>();
 
+		// 非表示化処理
 		for (int i = 0; i < BGobjects.Count; i++)
-		{
-			// 非表示化処理
 			BGobjects[i].SetActive(false);
-		}
 
 		txt_ComeOn.SetActive(false);
 		txt_CutStart.SetActive(false);
@@ -73,8 +70,11 @@ public class Tutorial : MonoBehaviour
 		nCnt = 0;
 		bStartTutorial = false;
 		bCutting = false;
+		bStartCut = false;
+		//bCutting = cursor.GetComponent<OutSide_Paper_Script_Second>().GetFirstFlg();
 		bEndTutorial = false;
 		elapsedTime = 0.0f;
+		papers = null;
 	}
 
 	// Update is called once per frame
@@ -87,6 +87,7 @@ public class Tutorial : MonoBehaviour
 		}
 		else if (bStartZoomout == true && bStartTutorial == false)
 		{
+			papers = GameObject.FindGameObjectsWithTag("paper");
 			BGobjects[0].SetActive(true);
 			cursor.SetActive(false);        // 説明中は切断操作を無効にする
 			turnPaper.SetActive(false);     // 説明中は紙めくりを無効にする
@@ -112,20 +113,7 @@ public class Tutorial : MonoBehaviour
 					// 現在のページを非表示化する
 					BGobjects[nCnt].SetActive(false);
 					nCnt++;
-					Debug.LogWarning($"{nCnt}");
-
-					// 説明中ではない時、切断操作を有効にする
-					if (nCnt >= 3)
-					{
-						cursor.SetActive(true);
-						turnPaper.SetActive(true);
-						Yousei1.GetComponent<Fiary_Script>().enabled = true;
-						Yousei1.GetComponent<Fiary_Move>().enabled = true;
-						Yousei2.GetComponent<Fiary_Script>().enabled = true;
-						Yousei2.GetComponent<Fiary_Move>().enabled = true;
-						bCutting = true;
-						Debug.LogWarning($"cut:true");
-					}
+					Debug.LogWarning($"nCnt:{nCnt}");
 
 					switch (nCnt)
 					{
@@ -146,7 +134,17 @@ public class Tutorial : MonoBehaviour
 							break;
 
 						// 2~3
+						// 説明中ではない時、切断操作を有効にする
 						case 3:
+							BGobjects[nCnt].SetActive(true);
+							cursor.SetActive(true);
+							turnPaper.SetActive(true);
+							Yousei1.GetComponent<Fiary_Script>().enabled = true;
+							Yousei1.GetComponent<Fiary_Move>().enabled = true;
+							Yousei2.GetComponent<Fiary_Script>().enabled = true;
+							Yousei2.GetComponent<Fiary_Move>().enabled = true;
+							bCutting = true;
+							Debug.LogWarning($"cut:true");
 							break;
 
 						case 4:
@@ -172,6 +170,32 @@ public class Tutorial : MonoBehaviour
 							break;
 					}
 				}
+
+				else if (bCutting)
+				{
+					bool bCut = cursor.GetComponent<OutSide_Paper_Script_Second>().GetFirstFlg();
+					if (bStartCut && !bCut)
+					{
+						Debug.LogWarning($"処理終了");
+						bCutting = false;
+						nCnt++;
+						BGobjects[nCnt - 1].SetActive(false);
+						BGobjects[nCnt].SetActive(true);
+						cursor.SetActive(false);
+						turnPaper.SetActive(false);
+						Yousei1.GetComponent<Fiary_Script>().enabled = false;
+						Yousei1.GetComponent<Fiary_Move>().enabled = false;
+						Yousei2.GetComponent<Fiary_Script>().enabled = false;
+						Yousei2.GetComponent<Fiary_Move>().enabled = false;
+						bStop = true;
+					}
+
+					if (Input.GetMouseButtonDown(0) && nCnt == 3 && !bStartCut)
+					{
+						nCnt++;
+						bStartCut = true;
+					}
+				}
 			}
 
 			// めくり中処理
@@ -192,14 +216,6 @@ public class Tutorial : MonoBehaviour
 						txt_CutStart.SetActive(true);
 				}
 			}
-
-			//if (bCutting)
-			//{
-			//	if(Dividing())
-			//	{
-
-			//	}
-			//}
 		}
 	}
 }

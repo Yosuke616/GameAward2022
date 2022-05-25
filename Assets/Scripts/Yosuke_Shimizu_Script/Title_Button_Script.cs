@@ -73,12 +73,12 @@ public class Title_Button_Script : MonoBehaviour
         //リストの中身を決める
         Start_B.Add(new Vector3(-8.0f,-2.25f,-0.1f));
         Start_B.Add(new Vector3(-5.0f,-1.75f,-0.1f));
-        Continue_B.Add(new Vector3(-5.0f,-3.9f,-0.1f));
-        Continue_B.Add(new Vector3(-1.3f,-3.4f,-0.1f));
-        Option_B.Add(new Vector3(1.25f,-3.9f,-0.1f));
-        Option_B.Add(new Vector3(4.95f,-3.4f,-0.1f));
+        Continue_B.Add(new Vector3(-4.5f,-3.9f,-0.1f));
+        Continue_B.Add(new Vector3(-1.7f,-3.4f,-0.1f));
+        Option_B.Add(new Vector3(1.75f,-3.9f,-0.1f));
+        Option_B.Add(new Vector3(4.5f,-3.4f,-0.1f));
         End_B.Add(new Vector3(4.95f,-2.25f, -0.2f));
-        End_B.Add(new Vector3(8.25f,-1.75f, -0.2f));
+        End_B.Add(new Vector3(7.6f,-1.75f, -0.2f));
 
         first_Flg = false;
 
@@ -355,11 +355,11 @@ public class Title_Button_Script : MonoBehaviour
     {
         Cre_Mesh();
 
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-    Application.Quit();
-#endif
+//#if UNITY_EDITOR
+//        UnityEditor.EditorApplication.isPlaying = false;
+//#else
+//    Application.Quit();
+//#endif
     }
 
     public void SetTitleFlg(bool TF)
@@ -387,8 +387,8 @@ public class Title_Button_Script : MonoBehaviour
                 Start.Add(new Vector3(-5.0f,-1.75f,-0.1f));
 
                 // ブレークライン
-                breakLine1.Add(new Vector3(-5.0f,-1.75f,-0.1f));
-                breakLine1.Add(new Vector3(-8.0f,-2.25f,-0.1f));
+                breakLine1.Add(new Vector3(-5.5f,-1.5f,-0.1f));
+                breakLine1.Add(new Vector3(-7.2f,-2.4f,-0.1f));
 
                 //UVの設定
                 _Vector2[0] = new Vector2(0.0f,0.0f);
@@ -406,10 +406,17 @@ public class Title_Button_Script : MonoBehaviour
                 //リストの中身を削除する
                 Start.Clear();
 
+                //ブレイクラインのリストのリセット
+                breakLine1.Clear();
+
                 //右側を作る
                 Start.Add(new Vector3(-8.0f, -2.25f, -0.1f));
                 Start.Add(new Vector3(-5.0f, -1.75f, -0.1f));
                 Start.Add(new Vector3(-5.0f, -2.25f, -0.1f));
+
+                //ブレークライン
+                breakLine1.Add(new Vector3(-5.5f, -1.5f, -0.1f));
+                breakLine1.Add(new Vector3(-7.2f, -2.4f, -0.1f));
 
                 //UVの設定
                 _Vector2[0] = new Vector2(0.0f, 0.0f);
@@ -420,6 +427,11 @@ public class Title_Button_Script : MonoBehaviour
                 GameObject paper2 = obj.GetComponent<DrawMesh>().CreateMesh(Start);
                 paper2.tag = "paper";
 
+                // ブレークライン生成
+                line1 = PaperBreakLineManager.Instance.CreateBreakLine(breakLine1, paper2);
+                line1.name = "broken paper line";
+                line1.GetComponent<LineRendererOperator>().hoge();
+
                 break;
             //続きから
             case 1:
@@ -427,11 +439,18 @@ public class Title_Button_Script : MonoBehaviour
                 ContinueButton.SetActive(false);
 
                 List<Vector3> Continue = new List<Vector3>();
+                List<Vector3> breakLine2 = new List<Vector3>();
+
 
                 //左側
                 Continue.Add(new Vector3(-5.0f,-3.9f,-0.1f));
                 Continue.Add(new Vector3(-5.0f,-3.4f,-0.1f));
                 Continue.Add(new Vector3(-1.3f,-3.4f,-0.1f));
+
+                //ブレークラインの設定
+                breakLine2.Add(new Vector3(-2.4f, -3.15f, -0.1f));
+                breakLine2.Add(new Vector3(-3.95f, -4.1f, -0.1f));
+
 
                 //UVの設定
                 _Vector2[0] = new Vector2(0.0f, 0.0f);
@@ -442,8 +461,14 @@ public class Title_Button_Script : MonoBehaviour
                 GameObject paper3 = obj.GetComponent<DrawMesh>().CreateMesh(Continue);
                 paper3.tag = "paper";
 
+                // ブレークライン生成
+                var line3 = PaperBreakLineManager.Instance.CreateBreakLine(breakLine2, paper3);
+                line3.name = "broken paper line";
+                line3.GetComponent<LineRendererOperator>().hoge();
+
                 //リストの中身を削除する
                 Continue.Clear();
+
 
                 //右側
                 Continue.Add(new Vector3(-5.0f, -3.9f, -0.1f));
@@ -459,17 +484,29 @@ public class Title_Button_Script : MonoBehaviour
                 GameObject paper4 = obj.GetComponent<DrawMesh>().CreateMesh(Continue);
                 paper4.tag = "paper";
 
+                // ブレークライン生成
+                var line4 = PaperBreakLineManager.Instance.CreateBreakLine(breakLine2, paper4);
+                line4.name = "broken paper line";
+                line4.GetComponent<LineRendererOperator>().hoge();
+
                 break;
             case 2:
                 //オプションを消す
                 OptionButton.SetActive(false);
 
                 List<Vector3> Option = new List<Vector3>();
+                List<Vector3> breakLine3 = new List<Vector3>();
+
 
                 //左側
                 Option.Add(new Vector3(1.25f, -3.9f, -0.1f));
                 Option.Add(new Vector3(1.25f, -3.4f, -0.1f));
                 Option.Add(new Vector3(4.95f, -3.4f, -0.1f));
+
+
+                //ブレークラインの設定
+                breakLine3.Add(new Vector3(2.0f, -4.2f, -0.1f));
+                breakLine3.Add(new Vector3(3.9f, -3.25f, -0.1f));
 
                 //UVの設定
                 _Vector2[0] = new Vector2(0.0f, 0.0f);
@@ -479,6 +516,11 @@ public class Title_Button_Script : MonoBehaviour
                 //メッシュを作る
                 GameObject paper5 = obj.GetComponent<DrawMesh>().CreateMesh(Option);
                 paper5.tag = "paper";
+
+                // ブレークライン生成
+                var line5 = PaperBreakLineManager.Instance.CreateBreakLine(breakLine3, paper5);
+                line5.name = "broken paper line";
+                line5.GetComponent<LineRendererOperator>().hoge();
 
                 //リストの中身を削除する
                 Option.Clear();
@@ -497,6 +539,11 @@ public class Title_Button_Script : MonoBehaviour
                 GameObject paper6 = obj.GetComponent<DrawMesh>().CreateMesh(Option);
                 paper6.tag = "paper";
 
+                // ブレークライン生成
+                var line6 = PaperBreakLineManager.Instance.CreateBreakLine(breakLine3, paper6);
+                line6.name = "broken paper line";
+                line6.GetComponent<LineRendererOperator>().hoge();
+
                 break;
             case 3:
                 //終わるを消す
@@ -504,10 +551,16 @@ public class Title_Button_Script : MonoBehaviour
 
                 List<Vector3> End = new List<Vector3>();
 
+                List<Vector3> breakLine4 = new List<Vector3>();
+
                 //左側
                 End.Add(new Vector3(4.95f, -2.25f, -0.1f));
                 End.Add(new Vector3(4.95f, -1.75f, -0.1f));
                 End.Add(new Vector3(8.25f, -1.75f, -0.1f));
+
+                //ブレークラインの設定
+                breakLine4.Add(new Vector3(5.75f, -2.6f, -0.1f));
+                breakLine4.Add(new Vector3(7.4f, -1.6f, -0.1f));
 
                 //UVの設定
                 _Vector2[0] = new Vector2(0.0f, 0.0f);
@@ -517,6 +570,11 @@ public class Title_Button_Script : MonoBehaviour
                 //メッシュを作る
                 GameObject paper7 = obj.GetComponent<DrawMesh>().CreateMesh(End);
                 paper7.tag = "paper";
+
+                // ブレークライン生成
+                var line7 = PaperBreakLineManager.Instance.CreateBreakLine(breakLine4, paper7);
+                line7.name = "broken paper line";
+                line7.GetComponent<LineRendererOperator>().hoge();
 
                 //リストの中身を削除する
                 End.Clear();
@@ -534,6 +592,12 @@ public class Title_Button_Script : MonoBehaviour
                 //メッシュを作る
                 GameObject paper8 = obj.GetComponent<DrawMesh>().CreateMesh(End);
                 paper8.tag = "paper";
+
+                // ブレークライン生成
+                var line8 = PaperBreakLineManager.Instance.CreateBreakLine(breakLine4, paper8);
+                line8.name = "broken paper line";
+                line8.GetComponent<LineRendererOperator>().hoge();
+
                 break;
         }
        
@@ -575,7 +639,7 @@ public class Title_Button_Script : MonoBehaviour
             //左側の紙を移動させるため
             Left_Paper = obj;
 
-            //switch(nSelectButton)
+            //switch (nSelectButton)
             //{
             //    case 0:
             //        List<Vector3> Start_Break = new List<Vector3>();
@@ -609,7 +673,7 @@ public class Title_Button_Script : MonoBehaviour
             //        GameObject breaklineEn = PaperBreakLineManager.Instance.CreateBreakLine(End_Break, obj);
             //        Debug.Log(3, breaklineEn);
             //        break;
-            //
+
             //}
 
             bFirdt = true;
@@ -645,10 +709,10 @@ public class Title_Button_Script : MonoBehaviour
                     FadeManager.Instance.FadeStart("StageSelect");
                     break;
                 case 1:
-                    FadeManager.Instance.FadeStart("StageSelect");
+                    //FadeManager.Instance.FadeStart("StageSelect");
                     break;
                 case 2:
-                    FadeManager.Instance.FadeStart("Title_Option");
+                    //FadeManager.Instance.FadeStart("Title_Option");
                     break;
                 case 3:
                     break;

@@ -11,7 +11,6 @@ public class Fiary_Move : MonoBehaviour
     //親の座標を格納する為の変数
     Vector3 PlayerPos_Move;
 
-    bool qqq;
 
     //右向きか左向きか
     //trueで右向き
@@ -31,7 +30,6 @@ public class Fiary_Move : MonoBehaviour
         //プレイヤーの少し横に移動させる
         this.transform.position = new Vector3(PlayerPos_Move.x + 1.0f, PlayerPos_Move.y + 1.0f, PlayerPos_Move.z);
 
-        qqq = false;
 
         //初期は右向き
         RightorLeft = true;
@@ -41,12 +39,6 @@ public class Fiary_Move : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!qqq)
-        {
-            qqq = true;
-            return;
-        }
-
         GameObject ParentObj = transform.parent.gameObject;
 
         if (this.GetComponent<Fiary_Script>().GetMove())
@@ -71,23 +63,23 @@ public class Fiary_Move : MonoBehaviour
             RightorLeft = false;
         }
 
-        if (RightorLeft)
-        {
-
-            if ( this.transform.localEulerAngles.y > 355 || this.transform.localEulerAngles.y <= 90.0f)
-            {
-                this.transform.Rotate(0, -5, 0);
-            }
-        }
-        else
-        {
-            if (this.transform.localEulerAngles.y >= -5)
-            {
-                if (this.transform.localEulerAngles.y < 80 || this.transform.localEulerAngles.y >= 350)
-                {
-                    this.transform.Rotate(0, 5, 0);
-                }
-            }
-        }
+        //if (RightorLeft)
+        //{
+        //
+        //    if ( this.transform.localEulerAngles.y > 355 || this.transform.localEulerAngles.y <= 90.0f)
+        //    {
+        //        this.transform.Rotate(0, -5, 0);
+        //    }
+        //}
+        //else
+        //{
+        //    if (this.transform.localEulerAngles.y >= -5)
+        //    {
+        //        if (this.transform.localEulerAngles.y < 80 || this.transform.localEulerAngles.y >= 350)
+        //        {
+        //            this.transform.Rotate(0, 5, 0);
+        //        }
+        //    }
+        //}
     }
 }

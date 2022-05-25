@@ -23,50 +23,37 @@ public class Fiary_Script : MonoBehaviour
 
     //列挙隊を示す変数
     FIARY_MOVE g_FiaryMove;
-
     //カーソル状態を持っているスクリプトを持ってくる
     OutSide_Paper_Script_Second Paper_OutSide_Script;
-
     //カーソルのゲームオブジェクトを見つける為の変数
     GameObject OutSide_Cursor;
-
-    //最初の一回だけ読み込めるようにする(trueで読み込めなくする)
-    private bool g_bFirst_Load;
-
     //親オブジェクトの情報を格納する変数
     GameObject ParentObj;
-
     //親の座標を格納する為の変数
     Vector3 PlayerPos;
-
     //紙を破っているかどうかを確認するための変数
     CursorSystem CS_Script;
-
     //カーソルのシステムを得るための関数
     GameObject Cursor_System;
-
     //一回だけ外枠に行けるように
     private bool gFirst_Flg;
-
     //クリックしたところを保存するためのリスト
     private List<Vector3> MousePos = new List<Vector3>();
-
     //前回の座標を保存するための変数
     private Vector3 Old_Mouse_Pos;
-
     //紙の外周の座標を保存するための変数
     private Vector3 Paper_Out;
 
     private int count;
 
-    // Start is called before the first frame update
+    // ステートの数だけ要素を確保する
+    private FairyState[] m_FairyState = new FairyState[(int)FairyState.eFairyState.MAX_FAIRY_STATE];
+
+    
     void Start()
     {
         //列挙隊を初期化する(最初はプレイヤーの周りを追従する)
         g_FiaryMove = FIARY_MOVE.FIARY_PLAYER_TRACKING;
-
-        //最初は読み込めるようにする
-        g_bFirst_Load = false;
 
         //最初だけ外枠を見れるようにするためのフラグ
         gFirst_Flg = true;
@@ -81,31 +68,24 @@ public class Fiary_Script : MonoBehaviour
         Paper_Out = new Vector3(0.0f, 0.0f, 0.0f);
 
         count = 0;
+
+        //カーソルを見つける
+        OutSide_Cursor = GameObject.Find("cursor");
+        //カーソルの中のスクリプトをゲットする
+        Paper_OutSide_Script = OutSide_Cursor.GetComponent<OutSide_Paper_Script_Second>();
+
+        //破っているかどうかのフラグが分かるようなカーソルを得る
+        Cursor_System = GameObject.Find("Cursor");
+        //スクリプトを得る
+        CS_Script = Cursor_System.GetComponent<CursorSystem>();
+
+
+        m_FairyState[(int)FairyState.eFairyState.STATE_FOLLOWING_PLAYER] = new FollowingPlayer();
+        m_FairyState[(int)FairyState.eFairyState.STATE_DICISION_BREAKING_POINT] = new DicisionBreakingPoint();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //読み込みできるようにする(疑似初期化)
-        if (!g_bFirst_Load)
-        {
-            //カーソルを見つける
-            OutSide_Cursor = GameObject.Find("cursor");
-            //カーソルの中のスクリプトをゲットする
-            Paper_OutSide_Script = OutSide_Cursor.GetComponent<OutSide_Paper_Script_Second>();
-
-
-            //破っているかどうかのフラグが分かるようなカーソルを得る
-            Cursor_System = GameObject.Find("Cursor");
-
-            //スクリプトを得る
-            CS_Script = Cursor_System.GetComponent<CursorSystem>();
-
-            //弐回目以降読み込まないようにする
-            g_bFirst_Load = true;
-
-        }
-
         //プレイヤーの状況を得る
         GameObject player = GameObject.Find("ParentPlayer");
 
@@ -128,13 +108,13 @@ public class Fiary_Script : MonoBehaviour
                 }
             }
 
-            Debug.Log(obj.GetComponent<InputTrigger>().GetOneTimeDown());
+            // ステートに応じて更新内容を変える
+            m_FairyState[(int)FairyState.GetState].UpdateFairy();
 
             //状態によって更新の内容を変える
             switch (g_FiaryMove)
             {
-                case FIARY_MOVE.FIARY_PLAYER_TRACKING:                   
-
+                case FIARY_MOVE.FIARY_PLAYER_TRACKING:
                     //ここで破るフラグが立っていたら変える
                     if (CS_Script.GetBreakFlg())
                     {
@@ -144,7 +124,6 @@ public class Fiary_Script : MonoBehaviour
                             //ここで一番最初のポジションを得る
                             MousePos.Add(OutSide_Cursor.GetComponent<OutSide_Paper_Script_Second>().GetCursorPoss_IN());
                         }
-
                     }
                     else
                     {
@@ -155,6 +134,7 @@ public class Fiary_Script : MonoBehaviour
                     }
 
                     Debug.Log("FIARY_PLAYER_TRACKING");
+
 
                     break;
                 case FIARY_MOVE.FIARY_BREAK_PAPER:
@@ -196,9 +176,9 @@ public class Fiary_Script : MonoBehaviour
                     {
                         if (Input.GetMouseButtonDown(0) || obj.GetComponent<InputTrigger>().GetOneTimeDown())
                         {
-                            ////リストに追加する
+                            //リストに追加する
                             MousePos.Add(vWorldPos);
-                            ////過去の座標と比べるために今の座標を保存しておく
+                            //過去の座標と比べるために今の座標を保存しておく
                             Old_Mouse_Pos = vWorldPos;
 
                         }

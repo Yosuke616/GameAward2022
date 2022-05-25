@@ -112,16 +112,24 @@ public class Pause : MonoBehaviour
     public void OnRetry()
     {
         // 同一シーンを読込
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        FadeManager.Instance.FadeStart(SceneManager.GetActiveScene().name);
         Time.timeScale = 1f;
+
+        //　ポーズUIのアクティブ、非アクティブを切り替え
+        PauseUi.SetActive(false);
     }
 
     // タイトルへ
     public void OnTitle()
     {
-        // 同一シーンを読込
-        SceneManager.LoadScene("StageSelect");
+        // セレクトシーンを読込
+        //SceneManager.LoadScene("StageSelect");
+        FadeManager.Instance.FadeStart("StageSelect");
         Time.timeScale = 1f;
+
+        //　ポーズUIのアクティブ、非アクティブを切り替え
+        PauseUi.SetActive(false);
     }
 
     // 再開

@@ -53,7 +53,7 @@ public class Tutorial : MonoBehaviour
 			txt_ComeOn = GameObject.Find("txt_ComeOn");
 			txt_CutStart = GameObject.Find("txt_CutStart");
 			txt_SonoChoshi = GameObject.Find("txt_SonoChoshi");
-			txt_Koko = GameObject.Find("txt_KokomadeKireteruyo");
+			txt_Koko = GameObject.Find("txt_Koko");
 		}
 
 		//--- ‰Šú‰»ˆ—
@@ -138,6 +138,7 @@ public class Tutorial : MonoBehaviour
 							Yousei2.GetComponent<Fiary_Move>().enabled = true;
 
 							BGobjects[nCnt].SetActive(true);
+							txt_CutStart.SetActive(true);
 							bCutting = true;
 							Debug.LogWarning($"cut:true");
 							break;
@@ -212,8 +213,8 @@ public class Tutorial : MonoBehaviour
 			BGobjects[nCnt].SetActive(true);
 			elapsedTime = 0;
 
-			if (nCnt == 2)
-				txt_CutStart.SetActive(true);
+			//if (nCnt == 2)
+			//	txt_CutStart.SetActive(true);
 		}
 	}
 
@@ -225,6 +226,7 @@ public class Tutorial : MonoBehaviour
 		// Ø’fˆ—‚ªn‚Ü‚Á‚Ä‚¢‚È‚¢
 		if ((Input.GetMouseButtonDown(0) || Inputer.GetOneTimeDown()) && nCnt == 3 && !bStartCut)
 		{
+			txt_CutStart.SetActive(false);
 			nCnt++;
 			bStartCut = true;
 		}

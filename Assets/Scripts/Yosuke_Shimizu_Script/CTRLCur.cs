@@ -32,22 +32,22 @@ public class CTRLCur : MonoBehaviour
         if (player.GetComponent<PlayerMove2>().GetFlg() && player.GetComponent<PlayerMove2>().GetGameOverFlg())
         {
             //‰E•ûŒü‚É“®‚©‚·
-            if (Input.GetAxis("Horizontal2") < 0)
-            {
-                pos.x += 0.25f;
-            }
-            //¶•ûŒü‚É“®‚©‚·
-            if (Input.GetAxis("Horizontal2") > 0)
+            if (Input.GetAxis("Horizontal3") < 0)
+            {                            
+                pos.x += 0.25f;          
+            }                            
+            //¶•ûŒü‚É“®‚©‚·             
+            if (Input.GetAxis("Horizontal3") > 0)
             {
                 pos.x += -0.25f;
             }
             //‰º•ûŒü‚É“®‚©‚·
-            if (Input.GetAxis("Vertical2") < 0)
+            if (Input.GetAxis("Vertical3") < 0)
             {
                 pos.y += -0.25f;
             }
             //ã•ûŒü‚É“®‚©‚·
-            if (Input.GetAxis("Vertical2") > 0)
+            if (Input.GetAxis("Vertical3") > 0)
             {
                 pos.y += 0.25f;
             }

@@ -43,6 +43,8 @@ public class PlayerMove2 : MonoBehaviour
     //文字もゲームオーバー用のやつを使う
     public Text GO_Tex;
 
+    //認識が甘かった
+    private bool SE;
 
     void Start()
     {
@@ -60,6 +62,8 @@ public class PlayerMove2 : MonoBehaviour
         _state = PLAYER_STATE.STATE_STOP;
 
         m_rotDestModel = 45.0f;
+
+        SE = false;
     }
 
     // 更新
@@ -107,12 +111,15 @@ public class PlayerMove2 : MonoBehaviour
         // 画面外に出たらゲームオーバー
         if (transform.position.y < offScrren)
         {
-            if (tex != null) tex.text = "　　　　失敗！";
+            // if (tex != null) tex.text = "　　　　失敗！";
 
-            SoundManager.Instance.StopBgm();
-            SoundManager.Instance.PlaySeByName("jingle37");
+            if (!SE) {
+                SoundManager.Instance.StopBgm();
+                SoundManager.Instance.PlaySeByName("jingle37");
+                SE = true;
+            }
 
-            _resultBG.gameObject.SetActive(true);
+            _GameOverBG.gameObject.SetActive(true);
             flg = false;
         }
     }

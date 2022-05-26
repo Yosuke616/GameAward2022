@@ -299,6 +299,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4592998556067327959, guid: 25b01a4bea6a30c46bb26e3032ceed66, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6050314105dead1469002505357eaaea, type: 2}
+    - target: {fileID: -1988033307940715500, guid: 25b01a4bea6a30c46bb26e3032ceed66, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6050314105dead1469002505357eaaea, type: 2}
     - target: {fileID: 919132149155446097, guid: 25b01a4bea6a30c46bb26e3032ceed66, type: 3}
       propertyPath: m_Name
       value: Usagi_Anim_Run

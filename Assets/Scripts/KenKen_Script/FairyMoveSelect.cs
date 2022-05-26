@@ -67,9 +67,9 @@ public class FairyMoveSelect : MonoBehaviour
                     diffZ = 100 - Fairy.transform.position.z;
 
                     // à⁄ìÆó åvéZ
-                    diffX *= MoveSpeed / 20;
-                    diffY *= MoveSpeed / 20;
-                    diffZ *= MoveSpeed / 20;
+                    diffX *= MoveSpeed / 5;
+                    diffY *= MoveSpeed / 5;
+                    diffZ *= MoveSpeed / 5;
 
                     // ç∂Ç‹Ç≈ñk
                     if (Fairy.transform.position.x < -75)
@@ -94,9 +94,9 @@ public class FairyMoveSelect : MonoBehaviour
                     diffZ = 100 - Fairy.transform.position.z;
 
                     // à⁄ìÆó åvéZ
-                    diffX *= MoveSpeed / 10;
-                    diffY *= MoveSpeed / 10;
-                    diffZ *= MoveSpeed / 10;
+                    diffX *= MoveSpeed / 5;
+                    diffY *= MoveSpeed / 5;
+                    diffZ *= MoveSpeed / 5;
                 }
                 
                 // à íuïœçX
@@ -118,9 +118,9 @@ public class FairyMoveSelect : MonoBehaviour
                     diffZ = 100 - Fairy.transform.position.z;
 
                     // à⁄ìÆó åvéZ
-                    diffX *= MoveSpeed / 20;
-                    diffY *= MoveSpeed / 20;
-                    diffZ *= MoveSpeed / 20;
+                    diffX *= MoveSpeed / 5;
+                    diffY *= MoveSpeed / 5;
+                    diffZ *= MoveSpeed / 5;
 
                     // ç∂Ç‹Ç≈ñk
                     if (Fairy.transform.position.x > 75 && Fairy.transform.position.x < 85)
@@ -145,9 +145,9 @@ public class FairyMoveSelect : MonoBehaviour
                     diffZ = 100 - Fairy.transform.position.z;
 
                     // à⁄ìÆó åvéZ
-                    diffX *= MoveSpeed / 10;
-                    diffY *= MoveSpeed / 10;
-                    diffZ *= MoveSpeed / 10;
+                    diffX *= MoveSpeed / 5;
+                    diffY *= MoveSpeed / 5;
+                    diffZ *= MoveSpeed / 5;
                 }
 
                 // à íuïœçX

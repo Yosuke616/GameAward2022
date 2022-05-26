@@ -87,6 +87,10 @@ public class PSMove : MonoBehaviour
                 pos = new Vector3(0.0f, tmp.y, tmp.z); ;
                 minusNum = 0.0f;
                 moveRight = false;
+                //ˆê”Ôè‘O‚Ì†‚Ì‚É”j‚éƒ‚[ƒh
+                if (GetComponent<DivideTriangle>().GetNumber() == 1) {
+                    CursorSystem.SetGameState(CursorSystem.GameState.MODE_ACTION);
+                }
             }
         }
     }

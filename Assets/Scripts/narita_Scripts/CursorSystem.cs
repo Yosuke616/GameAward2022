@@ -123,7 +123,7 @@ public class CursorSystem : MonoBehaviour
                             //selectPaper = 0;
 
                             // めくるモード → アクションモード
-                            SetGameState(GameState.MODE_ACTION);
+                            //SetGameState(GameState.MODE_ACTION);
                         }
                     }
                 }

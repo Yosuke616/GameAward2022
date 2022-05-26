@@ -127,11 +127,11 @@ public class Result_Script : MonoBehaviour
                     {
                         // クリア情報保存-----------------------------------------------------------------
                         // 00:00の形で送る
-                        //int n = SaveLoad.GetClearStar(tex.text);
-                        //for (i = 0; i < n; i++)
-                        //{
-                        //    Stars[i].gameObject.SetActive(true);
-                        //}
+                        int n = SaveLoad.GetClearStar(tex.text);
+                        for (i = 0; i < n; i++)
+                        {
+                            Stars[i].gameObject.SetActive(true);
+                        }
                         //--------------------------------------------------------------------------------
                     }
 
@@ -205,7 +205,7 @@ public class Result_Script : MonoBehaviour
     public void OnSelect()
     {
         // 同一シーンを読込
-        SceneManager.LoadScene("StageSelect");
+        //SceneManager.LoadScene("StageSelect");
         
     }
 
@@ -217,7 +217,7 @@ public class Result_Script : MonoBehaviour
 
     public void OnTitle() {
         // 同一シーンを読込
-        SceneManager.LoadScene("StageSelect");   
+        //SceneManager.LoadScene("StageSelect");   
     }
 
 }

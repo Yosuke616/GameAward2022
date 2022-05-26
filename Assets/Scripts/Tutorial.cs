@@ -27,7 +27,9 @@ public class Tutorial : MonoBehaviour
 	private bool bStartTutorial;		// チュートリアル開始フラグ
 	private bool bStartCut;				// 切断開始フラグ
 	private bool bCutting;				// 切断中フラグ
-	private bool bEndTutorial;			// チュートリアル終了フラグ
+	private bool bEndTutorial;          // チュートリアル終了フラグ
+
+	private bool bTxt;
 
 	private float WeitTime = 2.0f;		// 待機時間定義
 	private float elapsedTime;			// 比較用時間
@@ -71,6 +73,7 @@ public class Tutorial : MonoBehaviour
 			bCutting = false;
 			bStartCut = false;
 			bEndTutorial = false;
+			bTxt = false;
 			elapsedTime = 0.0f;
 		}
 	}
@@ -109,7 +112,6 @@ public class Tutorial : MonoBehaviour
 
 					// 次の説明パネルへ
 					nCnt++;
-					Debug.LogWarning($"nCnt:{nCnt}");
 
 					// 各説明パネルごとの処理
 					switch (nCnt)
@@ -138,17 +140,13 @@ public class Tutorial : MonoBehaviour
 							Yousei2.GetComponent<Fiary_Move>().enabled = true;
 
 							BGobjects[nCnt].SetActive(true);
-							txt_CutStart.SetActive(true);
 							bCutting = true;
-							Debug.LogWarning($"cut:true");
 							break;
 
 						case 4:
-							txt_CutStart.SetActive(false);
 							break;
 
 						case 5:
-							txt_SonoChoshi.SetActive(true);
 							break;
 
 						case 6:		// チュートリアル終了
@@ -224,11 +222,21 @@ public class Tutorial : MonoBehaviour
 		bool bCut = cursor.GetComponent<OutSide_Paper_Script_Second>().GetFirstFlg();
 
 		// 切断処理が始まっていない時
-		if ((Input.GetMouseButtonDown(0) || Inputer.GetOneTimeDown()) && nCnt == 3 && !bStartCut)
+		if (Input.GetMouseButtonDown(0) || Inputer.GetOneTimeDown())
 		{
-			txt_CutStart.SetActive(false);
-			nCnt++;
-			bStartCut = true;
+			if (nCnt == 3 && !bStartCut)
+			{
+				txt_CutStart.SetActive(true);
+				nCnt++;
+				bStartCut = true;
+			}
+			else
+			{
+				txt_CutStart.SetActive(false);
+				txt_SonoChoshi.SetActive(bTxt);
+				txt_Koko.SetActive(!bTxt);
+				bTxt = !bTxt;
+			}
 		}
 
 		// 切断処理終了時
@@ -240,6 +248,8 @@ public class Tutorial : MonoBehaviour
 			BGobjects[nCnt - 1].SetActive(false);
 			cursor.SetActive(false);
 			turnPaper.SetActive(false);
+			txt_SonoChoshi.SetActive(false);
+			txt_Koko.SetActive(false);
 			Yousei1.GetComponent<Fiary_Script>().enabled = false;
 			Yousei1.GetComponent<Fiary_Move>().enabled = false;
 			Yousei2.GetComponent<Fiary_Script>().enabled = false;

@@ -59,6 +59,11 @@ public class Title_Button_Script : MonoBehaviour
     //動かせるようにするフラグ
     private bool StartFlg;
 
+    private void Awake()
+    {
+        Application.targetFrameRate = 60;
+    }
+
     void Start()
     {
         //コントローラーを動かす為の時間
@@ -71,7 +76,7 @@ public class Title_Button_Script : MonoBehaviour
         button = GameObject.Find("CreatebreakManager");
 
         //リストの中身を決める
-        Start_B.Add(new Vector3(-8.0f,-2.25f,-0.1f));
+        Start_B.Add(new Vector3(-7.75f,-2.25f,-0.1f));
         Start_B.Add(new Vector3(-5.0f,-1.75f,-0.1f));
         Continue_B.Add(new Vector3(-4.5f,-3.9f,-0.1f));
         Continue_B.Add(new Vector3(-1.7f,-3.4f,-0.1f));
@@ -166,7 +171,7 @@ public class Title_Button_Script : MonoBehaviour
                         }
 
                         first_Flg = false;
-                        nCnt = 45;
+                        nCnt = 10;
                         nSelectButton--;
                         if (nSelectButton < 0)
                         {
@@ -225,7 +230,7 @@ public class Title_Button_Script : MonoBehaviour
                         }
 
                         first_Flg = false;
-                        nCnt = 45;
+                        nCnt = 10;
                         nSelectButton++;
                         if (nSelectButton > nMaxButton)
                         {
@@ -712,7 +717,7 @@ public class Title_Button_Script : MonoBehaviour
                     FadeManager.Instance.FadeStart("StageSelect");
                     break;
                 case 2:
-                    //FadeManager.Instance.FadeStart("Title_Option");
+                    FadeManager.Instance.FadeStart("Title_Option");
                     break;
                 case 3:
                     break;

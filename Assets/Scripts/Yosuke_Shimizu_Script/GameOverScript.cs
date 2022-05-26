@@ -13,9 +13,6 @@ public class GameOverScript : MonoBehaviour
     //点滅させます
     private bool g_bBlinking;
 
-    //文字のやつ
-    public Text GO_Tex;
-
     //ゲームオーバーの画像を出すためのやつ
     public Image _GameOverBG;
 
@@ -30,9 +27,9 @@ public class GameOverScript : MonoBehaviour
     int nCnt;
 
     //ボタンを追加しておく
-    public Button Select;
-    public Button Retry;
-    public Button Title;
+    public Image Select;
+    public Image Retry;
+    public Image Title;
 
     //ボタンの数
     private int nMaxButton = 2;
@@ -43,6 +40,8 @@ public class GameOverScript : MonoBehaviour
 
     //選択できるかのフラグ
     private bool Optionflg;
+
+    private bool SE;
 
     // Start is called before the first frame update
     void Start()
@@ -64,6 +63,8 @@ public class GameOverScript : MonoBehaviour
         Optionflg = false;
 
         nCnt2 = 0;
+
+        SE = false;
     }
 
     // Update is called once per frame
@@ -110,8 +111,11 @@ public class GameOverScript : MonoBehaviour
                 {
                     //if (GO_Tex != null) GO_Tex.text = "　　　　失敗！";
 
-                    SoundManager.Instance.StopBgm();
-                    SoundManager.Instance.PlaySeByName("jingle37");
+                    if (!SE) {
+                        SoundManager.Instance.StopBgm();
+                        SoundManager.Instance.PlaySeByName("jingle37");
+                        SE = true;
+                    }
 
                     _GameOverBG.gameObject.SetActive(true);
                     Optionflg = true;
@@ -155,17 +159,17 @@ public class GameOverScript : MonoBehaviour
             {
                 case 0:
                    
-                    Select.Select();
+                    //Select.Select();
                     Select.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
                     break;
                 case 1:
 
-                    Retry.Select();
+                    //Retry.Select();
                     Retry.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
                     break;
                 case 2:
 
-                    Title.Select();
+                    //Title.Select();
                     Title.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
                     break;
             }

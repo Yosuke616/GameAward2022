@@ -41,10 +41,18 @@ public class StageSelect : MonoBehaviour
     private GameObject[] Stages;        // ステージパネル配列 
     private GameObject InfoPanel;       // ステージ情報表示パネル
     private Text TimerData;             // クリアタイム
-    private Text StageNo;               // パネルのステージNo用
     private Image[] star;               // ★表示用
 
-    private float Base_Z = 850;         // パネル奥行調整用    
+    // パネル調整用
+    private float BaseFront_X = 0;
+    private float BaseFront_Y = 0;
+    private float BaseFront_Z = 450;
+
+    // パネル奥行調整用
+    private float BaseFar_X = 800;        
+    private float BaseFar_Y = 250;
+    private float BaseFar_Z = 850;   
+
     private float LeftPanel = 0;        // 左パネル枚数
     private float RightPanel = 8;       // 右パネル枚数
 
@@ -89,7 +97,6 @@ public class StageSelect : MonoBehaviour
         // ステージ情報パネル取得
         InfoPanel = GameObject.Find("StageInfoPanel");
         TimerData = GameObject.Find("Canvas").transform.Find("StageInfoPanel/Timer").GetComponent<Text>();
-        StageNo = GameObject.Find("Canvas").transform.Find("StageInfoPanel/StageNo").GetComponent<Text>();
     }
 
 
@@ -112,23 +119,17 @@ public class StageSelect : MonoBehaviour
             SaveLoad.TestSaveLoad();
             ProgressStages = SaveLoad.saveData.Progress;
         }
-        if(Input.GetKeyDown(KeyCode.O))
-        {
-            string BestNum = SaveLoad.saveData.Timer[Select].Substring(0, 2) + SaveLoad.saveData.Timer[Select].Substring(3, 2);
-            int n = Convert.ToInt32(BestNum);
-            Debug.Log(n);
-        }
 
 
         // ステージからセレクトに戻ってきたときの画面調整---------------------------------
         if (bBackSelect == false)
         {
-            // 今クリアしたもの以外のパネルを右側に移動させる
+            // 今クリアしたもの以外のパネルを左側に移動させる
             for (i = 0; i < ProgressStages - 1; i++)
             {
                 Stages[i].transform.position = new Vector3(-Range_X,
                                                            Range_Y,
-                                                           Base_Z - RightPanel - 1);
+                                                           BaseFar_Z - LeftPanel);
 
                 LeftPanel++;
                 RightPanel--;
@@ -198,7 +199,7 @@ public class StageSelect : MonoBehaviour
                     break;
                 }
 
-
+                // 移動
                 if (Move_X < Range_X)
                 {
                     Stages[Select].transform.position -= new Vector3(Speed, 0, 0);
@@ -211,24 +212,39 @@ public class StageSelect : MonoBehaviour
                     Stages[Select + 1].transform.position -= new Vector3(0, Speed, 0);
                     Move_Y += Speed;
                 }
-                if (Move_Z < Range_Z)
+                if (Move_Z < Range_Z - LeftPanel)
                 {
                     Stages[Select].transform.position += new Vector3(0, 0, Speed);
                     Stages[Select + 1].transform.position -= new Vector3(0, 0, Speed);
-                    Move_Z += Speed;
+                    Move_Z += Speed;     
                 }
+
+                // 奥行調整
+                if (Stages[Select].transform.position.z > BaseFar_Z - LeftPanel)
+                {
+                    Stages[Select].transform.position = new Vector3(Stages[Select].transform.position.x,
+                                                                    Stages[Select].transform.position.y,
+                                                                    BaseFar_Z - LeftPanel);
+                }
+
                 if (Move_X >= Range_X &&
                     Move_Y >= Range_Y &&
-                    Move_Z >= Range_Z)
+                    Move_Z >= Range_Z - LeftPanel)
                 {
                     Move_X = 0;
                     Move_Y = 0;
                     Move_Z = 0;
                     PanelState = PANEL_STATE.NONE;
 
-                    Stages[Select].transform.position = new Vector3(Stages[Select].transform.position.x,
-                                                                        Stages[Select].transform.position.y,
-                                                                        Base_Z - LeftPanel - 1);
+                    // 位置調整
+                    Stages[Select].transform.position = new Vector3(-BaseFar_X,
+                                                                    BaseFar_Y,
+                                                                    BaseFar_Z - LeftPanel);
+
+                    Stages[Select + 1].transform.position = new Vector3(BaseFront_X,
+                                                                           BaseFront_Y,
+                                                                           BaseFront_Z);
+
                     LeftPanel++;
                     RightPanel--;
                     Select++;
@@ -248,6 +264,7 @@ public class StageSelect : MonoBehaviour
                     break;
                 }
 
+                // 移動
                 if (Move_X < Range_X)
                 {
                     Stages[Select].transform.position += new Vector3(Speed, 0, 0);
@@ -260,24 +277,38 @@ public class StageSelect : MonoBehaviour
                     Stages[Select - 1].transform.position -= new Vector3(0, Speed, 0);
                     Move_Y += Speed;
                 }
-                if (Move_Z < Range_Z)
+                if (Move_Z < Range_Z - RightPanel)
                 {
                     Stages[Select].transform.position += new Vector3(0, 0, Speed);
                     Stages[Select - 1].transform.position -= new Vector3(0, 0, Speed);
                     Move_Z += Speed;
                 }
+
+                // 奥行調整
+                if (Stages[Select].transform.position.z > BaseFar_Z - RightPanel)
+                {
+                    Stages[Select].transform.position = new Vector3(Stages[Select].transform.position.x,
+                                                                    Stages[Select].transform.position.y,
+                                                                    BaseFar_Z - RightPanel);
+                }
+
                 if (Move_X >= Range_X &&
                     Move_Y >= Range_Y &&
-                    Move_Z >= Range_Z)
+                    Move_Z >= Range_Z - RightPanel)
                 {
                     Move_X = 0;
                     Move_Y = 0;
                     Move_Z = 0;
                     PanelState = PANEL_STATE.NONE;
 
-                    Stages[Select].transform.position = new Vector3(Stages[Select].transform.position.x,
-                                                                        Stages[Select].transform.position.y,
-                                                                        Base_Z - RightPanel - 1);
+                    // 位置調整
+                    Stages[Select].transform.position = new Vector3(BaseFar_X,
+                                                                    BaseFar_Y,
+                                                                    BaseFar_Z - RightPanel);
+
+                    Stages[Select - 1].transform.position = new Vector3(BaseFront_X,
+                                                                           BaseFront_Y,
+                                                                           BaseFront_Z);
 
                     LeftPanel--;
                     RightPanel++;
@@ -299,7 +330,6 @@ public class StageSelect : MonoBehaviour
                 // ステージ情報表示
                 InfoPanel.SetActive(true);
                 TimerData.text = SaveLoad.saveData.Timer[Select];       // タイマー部分表示
-                StageNo.text = Select.ToString();                       // ステージナンバー表示
                 StageNameChange.ChangeStageName(Select);                // ステージ名変更
 
 

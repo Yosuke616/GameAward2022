@@ -127,11 +127,11 @@ public class Result_Script : MonoBehaviour
                     {
                         // ƒNƒŠƒAî•ñ•Û‘¶-----------------------------------------------------------------
                         // 00:00‚ÌŒ`‚Å‘—‚é
-                        int n = SaveLoad.GetClearStar(tex.text);
-                        for (i = 0; i < n; i++)
-                        {
-                            Stars[i].gameObject.SetActive(true);
-                        }
+                        //int n = SaveLoad.GetClearStar(tex.text);
+                        //for (i = 0; i < n; i++)
+                        //{
+                        //    Stars[i].gameObject.SetActive(true);
+                        //}
                         //--------------------------------------------------------------------------------
                     }
 

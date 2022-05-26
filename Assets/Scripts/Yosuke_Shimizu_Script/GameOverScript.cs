@@ -27,9 +27,12 @@ public class GameOverScript : MonoBehaviour
     int nCnt;
 
     //ボタンを追加しておく
-    public Image Select;
-    public Image Retry;
-    public Image Title;
+    public GameObject Select;
+    public GameObject Retry;
+    public GameObject Title;
+    public GameObject Select_front;
+    public GameObject Retry_front;
+    public GameObject Title_front;
 
     //ボタンの数
     private int nMaxButton = 2;
@@ -65,6 +68,14 @@ public class GameOverScript : MonoBehaviour
         nCnt2 = 0;
 
         SE = false;
+
+        Select.SetActive(false);
+        Retry.SetActive(true);
+        Title.SetActive(true);
+        Select_front.SetActive(true);
+        Retry_front.SetActive(false);
+        Title_front.SetActive(false);
+
     }
 
     // Update is called once per frame
@@ -127,6 +138,8 @@ public class GameOverScript : MonoBehaviour
         {
             nCnt2--;
 
+            Debug.Log("お絵描きしたいよ");
+
             if (nCnt2 < 0)
             {
                 if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetAxis("Vertical") > 0)
@@ -149,18 +162,24 @@ public class GameOverScript : MonoBehaviour
                 }
             }
 
-          
+
             //常に白に変えていく
-            Select.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            Retry.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            Title.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            Select.SetActive(true);
+            Retry.SetActive(true);
+            Title.SetActive(true);
+            Select_front.SetActive(false);
+            Retry_front.SetActive(false);
+            Title_front.SetActive(false);
 
             switch (SelectButton)
             {
                 case 0:
                    
                     //Select.Select();
-                    Select.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                    //Select.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+
+
+
                     break;
                 case 1:
 

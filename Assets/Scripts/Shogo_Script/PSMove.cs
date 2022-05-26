@@ -64,17 +64,17 @@ public class PSMove : MonoBehaviour
             // Ž†‚ÌˆÚ“®—Ê
             //if (pos.x < 0.0f)
             //    pos.x *= -1.0f;
-            if (pos.x >= 11.0f)
+            if (pos.x >= 20.0f)
             {
-                pos.x -= 0.17f;
+                pos.x -= 0.1f;
             }
-            else if (pos.x >= 1.0f)
+            else if (pos.x >= 12.0f)
             {
-                pos.x -= 0.28f;
+                pos.x -= 0.2f;
             }
             else
             {
-                pos.x -= 1.0f;
+                pos.x -= 0.4f;
             }
             if (pos.x < 0.0f)
                 pos.x *= -1.0f;
@@ -87,6 +87,10 @@ public class PSMove : MonoBehaviour
                 pos = new Vector3(0.0f, tmp.y, tmp.z); ;
                 minusNum = 0.0f;
                 moveRight = false;
+                //ˆê”ÔŽè‘O‚ÌŽ†‚ÌŽž‚É”j‚éƒ‚[ƒh
+                if (GetComponent<DivideTriangle>().GetNumber() == 1) {
+                    CursorSystem.SetGameState(CursorSystem.GameState.MODE_ACTION);
+                }
             }
         }
     }

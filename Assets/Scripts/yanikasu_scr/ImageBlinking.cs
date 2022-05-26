@@ -21,7 +21,6 @@ public class ImageBlinking : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		Debug.LogWarning($"bUp:{bUp}, Alpha:{clr.a}, fVol:{fVol}");
 		if(bUp)
 		{
 			clr = new Color(clr.r, clr.g, clr.b, clr.a + fVol);

@@ -6,7 +6,7 @@ public class CursorSystem : MonoBehaviour
 {
     [SerializeField] private List<Vector3> MousePoints;
 
-    [SerializeField] private bool startDivide;
+    //[SerializeField] private bool startDivide;
 
     [SerializeField] private int maxPaper = 2;
 
@@ -34,7 +34,7 @@ public class CursorSystem : MonoBehaviour
     // 初期化
     void Start()
     {
-        startDivide = false;
+        //startDivide = false;
         MousePoints = new List<Vector3>();
 
         // 紙の束
@@ -123,7 +123,7 @@ public class CursorSystem : MonoBehaviour
                             //selectPaper = 0;
 
                             // めくるモード → アクションモード
-                            SetGameState(GameState.MODE_ACTION);
+                            //SetGameState(GameState.MODE_ACTION);
                         }
                     }
                 }
@@ -157,11 +157,11 @@ public class CursorSystem : MonoBehaviour
                 Vector3 SavePos = Vector3.zero;
 
                 //送るものの座標を変える
-                if (startDivide == false)
+                if (outsider.GetFirstFlg() == false)
                 {
                     //Debug.LogWarning("1回目");
                     // 破る処理スタート
-                    startDivide = true;
+                    //startDivide = true;
                     outsider.DivideStart();
 
                     SavePos = Cursor.transform.position;
@@ -236,7 +236,7 @@ public class CursorSystem : MonoBehaviour
                                 }
                                 else
                                 {
-                                    startDivide = false;
+                                    //startDivide = false;
                                     // ポジションリストをクリア
                                     MousePoints.Clear();
                                     return;
@@ -247,11 +247,11 @@ public class CursorSystem : MonoBehaviour
                             case 4: // 予期しない操作の場合はリセットする
                                 // 破り中フラグのリセット
                                 DivideTriangle.AllReset();
-                                startDivide = false;
+                                //startDivide = false;
+                                outsider.DivideEnd();
                                 // ポジションリストをクリア
                                 MousePoints.Clear();
 
-                                outsider.DivideEnd();
                                 return;
 
                             default: break;
@@ -267,7 +267,7 @@ public class CursorSystem : MonoBehaviour
             {
                 // 破り中フラグのリセット
                 DivideTriangle.AllReset();
-                startDivide = false;
+                //startDivide = false;
                 // ポジションリストをクリア
                 MousePoints.Clear();
 

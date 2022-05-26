@@ -22,7 +22,7 @@ public class fallRock : MonoBehaviour
         StartPos = transform.position;
 
         Timer = Random.Range(0.0f, 1.0f);
-        //rb.drag = Random.Range(0.0f, 1.0f);
+        rb.drag = Random.Range(0.0f, 1.0f);
     }
 
     void Update()
@@ -34,7 +34,7 @@ public class fallRock : MonoBehaviour
             transform.position = StartPos;
 
             Timer = Random.Range(0.0f, 1.0f);
-            //rb.drag = Random.Range(0.0f, 1.0f);
+            rb.drag = Random.Range(0.0f, 1.0f);
         }
 
     }

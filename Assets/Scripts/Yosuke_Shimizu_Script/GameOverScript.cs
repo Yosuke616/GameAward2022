@@ -108,7 +108,7 @@ public class GameOverScript : MonoBehaviour
 
                 else
                 {
-                    if (GO_Tex != null) GO_Tex.text = "　　　　失敗！";
+                    //if (GO_Tex != null) GO_Tex.text = "　　　　失敗！";
 
                     SoundManager.Instance.StopBgm();
                     SoundManager.Instance.PlaySeByName("jingle37");

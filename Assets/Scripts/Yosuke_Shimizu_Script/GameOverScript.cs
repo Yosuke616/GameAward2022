@@ -122,7 +122,8 @@ public class GameOverScript : MonoBehaviour
                 {
                     //if (GO_Tex != null) GO_Tex.text = "　　　　失敗！";
 
-                    if (!SE) {
+                    if (!SE)
+                    {
                         SoundManager.Instance.StopBgm();
                         SoundManager.Instance.PlaySeByName("jingle37");
                         SE = true;
@@ -133,78 +134,82 @@ public class GameOverScript : MonoBehaviour
                 }
 
             }
-        }
-        else
-        {
-            nCnt2--;
 
-            Debug.Log("お絵描きしたいよ");
-
-            if (nCnt2 < 0)
+            else
             {
-                if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetAxis("Vertical") > 0)
+                nCnt2--;
+
+                Debug.Log("お絵描きしたいよ");
+
+                if (nCnt2 < 0)
                 {
-                    nCnt2 = 10;
-                    SelectButton--;
-                    if (SelectButton < 0)
+                    if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetAxis("Vertical") > 0)
                     {
-                        SelectButton = nMaxButton;
+                        nCnt2 = 10;
+                        SelectButton--;
+                        if (SelectButton < 0)
+                        {
+                            SelectButton = nMaxButton;
+                        }
+                    }
+                    if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical") < 0)
+                    {
+                        nCnt2 = 10;
+                        SelectButton++;
+                        if (SelectButton > nMaxButton)
+                        {
+                            SelectButton = 0;
+                        }
                     }
                 }
-                if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical") < 0)
-                {
-                    nCnt2 = 10;
-                    SelectButton++;
-                    if (SelectButton > nMaxButton)
-                    {
-                        SelectButton = 0;
-                    }
-                }
-            }
 
 
-            //常に白に変えていく
-            Select.SetActive(true);
-            Retry.SetActive(true);
-            Title.SetActive(true);
-            Select_front.SetActive(false);
-            Retry_front.SetActive(false);
-            Title_front.SetActive(false);
+                //常に白に変えていく
+                Select.SetActive(true);
+                Retry.SetActive(true);
+                Title.SetActive(true);
+                Select_front.SetActive(false);
+                Retry_front.SetActive(false);
+                Title_front.SetActive(false);
 
-            switch (SelectButton)
-            {
-                case 0:
-                   
-                    //Select.Select();
-                    //Select.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
-
-
-
-                    break;
-                case 1:
-
-                    //Retry.Select();
-                    Retry.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
-                    break;
-                case 2:
-
-                    //Title.Select();
-                    Title.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
-                    break;
-            }
-
-            //ボタンを押せるかどうかを判別する
-            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 1"))
-            {
-                Debug.Log("入ったよー");
                 switch (SelectButton)
                 {
-                    case 0: OnSelect(); break;
-                    case 1: OnRetry(); break;
-                    case 2: OnTitle(); break;
-                }
-            }
+                    case 0:
 
+                        //Select.Select();
+                        //Select.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                        Select.SetActive(false);
+                        Select_front.SetActive(true);
+                        break;
+                    case 1:
+
+                        //Retry.Select();
+                        //Retry.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                        Retry.SetActive(false);
+                        Retry_front.SetActive(true);
+                        break;
+                    case 2:
+
+                        //Title.Select();
+                        //Title.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                        Title.SetActive(false);
+                        Title_front.SetActive(true);
+                        break;
+                }
+
+                //ボタンを押せるかどうかを判別する
+                if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 1"))
+                {
+                    Debug.Log("入ったよー");
+                    switch (SelectButton)
+                    {
+                        case 0: OnSelect(); break;
+                        case 1: OnRetry(); break;
+                        case 2: OnTitle(); break;
+                    }
+                }
+
+            }
         }
     }
 

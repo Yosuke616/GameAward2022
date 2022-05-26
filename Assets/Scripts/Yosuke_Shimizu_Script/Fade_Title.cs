@@ -53,21 +53,37 @@ public class Fade_Title : MonoBehaviour
             {
                 if (nTitleCnt < 255)
                 {
-                    nTitleCnt++;
+                    if (nTitleCnt > 250)
+                    {
+                        nTitleCnt++;
+                    }
+                    else {
+                        nTitleCnt += 4;
+                    }
+
                     Title_Log.GetComponent<SpriteRenderer>().color = new Color32(nTitleCnt, nTitleCnt, nTitleCnt, nTitleCnt);
                 }
 
                 //ボタンをフェードする
                 if (nTitleCnt >= 60 && nButtonCnt < 255)
                 {
-                    nButtonCnt++;
+                    if (nButtonCnt > 250)
+                    {
+                        Debug.Log(nButtonCnt);
+                        Debug.Log(nTitleCnt);
+                        nButtonCnt++;
+                    }
+                    else {
+                        nButtonCnt+=4;
+                    }
+
                     St_Button.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, nButtonCnt);
                     Ct_Button.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, nButtonCnt);
                     Op_Button.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, nButtonCnt);
                     En_Button.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, nButtonCnt);
                 }
 
-                if (nButtonCnt == 255)
+                if (nButtonCnt >= 255)
                 {
                     Debug.Log("ロゼッタ様");
                     GameObject camera = GameObject.Find("Main Camera");
@@ -80,7 +96,13 @@ public class Fade_Title : MonoBehaviour
             {
                 if (nBlackCnt >= 0)
                 {
-                    nBlackCnt--;
+                    if (nBlackCnt < 5)
+                    {
+                        nBlackCnt--;
+                    }
+                    else {
+                        nBlackCnt -= 4;
+                    }
                     black.GetComponent<SpriteRenderer>().material.color = new Color32(0, 0, 0, nBlackCnt);
 
                     if (nBlackCnt == 0)

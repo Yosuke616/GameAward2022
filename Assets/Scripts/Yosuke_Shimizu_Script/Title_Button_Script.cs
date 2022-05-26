@@ -283,7 +283,7 @@ public class Title_Button_Script : MonoBehaviour
                 }
 
                 // Œˆ’è
-                if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 1"))
+                if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
                 {
                     // “_ü ¨ ”j‚êü‚É•ÏX
                     //List<GameObject> papers = new List<GameObject>();

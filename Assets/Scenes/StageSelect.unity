@@ -1469,7 +1469,7 @@ PrefabInstance:
     - target: {fileID: 7898086195466316994, guid: b93880bc25e58c64a9eb21865387f5da, type: 3}
       propertyPath: name_BGM
       value: 
-      objectReference: {fileID: 8300000, guid: b960f73140a1dc84094e8433ed7ecc9e, type: 3}
+      objectReference: {fileID: 8300000, guid: ba711f24a4609be4a94ed8c32bd6f346, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b93880bc25e58c64a9eb21865387f5da, type: 3}
 --- !u!1 &564627525

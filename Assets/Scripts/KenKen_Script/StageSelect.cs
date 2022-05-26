@@ -162,6 +162,8 @@ public class StageSelect : MonoBehaviour
 
                         // ステージ情報見えないように
                         InfoPanel.SetActive(false);
+
+                           
                     }
                 }
 
@@ -177,6 +179,7 @@ public class StageSelect : MonoBehaviour
 
                         // ステージ情報見えないように
                         InfoPanel.SetActive(false);
+
                     }
                 }
             }

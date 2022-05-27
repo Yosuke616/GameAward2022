@@ -21,6 +21,9 @@ public class PlayerMove2 : MonoBehaviour
     private float m_rotDestModel;
     const float RATE_ROTATE_MODEL = 0.10f;
 
+    const float limitLeft = -22.0f;
+    const float limitRight = 22.0f;
+
 
     Rigidbody rb;
     
@@ -107,6 +110,15 @@ public class PlayerMove2 : MonoBehaviour
                 default: break;
             }
         }
+
+        
+        Vector3 pos = transform.parent.transform.InverseTransformPoint(transform.position);
+        Debug.Log(pos);
+        
+        if (pos.x > limitRight) { pos.x = limitRight; /* Debug.LogError("");*/ }
+        if (pos.x < limitLeft) { pos.x = limitLeft;/* Debug.LogError("");*/ }
+
+        transform.position = transform.parent.gameObject.transform.TransformPoint(pos);
 
         // 画面外に出たらゲームオーバー
         if (transform.position.y < offScrren)

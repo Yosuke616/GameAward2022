@@ -35,17 +35,35 @@ public class FallLeaf : Looks
     // ìÆÇ´ÇÃçXêV
     public override void Updatelooks()
     {
-        foreach (var looksObject in looksObjects)
+        //foreach (var looksObject in looksObjects)
+        //{
+        //    // Ç∆ÇËÇ†Ç¶Ç∏óéâ∫Ç≥ÇπÇÈ
+        //    looksObject.transform.position += new Vector3(0.0f, -0.2f, 0.0f); // Random.Range(0.5f,-1.5f)
+        //
+		//	// âÊñ â∫Ç…Ç¢Ç¡ÇΩÇÁè¡Ç∑
+        //    //if (looksObject.transform.position.y < deletePosY)
+        //    //{
+        //    //    looksObjects.Remove(looksObject);
+        //    //    Destroy(looksObject);
+        //    //}
+        //}
+
+        for (int i = looksObjects.Count - 1; i >= 0; --i)
         {
             // Ç∆ÇËÇ†Ç¶Ç∏óéâ∫Ç≥ÇπÇÈ
-            looksObject.transform.position += new Vector3(0.0f, -0.2f, 0.0f); // Random.Range(0.5f,-1.5f)
+            float x = Random.Range(-10.0f, 10.0f);
+            x = (x - 5.0f) * 0.003f;
+            //x *= 0.01f;
+            looksObjects[i].transform.position += new Vector3(x, -0.15f, 0.0f); // Random.Range(0.5f,-1.5f)
 
-			// âÊñ â∫Ç…Ç¢Ç¡ÇΩÇÁè¡Ç∑
-            //if (looksObject.transform.position.y < deletePosY)
-            //{
-            //    looksObjects.Remove(looksObject);
-            //    Destroy(looksObject);
-            //}
+
+            // âÊñ â∫Ç…Ç¢Ç¡ÇΩÇÁè¡Ç∑
+            if (looksObjects[i].transform.position.y < deletePosY)
+            {
+                looksObjects.RemoveAt(i);
+                //Destroy(looksObjects[i]);
+                looksObjects[i].gameObject.SetActive(false);
+            }
         }
     }
 

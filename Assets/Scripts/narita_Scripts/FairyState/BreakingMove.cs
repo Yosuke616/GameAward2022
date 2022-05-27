@@ -36,11 +36,7 @@ public class BreakingMove : FairyState
     // 更新
     public override void UpdateFairy()
     {
-
-        Debug.Log("やー");
-
         if(MovePoints.Count <= 1) { Debug.LogWarning("妖精が移動する座標リストのサイズが1以下です"); return; }
-
 
         // --- 座標リストの通りに移動する
         // 考え方：座標リストの要素0から要素1に移動する
@@ -78,15 +74,11 @@ public class BreakingMove : FairyState
         float ab = Vector3.Distance(nDistance, nDirection);
         if (ab > 0.0001f)
         {
-            Debug.LogWarning("ついにここまで来たか");
-            Debug.Log(ab);
-            Debug.Log("(" + nDistance.x + ", " + nDistance.y + ")   (" + nDirection.x + ", " + nDirection.y + ")");
-
-
             MovePoints.RemoveAt(0);
 
             // このままだと誤差が広がるので修正しておく
             fairy.transform.position = MovePoints[0];
+            fairy.transform.position += new Vector3(0, 0, 0.0f);
             m_vVel = m_vAcc = Vector3.zero;
         }
        

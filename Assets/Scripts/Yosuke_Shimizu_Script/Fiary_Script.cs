@@ -47,6 +47,14 @@ public class Fiary_Script : MonoBehaviour
         big = true;
         frameCount = 30;
     }
+    public void Back()
+    {
+        this.transform.Rotate(new Vector3(0, 90, 0));
+    }
+    public void Front()
+    {
+        this.transform.Rotate(new Vector3(0, 90, 0));
+    }
 
 
     void Start()
@@ -92,7 +100,6 @@ public class Fiary_Script : MonoBehaviour
                 Vector3 scale = normalScale * (frameCount / 30.0f);
 
                 this.transform.localScale = scale;
-                Debug.Log(scale);
 
                 if (frameCount <= 0)
                 {

@@ -136,6 +136,15 @@ public class PlayerMove2 : MonoBehaviour
             // クリアモーション
             AnimState = 2;
 
+            // 妖精さんのクリアモーション
+            List<GameObject> fairys = new List<GameObject>();
+            fairys.AddRange(GameObject.FindGameObjectsWithTag("Fiary"));
+            foreach (var fairy in fairys)
+            {
+                // ---ここでスケールを小さくするフラグをONにする
+                fairy.GetComponent<FairyInPlayer>().ClearMotion();
+            }
+
             flg = false;
         }
 

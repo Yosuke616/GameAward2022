@@ -26,6 +26,7 @@ public class CameraChanger : MonoBehaviour
     void Update()
     {
         // 切り替え
+        #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.F1))
         {
             MainCamera.enabled = true;
@@ -66,6 +67,7 @@ public class CameraChanger : MonoBehaviour
             SubCamera2.enabled = false;
             SubCamera3.enabled = true;
         }
+        #endif
     }
 
 }

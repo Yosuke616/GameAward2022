@@ -100,10 +100,10 @@ public class BreakingPaper : MonoBehaviour
         var game = Gamepad.current;
         
         // U“®‚Ì‹­‚³
-        game.SetMotorSpeeds(0.5f, 0.5f);
+        game.SetMotorSpeeds(0.6f, 0.6f);
         
         // U“®•b”
-        yield return new WaitForSecondsRealtime(0.5f);
+        yield return new WaitForSecondsRealtime(1.0f);
         
         // U“®–³Œø
         game.SetMotorSpeeds(0.0f, 0.0f);

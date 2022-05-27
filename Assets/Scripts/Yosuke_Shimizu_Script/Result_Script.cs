@@ -41,9 +41,12 @@ public class Result_Script : MonoBehaviour
 
 
     //ボタンを追加しておく
-    public Button Select;
-    public Button Retry;
-    public Button Title;
+    public GameObject Select;
+    public GameObject Retry;
+    public GameObject Title;
+    public GameObject Select_front;
+    public GameObject Retry_front;
+    public GameObject Title_front;
 
     //ボタンの数
     private int nMaxButton = 2;
@@ -79,6 +82,13 @@ public class Result_Script : MonoBehaviour
         //SaveLoad.LoadData();
 
         nCnt = 0;
+
+        Select.SetActive(false);
+        Retry.SetActive(true);
+        Title.SetActive(true);
+        Select_front.SetActive(true);
+        Retry_front.SetActive(false);
+        Title_front.SetActive(false);
 
     }
 
@@ -163,22 +173,25 @@ public class Result_Script : MonoBehaviour
             }
 
             //常に白に変えていく
-            Select.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            Retry.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            Title.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            Select.SetActive(false);
+            Retry.SetActive(false);
+            Title.SetActive(false);
+            Select_front.SetActive(false);
+            Retry_front.SetActive(false);
+            Title_front.SetActive(false);
 
             switch (SelectButton) {
                 case 0:
-                    Select.Select();
-                    Select.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                    //Select.Select();
+                    Select_front.SetActive(true);
                     break;
                 case 1:
-                    Retry.Select();
-                    Retry.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                    //Retry.Select();
+                    Retry_front.SetActive(true);
                     break;
                 case 2:
-                    Title.Select();
-                    Title.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                    //Title.Select();
+                    Title_front.SetActive(true);
                     break;
             }
 

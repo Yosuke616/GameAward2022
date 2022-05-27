@@ -113,6 +113,13 @@ public class StageSelect : MonoBehaviour
         //--------------------------------------------------------------------------------
 
 
+        // ポーズ中
+        if (Mathf.Approximately(Time.timeScale, 0f))
+        {
+            return;
+        }
+
+
         // テスト用
         if (Input.GetKeyDown(KeyCode.S))
         {

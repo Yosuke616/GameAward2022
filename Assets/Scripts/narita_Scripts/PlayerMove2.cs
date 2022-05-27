@@ -133,6 +133,9 @@ public class PlayerMove2 : MonoBehaviour
                 SE = true;
             }
 
+            GameObject enemy2 = GameObject.Find("MainCamera");
+            enemy2.GetComponent<GameOverScript>().SetGameOver_Flg(true);
+
             _GameOverBG.gameObject.SetActive(true);
             flg = false;
         }

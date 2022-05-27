@@ -114,7 +114,7 @@ public class Option : MonoBehaviour
                 BackButtonback.SetActive(false);
                 Debug.Log("çƒäJ");
 
-                if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 1")) {
+                if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0")) {
                     GameObject Sarch = GameObject.Find("PausePanel(Clone)");
                     Sarch.GetComponent<Pause>().SetPauseFlg(false);
                     Pausepanel.SetActive(true);
@@ -142,7 +142,7 @@ public class Option : MonoBehaviour
         BGMSlider.value = Valume.BGMVal;
         SESlider.value = Valume.SEVal;
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal2") > 0)
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") > 0)
         {
             switch (SelectButton) {
                 case 0:
@@ -168,7 +168,7 @@ public class Option : MonoBehaviour
                     break;
             }   
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal2") < 0)
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") < 0)
         {
             switch (SelectButton)
             {

@@ -127,7 +127,7 @@ public class TitleOption_Script : MonoBehaviour
             }
 
             if (SelectButton == 3) {
-                if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 1"))
+                if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
                 {
        //             TOFlg = true;
        //             Option.SetActive(false);
@@ -143,7 +143,7 @@ public class TitleOption_Script : MonoBehaviour
             //左右でスライダーの値を変える
             SetSlider();
 
-            if (Input.GetKeyDown("joystick button 0"))
+            if (Input.GetKeyDown("joystick button 1"))
             {
        //         TOFlg = true;
                 Debug.Log("ロゼッター");
@@ -165,7 +165,7 @@ public class TitleOption_Script : MonoBehaviour
         //a = Valume.SEVal;
         //SESlider.value = a;
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal2") > 0)
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") > 0)
         {
             switch (SelectButton)
             {
@@ -195,7 +195,7 @@ public class TitleOption_Script : MonoBehaviour
                     break;
             }
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal2") < 0)
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") < 0)
         {
             switch (SelectButton)
             {

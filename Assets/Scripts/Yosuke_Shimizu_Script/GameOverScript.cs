@@ -203,7 +203,7 @@ public class GameOverScript : MonoBehaviour
             }
 
             //ƒ{ƒ^ƒ“‚ğ‰Ÿ‚¹‚é‚©‚Ç‚¤‚©‚ğ”»•Ê‚·‚é
-            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 1"))
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
             {
                 Debug.Log("“ü‚Á‚½‚æ[");
                 switch (SelectButton)

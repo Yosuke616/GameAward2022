@@ -177,7 +177,7 @@ public class StageGrid : MonoBehaviour
         }
 
         // 一瞬時間を置いてDelayMethod()を呼ぶ
-        Invoke("DelayMethod", 0.001f);
+        Invoke("DelayMethod", 0.01f);
     }
 
     //Start()で生成したオブジェクトのOnCollisionTriggerが呼ばれた後にこのメソッドを呼びたい

@@ -142,7 +142,7 @@ public class Option : MonoBehaviour
         BGMSlider.value = Valume.BGMVal;
         SESlider.value = Valume.SEVal;
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") > 0)
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal4") < 0)
         {
             switch (SelectButton) {
                 case 0:
@@ -168,7 +168,7 @@ public class Option : MonoBehaviour
                     break;
             }   
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") < 0)
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal4") > 0)
         {
             switch (SelectButton)
             {

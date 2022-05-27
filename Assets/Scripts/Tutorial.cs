@@ -41,8 +41,8 @@ public class Tutorial : MonoBehaviour
 		{
 			cursor = GameObject.Find("Folder").gameObject.transform.Find("cursor").gameObject;
 			turnPaper = GameObject.Find("System").gameObject.transform.Find("Cursor").gameObject;
-			Yousei1 = GameObject.Find("SubCamera1").gameObject.transform.Find("d1").gameObject.transform.Find("Yousei1").gameObject;
-			Yousei2 = GameObject.Find("SubCamera2").gameObject.transform.Find("d1").gameObject.transform.Find("Yousei1").gameObject;
+			Yousei1 = GameObject.Find("SubCamera1").gameObject.transform.Find("d1").gameObject.transform.Find("fairy_player").gameObject;
+			Yousei2 = GameObject.Find("SubCamera2").gameObject.transform.Find("d1").gameObject.transform.Find("fairy_player").gameObject;
 			Inputer = GameObject.Find("MainCamera").gameObject.GetComponent<InputTrigger>();
 
 			BGobjects.Add(transform.Find("BackGround0").gameObject);        // ２枚目誘導
@@ -88,9 +88,7 @@ public class Tutorial : MonoBehaviour
 		if (bStartTutorial && !bEndTutorial)
 		{
 			// チュートリアル中は常に切断動作を無効化
-			Yousei1.GetComponent<Fiary_Script>().enabled = false;
 			Yousei1.GetComponent<Fiary_Move>().enabled = false;
-			Yousei2.GetComponent<Fiary_Script>().enabled = false;
 			Yousei2.GetComponent<Fiary_Move>().enabled = false;
 
 			// めくり中処理
@@ -134,9 +132,7 @@ public class Tutorial : MonoBehaviour
 						case 3:
 							cursor.SetActive(true);
 							turnPaper.SetActive(true);
-							Yousei1.GetComponent<Fiary_Script>().enabled = true;
 							Yousei1.GetComponent<Fiary_Move>().enabled = true;
-							Yousei2.GetComponent<Fiary_Script>().enabled = true;
 							Yousei2.GetComponent<Fiary_Move>().enabled = true;
 
 							BGobjects[nCnt].SetActive(true);
@@ -152,9 +148,7 @@ public class Tutorial : MonoBehaviour
 						case 6:		// チュートリアル終了
 							cursor.SetActive(true);
 							turnPaper.SetActive(true);
-							Yousei1.GetComponent<Fiary_Script>().enabled = true;
 							Yousei1.GetComponent<Fiary_Move>().enabled = true;
-							Yousei2.GetComponent<Fiary_Script>().enabled = true;
 							Yousei2.GetComponent<Fiary_Move>().enabled = true;
 							break;
 
@@ -250,9 +244,7 @@ public class Tutorial : MonoBehaviour
 			turnPaper.SetActive(false);
 			txt_SonoChoshi.SetActive(false);
 			txt_Koko.SetActive(false);
-			Yousei1.GetComponent<Fiary_Script>().enabled = false;
 			Yousei1.GetComponent<Fiary_Move>().enabled = false;
-			Yousei2.GetComponent<Fiary_Script>().enabled = false;
 			Yousei2.GetComponent<Fiary_Move>().enabled = false;
 			bStop = true;
 		}

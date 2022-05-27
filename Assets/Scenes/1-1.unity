@@ -891,6 +891,7 @@ MonoBehaviour:
   Select_front: {fileID: 670611480}
   Retry_front: {fileID: 2041714447}
   Title_front: {fileID: 116779516}
+  StageName: 1-1
 --- !u!114 &157293223
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -7,6 +7,10 @@ public class FallLeaf : Looks
     // 画面下にいったら消すライン
     float deletePosY = -22.0f;
 
+    private bool bMove;
+
+    private float x;
+
     void Start()
     {
         // 生成する空間
@@ -16,6 +20,10 @@ public class FallLeaf : Looks
 
         // 0.5秒ごとに生成
         createFrame = 30;
+
+        bMove = false;
+
+        x = 0.0f;
     }
 
     public override void Createlooks()
@@ -29,6 +37,8 @@ public class FallLeaf : Looks
 
             // カウントリセット
             frameCnt = 0;
+
+            bMove = true;
         }
     }
 
@@ -50,18 +60,21 @@ public class FallLeaf : Looks
 
         for (int i = looksObjects.Count - 1; i >= 0; --i)
         {
-            // とりあえず落下させる
-            float x = Random.Range(-10.0f, 10.0f);
-            x = (x - 5.0f) * 0.003f;
-            //x *= 0.01f;
+            if(bMove)
+            {
+                // とりあえず落下させる
+                //x = Random.Range(-10.0f, 10.0f);
+                x = (Random.Range(-10.0f, 10.0f) - 5.0f) * 0.003f;
+                bMove = false;
+            }
             looksObjects[i].transform.position += new Vector3(x, -0.15f, 0.0f); // Random.Range(0.5f,-1.5f)
 
 
             // 画面下にいったら消す
             if (looksObjects[i].transform.position.y < deletePosY)
             {
+                Destroy(looksObjects[i]);
                 looksObjects.RemoveAt(i);
-                //Destroy(looksObjects[i]);
                 looksObjects[i].gameObject.SetActive(false);
             }
         }

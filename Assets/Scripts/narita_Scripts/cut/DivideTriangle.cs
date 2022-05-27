@@ -660,7 +660,7 @@ public class DivideTriangle : MonoBehaviour
             // タグの変更（廃棄する紙）
             obj2.tag = "waste";
             // 数秒後にデリート
-            Destroy(obj2, 1.0f);
+            Destroy(obj2, 2.0f);
 
             // ステージの更新
             chages = checkCollisionPoints(obj2, CollisionField.Instance.cellPoints());
@@ -711,7 +711,7 @@ public class DivideTriangle : MonoBehaviour
                     // タグの変更（廃棄する紙）
                     obj1.tag = "waste";
                     // 数秒後にデリート
-                    Destroy(obj1, 1.0f);
+                    Destroy(obj1, 2.0f);
 
                     // ステージの更新
                     chages = checkCollisionPoints(obj1, CollisionField.Instance.cellPoints());
@@ -744,7 +744,7 @@ public class DivideTriangle : MonoBehaviour
                     // タグの変更（廃棄する紙）
                     obj2.tag = "waste";
                     // 数秒後にデリート
-                    Destroy(obj2, 1.0f);
+                    Destroy(obj2, 2.0f);
 
                     // ステージの更新
                     chages = checkCollisionPoints(obj2, CollisionField.Instance.cellPoints());
@@ -781,7 +781,7 @@ public class DivideTriangle : MonoBehaviour
                 // タグの変更（廃棄する紙）
                 obj1.tag = "waste";
                 // 数秒後にデリート
-                Destroy(obj1, 1.0f);
+                Destroy(obj1, 2.0f);
 
                 // ステージの更新
                 chages = checkCollisionPoints(obj1, CollisionField.Instance.cellPoints());

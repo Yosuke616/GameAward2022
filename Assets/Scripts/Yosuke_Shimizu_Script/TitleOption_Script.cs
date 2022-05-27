@@ -156,7 +156,7 @@ public class TitleOption_Script : MonoBehaviour
     //スライダーを移動させる関数
     private void SetSlider()
     {
-        float a;
+        //float a;
 
         //a = Valume.MasterVal;
         //MasterSlider.value = a;

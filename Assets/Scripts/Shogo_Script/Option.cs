@@ -129,7 +129,7 @@ public class Option : MonoBehaviour
         //左右でスライダーの値を変える
         SetSlider();
 
-        if (Input.GetKeyDown("joystick button 0")) {
+        if (Input.GetKeyDown("joystick button 1")) {
             GameObject Sarch = GameObject.Find("PausePanel(Clone)");
             Sarch.GetComponent<Pause>().OffOption();
         }

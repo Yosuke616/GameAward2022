@@ -83,7 +83,9 @@ public class PlayerMove2 : MonoBehaviour
             else if (Input.GetKey(KeyCode.D)|| Input.GetAxis("Horizontal") == 1)  _state = PLAYER_STATE.STATE_RIGHT_MOVE;
             else if(Input.GetKeyDown(KeyCode.S) || Input.GetAxis("Vertical") < 0) _state = PLAYER_STATE.STATE_STOP;
             // ジャンプ
+            #if UNITY_EDITOR
             else if (Input.GetKeyDown(KeyCode.W)) GetComponent<Rigidbody>().AddForce(new Vector3(0, 10.0f, 0), ForceMode.Impulse);
+            #endif
 
             switch (_state)
             {

@@ -72,11 +72,11 @@ GameObject:
   - component: {fileID: 1794453293654275434}
   - component: {fileID: 2158007050919526772}
   - component: {fileID: 8038789392662441776}
-  - component: {fileID: 8508560179291080368}
   - component: {fileID: 2957735591866056797}
+  - component: {fileID: 1625825652321624588}
   m_Layer: 0
   m_Name: tr
-  m_TagString: Untagged
+  m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -111,7 +111,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 120
   m_CollisionDetection: 0
 --- !u!65 &8038789392662441776
 BoxCollider:
@@ -124,25 +124,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.07, y: 0.16, z: 0.28}
+  m_Size: {x: 0.07, y: 0.13, z: 0.11}
   m_Center: {x: 0, y: 0.06, z: 0}
---- !u!114 &8508560179291080368
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1417786639202824144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ce512ca4bd37c847b2ab12598668fc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaxMovePos: 10
-  EnemyViewLength: 5
-  MoveSpeed: 0.1
-  StartMoveLeft: 1
-  nEnemyMode: 0
 --- !u!114 &2957735591866056797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,6 +140,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _childCount: 0
   _lowerLimitNum: 7
+--- !u!114 &1625825652321624588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417786639202824144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ec8a956ca04e6e4382abf7a53f09b55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  move: 0.02
 --- !u!1 &2991809530809854621
 GameObject:
   m_ObjectHideFlags: 0

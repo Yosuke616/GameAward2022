@@ -67,6 +67,7 @@ public class CursorSystem : MonoBehaviour
             if (fairy.GetComponent<Fiary_Script>().GetState == Fiary_Script.eFairyState.STATE_BREAKING_MOVE) return;
 
             // debug用
+            #if UNITY_EDITOR
             if (Input.GetKeyDown(KeyCode.X))
             {
                 List<bool> a = new List<bool>();
@@ -76,6 +77,7 @@ public class CursorSystem : MonoBehaviour
                 }
                 CollisionField.Instance.UpdateStage(a);
             }
+            #endif
 
             // MainCameraがenableではない場合は何もしない
             if (Camera.main == null) { return; }

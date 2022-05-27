@@ -11,41 +11,51 @@ public class Enemy : MonoBehaviour
     private float diff = 0.0f;
     private Vector3 startPos;
 
+    private bool m_bActive;
+    public void SetActive(bool active)
+    {
+        m_bActive = active;
+    }
+
     private void Start()
     {
+        m_bActive = false;
         // 初期位置を保存しておく
         startPos = transform.position;
     }
 
     private void Update()
     {
-        Vector3 p;
-        // 上下移動
-        if (state == 0) p = new Vector3(0, move, 0);
-        // 左右移動
-        else p = new Vector3(move, 0, 0);
-
-        // 座標に反映
-        transform.Translate(p);
-
-        // フレームカウンタ更新
-        counter++;
-
-        //countが500になれば-1を掛けて逆方向に動かす
-        if (counter == 500)
+        if (m_bActive)
         {
-            counter = 0;
-            move *= -1;
-        }
+            Vector3 p;
+            // 上下移動
+            if (state == 0) p = new Vector3(move, 0, 0);
+            // 左右移動
+            else p = new Vector3(0, move, 0);
 
-        // 初期位置からの距離
-        if(state == 0)
-        {
-            diff = transform.position.y - startPos.y;
-        }
-        else
-        {
-            diff = startPos.x - transform.position.x;
+            // 座標に反映
+            transform.Translate(p);
+
+            // フレームカウンタ更新
+            counter++;
+
+            //countが500になれば-1を掛けて逆方向に動かす
+            if (counter == 500)
+            {
+                counter = 0;
+                move *= -1;
+            }
+
+            // 初期位置からの距離
+            if (state == 0)
+            {
+                diff = transform.position.y - startPos.y;
+            }
+            else
+            {
+                diff = startPos.x - transform.position.x;
+            }
         }
     }
 
@@ -69,11 +79,16 @@ public class Enemy : MonoBehaviour
     // あたり判定オブジェクトと実際に見えているオブジェクトの座標を合わせる
     public void Synchronous(GameObject gameObject)
     {
-        Vector3 p;
-        if (state == 0) p = new Vector3(0, diff, 0);
-        // 左右移動
-        else p = new Vector3(-diff, 0, 0);
+        //Vector3 p;
+        //if (state == 0) p = new Vector3(-diff, 0, 0); 
+        //// 左右移動
+        //else p = new Vector3(0, diff, 0);
+        //
+        //gameObject.transform.Translate(p);
 
-        gameObject.transform.Translate(p);
+        Vector3 distance;
+        distance = transform.position - startPos;
+
+        gameObject.transform.Translate(distance);
     }
 }

@@ -123,26 +123,8 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
 
                     CollisionGrid[(y * gridNumX) + x].AddComponent<CheckSameLayer>();
                     // 座標を合わせる
-                    //original.GetComponent<Enemy>().Synchronous(CollisionGrid[(y * gridNumX) + x]);
-                    // 親を変える
-                    CollisionGrid[(y * gridNumX) + x].transform.SetParent(original.transform);
-                    // コリジョンをトリガーに変更
-                    CollisionGrid[(y * gridNumX) + x].GetComponent<BoxCollider>().isTrigger = true;
-                    // エネミーだった場合は生成はするがStagelayerは空にしておく
-                    CollisionGrid[(y * gridNumX) + x] = null;
-                }
-                else if(CollisionGrid[(y * gridNumX) + x].tag == "CardSoldier")
-                {
-                    // 決められたレイヤーでしか存在できない
-                    var checkLayer = CollisionGrid[(y * gridNumX) + x].AddComponent<CheckSameLayer>();
-                    checkLayer.SetLayer(layer + 1);
-
-                    // もととなるオブジェクト
-                    GameObject original = _stageGrid[(y * gridNumX) + x].sourceObject;
-
-                    // 座標を合わせる
-                    if (CollisionGrid[(y * gridNumX) + x] == null) Debug.LogError("");
-                    original.GetComponent<EnemyBehavior>().Synchronous(CollisionGrid[(y * gridNumX) + x]);
+                    original.GetComponent<Enemy>().Synchronous(CollisionGrid[(y * gridNumX) + x]);
+                    original.GetComponent<Enemy>().SetActive(true);
                     // 親を変える
                     CollisionGrid[(y * gridNumX) + x].transform.SetParent(original.transform);
                     // コリジョンをトリガーに変更
@@ -204,31 +186,21 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
 
                                 // もととなるオブジェクト
                                 GameObject original = StageInfo[layerList[objCount] + 1][objCount].sourceObject;
-                                // 座標を合わせる
-                                original.GetComponent<Enemy>().Synchronous(CollisionGrid[objCount]);
-                                // 親を変える
-                                CollisionGrid[objCount].transform.SetParent(original.transform);
-                                // コリジョンをトリガーに変更
-                                CollisionGrid[objCount].GetComponent<BoxCollider>().isTrigger = true;
-                                // エネミーだった場合は生成はするがStagelayerは空にしておく
-                                CollisionGrid[objCount] = null;
-                            }
-                            else if (CollisionGrid[(y * gridNumX) + x].tag == "CardSoldier")
-                            {
-                                // 決められたレイヤーでしか存在できない
-                                var checkLayer = CollisionGrid[objCount].AddComponent<CheckSameLayer>();
-                                checkLayer.SetLayer(layerList[objCount] + 2);
+                                if (original != null)
+                                {
 
-                                // もととなるオブジェクト
-                                GameObject original = StageInfo[layerList[objCount] + 1][objCount].sourceObject;
-
-                                // 座標を合わせる
-                                original.GetComponent<EnemyBehavior>().Synchronous(CollisionGrid[(y * gridNumX) + x]);
-                                original.GetComponent<EnemyBehavior>().Active();
-                                // 親を変える
-                                CollisionGrid[objCount].transform.SetParent(original.transform);
-                                // コリジョンをトリガーに変更
-                                CollisionGrid[objCount].GetComponent<BoxCollider>().isTrigger = true;
+                                    // 座標を合わせる
+                                    original.GetComponent<Enemy>().Synchronous(CollisionGrid[objCount]);
+                                    original.GetComponent<Enemy>().SetActive(true);
+                                    // 親を変える
+                                    CollisionGrid[objCount].transform.SetParent(original.transform);
+                                    // コリジョンをトリガーに変更
+                                    CollisionGrid[objCount].GetComponent<BoxCollider>().isTrigger = true;
+                                }
+                                else
+                                {
+                                    Destroy(CollisionGrid[objCount]);
+                                }
                                 // エネミーだった場合は生成はするがStagelayerは空にしておく
                                 CollisionGrid[objCount] = null;
                             }
@@ -274,29 +246,22 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                                 var checkLayer = CollisionGrid[objCount].AddComponent<CheckSameLayer>();
                                 checkLayer.SetLayer(layerList[objCount] + 2);
 
-                                // 座標を合わせる
-                                StageInfo[layerList[objCount] + 1][objCount].sourceObject.GetComponent<Enemy>().Synchronous(CollisionGrid[objCount]);
-                                // コライダーをトリガーに
-                                CollisionGrid[objCount].GetComponent<BoxCollider>().isTrigger = true;
-                                // エネミーだった場合は生成はするがStagelayerは空にしておく
-                                CollisionGrid[objCount] = null;
-                            }
-                            if (CollisionGrid[objCount].tag == "CardSoldier")
-                            {
-                                // 決められたレイヤーでしか存在できない
-                                var checkLayer = CollisionGrid[objCount].AddComponent<CheckSameLayer>();
-                                checkLayer.SetLayer(layerList[objCount] + 2);
-
                                 // もととなるオブジェクト
                                 GameObject original = StageInfo[layerList[objCount] + 1][objCount].sourceObject;
-
-                                // 親を変える
-                                CollisionGrid[objCount].transform.SetParent(original.transform);
-                                // 座標を合わせる
-                                original.GetComponent<EnemyBehavior>().Synchronous(CollisionGrid[objCount]);
-                                original.GetComponent<EnemyBehavior>().Active();
-                                // コライダーをトリガーに
-                                CollisionGrid[objCount].GetComponent<BoxCollider>().isTrigger = true;
+                                if (original != null)
+                                {
+                                    // 座標を合わせる
+                                    original.GetComponent<Enemy>().Synchronous(CollisionGrid[objCount]);
+                                    original.GetComponent<Enemy>().SetActive(true);
+                                    // 親を変える
+                                    CollisionGrid[objCount].transform.SetParent(original.transform);
+                                    // コライダーをトリガーに
+                                    CollisionGrid[objCount].GetComponent<BoxCollider>().isTrigger = true;
+                                }
+                                else
+                                {
+                                    Destroy(CollisionGrid[objCount]);
+                                }
                                 // エネミーだった場合は生成はするがStagelayerは空にしておく
                                 CollisionGrid[objCount] = null;
                             }

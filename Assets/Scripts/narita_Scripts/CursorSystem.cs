@@ -54,16 +54,18 @@ public class CursorSystem : MonoBehaviour
         {
             Debug.LogWarning("ウサギいないよ    MODE_ACTIONから始めるよ");
             gameState = GameState.MODE_ACTION;
-
         }
     }
 
     void Update()
     {
         GameObject player = GameObject.Find("ParentPlayer");
+        GameObject fairy = GameObject.Find("Yousei1");
 
         if (player.GetComponent<PlayerMove2>().GetFlg() && player.GetComponent<PlayerMove2>().GetGameOverFlg())
         {
+            if (fairy.GetComponent<Fiary_Script>().GetState == Fiary_Script.eFairyState.STATE_BREAKING_MOVE) return;
+
             // debug用
             if (Input.GetKeyDown(KeyCode.X))
             {
@@ -123,7 +125,7 @@ public class CursorSystem : MonoBehaviour
                             //selectPaper = 0;
 
                             // めくるモード → アクションモード
-                            //SetGameState(GameState.MODE_ACTION);
+                            SetGameState(GameState.MODE_ACTION);
                         }
                     }
                 }
@@ -263,15 +265,29 @@ public class CursorSystem : MonoBehaviour
             #endregion
 
             //　破りキャンセル
-            if(Input.GetKeyDown("joystick button 0"))
+            if (Input.GetKeyDown("joystick button 0") || Input.GetKeyDown(KeyCode.Q))
             {
                 // 破り中フラグのリセット
                 DivideTriangle.AllReset();
-                //startDivide = false;
+                outsider.DivideEnd();
                 // ポジションリストをクリア
                 MousePoints.Clear();
 
-                outsider.DivideEnd();
+                // ---妖精をプレイヤー追従モードに
+                var fs = fairy.GetComponent<Fiary_Script>();
+                fs.SetState(Fiary_Script.eFairyState.STATE_FOLLOWING_PLAYER);
+
+                //--- メインカメラの妖精を大きくする
+                fs.SmallStart();
+
+                //--- サブカメラの妖精を大きくする
+                List<GameObject> fairys = new List<GameObject>();
+                fairys.AddRange(GameObject.FindGameObjectsWithTag("Fiary"));
+                foreach (var f in fairys)
+                {
+                    // ---ここでスケールを小さくするフラグをONにする
+                    f.GetComponent<Fiary_Move>().BigStart();
+                }
 
                 //(仮SE)
                 SoundManager.Instance.PlaySeByName("SE_MenuOperation");
@@ -281,7 +297,6 @@ public class CursorSystem : MonoBehaviour
         {
             this.gameObject.SetActive(false);
         }
-
     }
 
     //切っているかどうかのフラグをゲットするための関数

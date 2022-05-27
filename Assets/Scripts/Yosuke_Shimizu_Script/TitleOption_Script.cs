@@ -67,7 +67,7 @@ public class TitleOption_Script : MonoBehaviour
             Cnt--;
             if (Cnt < 0)
             {
-                if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetAxis("Vertical") > 0)
+                if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetAxis("Vertical4") < 0)
                 {
                     Cnt = 10;
                     SelectButton--;
@@ -76,7 +76,7 @@ public class TitleOption_Script : MonoBehaviour
                         SelectButton = MaxButton;
                     }
                 }
-                if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical") < 0)
+                if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical4") > 0)
                 {
                     Cnt = 10;
                     SelectButton++;
@@ -165,7 +165,7 @@ public class TitleOption_Script : MonoBehaviour
         //a = Valume.SEVal;
         //SESlider.value = a;
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") > 0)
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal4") < 0)
         {
             switch (SelectButton)
             {
@@ -195,7 +195,7 @@ public class TitleOption_Script : MonoBehaviour
                     break;
             }
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") < 0)
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal4") > 0)
         {
             switch (SelectButton)
             {

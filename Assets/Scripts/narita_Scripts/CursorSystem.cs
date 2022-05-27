@@ -120,12 +120,12 @@ public class CursorSystem : MonoBehaviour
                         // めくった枚数をカウント
                         selectPaper--;
                         // めくる枚数の下限
-                        if (selectPaper == 0)
+                        if (selectPaper <= 0)
                         {
-                            //selectPaper = 0;
+                            selectPaper = 0;
 
                             // めくるモード → アクションモード
-                            SetGameState(GameState.MODE_ACTION);
+                            //SetGameState(GameState.MODE_ACTION);
                         }
                     }
                 }

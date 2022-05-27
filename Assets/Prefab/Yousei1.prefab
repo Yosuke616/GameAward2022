@@ -477,10 +477,11 @@ GameObject:
   - component: {fileID: 4524477541669216976}
   - component: {fileID: 4125461254010958742}
   - component: {fileID: 4125461254010958741}
-  - component: {fileID: 4125461254010958740}
+  - component: {fileID: 2585370411276049495}
+  - component: {fileID: 2233102756432941459}
   m_Layer: 0
   m_Name: Yousei1
-  m_TagString: Fiary
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -528,7 +529,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 666e5520d13bad44bac9221f0db973d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4125461254010958740
+  m_CurrentState: 0
+--- !u!114 &2585370411276049495
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -537,9 +539,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 3855640892247210090}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e405bea173ddcb4780438b647ab95a4, type: 3}
+  m_Script: {fileID: 11500000, guid: f6aab1275a97d2b44b409336760e4764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &2233102756432941459
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3855640892247210090}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: cd197a79f3dc81242b7fdfc380ca1d1c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &4023581439530842334
 GameObject:
   m_ObjectHideFlags: 0

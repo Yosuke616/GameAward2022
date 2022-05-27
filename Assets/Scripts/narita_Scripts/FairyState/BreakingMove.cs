@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BreakingMove : FairyState
 {
@@ -23,6 +24,9 @@ public class BreakingMove : FairyState
     Vector3 m_vAcc;
     const float FAIRY_ACC_VALUE = 0.002f;
     const float MAX_VELOCITY = 0.05f;
+
+    // U“®ƒtƒ‰ƒO
+    private bool bFlg = false;
 
 
 
@@ -72,8 +76,23 @@ public class BreakingMove : FairyState
         Vector3 nDistance = distance.normalized;
         Vector3 nDirection = direction.normalized;
         float ab = Vector3.Distance(nDistance, nDirection);
+
+        var game = Gamepad.current;
+        // U“®
+        if (!bFlg)
+        {
+            if (game != null)
+            {
+                var gamepad = Gamepad.current;
+                //StartCoroutine("Vibration2");
+                gamepad.SetMotorSpeeds(0.1f, 0.1f);
+            }
+            bFlg = true;
+        }
+
         if (ab > 0.0001f)
         {
+
             MovePoints.RemoveAt(0);
 
             // ‚±‚Ì‚Ü‚Ü‚¾‚ÆŒë·‚ªL‚ª‚é‚Ì‚ÅC³‚µ‚Ä‚¨‚­
@@ -85,6 +104,14 @@ public class BreakingMove : FairyState
         // —d¸‚ªˆÚ“®‚µI‚í‚Á‚½‚ç
         if (MovePoints.Count <= 1)
         {
+            // U“®I—¹
+            if(game != null)
+            {
+                game.SetMotorSpeeds(0.0f, 0.0f);
+            }
+            // U“®ƒtƒ‰ƒOON
+            bFlg = false;
+
             //--- ”j‚éˆ—
             DivideTriangle.Breaking();
 
@@ -114,5 +141,4 @@ public class BreakingMove : FairyState
         newList.AddRange(points);
         MovePoints = newList;
     }
-
 }

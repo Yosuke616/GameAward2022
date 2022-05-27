@@ -66,6 +66,10 @@ public class Title_Button_Script : MonoBehaviour
 
     void Start()
     {
+        float a = Valume.MasterVal;
+        a = Valume.BGMVal;
+        a = Valume.SEVal;
+
         //コントローラーを動かす為の時間
         nCnt = 0;
 
@@ -345,14 +349,7 @@ public class Title_Button_Script : MonoBehaviour
     //オプション
     public void OnOption()
     {
-        Debug.Log("ロゼッタ様抱いてー！");
         Cre_Mesh();
-
-        //Titleflg = true;
-        //Option.SetActive(true);
-        //Plate.SetActive(true);
-        //GameObject obj = GameObject.Find("OptionTitle");
-        //obj.GetComponent<TitleOption_Script>().SetTitleOption(false);
     }
 
     //終わる
@@ -360,11 +357,11 @@ public class Title_Button_Script : MonoBehaviour
     {
         Cre_Mesh();
 
-//#if UNITY_EDITOR
-//        UnityEditor.EditorApplication.isPlaying = false;
-//#else
-//    Application.Quit();
-//#endif
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+    Application.Quit();
+#endif
     }
 
     public void SetTitleFlg(bool TF)

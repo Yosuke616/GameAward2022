@@ -177,9 +177,9 @@ public class Result_Script : MonoBehaviour
             }
 
             //í‚É”’‚É•Ï‚¦‚Ä‚¢‚­
-            Select.SetActive(false);
-            Retry.SetActive(false);
-            Title.SetActive(false);
+            Select.SetActive(true);
+            Retry.SetActive(true);
+            Title.SetActive(true);
             Select_front.SetActive(false);
             Retry_front.SetActive(false);
             Title_front.SetActive(false);

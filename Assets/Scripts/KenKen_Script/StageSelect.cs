@@ -121,11 +121,11 @@ public class StageSelect : MonoBehaviour
 
 
         // テスト用
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            SaveLoad.TestSaveLoad();
-            ProgressStages = SaveLoad.saveData.Progress;
-        }
+        //if (Input.GetKeyDown(KeyCode.S))
+        //{
+        //    SaveLoad.TestSaveLoad();
+        //    ProgressStages = SaveLoad.saveData.Progress;
+        //}
 
 
         // ステージからセレクトに戻ってきたときの画面調整---------------------------------

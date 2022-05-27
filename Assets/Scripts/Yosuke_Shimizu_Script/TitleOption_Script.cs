@@ -48,7 +48,7 @@ public class TitleOption_Script : MonoBehaviour
         SESlider.minValue = 0.0f;
 
         //スライダー自体の初期の音の設定
-        //MasterSlider.value = Valume.MasterVal;
+        MasterSlider.value = Valume.MasterVal;
         BGMSlider.value = Valume.BGMVal;
         SESlider.value = Valume.SEVal;
 
@@ -127,7 +127,7 @@ public class TitleOption_Script : MonoBehaviour
             }
 
             if (SelectButton == 3) {
-                if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 1"))
+                if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
                 {
        //             TOFlg = true;
        //             Option.SetActive(false);
@@ -143,7 +143,7 @@ public class TitleOption_Script : MonoBehaviour
             //左右でスライダーの値を変える
             SetSlider();
 
-            if (Input.GetKeyDown("joystick button 0"))
+            if (Input.GetKeyDown("joystick button 1"))
             {
        //         TOFlg = true;
                 Debug.Log("ロゼッター");
@@ -156,76 +156,74 @@ public class TitleOption_Script : MonoBehaviour
     //スライダーを移動させる関数
     private void SetSlider()
     {
-        MasterSlider.value = Valume.MasterVal;
-        BGMSlider.value = Valume.BGMVal;
-        SESlider.value = Valume.SEVal;
+        float a;
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal2") > 0)
+        //a = Valume.MasterVal;
+        //MasterSlider.value = a;
+        //a = Valume.BGMVal;
+        //BGMSlider.value = a;
+        //a = Valume.SEVal;
+        //SESlider.value = a;
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") > 0)
         {
             switch (SelectButton)
             {
                 case 0:
-                    Valume.MasterVal -= 0.05f;
-                    if (Valume.MasterVal < 0.0f)
+                    MasterSlider.value -= 0.05f;
+                    if (MasterSlider.value < 0.0f)
                     {
-                        Valume.MasterVal = 0.0f;
+                        MasterSlider.value = 0.0f;
                     }
-                    MasterSlider.value = Valume.MasterVal;
+                    Valume.MasterVal = MasterSlider.value;
                     break;
                 case 1:
-                    Valume.BGMVal -= 0.05f;
-                    if (Valume.BGMVal < 0.0f)
+                    BGMSlider.value -= 0.05f;
+                    if (BGMSlider.value < 0.0f)
                     {
-                        Valume.BGMVal = 0.0f;
+                        BGMSlider.value = 0.0f;
                     }
-                    BGMSlider.value = Valume.BGMVal;
+                    Valume.BGMVal = BGMSlider.value;
                     break;
                 case 2:
-                    Valume.SEVal -= 0.05f;
-                    if (Valume.SEVal < 0.0f)
+                    SESlider.value -= 0.05f;
+                    if (SESlider.value < 0.0f)
                     {
-                        Valume.SEVal = 0.0f;
+                        SESlider.value = 0.0f;
                     }
-                    SESlider.value = Valume.SEVal;
+                     Valume.SEVal = SESlider.value;
                     break;
             }
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal2") < 0)
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetAxis("Horizontal") < 0)
         {
             switch (SelectButton)
             {
                 case 0:
-                    Valume.MasterVal += 0.05f;
-                    if (Valume.MasterVal > 1.0f)
+                    MasterSlider.value += 0.05f;
+                    if (MasterSlider.value > 1.0f)
                     {
-                        Valume.MasterVal = 1.0f;
+                        MasterSlider.value = 1.0f;
                     }
-                    MasterSlider.value = Valume.MasterVal;
+                    Valume.MasterVal = MasterSlider.value;
                     break;
                 case 1:
-                    Valume.BGMVal += 0.05f;
-                    if (Valume.BGMVal > 1.0f)
+                    BGMSlider.value += 0.05f;
+                    if (BGMSlider.value > 1.0f)
                     {
-                        Valume.BGMVal = 1.0f;
+                        BGMSlider.value = 1.0f;
                     }
-                    BGMSlider.value = Valume.BGMVal;
+                    Valume.BGMVal = BGMSlider.value;
                     break;
                 case 2:
-                    Valume.SEVal += 0.05f;
-                    if (Valume.SEVal > 1.0f)
+                    SESlider.value += 0.05f;
+                    if (SESlider.value > 1.0f)
                     {
-                        Valume.SEVal = 1.0f;
+                        SESlider.value = 1.0f;
                     }
-                    SESlider.value = Valume.SEVal;
+                    Valume.SEVal = SESlider.value;
                     break;
             }
         }
     }
-
-    //タイトルのオプションフラグをセットするための関数
-    //public void SetTitleOption(bool TOflg) {
-    //    TOFlg = TOflg;
-        
-    //}
-
 }

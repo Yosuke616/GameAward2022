@@ -15,11 +15,14 @@ public class PSMove : MonoBehaviour
 
     private Vector3 tmp, targetPos;
 
+    private bool bSounds;
+
     // Start is called before the first frame update
     void Start()
     {
         moveLeft = false;
         moveRight = false;
+        bSounds = false;
 
         tmp = gameObject.transform.position;
         targetPos = new Vector3(-CreateTriangle.paperSizeX * 2.0f - 2.0f, tmp.y, tmp.z);
@@ -42,6 +45,12 @@ public class PSMove : MonoBehaviour
             // 紙の移動量
             pos.x += moveSpeed;
 
+            if(!bSounds)
+            {
+                SoundManager.Instance.PlaySeByName("paper01");
+                bSounds = true;
+            }
+
             // 紙の座標移動
             transform.Translate(Vector3.left * pos.x * Time.deltaTime);
             if (transform.position.x <= targetPos.x)
@@ -49,7 +58,7 @@ public class PSMove : MonoBehaviour
                 transform.position = targetPos;
                 pos = targetPos;
                 moveLeft = false;
-                Debug.Log(pos.x);
+                bSounds = false;
             }
         }
         if (moveRight)
@@ -59,6 +68,12 @@ public class PSMove : MonoBehaviour
             {
                 moveRight = false;
                 return;
+            }
+
+            if (!bSounds)
+            {
+                SoundManager.Instance.PlaySeByName("paper01");
+                bSounds = true;
             }
 
             // 紙の移動量
@@ -87,6 +102,7 @@ public class PSMove : MonoBehaviour
                 pos = new Vector3(0.0f, tmp.y, tmp.z); ;
                 minusNum = 0.0f;
                 moveRight = false;
+                bSounds = false;
                 //一番手前の紙の時に破るモード
                 if (GetComponent<DivideTriangle>().GetNumber() == 1) {
                     CursorSystem.SetGameState(CursorSystem.GameState.MODE_ACTION);
@@ -100,6 +116,7 @@ public class PSMove : MonoBehaviour
         if (!moveRight)
         {
             moveLeft = true;
+            bSounds = false;
             return true;
         }
 
@@ -111,6 +128,7 @@ public class PSMove : MonoBehaviour
         if (!moveLeft)
         {
             moveRight = true;
+            bSounds = false;
             return true;
         }
 

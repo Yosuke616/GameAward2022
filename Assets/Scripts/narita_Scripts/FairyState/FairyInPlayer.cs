@@ -20,6 +20,11 @@ public class FairyInPlayer : MonoBehaviour
 
     void Update()
     {
-        
+    }
+
+    public void ClearMotion()
+    {
+        animator.CrossFade("Clear", 0);
+
     }
 }

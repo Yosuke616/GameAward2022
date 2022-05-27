@@ -141,6 +141,7 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                     GameObject original = _stageGrid[(y * gridNumX) + x].sourceObject;
 
                     // À•W‚ğ‡‚í‚¹‚é
+                    if (CollisionGrid[(y * gridNumX) + x] == null) Debug.LogError("");
                     original.GetComponent<EnemyBehavior>().Synchronous(CollisionGrid[(y * gridNumX) + x]);
                     // e‚ğ•Ï‚¦‚é
                     CollisionGrid[(y * gridNumX) + x].transform.SetParent(original.transform);

@@ -58,6 +58,10 @@ public class Result_Script : MonoBehaviour
     //選択できるかのフラグ
     private bool Optionflg;
 
+    //ステージの名前を保存する変数
+    [SerializeField] string StageName;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -218,19 +222,21 @@ public class Result_Script : MonoBehaviour
     public void OnSelect()
     {
         // 同一シーンを読込
-        //SceneManager.LoadScene("StageSelect");
-        
+        FadeManager.Instance.FadeStart("StageSelect");
+
     }
 
     public void OnRetry() {
         
         // 同一シーンを読込
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        FadeManager.Instance.FadeStart(StageName);
+
     }
 
     public void OnTitle() {
         // 同一シーンを読込
-        //SceneManager.LoadScene("StageSelect");   
+        FadeManager.Instance.FadeStart("Title");
+
     }
 
 }

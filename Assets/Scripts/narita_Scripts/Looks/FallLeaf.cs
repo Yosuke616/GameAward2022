@@ -98,7 +98,8 @@ public class FallLeaf : Looks
             leaf.GetComponent<Renderer>().materials = mats;
             // x²‚ğƒJƒƒ‰‚Æ‡‚í‚¹‚é
             leaf.transform.position = camera.transform.position;
-
+            // ‚ ‚½‚è”»’è‚ğÁ‚·
+            leaf.GetComponent<Collider>().enabled = false;
 
             leaf.transform.position += new Vector3(
                 rundumPosX,  // ‰æ–Ê“à‚Åƒ‰ƒ“ƒ_ƒ€

@@ -19,6 +19,7 @@ TagManager:
   - Fiary
   - PlayerSub
   - CardSoldier
+  - rock
   layers:
   - Default
   - TransparentFX

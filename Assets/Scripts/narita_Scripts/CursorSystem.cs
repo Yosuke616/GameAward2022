@@ -234,7 +234,6 @@ public class CursorSystem : MonoBehaviour
                                 // 次の紙がすでに破る処理が行われているかチェック
                                 if (CheckNextPaperDividing(paperNum))
                                 {
-                                    Debug.LogWarning("continue");
                                     // 次の紙も破る
                                     continue;
                                 }

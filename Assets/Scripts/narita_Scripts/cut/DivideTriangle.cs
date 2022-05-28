@@ -124,7 +124,6 @@ public class DivideTriangle : MonoBehaviour
         List<Vector3> cross = new List<Vector3>();
         List<Vector2> crossUv = new List<Vector2>();
         List<float> ts = new List<float>();
-        //Vector2 crossUv = Vector2.zero;
         float t1, t2;
         for (int i = 0; i < outline.Count; i++)
         {
@@ -133,9 +132,6 @@ public class DivideTriangle : MonoBehaviour
 
             if (CalcCrossVertex(Start, outline[i], CurrentEdge, outlineEdge, out t1, out t2))
             {
-                // 2目以降の交点を受け付けない
-                if (cross.Count == 2) { break; }
-
                 // 破り中フラグON
                 m_bDividing = true;
                 // 交点
@@ -177,12 +173,13 @@ public class DivideTriangle : MonoBehaviour
         {
             for (int i = 0; i < cross.Count; i++)
             {
-                if(i >= 2) { Debug.LogError(""); break;   }
+                if(i >= 2) { Debug.Log("3つ以上の交点を確認"); break;　}
 
+                // 外周の頂点として登録する
                 if (AddOutlineVertex(cross[i], crossUv[i]) == false) Debug.LogError(cross[i]);
 
                 // 切断パスに登録
-                //cross[i] = 0.0f;
+                Debug.Log(cross[i]);
                 m_cuttingPath.Add(cross[i]);
                 m_uvs.Add(crossUv[i]);
             }
@@ -231,7 +228,7 @@ public class DivideTriangle : MonoBehaviour
 
         if (onceInside == false && m_bDividing)
         {
-            Debug.LogWarning("-----------------------------------");
+            Debug.LogWarning("破ります");
 
             s_FairyMoving = true;
             m_bCut = true;
@@ -320,7 +317,7 @@ public class DivideTriangle : MonoBehaviour
         var Outlines = GetComponent<OutLinePath>().OutLineVertices;
         var outlineUVs = GetComponent<OutLinePath>().Getuvs();
 
-        if (Outlines.Count == outlineUVs.Count && m_cuttingPath.Count == m_uvs.Count) { Debug.LogWarning("関門突破"); }
+        if (Outlines.Count == outlineUVs.Count && m_cuttingPath.Count == m_uvs.Count) { }
         else { Debug.LogError("リストのサイズが一致しませんでした"); return; }
 
         // デバッグ------

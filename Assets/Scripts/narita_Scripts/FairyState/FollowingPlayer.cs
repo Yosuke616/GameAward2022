@@ -56,7 +56,5 @@ public class FollowingPlayer : FairyState
             fs.SetState(Fiary_Script.eFairyState.STATE_DICISION_BREAKING_POINT);
             fs.BigStart();
         }
-
-        Debug.Log("FOLLOW");
     }
 }

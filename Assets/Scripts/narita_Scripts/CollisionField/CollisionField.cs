@@ -121,10 +121,25 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                     // もととなるオブジェクト
                     GameObject original = _stageGrid[(y * gridNumX) + x].sourceObject;
 
-                    CollisionGrid[(y * gridNumX) + x].AddComponent<CheckSameLayer>();
                     // 座標を合わせる
                     original.GetComponent<Enemy>().Synchronous(CollisionGrid[(y * gridNumX) + x]);
                     original.GetComponent<Enemy>().SetActive(true);
+                    // 親を変える
+                    CollisionGrid[(y * gridNumX) + x].transform.SetParent(original.transform);
+                    // コリジョンをトリガーに変更
+                    CollisionGrid[(y * gridNumX) + x].GetComponent<BoxCollider>().isTrigger = true;
+                    // エネミーだった場合は生成はするがStagelayerは空にしておく
+                    CollisionGrid[(y * gridNumX) + x] = null;
+                }
+                else if (CollisionGrid[(y * gridNumX) + x].tag == "rock")
+                {
+                    // 決められたレイヤーでしか存在できない
+                    var checkLayer = CollisionGrid[(y * gridNumX) + x].AddComponent<CheckSameLayer>();
+                    checkLayer.SetLayer(layer + 1);
+
+                    // もととなるオブジェクト
+                    GameObject original = _stageGrid[(y * gridNumX) + x].sourceObject;
+
                     // 親を変える
                     CollisionGrid[(y * gridNumX) + x].transform.SetParent(original.transform);
                     // コリジョンをトリガーに変更
@@ -205,6 +220,7 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                                 CollisionGrid[objCount] = null;
                             }
 
+
                             // 次のレイヤーに更新
                             layerList[objCount]++;
                         }
@@ -265,6 +281,7 @@ public class CollisionField : SingletonMonoBehaviour<CollisionField>
                                 // エネミーだった場合は生成はするがStagelayerは空にしておく
                                 CollisionGrid[objCount] = null;
                             }
+                            
                             
 
                             // 次のレイヤーに更新

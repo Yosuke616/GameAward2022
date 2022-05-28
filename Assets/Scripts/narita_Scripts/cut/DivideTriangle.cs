@@ -56,6 +56,8 @@ public class DivideTriangle : MonoBehaviour
     {
         int resultState = (int)ResultOfDividing.NONE;
 
+        if(m_bCut) { return (int)ResultOfDividing.MIDDLE_OF_BREAKING; }
+
         // 妖精さんが仕事中の場合は何もしないぞよ
         if (s_FairyMoving && OldFairyMoving == s_FairyMoving) return resultState;
         OldFairyMoving = s_FairyMoving;
@@ -109,6 +111,8 @@ public class DivideTriangle : MonoBehaviour
         End = MousePoints[MousePoints.Count - 1];   // 終点座標
         // 始点-終点ベクトル
         Vector3 CurrentEdge = End - Start;
+
+        Start.z = End.z = 0.0f;
 
         // 三角形の頂点格納先
         Vector3[] p = new Vector3[3];
@@ -173,9 +177,12 @@ public class DivideTriangle : MonoBehaviour
         {
             for (int i = 0; i < cross.Count; i++)
             {
+                if(i >= 2) { Debug.LogError(""); break;   }
+
                 if (AddOutlineVertex(cross[i], crossUv[i]) == false) Debug.LogError(cross[i]);
 
                 // 切断パスに登録
+                //cross[i] = 0.0f;
                 m_cuttingPath.Add(cross[i]);
                 m_uvs.Add(crossUv[i]);
             }
@@ -219,6 +226,9 @@ public class DivideTriangle : MonoBehaviour
         // 外側＆着る処理中の場合カットするぞ
         Vector2 limit = new Vector2(CreateTriangle.paperSizeX, CreateTriangle.paperSizeY);
 
+        // 紙の破れ更新
+        UpdateDottedLine();
+
         if (onceInside == false && m_bDividing)
         {
             Debug.LogWarning("-----------------------------------");
@@ -232,26 +242,12 @@ public class DivideTriangle : MonoBehaviour
 
             BreakingMove.SetFairyMovePoints(m_cuttingPath);
             fairy.transform.position = m_cuttingPath[0];
-            //// 切断
-            //Cut();
-            //
-            //// 切断パスをクリア
-            //m_cuttingPath.Clear();
-            //m_uvs.Clear();
-            //
-            //// 破る処理は修了
-            //m_bDividing = false;
 
             // 戻り値:切断終了
             resultState = (int)ResultOfDividing.END_OF_BREAKING;
         }
 
 
-        // 切断パスの整理
-        //DecCuttingPath(ref m_cuttingPath);
-
-        // 紙の破れ更新
-        UpdateDottedLine();
 
         // 切断パスが切断パスと交差した場合
         if (MakeHole(Start, End))
@@ -259,6 +255,7 @@ public class DivideTriangle : MonoBehaviour
             //--- やり直し
             Debug.LogWarning("切断パスが交差しました");
 
+            DivideTriangle.AllReset();
             // 切断パスをクリア
             m_cuttingPath.Clear();
             m_uvs.Clear();

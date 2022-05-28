@@ -76,68 +76,78 @@ public class PlayerMove2 : MonoBehaviour
         if (CursorSystem.GetGameState() == CursorSystem.GameState.MODE_OPENING) return;
 
 
-        if (flg && GameOver_Flg_Enemy)
+        if (CursorSystem.GetGameState() == CursorSystem.GameState.MODE_ACTION)
         {
-            // プレイヤーの向き
-            if (Input.GetKey(KeyCode.A) || Input.GetAxis("Horizontal") == -1)     _state = PLAYER_STATE.STATE_LEFT_MOVE;
-            else if (Input.GetKey(KeyCode.D)|| Input.GetAxis("Horizontal") == 1)  _state = PLAYER_STATE.STATE_RIGHT_MOVE;
-            else if(Input.GetKeyDown(KeyCode.S) || Input.GetAxis("Vertical") < 0) _state = PLAYER_STATE.STATE_STOP;
-            // ジャンプ
-            #if UNITY_EDITOR
-            else if (Input.GetKeyDown(KeyCode.W)) GetComponent<Rigidbody>().AddForce(new Vector3(0, 10.0f, 0), ForceMode.Impulse);
-            #endif
-
-            switch (_state)
+            if (flg && GameOver_Flg_Enemy)
             {
-                case PLAYER_STATE.STATE_STOP:
-                    // 待機モーション
-                    if(AnimState < 2)
-                    AnimState = 0;
-                    break;
-                case PLAYER_STATE.STATE_LEFT_MOVE:
+                // プレイヤーの向き
+                if (Input.GetKey(KeyCode.A) || Input.GetAxis("Horizontal") == -1) _state = PLAYER_STATE.STATE_LEFT_MOVE;
+                else if (Input.GetKey(KeyCode.D) || Input.GetAxis("Horizontal") == 1) _state = PLAYER_STATE.STATE_RIGHT_MOVE;
+                else if (Input.GetKeyDown(KeyCode.S) || Input.GetAxis("Vertical") < 0) _state = PLAYER_STATE.STATE_STOP;
+                // ジャンプ
+#if UNITY_EDITOR
+                else if (Input.GetKeyDown(KeyCode.W)) GetComponent<Rigidbody>().AddForce(new Vector3(0, 10.0f, 0), ForceMode.Impulse);
+#endif
 
-                    transform.position += -transform.right * speed;
+                switch (_state)
+                {
+                    case PLAYER_STATE.STATE_STOP:
+                        // 待機モーション
+                        if (AnimState < 2)
+                            AnimState = 0;
+                        break;
+                    case PLAYER_STATE.STATE_LEFT_MOVE:
 
-                    // 歩きモーション
-                    if (AnimState < 2)
-                    AnimState = 1;
-                    break;
-                case PLAYER_STATE.STATE_RIGHT_MOVE:
-                    transform.position += transform.right * speed;
+                        transform.position += -transform.right * speed;
 
-                    // 歩きモーション
-                    if (AnimState < 2)
-                    AnimState = 1;
-                    break;
-                default: break;
+                        // 歩きモーション
+                        if (AnimState < 2)
+                            AnimState = 1;
+                        break;
+                    case PLAYER_STATE.STATE_RIGHT_MOVE:
+                        transform.position += transform.right * speed;
+
+                        // 歩きモーション
+                        if (AnimState < 2)
+                            AnimState = 1;
+                        break;
+                    default: break;
+                }
+            }
+
+
+            Vector3 pos = transform.parent.transform.InverseTransformPoint(transform.position);
+            Debug.Log(pos);
+
+            if (pos.x > limitRight) { pos.x = limitRight; /* Debug.LogError("");*/ }
+            if (pos.x < limitLeft) { pos.x = limitLeft;/* Debug.LogError("");*/ }
+
+            transform.position = transform.parent.gameObject.transform.TransformPoint(pos);
+
+            // 画面外に出たらゲームオーバー
+            if (transform.position.y < offScrren)
+            {
+                // if (tex != null) tex.text = "　　　　失敗！";
+
+                if (!SE)
+                {
+                    SoundManager.Instance.StopBgm();
+                    SoundManager.Instance.PlaySeByName("jingle37");
+                    SE = true;
+                }
+
+                GameObject enemy2 = GameObject.Find("MainCamera");
+                enemy2.GetComponent<GameOverScript>().SetGameOver_Flg(true);
+
+                _GameOverBG.gameObject.SetActive(true);
+                flg = false;
             }
         }
-
-        
-        Vector3 pos = transform.parent.transform.InverseTransformPoint(transform.position);
-        Debug.Log(pos);
-        
-        if (pos.x > limitRight) { pos.x = limitRight; /* Debug.LogError("");*/ }
-        if (pos.x < limitLeft) { pos.x = limitLeft;/* Debug.LogError("");*/ }
-
-        transform.position = transform.parent.gameObject.transform.TransformPoint(pos);
-
-        // 画面外に出たらゲームオーバー
-        if (transform.position.y < offScrren)
+        else
         {
-            // if (tex != null) tex.text = "　　　　失敗！";
-
-            if (!SE) {
-                SoundManager.Instance.StopBgm();
-                SoundManager.Instance.PlaySeByName("jingle37");
-                SE = true;
-            }
-
-            GameObject enemy2 = GameObject.Find("MainCamera");
-            enemy2.GetComponent<GameOverScript>().SetGameOver_Flg(true);
-
-            _GameOverBG.gameObject.SetActive(true);
-            flg = false;
+            // アクション以外の時は止まる
+            if (AnimState < 2)
+                AnimState = 0;
         }
     }
 
@@ -166,7 +176,7 @@ public class PlayerMove2 : MonoBehaviour
         }
 
         // 敵に触れたとき
-        else if (collision.gameObject.gameObject.tag == "enemy" || collision.gameObject.gameObject.tag == "CardSoldier")
+        else if (collision.gameObject.gameObject.tag == "enemy" || collision.gameObject.gameObject.tag == "rock")
         {
             GameObject enemy = GameObject.Find("MainCamera");
             enemy.GetComponent<GameOverScript>().SetGameOver_Flg(true);
@@ -192,7 +202,7 @@ public class PlayerMove2 : MonoBehaviour
         }
 
         // 敵に触れたとき
-        else if (other.gameObject.gameObject.tag == "enemy" || other.gameObject.gameObject.tag == "CardSoldier")
+        else if (other.gameObject.gameObject.tag == "enemy" || other.gameObject.gameObject.tag == "rock")
         {
             GameObject enemy = GameObject.Find("MainCamera");
             enemy.GetComponent<GameOverScript>().SetGameOver_Flg(true);

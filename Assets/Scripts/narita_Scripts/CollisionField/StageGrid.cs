@@ -171,6 +171,8 @@ public class StageGrid : MonoBehaviour
                 // オブジェクトリストに追加
                 Grids.Add(mass);
 
+                mass.GetComponent<MeshRenderer>().enabled = false;
+
                 // 空のブロックを追加しておく
                 collisionGrid.Add(new StageBlock());
             }

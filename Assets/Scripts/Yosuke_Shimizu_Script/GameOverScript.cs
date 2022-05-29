@@ -161,12 +161,12 @@ public class GameOverScript : MonoBehaviour
         {
             nCnt2--;
 
-            Debug.Log("Ç®äGï`Ç´ÇµÇΩÇ¢ÇÊ");
-
             if (nCnt2 < 0)
             {
                 if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetAxis("Vertical") > 0)
                 {
+                    SoundManager.Instance.PlaySeByName("SE_MenuOperation");
+
                     nCnt2 = 10;
                     SelectButton--;
                     if (SelectButton < 0)
@@ -176,6 +176,8 @@ public class GameOverScript : MonoBehaviour
                 }
                 if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical") < 0)
                 {
+                    SoundManager.Instance.PlaySeByName("SE_MenuOperation");
+
                     nCnt2 = 10;
                     SelectButton++;
                     if (SelectButton > nMaxButton)
@@ -222,7 +224,8 @@ public class GameOverScript : MonoBehaviour
             //É{É^ÉìÇâüÇπÇÈÇ©Ç«Ç§Ç©Çîªï Ç∑ÇÈ
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
             {
-                Debug.Log("ì¸Ç¡ÇΩÇÊÅ[");
+                SoundManager.Instance.PlaySeByName("RipUpPaper07");
+
                 switch (SelectButton)
                 {
                     case 0: OnSelect(); break;

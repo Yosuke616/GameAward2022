@@ -117,17 +117,15 @@ public class PlayerMove2 : MonoBehaviour
 
 
             Vector3 pos = transform.parent.transform.InverseTransformPoint(transform.position);
-            Debug.Log(pos);
 
-            if (pos.x > limitRight) { pos.x = limitRight; /* Debug.LogError("");*/ }
-            if (pos.x < limitLeft) { pos.x = limitLeft;/* Debug.LogError("");*/ }
+            if (pos.x > limitRight) pos.x = limitRight;
+            if (pos.x < limitLeft)  pos.x = limitLeft; 
 
             transform.position = transform.parent.gameObject.transform.TransformPoint(pos);
 
             // 画面外に出たらゲームオーバー
             if (transform.position.y < offScrren)
             {
-                // if (tex != null) tex.text = "　　　　失敗！";
 
                 if (!SE)
                 {

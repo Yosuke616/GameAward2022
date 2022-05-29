@@ -83,7 +83,7 @@ public class GameOverScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(g_bGameOverFlg);
+        //Debug.Log(g_bGameOverFlg);
 
         if (!Optionflg)
         {

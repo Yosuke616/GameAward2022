@@ -2023,6 +2023,26 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 8412117440360662284, guid: 741666eb38811274182813959f2fa9c1, type: 3}
   m_PrefabInstance: {fileID: 822085714}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &473823190 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6043879187197272790, guid: cb8ff25c4db619d4ebc0c661754a3855, type: 3}
+  m_PrefabInstance: {fileID: 1078697976}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &473823191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473823190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8283014ae2ef054382d706e61432c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mats:
+  - {fileID: 2100000, guid: af51e2702f5befa44b93985ffc081252, type: 2}
+  CreateSpace: {x: 0, y: 0, z: 0}
 --- !u!1 &505476162
 GameObject:
   m_ObjectHideFlags: 0
@@ -4591,11 +4611,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6043879187197272788, guid: cb8ff25c4db619d4ebc0c661754a3855, type: 3}
+      propertyPath: looks
+      value: 
+      objectReference: {fileID: 473823191}
     - target: {fileID: 6043879187197272790, guid: cb8ff25c4db619d4ebc0c661754a3855, type: 3}
       propertyPath: m_Name
       value: LooksManager
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6043879187197272789, guid: cb8ff25c4db619d4ebc0c661754a3855, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: cb8ff25c4db619d4ebc0c661754a3855, type: 3}
 --- !u!1 &1090187936
 GameObject:

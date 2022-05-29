@@ -209,19 +209,18 @@ public class CursorSystem : MonoBehaviour
                         switch (breakingState)
                         {
                             case 0: // 破いてない状態
+                                // 次の紙も破る
                                 continue;
 
                             case 1: // 破り途中
                                 // 次の紙がすでに破る処理が行われているかチェック
                                 if (CheckNextPaperDividing(paperNum))
-                                {
                                     // 次の紙も破る
                                     continue;
-                                }
                                 else
-                                {
+                                    // 終わり
                                     return;
-                                }
+
                             case 2: // 破り終えた
                                 // 手前の紙を破ったら奥の紙は破らない
                                 // ※すでに破る処理を開始している奥の紙は破る
@@ -234,15 +233,14 @@ public class CursorSystem : MonoBehaviour
                                 }
                                 else
                                 {
-                                    //// 破り中フラグのリセット
-                                    //DivideTriangle.AllReset();
-                                    //outsider.DivideEnd();
                                     // ポジションリストをクリア
                                     MousePoints.Clear();
                                     return;
                                 }
 
-                            case 3: return; // 一番最初はここ
+                            case 3:
+                                // 終わり
+                                return; 
 
                             case 4: // 予期しない操作の場合はリセットする
                                 // 破り中フラグのリセット
@@ -262,7 +260,7 @@ public class CursorSystem : MonoBehaviour
             #endregion
 
             //　破りキャンセル
-            if (Input.GetKeyDown("joystick button 0") || Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKeyDown("joystick button 0"))
             {
                 // 破り中フラグのリセット
                 DivideTriangle.AllReset();
@@ -312,6 +310,7 @@ public class CursorSystem : MonoBehaviour
     // 奥の紙が破り中かどうか
     public bool CheckNextPaperDividing(int currentPaperNum)
     {
+        // 現在選択されている紙の次から破り中かどうかを確認する
         for (int paperNum = currentPaperNum + 1; paperNum <= maxPaper; paperNum++)
         {
             // 奥の紙が1枚でも破り途中ならtrue
@@ -322,5 +321,11 @@ public class CursorSystem : MonoBehaviour
             }
         }
         return false;
+    }
+
+    // カーソル座標リストを空にする
+    public void ClearPos()
+    {
+        MousePoints.Clear();
     }
 }

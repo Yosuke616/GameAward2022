@@ -25,12 +25,16 @@ public class DivideTriangle : MonoBehaviour
     // 切断パス
     [SerializeField] List<Vector2> m_uvs;
 
+    // 交点の数
+    [SerializeField] private int m_nCrossCnt;
+
+    // 切断フラグ
+    [SerializeField] private bool m_bCut;
     // 破り処理中
     [SerializeField] private bool m_bDividing;
     // 破り処理中getter
     public bool Dividing { get { return this.m_bDividing; } }
-
-    [SerializeField] private bool m_bCut;
+    
 
 
     //*** 初期化
@@ -39,12 +43,18 @@ public class DivideTriangle : MonoBehaviour
         // メッシュ
         attachedMeshFilter = GetComponent<MeshFilter>();
         attachedMesh = attachedMeshFilter.mesh;
+
         // 切断パス
         m_cuttingPath = new List<Vector3>();
         m_uvs = new List<Vector2>();
-        // 破り処理フラグ
+
+        // 破り中フラグ
         m_bDividing = false;
+        // 切断フラグ
         m_bCut = false;
+
+        // 交点の数
+        m_nCrossCnt = 0;
     }
 
     //*** 破る
@@ -143,7 +153,6 @@ public class DivideTriangle : MonoBehaviour
 
         //--- 外周の辺と交差しているか調べる
         List<Vector3> outline = GetComponent<OutLinePath>().OutLineVertices;
-
         List<Vector3> cross = new List<Vector3>();
         List<Vector2> crossUv = new List<Vector2>();
         List<float> ts = new List<float>();
@@ -168,7 +177,6 @@ public class DivideTriangle : MonoBehaviour
                 ts.Add(t1);
             }
         }
-
         // 交点が二つ以上ある場合
         if (cross.Count >= 2)
         {
@@ -190,21 +198,45 @@ public class DivideTriangle : MonoBehaviour
                 i++;
             }
         }
-
         // アウトラインに交点を登録
         if (cross.Count != 0)
         {
             for (int i = 0; i < cross.Count; i++)
             {
-                if(i >= 2) { Debug.Log("3つ以上の交点を確認"); break;　}
+
+                //--- 交点の数が2になったった場合はそこで終わり切断フラグを立てる
+                if(m_nCrossCnt == 2)
+                {
+                    Debug.LogWarning("2つ");
+
+                    // 紙の破れ更新
+                    UpdateDottedLine();
+
+                    // 切断フラグON
+                    m_bCut = true;
+
+                    // 妖精のステート遷移(破り中
+                    GameObject fairy = GameObject.Find("Yousei1");
+                    var fs = fairy.GetComponent<Fiary_Script>();
+                    fs.SetState(Fiary_Script.eFairyState.STATE_BREAKING_MOVE);
+                    // 妖精の移動ルート
+                    BreakingMove.SetFairyMovePoints(m_cuttingPath);
+                    // 妖精の座標を調整
+                    fairy.transform.position = m_cuttingPath[0];
+
+                    // 戻り値:切断終了
+                    return (int)ResultOfDividing.END_OF_BREAKING;
+                }
 
                 // 外周の頂点として登録する
                 if (AddOutlineVertex(cross[i], crossUv[i]) == false) Debug.LogError(cross[i]);
 
                 // 切断パスに登録
-                Debug.Log(cross[i]);
                 m_cuttingPath.Add(cross[i]);
                 m_uvs.Add(crossUv[i]);
+
+                // 交点の数
+                m_nCrossCnt++;
             }
         }
 
@@ -251,13 +283,16 @@ public class DivideTriangle : MonoBehaviour
         {
             Debug.LogWarning("破ります");
 
+            // 切断フラグON
             m_bCut = true;
 
+            // 妖精のステート遷移(破り中
             GameObject fairy = GameObject.Find("Yousei1");
             var fs = fairy.GetComponent<Fiary_Script>();
             fs.SetState(Fiary_Script.eFairyState.STATE_BREAKING_MOVE);
-
+            // 移動するルートをセット
             BreakingMove.SetFairyMovePoints(m_cuttingPath);
+            // 妖精の座標を調整
             fairy.transform.position = m_cuttingPath[0];
 
             // 戻り値:切断終了
@@ -299,7 +334,6 @@ public class DivideTriangle : MonoBehaviour
         // 切断パスとアウトラインが3つ以上かぶっている
         if (crossNum != 2)
         {
-            //foreach (var v in d) Debug.LogWarning(v + "   ");
             Debug.LogError(crossNum);
         }
         //-------------
@@ -327,7 +361,7 @@ public class DivideTriangle : MonoBehaviour
 
                     // 次の座標へ
                     outlineIndex++;
-                    if (outlineIndex >= Outlines.Count) { Debug.LogError("外周の頂点情報がおかしい"); break; }
+                    if (outlineIndex >= Outlines.Count) { Debug.LogError("外周の頂点情報がおかしい"); return; }
                 }
                 // 二つ目のアウトラインに追加しておく
                 objOutline2.Add(Outlines[outlineIndex]);
@@ -356,7 +390,7 @@ public class DivideTriangle : MonoBehaviour
 
                     // 次の座標へ
                     outlineIndex++;
-                    if (outlineIndex >= Outlines.Count) { Debug.LogError("外周の頂点情報がおかしい"); break; }
+                    if (outlineIndex >= Outlines.Count) { Debug.LogError("外周の頂点情報がおかしい"); return; }
                 }
                 // 二つ目のアウトラインに追加しておく
                 objOutline2.Add(Outlines[outlineIndex]);
@@ -561,7 +595,7 @@ public class DivideTriangle : MonoBehaviour
             boolList2.Add(ret);
         }
         bool oldFlag2 = false;
-        //foreach (var item in boolList2) Debug.Log(item);
+
         for (int i = 0; i < boolList2.Count; i++)
         {
             if (boolList2[i])
@@ -785,13 +819,8 @@ public class DivideTriangle : MonoBehaviour
     // 3で割った余りを返す
     private int Percent3(int num) { return num % 3; }
 
-
-
-
-
-
     //*** 切断パスが交差したかどうか判定する
-    bool MakeHole(Vector3 Start, Vector3 End)
+    private bool MakeHole(Vector3 Start, Vector3 End)
     {
         float t1, t2;
         Vector3 currentLine = End - Start;
@@ -920,8 +949,6 @@ public class DivideTriangle : MonoBehaviour
 
         if (index != -1)
         {
-            //Debug.LogWarning("outLinePathに" + checkPoint + "を挿入します");
-            //Debug.Log("インデクス数:" + outline.Count + "   挿入要素:" + index);
             // 外周上の点を追加
             outlinePath.InsertPoint(index, checkPoint, uv);
             return true;
@@ -1059,7 +1086,6 @@ public class DivideTriangle : MonoBehaviour
             ret = true;
         }
 
-
         return ret;
     }
 
@@ -1089,12 +1115,16 @@ public class DivideTriangle : MonoBehaviour
 
             var divide = paper.GetComponent<DivideTriangle>();
 
+            // 破りフラグOFF
+            divide.m_bCut = false;
             // 破り中フラグOFF
             divide.m_bDividing = false;
             // 切断パスのリセット
             divide.m_cuttingPath.Clear();
             // 切断パスのUV座標のリセット
             divide.m_uvs.Clear();
+            // 現在の交点数のリセット
+            divide.m_nCrossCnt = 0;
 
             // 点線も消す
             for (int i = 0; i < paper.transform.childCount; i++)
@@ -1112,17 +1142,6 @@ public class DivideTriangle : MonoBehaviour
         // 紙束
         List<GameObject> papers = new List<GameObject>();
         papers.AddRange(GameObject.FindGameObjectsWithTag("paper"));
-
-        //foreach (var paper in papers)
-        //{
-        //    var divide = paper.GetComponent<DivideTriangle>();
-        //    // 破り中のオブジェクトはCut関数を呼ぶ
-        //    if (divide.m_bCut)
-        //    {
-        //        // 破る
-        //        divide.Cut();
-        //    }
-        //}
 
         for (int i = papers.Count - 1; i >= 0 ; i--)
         {
@@ -1144,6 +1163,8 @@ public class DivideTriangle : MonoBehaviour
                 divide.m_cuttingPath.Clear();
                 // 切断パスのUV座標のリセット
                 divide.m_uvs.Clear();
+                // 現在の交点数のリセット
+                divide.m_nCrossCnt = 0;
 
                 // 点線も消す
                 for (int j = 0; j < papers[i].transform.childCount; j++)
@@ -1155,6 +1176,9 @@ public class DivideTriangle : MonoBehaviour
                 }
             }
         }
+
+        // カーソル座標リストを空にする
+        GameObject.Find("Cursor").GetComponent<CursorSystem>().ClearPos();
     }
 
     // その座標群がメッシュ内に存在するか

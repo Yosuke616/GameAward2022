@@ -26,6 +26,9 @@ public class Fade_Title : MonoBehaviour
     //順番にフェードさせる
     private bool Jun;
 
+    //ボタンを押したら最初の演出をスキップできるようにする
+    private bool IkkaiSkip;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,6 +45,9 @@ public class Fade_Title : MonoBehaviour
         nBlackCnt = 255;
 
         Jun = false;
+
+        //初めはスキップできるぜ
+        IkkaiSkip = false;
     }
 
     // Update is called once per frame
@@ -111,6 +117,21 @@ public class Fade_Title : MonoBehaviour
                     }
                 }
             }
+
+            //ボタンを押したらスキップするようにする
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown("joystick button 1"))
+            {
+                black.GetComponent<SpriteRenderer>().material.color = new Color32(0, 0, 0, 0);
+                St_Button.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                Ct_Button.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                Op_Button.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                En_Button.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                Title_Log.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+                GameObject camera = GameObject.Find("Main Camera");
+                camera.GetComponent<Title_Button_Script>().SetStartFlg(true);
+                Valume.First_Title = true;
+            }
+
         }
         else {
             black.GetComponent<SpriteRenderer>().material.color = new Color32(0, 0, 0, 0);
@@ -122,6 +143,7 @@ public class Fade_Title : MonoBehaviour
             GameObject camera = GameObject.Find("Main Camera");
             camera.GetComponent<Title_Button_Script>().SetStartFlg(true);
 
-        }
+        }       
+
     }
 }

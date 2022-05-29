@@ -101,6 +101,7 @@ public class Title_Button_Script : MonoBehaviour
         FirstSceneMove = false;
 
         StartFlg = false;
+
     }
 
     // Update is called once per frame

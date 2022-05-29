@@ -163,6 +163,8 @@ public class StageSelect : MonoBehaviour
                 {
                     if (Select < ProgressStages)
                     {
+                        SoundManager.Instance.PlaySeByName("SE_MenuOperation");
+
                         PanelState = PANEL_STATE.LEFT;
 
                         // 妖精さん左
@@ -180,6 +182,8 @@ public class StageSelect : MonoBehaviour
                 {
                     if (Select > 0)
                     {
+                        SoundManager.Instance.PlaySeByName("SE_MenuOperation");
+
                         PanelState = PANEL_STATE.RIGHT;
 
                         // 妖精さん右
@@ -357,6 +361,8 @@ public class StageSelect : MonoBehaviour
         // カメラ移動(ステージ移行)-------------------------------------------------------
         if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
         {
+            SoundManager.Instance.PlaySeByName("RipUpPaper07");
+
             // カメラ移動フラグON
             CamZoom = true;
 

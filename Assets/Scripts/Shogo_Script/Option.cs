@@ -59,6 +59,8 @@ public class Option : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetAxis("Vertical") > 0)
             {
+                SoundManager.Instance.PlaySeByName("SE_MenuOperation");
+
                 Cnt = 10;
                 SelectButton--;
                 if (SelectButton < 0)
@@ -68,6 +70,8 @@ public class Option : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical") < 0)
             {
+                SoundManager.Instance.PlaySeByName("SE_MenuOperation");
+
                 Cnt = 10;
                 SelectButton++;
                 if (SelectButton > MaxButton)
@@ -115,6 +119,8 @@ public class Option : MonoBehaviour
                 Debug.Log("çƒäJ");
 
                 if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0")) {
+                    SoundManager.Instance.PlaySeByName("RipUpPaper07");
+
                     GameObject Sarch = GameObject.Find("PausePanel(Clone)");
                     Sarch.GetComponent<Pause>().SetPauseFlg(false);
                     Pausepanel.SetActive(true);

@@ -55,6 +55,8 @@ public class Pause : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetAxis("Vertical") > 0)
             {
+                SoundManager.Instance.PlaySeByName("SE_MenuOperation");
+
                 Cnt = 10;
                 SelectButton--;
                 if (SelectButton < 0)
@@ -64,6 +66,9 @@ public class Pause : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical") < 0)
             {
+                //音を流す
+                SoundManager.Instance.PlaySeByName("SE_MenuOperation");
+
                 Cnt = 10;
                 SelectButton++;
                 if (SelectButton > MaxButton)
@@ -129,6 +134,8 @@ public class Pause : MonoBehaviour
             Debug.Log("ロゼッタ様ー");
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
             {
+                SoundManager.Instance.PlaySeByName("RipUpPaper07");
+
                 Debug.Log("入ったよー");
                 switch (SelectButton) {
                     case 0: OnResume(); break;

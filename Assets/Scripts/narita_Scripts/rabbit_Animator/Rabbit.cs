@@ -25,6 +25,16 @@ public class Rabbit : MonoBehaviour
         // 現在のアニメーション状態を取得
         var state = rabbitAnimator.GetCurrentAnimatorStateInfo(0); // 引数はAnimatorのLayersの番号
 
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            rabbitAnimator.SetFloat("Speed", 100);
+            onceFunc = false;
+
+            //rabbitAnimation.SetAnim("Take 001");
+
+            openingCamera.GetComponent<ZoomOut>().ZoomStart();
+        }
+
         // アニメーション状態が"Move" → "Idle"に遷移した場合
         if(onceFunc && state.IsName("RabbitIdle"))
         {

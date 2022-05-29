@@ -97,28 +97,45 @@ public class GameOverScript : MonoBehaviour
                 {
                     GameObject camera = GameObject.Find("MainCamera");
 
-                    if (Iine && nCnt < 0)
+                    // ƒJƒƒ‰‚Ìenable‚ªfalse‚Ìê‡‚Ínull‚É‚È‚Á‚Ä‚µ‚Ü‚¤‚Ì‚Å
+                    if(camera != null)
                     {
-                        camera.GetComponent<Blink_Script>().Blink(Iine);
+                        if (Iine && nCnt < 0)
+                        {
+                            Blink_Script bs = camera.GetComponent<Blink_Script>();
+                            if (bs)
+                            {
+                                bs.Blink(Iine);
+                            }
 
-                        Iine = false;
-                        MaxBlink--;
-                        nCnt = 10;
+                            Iine = false;
+                            MaxBlink--;
+                            nCnt = 10;
 
-                    }
-                    else if (!Iine && nCnt < 0)
-                    {
-                        camera.GetComponent<Blink_Script>().Blink(Iine);
+                        }
+                        else if (!Iine && nCnt < 0)
+                        {
+                            Blink_Script bs = camera.GetComponent<Blink_Script>();
+                            if (bs)
+                            {
+                                bs.Blink(Iine);
+                            }
 
-                        Iine = true;
-                        MaxBlink--;
-                        nCnt = 10;
-                    }
+                            Iine = true;
+                            MaxBlink--;
+                            nCnt = 10;
+                        }
 
-                    if (MaxBlink < 0)
-                    {
-                        camera.GetComponent<Blink_Script>().LastBlink();
-                        g_bBlinking = false;
+                        if (MaxBlink < 0)
+                        {
+                            Blink_Script bs = camera.GetComponent<Blink_Script>();
+                            if (bs)
+                            {
+                                bs.LastBlink();
+                            }
+                            //camera.GetComponent<Blink_Script>().LastBlink();
+                            g_bBlinking = false;
+                        }
                     }
                 }
 

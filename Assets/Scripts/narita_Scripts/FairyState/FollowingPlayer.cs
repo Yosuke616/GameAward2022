@@ -17,10 +17,6 @@ public class FollowingPlayer : FairyState
     }
 
 
-    public void Initialize(GameObject game)
-    {
-        fairy = game;
-    }
 
     private GameObject controller;
     private GameObject outsideLine;

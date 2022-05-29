@@ -125,6 +125,9 @@ public class Title_Button_Script : MonoBehaviour
                     {
                         //GameObject delete = GameObject.Find("breaking paper line");
 
+                        //音を流す
+                        SoundManager.Instance.PlaySeByName("SE_MenuOperation");
+
                         //スイッチ文で子オブジェクトを消す
                         switch (nSelectButton)
                         {
@@ -184,6 +187,9 @@ public class Title_Button_Script : MonoBehaviour
                     }
                     if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetAxis("Horizontal") > 0)
                     {
+                        //音を流す
+                        SoundManager.Instance.PlaySeByName("SE_MenuOperation");
+
                         //スイッチ文で子オブジェクトを消す
                         switch (nSelectButton)
                         {
@@ -289,16 +295,7 @@ public class Title_Button_Script : MonoBehaviour
                 // 決定
                 if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
                 {
-                    // 点線 → 破れ線に変更
-                    //List<GameObject> papers = new List<GameObject>();
-                    //papers.AddRange(GameObject.Find("paper"));
-                    //foreach(var papaer in papers)
-                    //{
-                        //for (int i = 0; i < paper.transform.childCount; i++)
-                        //{
-                        //    paper.transform.GetChild(i).GetComponent<LineRendererOperator>().hoge();
-                        //}
-                    //}
+                    SoundManager.Instance.PlaySeByName("RipUpPaper07");
 
                     switch (nSelectButton)
                     {

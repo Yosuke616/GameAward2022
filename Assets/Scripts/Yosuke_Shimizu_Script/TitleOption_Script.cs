@@ -69,7 +69,9 @@ public class TitleOption_Script : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetAxis("Vertical4") < 0)
                 {
-                    Cnt = 10;
+                SoundManager.Instance.PlaySeByName("SE_MenuOperation");
+
+                Cnt = 10;
                     SelectButton--;
                     if (SelectButton < 0)
                     {
@@ -78,7 +80,9 @@ public class TitleOption_Script : MonoBehaviour
                 }
                 if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetAxis("Vertical4") > 0)
                 {
-                    Cnt = 10;
+                SoundManager.Instance.PlaySeByName("SE_MenuOperation");
+
+                Cnt = 10;
                     SelectButton++;
                     if (SelectButton > MaxButton)
                     {
@@ -129,12 +133,7 @@ public class TitleOption_Script : MonoBehaviour
             if (SelectButton == 3) {
                 if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown("joystick button 0"))
                 {
-       //             TOFlg = true;
-       //             Option.SetActive(false);
-       //             Plate.SetActive(false);
-                    Debug.Log("ÉçÉ[ÉbÉ^Å[");
-                   // GameObject obj = GameObject.Find("Main Camera");
-                //             obj.GetComponent<Title_Button_Script>().SetTitleFlg(false);
+                SoundManager.Instance.PlaySeByName("RipUpPaper07");
 
                 FadeManager.Instance.FadeStart("Title");
 

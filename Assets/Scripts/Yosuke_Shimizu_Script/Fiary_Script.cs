@@ -47,14 +47,6 @@ public class Fiary_Script : MonoBehaviour
         big = true;
         frameCount = 30;
     }
-    public void Back()
-    {
-        this.transform.Rotate(new Vector3(0, 90, 0));
-    }
-    public void Front()
-    {
-        this.transform.Rotate(new Vector3(0, 90, 0));
-    }
 
 
     void Start()

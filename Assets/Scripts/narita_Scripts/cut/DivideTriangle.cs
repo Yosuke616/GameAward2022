@@ -33,10 +33,6 @@ public class DivideTriangle : MonoBehaviour
     [SerializeField] private bool m_bCut;
 
 
-    /* 妖精の破り演出中フラグ */
-    static public bool s_FairyMoving = false;
-    private bool OldFairyMoving;
-
     //*** 初期化
     void Start()
     {
@@ -56,11 +52,8 @@ public class DivideTriangle : MonoBehaviour
     {
         int resultState = (int)ResultOfDividing.NONE;
 
+        // 既に破り判定になっている場合は何もしない
         if(m_bCut) { return (int)ResultOfDividing.MIDDLE_OF_BREAKING; }
-
-        // 妖精さんが仕事中の場合は何もしないぞよ
-        if (s_FairyMoving && OldFairyMoving == s_FairyMoving) return resultState;
-        OldFairyMoving = s_FairyMoving;
 
         // 座標が2つなければ処理を行わない
         if (MousePoints.Count == 1)
@@ -117,6 +110,36 @@ public class DivideTriangle : MonoBehaviour
         // 三角形の頂点格納先
         Vector3[] p = new Vector3[3];
 
+
+        // 切断パスが切断パスと交差した場合
+        if (MakeHole(Start, End))
+        {
+            //--- やり直し
+            Debug.LogWarning("切断パスが交差しました");
+
+            DivideTriangle.AllReset();
+
+            // ---妖精をプレイヤー追従モードに
+            GameObject fairy = GameObject.Find("Yousei1");
+            var fs = fairy.GetComponent<Fiary_Script>();
+            fs.SetState(Fiary_Script.eFairyState.STATE_FOLLOWING_PLAYER);
+            //--- メインカメラの妖精を大きくする
+            fs.SmallStart();
+
+            //--- サブカメラの妖精を大きくする
+            List<GameObject> fairys = new List<GameObject>();
+            fairys.AddRange(GameObject.FindGameObjectsWithTag("Fiary"));
+            foreach (var f in fairys)
+            {
+                f.GetComponent<Fiary_Move>().BigStart();
+            }
+
+            //(仮SE)
+            SoundManager.Instance.PlaySeByName("SE_MenuOperation");
+
+            // 戻り値:すべての紙を破りをリセット
+            return (int)ResultOfDividing.RESET_DIVIDING;
+        }
 
         //--- 外周の辺と交差しているか調べる
         List<Vector3> outline = GetComponent<OutLinePath>().OutLineVertices;
@@ -185,8 +208,8 @@ public class DivideTriangle : MonoBehaviour
             }
         }
 
-
         //--- 押された座標がオブジェクトの外か内部か判定する
+        //    内側の場合は切断パスに登録
         bool onceInside = false; // 一度でも内側判定になったかどうか
         for (int index = 0; index < attachedMesh.triangles.Length; index += 3)
         {
@@ -220,17 +243,14 @@ public class DivideTriangle : MonoBehaviour
             #endregion
         }
 
-        // 外側＆着る処理中の場合カットするぞ
-        Vector2 limit = new Vector2(CreateTriangle.paperSizeX, CreateTriangle.paperSizeY);
-
         // 紙の破れ更新
         UpdateDottedLine();
 
+        // 破るかどうか
         if (onceInside == false && m_bDividing)
         {
             Debug.LogWarning("破ります");
 
-            s_FairyMoving = true;
             m_bCut = true;
 
             GameObject fairy = GameObject.Find("Yousei1");
@@ -242,60 +262,6 @@ public class DivideTriangle : MonoBehaviour
 
             // 戻り値:切断終了
             resultState = (int)ResultOfDividing.END_OF_BREAKING;
-        }
-
-
-
-        // 切断パスが切断パスと交差した場合
-        if (MakeHole(Start, End))
-        {
-            //--- やり直し
-            Debug.LogWarning("切断パスが交差しました");
-
-            DivideTriangle.AllReset();
-            // 切断パスをクリア
-            m_cuttingPath.Clear();
-            m_uvs.Clear();
-            // 破る処理は修了
-            m_bDividing = false;
-            // 戻り値:すべての紙を破りをリセット
-            resultState = (int)ResultOfDividing.RESET_DIVIDING;
-
-            // 点線も消す
-            List<GameObject> papers = new List<GameObject>();
-            papers.AddRange(GameObject.FindGameObjectsWithTag("paper"));
-            foreach (var paper in papers)
-            {
-                for (int i = 0; i < paper.transform.childCount; i++)
-                {
-                    if (paper.transform.GetChild(i).name == "breaking paper line")
-                    {
-                        Destroy(paper.transform.GetChild(i).gameObject);
-                    }
-                }
-            }
-
-
-            GameObject fairy = GameObject.Find("Yousei1");
-            // ---妖精をプレイヤー追従モードに
-            var fs = fairy.GetComponent<Fiary_Script>();
-            fs.SetState(Fiary_Script.eFairyState.STATE_FOLLOWING_PLAYER);
-
-            //--- メインカメラの妖精を大きくする
-            fs.SmallStart();
-
-            //--- サブカメラの妖精を大きくする
-            List<GameObject> fairys = new List<GameObject>();
-            fairys.AddRange(GameObject.FindGameObjectsWithTag("Fiary"));
-            foreach (var f in fairys)
-            {
-                // ---ここでスケールを小さくするフラグをONにする
-                f.GetComponent<Fiary_Move>().BigStart();
-            }
-
-            //(仮SE)
-            SoundManager.Instance.PlaySeByName("SE_MenuOperation");
-
         }
 
         return resultState;
@@ -635,7 +601,7 @@ public class DivideTriangle : MonoBehaviour
 
 
         // 現在のオブジェクトを消す
-        Destroy(gameObject);
+        //Destroy(gameObject);
 
         //--- 原点から中心へのベクトルで飛ばす
         Vector3 pos1 = obj1.GetComponent<Renderer>().bounds.center;
@@ -824,54 +790,26 @@ public class DivideTriangle : MonoBehaviour
 
 
 
-    //*** 切断パスがクロススタかどうか判定する
+    //*** 切断パスが交差したかどうか判定する
     bool MakeHole(Vector3 Start, Vector3 End)
     {
-        //if (!exsitStartPoint) return false;
-        bool ret = false;
-
-        float f1, f2;
-
+        float t1, t2;
         Vector3 currentLine = End - Start;
 
         // 切断パスと被っているか確認
-        for (int edgeIndex = 0; edgeIndex < m_cuttingPath.Count - 3; edgeIndex++) // m_cuttingPathのサイズが3以下の場合は何もなし
+        for (int edgeIndex = 0; edgeIndex < m_cuttingPath.Count - 2; edgeIndex++) // m_cuttingPathのサイズが3以下の場合は何もなし
         {
             // 切断パス
             Vector3 cuttingEdge = m_cuttingPath[(edgeIndex + 1) % m_cuttingPath.Count] - m_cuttingPath[edgeIndex];
 
-            if (CalcCrossVertex(Start, m_cuttingPath[edgeIndex], currentLine, cuttingEdge, out f1, out f2))
+            // 交差判定
+            if (CalcCrossVertex(Start, m_cuttingPath[edgeIndex], currentLine, cuttingEdge, out t1, out t2))
             {
-                Vector3 cross = Start + (currentLine * f1);
-                Vector2 uv, uv1, uv2;
-                Vector3 normal = Vector3.zero;
-                uv1 = uv2 = Vector2.zero;
-                for (int i = 0; i < attachedMesh.triangles.Length; i++)
-                {
-                    Vector3 p = attachedMesh.vertices[attachedMesh.triangles[i]];
-                    if (p.Equals(m_cuttingPath[(edgeIndex + 1) % m_cuttingPath.Count]))
-                    {
-                        uv2 = attachedMesh.uv[attachedMesh.triangles[i]];
-                        normal = attachedMesh.normals[attachedMesh.triangles[i]];
-                    }
-                }
-                for (int i = 0; i < attachedMesh.triangles.Length; i++)
-                {
-                    Vector3 p = attachedMesh.vertices[attachedMesh.triangles[i]];
-                    if (p.Equals(m_cuttingPath[edgeIndex]))
-                    {
-                        uv1 = attachedMesh.uv[attachedMesh.triangles[i]];
-                    }
-                }
-                uv = Vector2.Lerp(uv1, uv2, f2);
-
                 return true;
-
             }
-
         }
 
-        return ret;
+        return false;
     }
 
     //*** 線分上に点が存在するか
@@ -1149,8 +1087,8 @@ public class DivideTriangle : MonoBehaviour
         {
             if (paper == null) continue;
 
-
             var divide = paper.GetComponent<DivideTriangle>();
+
             // 破り中フラグOFF
             divide.m_bDividing = false;
             // 切断パスのリセット
@@ -1175,27 +1113,48 @@ public class DivideTriangle : MonoBehaviour
         List<GameObject> papers = new List<GameObject>();
         papers.AddRange(GameObject.FindGameObjectsWithTag("paper"));
 
-        foreach (var paper in papers)
-        {
-            if (paper == null) { Debug.LogError("紙なし"); continue; }
+        //foreach (var paper in papers)
+        //{
+        //    var divide = paper.GetComponent<DivideTriangle>();
+        //    // 破り中のオブジェクトはCut関数を呼ぶ
+        //    if (divide.m_bCut)
+        //    {
+        //        // 破る
+        //        divide.Cut();
+        //    }
+        //}
 
-            var divide = paper.GetComponent<DivideTriangle>();
-            // 破り中のオブジェクトはCut関数を呼ぶ
-            if (divide.m_bCut)
+        for (int i = papers.Count - 1; i >= 0 ; i--)
+        {
+            var divide = papers[i].GetComponent<DivideTriangle>();
+
+            if(divide.m_bCut)
             {
                 // 破る
                 divide.Cut();
 
-                // 切断パスをクリア
+                // このオブジェクトを削除
+                Destroy(papers[i].gameObject);
+            }
+            else
+            {
+                // 破り中フラグOFF
+                divide.m_bDividing = false;
+                // 切断パスのリセット
                 divide.m_cuttingPath.Clear();
+                // 切断パスのUV座標のリセット
                 divide.m_uvs.Clear();
 
-                // 破る処理は修了
-                divide.m_bDividing = false;
+                // 点線も消す
+                for (int j = 0; j < papers[i].transform.childCount; j++)
+                {
+                    if (papers[i].transform.GetChild(j).name == "breaking paper line")
+                    {
+                        Destroy(papers[i].transform.GetChild(j).gameObject);
+                    }
+                }
             }
         }
-
-        s_FairyMoving = false;
     }
 
     // その座標群がメッシュ内に存在するか

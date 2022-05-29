@@ -6,11 +6,7 @@ public class CursorSystem : MonoBehaviour
 {
     [SerializeField] private List<Vector3> MousePoints;
 
-    //[SerializeField] private bool startDivide;
-
     [SerializeField] private int maxPaper = 2;
-
-    private bool bDivide;
 
     // スクリーン座標
     Vector3 screenPoint;
@@ -209,7 +205,7 @@ public class CursorSystem : MonoBehaviour
 
                         breakingState = divideTriangle.Divide(MousePoints);
 
-
+                        // 破りの状態によって次の紙を破るか決める
                         switch (breakingState)
                         {
                             case 0: // 破いてない状態
@@ -217,7 +213,6 @@ public class CursorSystem : MonoBehaviour
 
                             case 1: // 破り途中
                                 // 次の紙がすでに破る処理が行われているかチェック
-                                //if (paperNum != papers.Count - 1 && papers[paperNum + 1].GetComponent<DivideTriangle>().Dividing == true)
                                 if (CheckNextPaperDividing(paperNum))
                                 {
                                     // 次の紙も破る
@@ -239,7 +234,9 @@ public class CursorSystem : MonoBehaviour
                                 }
                                 else
                                 {
-                                    //startDivide = false;
+                                    //// 破り中フラグのリセット
+                                    //DivideTriangle.AllReset();
+                                    //outsider.DivideEnd();
                                     // ポジションリストをクリア
                                     MousePoints.Clear();
                                     return;
@@ -250,7 +247,6 @@ public class CursorSystem : MonoBehaviour
                             case 4: // 予期しない操作の場合はリセットする
                                 // 破り中フラグのリセット
                                 DivideTriangle.AllReset();
-                                //startDivide = false;
                                 outsider.DivideEnd();
                                 // ポジションリストをクリア
                                 MousePoints.Clear();
@@ -300,11 +296,6 @@ public class CursorSystem : MonoBehaviour
         }
     }
 
-    //切っているかどうかのフラグをゲットするための関数
-    public bool GetBreakFlg()
-    {
-        return bDivide;
-    }
 
 
     private void UpdatePage()

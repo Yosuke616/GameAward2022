@@ -685,6 +685,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25b01a4bea6a30c46bb26e3032ceed66, type: 3}
+--- !u!1 &71115791 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6037672299423739952, guid: 0e5e9c13b57dc484ebe3504fe44d671a, type: 3}
+  m_PrefabInstance: {fileID: 1259217983}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &89929431
 GameObject:
   m_ObjectHideFlags: 0
@@ -4945,6 +4950,11 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: 3a277428f018a814888d45e2ef09d6e9, type: 2}
+--- !u!1 &1032797581 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8912566508909429599, guid: 0e5e9c13b57dc484ebe3504fe44d671a, type: 3}
+  m_PrefabInstance: {fileID: 1259217983}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1145087860 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4225847671156816718, guid: 716a4739cd0ed5744b1e6877fbbf7713, type: 3}
@@ -5107,6 +5117,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1168292777}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1179024757 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3272576316285269271, guid: 0e5e9c13b57dc484ebe3504fe44d671a, type: 3}
+  m_PrefabInstance: {fileID: 1259217983}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1196040377
 GameObject:
   m_ObjectHideFlags: 0
@@ -6251,9 +6266,9 @@ MonoBehaviour:
   Select: {fileID: 1978839687}
   Retry: {fileID: 1978839686}
   Title: {fileID: 1978839685}
-  Select_front: {fileID: 1978839684}
-  Retry_front: {fileID: 1978839683}
-  Title_front: {fileID: 1978839681}
+  Select_front: {fileID: 1032797581}
+  Retry_front: {fileID: 71115791}
+  Title_front: {fileID: 1179024757}
   StageName: 1-4
 --- !u!114 &1365717814
 MonoBehaviour:

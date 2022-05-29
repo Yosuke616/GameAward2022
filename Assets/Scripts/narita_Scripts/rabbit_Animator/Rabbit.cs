@@ -25,7 +25,7 @@ public class Rabbit : MonoBehaviour
         // 現在のアニメーション状態を取得
         var state = rabbitAnimator.GetCurrentAnimatorStateInfo(0); // 引数はAnimatorのLayersの番号
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(onceFunc && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown("joystick button 1")))
         {
             rabbitAnimator.SetFloat("Speed", 100);
             onceFunc = false;

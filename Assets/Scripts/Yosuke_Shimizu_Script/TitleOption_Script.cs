@@ -143,13 +143,13 @@ public class TitleOption_Script : MonoBehaviour
             //左右でスライダーの値を変える
             SetSlider();
 
-            if (Input.GetKeyDown("joystick button 1"))
-            {
-       //         TOFlg = true;
-                Debug.Log("ロゼッター");
-                GameObject obj = GameObject.Find("Main Camera");
-                obj.GetComponent<Title_Button_Script>().SetTitleFlg(false);
-            }
+            //if (Input.GetKeyDown("joystick button 1"))
+            //{
+       //   //      TOFlg = true;
+            //    Debug.Log("ロゼッター");
+            //    GameObject obj = GameObject.Find("Main Camera");
+            //    obj.GetComponent<Title_Button_Script>().SetTitleFlg(false);
+            //}
        // }
     }
 

@@ -103,7 +103,7 @@ public class Tutorial : MonoBehaviour
 			else
 			{
 				// 決定ボタン押下時、次の説明パネルへ
-				if (Input.GetMouseButtonDown(0) || Input.GetKeyDown("joystick button 1"))
+				if (Input.GetMouseButtonDown(0) || Input.GetKeyDown("joystick button 0"))
 				{
 					// 現在の説明パネルを非表示化する
 					BGobjects[nCnt].SetActive(false);

@@ -22,67 +22,41 @@ public class InputTrigger : MonoBehaviour
         saveGetOneTimeDownFlag = false;
     }
 
-    //一回だけ押して連続で押したことにしないための関数
-    public bool GetOneTimeDown2()
-    {
-        // 前フレームに押されていなかったら
-        //if (!g_bFirstFlg  && nCnt <= 0)
-        //{
-        //    // 現在押されていたら
-        //    if (Input.GetAxis("LTrigger") == 1)
-        //    {
-        //        Debug.Log("1っかいだよー");
-        //        g_bFirstFlg = false;
-        //        nCnt = 15;
-        //        return true;
-        //    }
-        //}
-
-        // 押されているフラグの更新
-        //if (Input.GetAxis("LTrigger") == 1)
-        //{
-        //    g_bFirstFlg = true;
-        //}
-        //else
-        //{
-        //    g_bFirstFlg = false;
-
-        //}
-
-
-        return false;
-    }
 
     public bool GetOneTimeDown()
     {
+        // 1フレーム以内で既に呼ばれて結果が決まっていたらそれを返す
         if (numberCalled != 0) return saveGetOneTimeDownFlag;
+
+        // この関数が呼ばれた回数を記憶
         numberCalled++;
 
         bool ret = false;
 
         float tri = Input.GetAxis("LTrigger");
-        if (tri > 0)
+        // Lトリガー
+        if (tri > 0.95f)
         {
-            //Debug.Log("L trigger:" + tri);
-
             // 前フレームまで押されていなかったかどうか
             if (pressed == false) ret = true;
 
             pressed = true;
+            Debug.Log("L trigger:" + tri);
         }
-        else if (tri < 0)
-        {
-            //Debug.Log("R trigger:" + tri);
-        }
+        // Rトリガー
+        else if (tri < 0) {}
+        // 入力されていない状態
         else
         {
-            //Debug.Log("  trigger:none");
-
             pressed = false;
         }
 
         saveGetOneTimeDownFlag = ret;
-        if (ret) Debug.LogWarning("成功");
+        if (ret)
+        {
+            //SoundManager.Instance.PlaySeByName("SE_MenuOperation");
+            Debug.LogWarning("成功");
+        }
        
         return ret;
     }

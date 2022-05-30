@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class Rabbit : MonoBehaviour
 {
     public Animator rabbitAnimator;
@@ -31,16 +31,27 @@ public class Rabbit : MonoBehaviour
             onceFunc = false;
 
             //rabbitAnimation.SetAnim("Take 001");
+            if (SceneManager.GetActiveScene().name == "1-8")
+            {
+                this.gameObject.AddComponent<LastRabbit>();
+                openingCamera.transform.parent = null;
+            }
 
             openingCamera.GetComponent<ZoomOut>().ZoomStart();
         }
 
         // アニメーション状態が"Move" → "Idle"に遷移した場合
-        if(onceFunc && state.IsName("RabbitIdle"))
+        if(onceFunc && (state.IsName("RabbitIdle") || state.IsName("lastRabbit")))
         {
             onceFunc = false;
 
-			//rabbitAnimation.SetAnim("Take 001");
+            //rabbitAnimation.SetAnim("Take 001");
+
+            if (SceneManager.GetActiveScene().name == "1-8")
+            {
+                this.gameObject.AddComponent<LastRabbit>();
+                openingCamera.transform.parent = null;
+            }
 
             openingCamera.GetComponent<ZoomOut>().ZoomStart();
             // オープニングカメラのズームアウト機能をONにする

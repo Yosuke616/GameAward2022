@@ -36,9 +36,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _BendAngle: 220
-    - _BendPivot: 86.19992
-    - _BendRadius: 0.01
+    - _BendAngle: 225
+    - _BendPivot: 129.60008
+    - _BendRadius: 14.9
     - _BendStrength: 1
     m_Colors: []
   m_BuildTextureStacks: []

@@ -54,10 +54,15 @@ public class BreakLine : MonoBehaviour
         valueAngle = 250.0f;
         valueRadius = 0.01f;*/
         bStart = true;
-        Add = 0.7f;
-        valueChange = 47.0f;
-        valueAngle = 220.0f;
-        valueRadius = 0.01f;
+        Add = 1.4f;
+        //valueChange = 47.0f;
+        //valueAngle = 220.0f;
+        //valueRadius = 0.01f;
+        //valueStrength = 1.0f;
+
+        valueChange = -30.0f;
+        valueAngle = 225.0f;
+        valueRadius = 14.9f;
         valueStrength = 1.0f;
     }
 
@@ -65,10 +70,15 @@ public class BreakLine : MonoBehaviour
     public void SetLeftLine()
     {
         bStart = true;
-        Add = 0.7f;
-        valueChange = 37.0f;
-        valueAngle = 140.0f;
-        valueRadius = 0.01f;
+        Add = 1.4f;
+        //valueChange = 37.0f;
+        //valueAngle = 140.0f;
+        //valueRadius = 0.01f;
+        //valueStrength = 1.0f;
+
+        valueChange = -30.0f;
+        valueAngle = 135.0f;
+        valueRadius = 14.9f;
         valueStrength = 1.0f;
     }
 

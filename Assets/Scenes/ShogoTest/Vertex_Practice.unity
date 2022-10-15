@@ -502,6 +502,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Black
       objectReference: {fileID: 0}
+    - target: {fileID: 4289407018226792663, guid: 7e50b3b7f101c154a97037536f22cc6c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6832872632752211867, guid: 7e50b3b7f101c154a97037536f22cc6c, type: 3}
       propertyPath: m_RootOrder
       value: 4

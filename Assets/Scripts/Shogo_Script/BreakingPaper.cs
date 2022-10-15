@@ -20,6 +20,8 @@ public class BreakingPaper : MonoBehaviour
     private bool bStart = false;        // 動作フラグ
     private bool bVibration = false;    // 振動フラグ
 
+    const float TURN_OVER = 1.4f;       // めくるスピード
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +39,7 @@ public class BreakingPaper : MonoBehaviour
         {
             // だんだんめくれていく
             valueChange += Add;
+            Debug.Log(valueChange);
 
             // 振動処理
             if(gamepad != null && !bVibration)
@@ -69,22 +72,37 @@ public class BreakingPaper : MonoBehaviour
     public void SetRight()
     {
         bStart = true;
-        Add = 0.7f;
-        valueChange = 47.0f;
-        valueAngle = 220.0f;
-        valueRadius = 0.01f;
+        //Add = 0.7f;
+        Add = TURN_OVER;
+        //valueChange = -30.0f;
+        //valueAngle = 220.0f;
+        //valueAngle = 135.0f;
+        //valueRadius = 14.9f;
+        //valueStrength = 1.0f;
+
+        valueChange = -30.0f;
+        valueAngle = 225.0f;
+        valueRadius = 14.9f;
         valueStrength = 1.0f;
+        //gameObject.transform.position;
     }
 
     // 左側にめくる
     public void SetLeft()
     {
         bStart = true;
-        Add = 0.7f;
-        valueChange = 37.0f;
-        valueAngle = 140.0f;
-        valueRadius = 0.01f;
+        //Add = 0.7f;
+        Add = TURN_OVER;
+        //valueChange = -30.0f;
+        //valueAngle = 225.0f;
+        //valueRadius = 14.9f;
+        //valueStrength = 1.0f;
+
+        valueChange = -30.0f;
+        valueAngle = 135.0f;
+        valueRadius = 14.9f;
         valueStrength = 1.0f;
+        
     }
 
     // マテリアルの設定

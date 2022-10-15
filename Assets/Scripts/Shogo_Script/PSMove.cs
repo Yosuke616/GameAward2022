@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class PSMove : MonoBehaviour
 {
+    // 紙の動くスピード
     [SerializeField]
     private float moveSpeed = 0.6f;
 
-    private float minusNum;
-
     private Vector3 pos;
 
+    // 移動する方向フラグ
     private bool moveLeft, moveRight;
 
     private Vector3 tmp, targetPos;
 
+    // サウンド再生フラグ
     private bool bSounds;
 
     // Start is called before the first frame update
@@ -27,7 +28,6 @@ public class PSMove : MonoBehaviour
         tmp = gameObject.transform.position;
         targetPos = new Vector3(-CreateTriangle.paperSizeX * 2.0f - 2.0f, tmp.y, tmp.z);
         pos = new Vector3(0.0f, tmp.y, tmp.z);
-        minusNum = 0.0f;
     }
 
     // Update is called once per frame
@@ -100,7 +100,6 @@ public class PSMove : MonoBehaviour
             {
                 transform.position = tmp;
                 pos = new Vector3(0.0f, tmp.y, tmp.z); ;
-                minusNum = 0.0f;
                 moveRight = false;
                 bSounds = false;
                 //一番手前の紙の時に破るモード
@@ -111,6 +110,7 @@ public class PSMove : MonoBehaviour
         }
     }
 
+    // 紙を左に動かす
     public bool StartLeft()
     {
         if (!moveRight)
@@ -123,6 +123,7 @@ public class PSMove : MonoBehaviour
         return false;
     }
 
+    // 紙を右に動かす
     public bool StartRight()
     {
         if (!moveLeft)

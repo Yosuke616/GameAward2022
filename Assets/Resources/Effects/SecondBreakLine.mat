@@ -37,9 +37,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - <noninit>: 0
-    - _BendAngle: 220
-    - _BendPivot: 86.89992
-    - _BendRadius: 0.01
+    - _BendAngle: 135
+    - _BendPivot: 131.00008
+    - _BendRadius: 14.9
     - _BendStrength: 1
     - _Offset: 0
     - _Rate: 0.5

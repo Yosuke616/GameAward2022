@@ -11,8 +11,6 @@ public class YouseiEffect : MonoBehaviour
 
     private int nTime;
 
-    private int nCreateTime = 20;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +18,6 @@ public class YouseiEffect : MonoBehaviour
         pos = transform.parent.position;
         emitter = gameObject.GetComponent<EffekseerEmitter>();
         nTime = 0;
-        nCreateTime = 20;
     }
 
     // Update is called once per frame
